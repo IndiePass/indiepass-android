@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Indigenous</string>
+    <string name="domain_hint">http://example.com</string>
+    <string name="sign_in_with_domain">Sign in with domain</string>
+    <string name="post_note">Post note</string>
+    <string name="no_posts_found">No posts found</string>
+</resources>
