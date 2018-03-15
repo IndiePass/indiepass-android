@@ -18,13 +18,17 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class NoteActivity extends AppCompatActivity {
 
     Button createPost;
     EditText note;
+    EditText tags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class NoteActivity extends AppCompatActivity {
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
             note = findViewById(R.id.noteText);
+            tags = findViewById(R.id.noteTags);
             SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
             String MicropubEndPoint = preferences.getString("micropub_endpoint", "");
 
@@ -74,8 +79,20 @@ public class NoteActivity extends AppCompatActivity {
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<String, String>();
 
+                    // Content and entry.
                     params.put("h", "entry");
                     params.put("content", note.getText().toString());
+
+                    // Tags.
+                    // TODO make sure the UI is ok
+                    List<String> tagsList = new ArrayList<>(Arrays.asList(tags.getText().toString().split(",")));
+                    int i = 0;
+                    for (String tag: tagsList) {
+                        if (tag.length() > 0) {
+                            params.put("category["+ i +"]", tag);
+                            i++;
+                        }
+                    }
 
                     return params;
                 }

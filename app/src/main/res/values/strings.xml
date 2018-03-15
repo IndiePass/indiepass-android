@@ -4,4 +4,6 @@
     <string name="sign_in_with_domain">Sign in with domain</string>
     <string name="post_note">Post note</string>
     <string name="no_posts_found">No posts found</string>
+    <string name="tags">Tags</string>
+    <string name="note">Note</string>
 </resources>
