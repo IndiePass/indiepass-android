@@ -20,7 +20,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -59,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
             signIn = findViewById(R.id.signInButton);
             signIn.setOnClickListener(doSignIn);
         }
-
     }
 
     /**
@@ -100,14 +98,13 @@ public class MainActivity extends AppCompatActivity {
      * @return boolean
      */
     private boolean validDomain(String $domain) {
-        boolean $valid = false;
         int found = 0;
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         try {
-            // TODO the links can also be exposed in the reponse headers.
+            // TODO the links can also be exposed in the response headers.
             Document doc = Jsoup.connect($domain).get();
             Elements imports = doc.select("link[href]");
             for (Element link : imports) {
@@ -119,12 +116,12 @@ public class MainActivity extends AppCompatActivity {
                     found++;
                 }
 
+                // Microsub is optional for now, so we don't increment the counter here.
                 if (link.attr("rel").equals("microsub")) {
                     Log.d("indigenous_debug", link.attr("abs:href"));
                     SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
                     editor.putString("microsub_endpoint", link.attr("abs:href"));
                     editor.apply();
-                    found++;
                 }
 
                 if (link.attr("rel").equals("authorization_endpoint")) {
@@ -151,8 +148,8 @@ public class MainActivity extends AppCompatActivity {
             Log.d("indigenous_debug", error.getMessage());
         }
 
-
-        return found == 4;
+        // If we have 3 endpoints, let's go.
+        return found == 3;
     }
 
     /**
