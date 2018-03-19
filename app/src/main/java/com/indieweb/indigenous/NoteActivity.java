@@ -60,7 +60,8 @@ public class NoteActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Image selected", Toast.LENGTH_SHORT).show();
             imageUri = data.getData();
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                // TODO hardcoded to 800x600 - fix this.
+                bitmap = Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri), 800, 600, false);
                 image.setImageBitmap(bitmap);
             }
             catch (IOException ignored) {}
@@ -102,7 +103,6 @@ public class NoteActivity extends AppCompatActivity {
 
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
-            Toast.makeText(getApplicationContext(), "Starting upload, do not push again!", Toast.LENGTH_LONG).show();
             createPost.setEnabled(false);
 
             note = findViewById(R.id.noteText);
@@ -175,13 +175,14 @@ public class NoteActivity extends AppCompatActivity {
                 protected Map<String, DataPart> getByteData() {
                     Map<String, DataPart> params = new HashMap<>();
                     long imagename = System.currentTimeMillis();
-                    params.put("photo[0]", new DataPart(imagename + ".png", getFileDataFromDrawable(bitmap)));
+                    if (bitmap != null) {
+                        params.put("photo[0]", new DataPart(imagename + ".png", getFileDataFromDrawable(bitmap)));
+                    }
                     return params;
                 }
             };
 
             queue.add(request);
-
         }
     };
 
