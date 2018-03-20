@@ -31,24 +31,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class NoteActivity extends AppCompatActivity {
+public class ArticleActivity extends AppCompatActivity {
 
-    Button createNote;
-    EditText note;
+    Button createArticle;
+    EditText title;
+    EditText article;
     EditText tags;
     ImageView image;
     Uri imageUri;
     Bitmap bitmap;
 
-    private int PICK_NOTE_IMAGE_REQUEST = 1;
+    private int PICK_ARTICLE_IMAGE_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_note);
+        setContentView(R.layout.activity_article);
 
-        createNote = findViewById(R.id.createNoteButton);
-        createNote.setOnClickListener(doCreateNote);
+        createArticle = findViewById(R.id.createArticleButton);
+        createArticle.setOnClickListener(doCreateArticle);
 
         image = findViewById(R.id.imageView);
         image.setOnClickListener(selectImage);
@@ -57,7 +58,7 @@ public class NoteActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_NOTE_IMAGE_REQUEST && resultCode == RESULT_OK) {
+        if (requestCode == PICK_ARTICLE_IMAGE_REQUEST && resultCode == RESULT_OK) {
             Toast.makeText(getApplicationContext(), "Image selected", Toast.LENGTH_SHORT).show();
             imageUri = data.getData();
             try {
@@ -80,7 +81,7 @@ public class NoteActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_NOTE_IMAGE_REQUEST);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_ARTICLE_IMAGE_REQUEST);
         }
     };
 
@@ -99,15 +100,16 @@ public class NoteActivity extends AppCompatActivity {
     /**
      * OnClickListener for the 'create post' button.
      */
-    private final View.OnClickListener doCreateNote = new View.OnClickListener() {
+    private final View.OnClickListener doCreateArticle = new View.OnClickListener() {
         public void onClick(View v) {
 
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
-            createNote.setEnabled(false);
+            createArticle.setEnabled(false);
 
-            note = findViewById(R.id.noteText);
-            tags = findViewById(R.id.noteTags);
+            title = findViewById(R.id.articleTitle);
+            article = findViewById(R.id.articleText);
+            tags = findViewById(R.id.articleTags);
             SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
             String MicropubEndPoint = preferences.getString("micropub_endpoint", "");
 
@@ -124,7 +126,7 @@ public class NoteActivity extends AppCompatActivity {
                             // response
                             Log.d("indigenous_debug", response.toString());
 
-                            createNote.setEnabled(true);
+                            createArticle.setEnabled(true);
                         }
                     },
                     new Response.ErrorListener() {
@@ -132,7 +134,7 @@ public class NoteActivity extends AppCompatActivity {
                         public void onErrorResponse(VolleyError error) {
                             Toast.makeText(getApplicationContext(), "Note posting failed", Toast.LENGTH_LONG).show();
                             Log.d("indigenous_debug", error.getMessage());
-                            createNote.setEnabled(true);
+                            createArticle.setEnabled(true);
                         }
                     }
             )
@@ -141,9 +143,10 @@ public class NoteActivity extends AppCompatActivity {
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
 
-                    // Content and entry.
+                    // name, content and entry.
                     params.put("h", "entry");
-                    params.put("content", note.getText().toString());
+                    params.put("name", title.getText().toString());
+                    params.put("content", article.getText().toString());
 
                     // Tags.
                     // TODO make sure the UI is ok

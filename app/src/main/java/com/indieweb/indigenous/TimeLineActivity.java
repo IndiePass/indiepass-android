@@ -13,12 +13,21 @@ public class TimeLineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton note = findViewById(R.id.noteButton);
+        note.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent CreateNote = new Intent(getBaseContext(), NoteActivity.class);
                 startActivity(CreateNote);
+            }
+        });
+
+        FloatingActionButton article = findViewById(R.id.articleButton);
+        article.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent CreateArticle = new Intent(getBaseContext(), ArticleActivity.class);
+                startActivity(CreateArticle);
             }
         });
 

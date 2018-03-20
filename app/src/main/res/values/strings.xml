@@ -7,4 +7,9 @@
     <string name="tags">Tags - separate with comma</string>
     <string name="note">Note</string>
     <string name="image_preview">Image preview</string>
+    <string name="post_article">Post article</string>
+    <string name="title">Title</string>
+    <string name="body">Body</string>
+    <string name="add_note">Add note</string>
+    <string name="add_article">Add article</string>
 </resources>
