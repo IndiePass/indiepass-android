@@ -9,7 +9,7 @@ As soon as an alpha state is reached, we'll start deploying alpha releases.
 
 - Login with your domain, discover indieauth, micropub and microsub endpoints.
   The microsub endpoint is currently optional
-- Post a note with tags and picture (currently scaled to 800x600)
+- Post a note or article with tags and picture (currently scaled to 1000x750)
 
 ## iOS
 
