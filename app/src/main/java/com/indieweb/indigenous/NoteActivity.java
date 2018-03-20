@@ -150,6 +150,7 @@ public class NoteActivity extends AppCompatActivity {
                     List<String> tagsList = new ArrayList<>(Arrays.asList(tags.getText().toString().split(",")));
                     int i = 0;
                     for (String tag: tagsList) {
+                        tag = tag.trim();
                         if (tag.length() > 0) {
                             params.put("category["+ i +"]", tag);
                             i++;
