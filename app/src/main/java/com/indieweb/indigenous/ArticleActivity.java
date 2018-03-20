@@ -187,8 +187,8 @@ public class ArticleActivity extends AppCompatActivity {
             };
 
             request.setRetryPolicy(new DefaultRetryPolicy(
-                    30000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    0,
+                    -1,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(request);
         }
