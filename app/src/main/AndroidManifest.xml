@@ -20,8 +20,22 @@
             </intent-filter>
         </activity>
         <activity android:name=".TimeLineActivity" />
-        <activity android:name=".NoteActivity" />
-        <activity android:name=".ArticleActivity" />
+        <activity
+            android:name=".NoteActivity"
+            android:label="@string/add_note"
+            android:parentActivityName="com.indieweb.indigenous.TimeLineActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.TimeLineActivity" />
+        </activity>
+        <activity
+            android:name=".ArticleActivity"
+            android:label="@string/add_article"
+            android:parentActivityName="com.indieweb.indigenous.TimeLineActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.TimeLineActivity" />
+        </activity>
     </application>
 
 </manifest>

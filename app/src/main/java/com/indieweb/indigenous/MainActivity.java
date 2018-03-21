@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         if (AccessToken.length() > 0 && MicroPubEndpoint.length() > 0) {
             Intent TimeLine = new Intent(getBaseContext(), TimeLineActivity.class);
             startActivity(TimeLine);
+            this.finish();
         }
         else {
             signIn = findViewById(R.id.signInButton);
