@@ -14,3 +14,7 @@ As soon as an alpha state is reached, we'll start deploying alpha releases.
 ## iOS
 
 iOS version is available at https://github.com/EdwardHinkle/indigenous-ios
+
+## Other clients
+
+https://github.com/pstuifzand/micropub-android (micropub only)
