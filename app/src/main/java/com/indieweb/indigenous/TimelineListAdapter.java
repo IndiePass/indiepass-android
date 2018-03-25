@@ -16,7 +16,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 /**
- * Event list adapter.
+ * Timeline items list adapter.
  */
 public class TimelineListAdapter extends BaseAdapter implements OnClickListener {
 

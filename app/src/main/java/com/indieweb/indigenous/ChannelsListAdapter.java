@@ -16,7 +16,7 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * Event list adapter.
+ * Channels list adapter.
  */
 public class ChannelsListAdapter extends BaseAdapter implements OnClickListener {
     private final Context context;
