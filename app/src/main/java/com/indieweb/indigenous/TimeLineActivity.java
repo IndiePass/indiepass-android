@@ -1,20 +1,9 @@
 package com.indieweb.indigenous;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Adapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,8 +14,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.kennyc.bottomsheet.BottomSheet;
-import com.kennyc.bottomsheet.BottomSheetListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,21 +70,75 @@ public class TimeLineActivity extends AppCompatActivity {
                             for (int i = 0; i < itemList.length(); i++) {
                                 object = itemList.getJSONObject(i);
                                 TimelineItem item = new TimelineItem();
+
+                                String name = "";
+                                String text = "";
+                                String photo = "";
+                                String authorName = "Swentel";
+
+                                // Author name.
+                                if (object.has("author")) {
+
+                                    authorName = object.getJSONObject("author").getString("name");
+                                    String authorUrl = object.getJSONObject("author").getString("url");
+                                    Log.d("indi_author_name", authorName);
+                                    Log.d("indi_author_url", authorUrl);
+                                    if (authorName.equals("null") && authorUrl.length() > 0) {
+                                        Log.d("indi_author_replace", "yes");
+                                        authorName = authorUrl;
+                                    }
+                                }
+                                item.setAuthorName(authorName);
+
+                                // Content.
                                 if (object.has("content")) {
                                     JSONObject content = object.getJSONObject("content");
-                                    item.setContent(content.getString("text"));
-                                    TimelineItems.add(item);
+
+                                    text = content.getString("text");
+
+                                    // in-reply-to
+                                    // TODO there can me more than one.
+                                    if (object.has("in-reply-to")) {
+                                        text += ", in reply to " + object.getJSONArray("in-reply-to").get(0);
+                                    }
                                 }
-                                else {
-                                    item.setContent("No content, so probably a like (to inspect further)");
-                                    TimelineItems.add(item);
+
+                                // Name.
+                                if (object.has("name")) {
+                                    name = object.getString("name").replace("\n", "").replace("\r", "");
                                 }
+
+                                // Photo.
+                                if (object.has("photo")) {
+                                    photo = object.getJSONArray("photo").getString(0);
+                                }
+                                item.setPhoto(photo);
+
+                                // A like.
+                                // TODO there can me more than one.
+                                // TODO it seems this is set in name, so we can probably remove this
+                                /*if (object.has("like-of")) {
+                                    text = "like " + object.getJSONArray("like-of").get(0);
+                                    // reset name.
+                                    name = "";
+                                }*/
+
+                                // A checkin.
+                                if (object.has("checkin")) {
+                                    text = "Checked in at " + object.getJSONObject("checkin").getString("name");
+                                }
+
+                                item.setName(name);
+                                item.setContent(text);
+                                TimelineItems.add(item);
                             }
 
                             adapter.notifyDataSetChanged();
 
                         }
-                        catch (JSONException ignored) {}
+                        catch (JSONException e) {
+                            Log.d("indigenous_debug", e.getMessage());
+                        }
 
                     }
                 },

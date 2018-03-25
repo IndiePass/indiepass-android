@@ -4,13 +4,30 @@
     android:id="@+id/timeline_item_row"
     android:layout_height="wrap_content"
 	android:weightSum="1.0"
-    android:orientation="horizontal">
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/timeline_author"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_width="fill_parent" />
+
+    <TextView
+        android:id="@+id/timeline_name"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_width="fill_parent" />
 
     <TextView
         android:id="@+id/timeline_content"
-        android:paddingBottom="10dp"
+        android:padding="5dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content" />
+        android:layout_width="fill_parent" />
+
+    <ImageView
+        android:padding="5dp"
+        android:id="@+id/timeline_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

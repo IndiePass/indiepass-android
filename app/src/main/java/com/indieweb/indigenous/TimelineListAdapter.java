@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -54,13 +56,26 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             // Change color of row.
             assert convertView != null;
             String color = ((position % 2) == 0) ? "#f8f7f1" :  "#ffffff";
-            final LinearLayout row = (LinearLayout) convertView.findViewById(R.id.timeline_item_row);
+            final LinearLayout row = convertView.findViewById(R.id.timeline_item_row);
             row.setBackgroundColor(Color.parseColor(color));
 
+            // Author.
+            final TextView author = convertView.findViewById(R.id.timeline_author);
+            author.setText(item.getAuthorName());
+
             // Name.
-            final TextView content = (TextView) convertView.findViewById(R.id.timeline_content);
-            String text = item.getContent();
-            content.setText(text);
+            final TextView name = convertView.findViewById(R.id.timeline_name);
+            name.setText(item.getName());
+
+            // Content.
+            final TextView content = convertView.findViewById(R.id.timeline_content);
+            content.setText(item.getContent());
+
+            // Image.
+            /*final ImageView image = convertView.findViewById(R.id.timeline_image);
+            if (item.getPhoto().length() > 0) {
+                Glide.with(context).load(item.getPhoto()).into(image);
+            }*/
 
         }
 
