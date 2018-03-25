@@ -118,11 +118,8 @@ public class NoteActivity extends AppCompatActivity {
 
                             Toast.makeText(getApplicationContext(), "Post success", Toast.LENGTH_LONG).show();
 
-                            Intent TimeLine = new Intent(getBaseContext(), TimeLineActivity.class);
-                            startActivity(TimeLine);
-
-                            // response
-                            Log.d("indigenous_debug", response.toString());
+                            Intent Channels = new Intent(getBaseContext(), ChannelsActivity.class);
+                            startActivity(Channels);
 
                             createNote.setEnabled(true);
                         }
