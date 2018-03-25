@@ -19,22 +19,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TimeLineActivity" />
         <activity
             android:name=".NoteActivity"
             android:label="@string/add_note"
-            android:parentActivityName="com.indieweb.indigenous.TimeLineActivity">
+            android:parentActivityName="com.indieweb.indigenous.ChannelsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.TimeLineActivity" />
+                android:value="com.indieweb.indigenous.ChannelsActivity" />
         </activity>
         <activity
             android:name=".ArticleActivity"
             android:label="@string/add_article"
-            android:parentActivityName="com.indieweb.indigenous.TimeLineActivity">
+            android:parentActivityName="com.indieweb.indigenous.ChannelsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.TimeLineActivity" />
+                android:value="com.indieweb.indigenous.ChannelsActivity" />
+        </activity>
+        <activity
+            android:name=".ChannelsActivity"
+            android:label="@string/channels"
+            />
+        <activity
+            android:name=".TimeLineActivity"
+            android:label="@string/timeline"
+            android:parentActivityName="com.indieweb.indigenous.ChannelsActivity">
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.ChannelsActivity" />
         </activity>
     </application>
 

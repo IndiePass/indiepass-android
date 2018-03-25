@@ -8,8 +8,10 @@ As soon as an alpha state is reached, we'll start deploying alpha releases.
 ## Current functionality:
 
 - Login with your domain, discover indieauth, micropub and microsub endpoints.
-  The microsub endpoint is currently optional
+  The microsub endpoint is optional so you can simply use this as a micropub 
+  client too.
 - Post a note or article with tags and picture (currently scaled to 1000x750)
+- Read channels and basic items in it (no paging yet)
 
 ## iOS
 

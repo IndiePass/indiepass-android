@@ -8,10 +8,21 @@
     android:padding="10dp">
 
     <ListView
-        android:id="@+id/timeline_list"
+        android:id="@+id/channel_list"
         android:gravity="center"
         android:layout_marginTop="1dp"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/actionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:layout_marginEnd="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_add"
+        android:layout_marginRight="6dp" />
 
 </android.support.constraint.ConstraintLayout>

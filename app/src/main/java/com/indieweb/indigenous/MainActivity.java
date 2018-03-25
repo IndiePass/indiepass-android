@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
         String MicroPubEndpoint = preferences.getString("micropub_endpoint", "");
 
         if (AccessToken.length() > 0 && MicroPubEndpoint.length() > 0) {
-            Intent TimeLine = new Intent(getBaseContext(), TimeLineActivity.class);
-            startActivity(TimeLine);
+            Intent Channels = new Intent(getBaseContext(), ChannelsActivity.class);
+            startActivity(Channels);
             this.finish();
         }
         else {
@@ -222,8 +222,8 @@ public class MainActivity extends AppCompatActivity {
 
                         Toast.makeText(getApplicationContext(), "Authentication succesfull", Toast.LENGTH_LONG).show();
 
-                        Intent TimeLine = new Intent(getBaseContext(), TimeLineActivity.class);
-                        startActivity(TimeLine);
+                        Intent Channels = new Intent(getBaseContext(), ChannelsActivity.class);
+                        startActivity(Channels);
 
                     }
                     catch (JSONException e) {
