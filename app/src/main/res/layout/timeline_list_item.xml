@@ -1,9 +1,9 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/timeline_item_row"
     android:layout_height="wrap_content"
-	android:weightSum="1.0"
+    android:weightSum="1.0"
     android:orientation="vertical">
 
     <TextView
@@ -18,11 +18,20 @@
         android:padding="5dp"
         android:layout_width="fill_parent" />
 
-    <TextView
+    <at.blogc.android.views.ExpandableTextView
         android:id="@+id/timeline_content"
         android:padding="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:maxLines="5"
+        android:ellipsize="end"
+        app:animation_duration="750"/>
+
+    <Button
+        android:id="@+id/timeline_content_more"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="fill_parent" />
+        android:text="@string/read_more" />
 
     <ImageView
         android:padding="5dp"

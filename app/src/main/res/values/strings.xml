@@ -16,4 +16,6 @@
     <string name="log_out">Log out</string>
     <string name="timeline">Timeline</string>
     <string name="channels">Channels</string>
+    <string name="read_more">Read more</string>
+    <string name="close">Close</string>
 </resources>

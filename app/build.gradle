@@ -5,7 +5,7 @@ android {
     buildToolsVersion "27.0.1"
     defaultConfig {
         applicationId "com.indieweb.indigenous"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
         versionName "0.1"
@@ -31,4 +31,5 @@ dependencies {
     compile 'com.github.Kennyc1012:BottomSheet:2.4.0'
     implementation 'com.github.bumptech.glide:glide:4.6.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
+    compile 'at.blogc:expandabletextview:1.0.5'
 }
