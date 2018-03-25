@@ -13,6 +13,10 @@ As soon as an alpha state is reached, we'll start deploying alpha releases.
 - Post a note or article with tags and picture (currently scaled to 1000x750)
 - Read channels and basic items in it (no paging yet)
 
+## Sneak preview video
+
+https://realize.be/notes/1333
+
 ## iOS
 
 iOS version is available at https://github.com/EdwardHinkle/indigenous-ios
