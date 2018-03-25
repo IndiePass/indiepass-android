@@ -72,19 +72,17 @@ public class TimeLineActivity extends AppCompatActivity {
                                 TimelineItem item = new TimelineItem();
 
                                 String name = "";
-                                String text = "";
+                                String textContent = "";
+                                String htmlContent = "";
                                 String photo = "";
-                                String authorName = "Swentel";
+                                String authorName = "";
 
                                 // Author name.
                                 if (object.has("author")) {
 
                                     authorName = object.getJSONObject("author").getString("name");
                                     String authorUrl = object.getJSONObject("author").getString("url");
-                                    Log.d("indi_author_name", authorName);
-                                    Log.d("indi_author_url", authorUrl);
                                     if (authorName.equals("null") && authorUrl.length() > 0) {
-                                        Log.d("indi_author_replace", "yes");
                                         authorName = authorUrl;
                                     }
                                 }
@@ -94,13 +92,22 @@ public class TimeLineActivity extends AppCompatActivity {
                                 if (object.has("content")) {
                                     JSONObject content = object.getJSONObject("content");
 
-                                    text = content.getString("text");
+                                    textContent = content.getString("text");
 
                                     // in-reply-to
-                                    // TODO there can me more than one.
+                                    // TODO there can me more than one and fix this otherwise
+                                    // as I think it's in the name as well
                                     if (object.has("in-reply-to")) {
-                                        text += ", in reply to " + object.getJSONArray("in-reply-to").get(0);
+                                        textContent += ", in reply to " + object.getJSONArray("in-reply-to").get(0);
                                     }
+
+                                    // TODO don't store this yet, there's a lot to fix here
+                                    // e.g.
+                                    // when images or videos are embedded
+                                    if (content.has("html")) {
+                                        //htmlContent = content.getString("html");
+                                    }
+
                                 }
 
                                 // Name.
@@ -124,12 +131,14 @@ public class TimeLineActivity extends AppCompatActivity {
                                 }*/
 
                                 // A checkin.
+                                // TODO store in different property
                                 if (object.has("checkin")) {
-                                    text = "Checked in at " + object.getJSONObject("checkin").getString("name");
+                                    textContent = "Checked in at " + object.getJSONObject("checkin").getString("name");
                                 }
 
                                 item.setName(name);
-                                item.setContent(text);
+                                item.setTextContent(textContent);
+                                item.setHtmlContent(htmlContent);
                                 TimelineItems.add(item);
                             }
 

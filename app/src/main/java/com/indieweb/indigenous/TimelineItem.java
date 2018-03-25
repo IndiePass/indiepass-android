@@ -1,11 +1,10 @@
 package com.indieweb.indigenous;
 
-import java.util.ArrayList;
-
 public class TimelineItem {
 
     private String name;
-    private String content;
+    private String textContent;
+    private String htmlContent;
     private String type;
     private String url;
     private String authorName;
@@ -20,12 +19,20 @@ public class TimelineItem {
         this.name = name;
     }
 
-    public String getContent() {
-        return content;
+    public String getTextContent() {
+        return textContent;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setTextContent(String textContent) {
+        this.textContent = textContent;
+    }
+
+    public String getHtmlContent() {
+        return htmlContent;
+    }
+
+    public void setHtmlContent(String htmlContent) {
+        this.htmlContent = htmlContent;
     }
 
     public String getType() {

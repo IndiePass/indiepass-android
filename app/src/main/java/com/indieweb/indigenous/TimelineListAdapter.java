@@ -2,6 +2,7 @@ package com.indieweb.indigenous;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -82,33 +83,60 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.row.setBackgroundColor(Color.parseColor(color));
 
             // Author.
-            holder.author.setText(item.getAuthorName());
-
-            // Name.
-            holder.name.setText(item.getName());
-
-            // Content.
-            holder.content.setText(item.getContent());
-            if (item.getContent().length() > 400) {
-                holder.expand.setVisibility(View.VISIBLE);
-                holder.expand.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(final View v) {
-                        if (holder.content.isExpanded()) {
-                            holder.content.collapse();
-                            holder.expand.setText(R.string.read_more);
-                        }
-                        else {
-                            holder.content.expand();
-                            holder.expand.setText(R.string.close);
-                        }
-                    }
-                });
-
+            if (item.getAuthorName().length() > 0) {
+                holder.author.setVisibility(View.VISIBLE);
+                holder.author.setText(item.getAuthorName());
             }
             else {
-                holder.expand.setVisibility(View.GONE);
+                holder.author.setVisibility(View.GONE);
+            }
+
+            // Name.
+            if (item.getName().length() > 0) {
+                holder.author.setVisibility(View.VISIBLE);
+                holder.name.setText(item.getName());
+            }
+            else {
+                holder.name.setVisibility(View.GONE);
+            }
+
+            // Content.
+            if (item.getHtmlContent().length() > 0 || item.getTextContent().length() > 0) {
+
+                if (item.getHtmlContent().length() > 0) {
+                    String html = item.getHtmlContent();
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                        holder.content.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY));
+                    }
+                    else {
+                        holder.content.setText(Html.fromHtml(html));
+                    }
+                }
+                else {
+                    holder.content.setText(item.getTextContent());
+                }
+
+                if (item.getTextContent().length() > 400) {
+                    holder.expand.setVisibility(View.VISIBLE);
+                    holder.expand.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(final View v) {
+                            if (holder.content.isExpanded()) {
+                                holder.content.collapse();
+                                holder.expand.setText(R.string.read_more);
+                            }
+                            else {
+                                holder.content.expand();
+                                holder.expand.setText(R.string.close);
+                            }
+                        }
+                    });
+
+                }
+                else {
+                    holder.expand.setVisibility(View.GONE);
+                }
             }
 
             // Image.
