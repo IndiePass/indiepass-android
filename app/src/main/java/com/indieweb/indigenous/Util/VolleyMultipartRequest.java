@@ -1,4 +1,4 @@
-package com.indieweb.indigenous.Utils;
+package com.indieweb.indigenous.Util;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;

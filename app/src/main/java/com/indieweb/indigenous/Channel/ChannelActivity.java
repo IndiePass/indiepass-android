@@ -1,9 +1,8 @@
-package com.indieweb.indigenous;
+package com.indieweb.indigenous.Channel;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,6 +22,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.indieweb.indigenous.MainActivity;
+import com.indieweb.indigenous.Object.Channel;
+import com.indieweb.indigenous.PostType.ArticleActivity;
+import com.indieweb.indigenous.PostType.LikeActivity;
+import com.indieweb.indigenous.PostType.NoteActivity;
+import com.indieweb.indigenous.R;
 import com.kennyc.bottomsheet.BottomSheet;
 import com.kennyc.bottomsheet.BottomSheetListener;
 
@@ -35,11 +40,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ChannelsActivity extends AppCompatActivity implements View.OnClickListener, BottomSheetListener {
+public class ChannelActivity extends AppCompatActivity implements View.OnClickListener, BottomSheetListener {
 
     String incomingText = "";
     String incomingImage = "";
-    private ChannelsListAdapter adapter;
+    private ChannelListAdapter adapter;
     private List<Channel> Channels = new ArrayList<Channel>();
 
     @Override
@@ -82,7 +87,7 @@ public class ChannelsActivity extends AppCompatActivity implements View.OnClickL
      */
     public void startChannels() {
         ListView listView = findViewById(R.id.channel_list);
-        adapter = new ChannelsListAdapter(this, Channels);
+        adapter = new ChannelListAdapter(this, Channels);
         listView.setAdapter(adapter);
         getChannels();
     }

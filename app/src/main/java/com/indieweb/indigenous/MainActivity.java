@@ -22,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.indieweb.indigenous.Channel.ChannelActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         String MicroPubEndpoint = preferences.getString("micropub_endpoint", "");
 
         if (AccessToken.length() > 0 && MicroPubEndpoint.length() > 0) {
-            Intent Channels = new Intent(getBaseContext(), ChannelsActivity.class);
+            Intent Channels = new Intent(getBaseContext(), ChannelActivity.class);
             startActivity(Channels);
             this.finish();
         }
@@ -222,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
 
                         Toast.makeText(getApplicationContext(), "Authentication succesfull", Toast.LENGTH_LONG).show();
 
-                        Intent Channels = new Intent(getBaseContext(), ChannelsActivity.class);
+                        Intent Channels = new Intent(getBaseContext(), ChannelActivity.class);
                         startActivity(Channels);
 
                     }

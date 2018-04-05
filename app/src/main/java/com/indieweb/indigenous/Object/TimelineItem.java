@@ -1,4 +1,4 @@
-package com.indieweb.indigenous;
+package com.indieweb.indigenous.Object;
 
 public class TimelineItem {
 

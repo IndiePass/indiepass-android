@@ -1,4 +1,4 @@
-package com.indieweb.indigenous;
+package com.indieweb.indigenous.Channel;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,20 +9,23 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.indieweb.indigenous.Object.Channel;
+import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.Timeline.TimeLineActivity;
 
 import java.util.List;
 
 /**
  * Channels list adapter.
  */
-public class ChannelsListAdapter extends BaseAdapter implements OnClickListener {
+public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
     private final Context context;
     private final List<Channel> channels;
 
-    public ChannelsListAdapter(Context context, List<Channel> channels) {
+    public ChannelListAdapter(Context context, List<Channel> channels) {
         this.context = context;
         this.channels = channels;
     }

@@ -1,14 +1,19 @@
-package com.indieweb.indigenous;
+package com.indieweb.indigenous.PostType;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -20,30 +25,43 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.indieweb.indigenous.Utils.VolleyMultipartRequest;
+import com.indieweb.indigenous.Channel.ChannelActivity;
+import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.Object.Syndication;
+import com.indieweb.indigenous.Util.VolleyMultipartRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LikeActivity extends AppCompatActivity {
+public class NoteActivity extends AppCompatActivity {
 
-    EditText url;
+    EditText note;
     EditText tags;
+    ImageView image;
+    Uri imageUri;
+    Bitmap bitmap;
     LinearLayout syndicationLayout;
     private List<Syndication> Syndications = new ArrayList<>();
     private MenuItem sendItem;
 
+    private int PICK_NOTE_IMAGE_REQUEST = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_like);
+        setContentView(R.layout.activity_note);
+
+        image = findViewById(R.id.imageView);
+        image.setOnClickListener(selectImage);
 
         // TODO make helper function.
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
@@ -73,15 +91,24 @@ public class LikeActivity extends AppCompatActivity {
             }
         }
 
-        // Set incomingText in content.
-        url = findViewById(R.id.likeUrl);
+        // Check incoming text or image.
+        note = findViewById(R.id.noteText);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String incoming = extras.getString("incomingText");
-            if (incoming != null && incoming.length() > 0) {
-                url.setText(incoming);
+            String incomingText = extras.getString("incomingText");
+            if (incomingText != null && incomingText.length() > 0) {
+                note.setText(incomingText);
+            }
+            String incomingImage = extras.getString("incomingImage");
+            if (incomingImage != null && incomingImage.length() > 0) {
+                try {
+                    bitmap = Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(incomingImage)), 1000, 750, false);
+                    image.setImageBitmap(bitmap);
+                }
+                catch (IOException ignored) {}
             }
         }
+
     }
 
     @Override
@@ -102,16 +129,58 @@ public class LikeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_NOTE_IMAGE_REQUEST && resultCode == RESULT_OK) {
+            Toast.makeText(getApplicationContext(), "Image selected", Toast.LENGTH_SHORT).show();
+            imageUri = data.getData();
+            try {
+                // TODO hardcoded to 1000x750 - fix this.
+                bitmap = Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri), 1000, 750, false);
+                image.setImageBitmap(bitmap);
+            }
+            catch (IOException ignored) {}
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "No image selected", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     /**
-     * Send like.
+     * OnClickListener for the 'select image' button.
+     */
+    private final View.OnClickListener selectImage = new View.OnClickListener() {
+        public void onClick(View v) {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_NOTE_IMAGE_REQUEST);
+        }
+    };
+
+   /**
+    * Convert bitmap to byte[] array.
+    *
+    * 0 means worse quality
+    * 100 means best quality
+    */
+    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    /**
+     * Send note.
      */
     public void send() {
 
         sendItem.setEnabled(false);
+
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
-        url = findViewById(R.id.likeUrl);
-        tags = findViewById(R.id.likeTags);
+        tags = findViewById(R.id.noteTags);
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
         String MicropubEndpoint = preferences.getString("micropub_endpoint", "");
 
@@ -120,16 +189,16 @@ public class LikeActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(NetworkResponse response) {
 
-                        Toast.makeText(getApplicationContext(), "Like success", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Post success", Toast.LENGTH_LONG).show();
 
-                        Intent Channels = new Intent(getBaseContext(), ChannelsActivity.class);
+                        Intent Channels = new Intent(getBaseContext(), ChannelActivity.class);
                         startActivity(Channels);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Like posting failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Note posting failed", Toast.LENGTH_LONG).show();
                         Log.d("indigenous_debug", error.getMessage());
                         sendItem.setEnabled(true);
                     }
@@ -140,9 +209,9 @@ public class LikeActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
 
-                // Url and entry.
+                // Content and entry.
                 params.put("h", "entry");
-                params.put("like-of", url.getText().toString());
+                params.put("content", note.getText().toString());
 
                 // Tags.
                 // TODO make sure the UI is ok
@@ -184,6 +253,15 @@ public class LikeActivity extends AppCompatActivity {
                 return headers;
             }
 
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                long imagename = System.currentTimeMillis();
+                if (bitmap != null) {
+                    params.put("photo[0]", new DataPart(imagename + ".png", getFileDataFromDrawable(bitmap)));
+                }
+                return params;
+            }
         };
 
         request.setRetryPolicy(new DefaultRetryPolicy(

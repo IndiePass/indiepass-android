@@ -1,4 +1,4 @@
-package com.indieweb.indigenous;
+package com.indieweb.indigenous.Timeline;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -14,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.indieweb.indigenous.Object.TimelineItem;
+import com.indieweb.indigenous.R;
+
 import at.blogc.android.views.ExpandableTextView;
 
 import java.util.List;
