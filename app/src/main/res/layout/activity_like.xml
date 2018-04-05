@@ -35,12 +35,5 @@
             android:layout_height="wrap_content">
         </LinearLayout>
 
-        <Button
-            android:id="@+id/createLikeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="@string/post_like" />
-
     </LinearLayout>
 </ScrollView>

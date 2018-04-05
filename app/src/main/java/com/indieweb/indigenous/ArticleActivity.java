@@ -8,8 +8,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,7 +40,6 @@ import java.util.Map;
 
 public class ArticleActivity extends AppCompatActivity {
 
-    Button createArticle;
     EditText title;
     EditText article;
     EditText tags;
@@ -55,9 +55,6 @@ public class ArticleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
-
-        createArticle = findViewById(R.id.createArticleButton);
-        createArticle.setOnClickListener(doCreateArticle);
 
         image = findViewById(R.id.imageView);
         image.setOnClickListener(selectImage);
@@ -128,6 +125,23 @@ public class ArticleActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.action_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.send:
+                send();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     /**
      * OnClickListener for the 'select image' button.
      */
@@ -155,107 +169,101 @@ public class ArticleActivity extends AppCompatActivity {
     /**
      * OnClickListener for the 'create post' button.
      */
-    private final View.OnClickListener doCreateArticle = new View.OnClickListener() {
-        public void onClick(View v) {
+    public void send() {
 
-            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
-            createArticle.setEnabled(false);
+        title = findViewById(R.id.articleTitle);
+        tags = findViewById(R.id.articleTags);
+        SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
+        String MicropubEndPoint = preferences.getString("micropub_endpoint", "");
 
-            title = findViewById(R.id.articleTitle);
-            tags = findViewById(R.id.articleTags);
-            SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-            String MicropubEndPoint = preferences.getString("micropub_endpoint", "");
+        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, MicropubEndPoint,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
 
-            VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, MicropubEndPoint,
-                    new Response.Listener<NetworkResponse>() {
-                        @Override
-                        public void onResponse(NetworkResponse response) {
+                        Toast.makeText(getApplicationContext(), "Post success", Toast.LENGTH_LONG).show();
 
-                            Toast.makeText(getApplicationContext(), "Post success", Toast.LENGTH_LONG).show();
-
-                            Intent Channels = new Intent(getBaseContext(), ChannelsActivity.class);
-                            startActivity(Channels);
-
-                            createArticle.setEnabled(true);
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getApplicationContext(), "Note posting failed", Toast.LENGTH_LONG).show();
-                            Log.d("indigenous_debug", error.getMessage());
-                            createArticle.setEnabled(true);
-                        }
+                        Intent Channels = new Intent(getBaseContext(), ChannelsActivity.class);
+                        startActivity(Channels);
                     }
-            )
-            {
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-
-                    // name, content and entry.
-                    params.put("h", "entry");
-                    params.put("name", title.getText().toString());
-                    params.put("content", article.getText().toString());
-
-                    // Tags.
-                    // TODO make sure the UI is ok
-                    List<String> tagsList = new ArrayList<>(Arrays.asList(tags.getText().toString().split(",")));
-                    int i = 0;
-                    for (String tag: tagsList) {
-                        tag = tag.trim();
-                        if (tag.length() > 0) {
-                            params.put("category["+ i +"]", tag);
-                            i++;
-                        }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Note posting failed", Toast.LENGTH_LONG).show();
+                        Log.d("indigenous_debug", error.getMessage());
                     }
+                }
+        )
+        {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
 
-                    // Syndications.
-                    if (Syndications.size() > 0) {
-                        CheckBox checkbox;
-                        for (int j = 0; j < Syndications.size(); j++) {
+                // name, content and entry.
+                params.put("h", "entry");
+                params.put("name", title.getText().toString());
+                params.put("content", article.getText().toString());
 
-                            checkbox = findViewById(j);
-                            if (checkbox.isChecked()) {
-                                params.put("mp-syndicate-to[" + j + "]", Syndications.get(j).getUid());
-                            }
-                        }
+                // Tags.
+                // TODO make sure the UI is ok
+                List<String> tagsList = new ArrayList<>(Arrays.asList(tags.getText().toString().split(",")));
+                int i = 0;
+                for (String tag: tagsList) {
+                    tag = tag.trim();
+                    if (tag.length() > 0) {
+                        params.put("category["+ i +"]", tag);
+                        i++;
                     }
-
-                    return params;
                 }
 
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    HashMap<String, String> headers = new HashMap<>();
-                    headers.put("Accept", "application/json");
+                // Syndications.
+                if (Syndications.size() > 0) {
+                    CheckBox checkbox;
+                    for (int j = 0; j < Syndications.size(); j++) {
 
-                    // Add access token to header.
-                    SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-                    String AccessToken = preferences.getString("access_token", "");
-                    headers.put("Authorization", "Bearer " + AccessToken);
-
-                    return headers;
-                }
-
-                @Override
-                protected Map<String, DataPart> getByteData() {
-                    Map<String, DataPart> params = new HashMap<>();
-                    long imagename = System.currentTimeMillis();
-                    if (bitmap != null) {
-                        params.put("photo[0]", new DataPart(imagename + ".png", getFileDataFromDrawable(bitmap)));
+                        checkbox = findViewById(j);
+                        if (checkbox.isChecked()) {
+                            params.put("mp-syndicate-to[" + j + "]", Syndications.get(j).getUid());
+                        }
                     }
-                    return params;
                 }
-            };
 
-            request.setRetryPolicy(new DefaultRetryPolicy(
-                    0,
-                    -1,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            queue.add(request);
-        }
-    };
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json");
+
+                // Add access token to header.
+                SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
+                String AccessToken = preferences.getString("access_token", "");
+                headers.put("Authorization", "Bearer " + AccessToken);
+
+                return headers;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                long imagename = System.currentTimeMillis();
+                if (bitmap != null) {
+                    params.put("photo[0]", new DataPart(imagename + ".png", getFileDataFromDrawable(bitmap)));
+                }
+                return params;
+            }
+        };
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                -1,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(request);
+
+    }
 
 }

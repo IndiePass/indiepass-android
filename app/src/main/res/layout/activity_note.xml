@@ -47,12 +47,5 @@
             android:scaleType="center"
             android:src="@android:drawable/ic_menu_gallery" />
 
-        <Button
-            android:id="@+id/createNoteButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="@string/post_note" />
-
     </LinearLayout>
 </ScrollView>
