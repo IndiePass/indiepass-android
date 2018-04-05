@@ -43,10 +43,11 @@ public class LikeActivity extends AppCompatActivity {
         // Set incomingText in content.
         url = findViewById(R.id.likeUrl);
         Bundle extras = getIntent().getExtras();
-        assert extras != null;
-        String incoming = extras.getString("incomingText");
-        if (incoming != null && incoming.length() > 0) {
-            url.setText(incoming);
+        if (extras != null) {
+            String incoming = extras.getString("incomingText");
+            if (incoming != null && incoming.length() > 0) {
+                url.setText(incoming);
+            }
         }
     }
 

@@ -56,18 +56,19 @@ public class NoteActivity extends AppCompatActivity {
         // Check incoming text or image.
         note = findViewById(R.id.noteText);
         Bundle extras = getIntent().getExtras();
-        assert extras != null;
-        String incomingText = extras.getString("incomingText");
-        if (incomingText != null && incomingText.length() > 0) {
-            note.setText(incomingText);
-        }
-        String incomingImage = extras.getString("incomingImage");
-        if (incomingImage != null && incomingImage.length() > 0) {
-            try {
-                bitmap = Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(incomingImage)), 1000, 750, false);
-                image.setImageBitmap(bitmap);
+        if (extras != null) {
+            String incomingText = extras.getString("incomingText");
+            if (incomingText != null && incomingText.length() > 0) {
+                note.setText(incomingText);
             }
-            catch (IOException ignored) {}
+            String incomingImage = extras.getString("incomingImage");
+            if (incomingImage != null && incomingImage.length() > 0) {
+                try {
+                    bitmap = Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(incomingImage)), 1000, 750, false);
+                    image.setImageBitmap(bitmap);
+                }
+                catch (IOException ignored) {}
+            }
         }
 
     }
