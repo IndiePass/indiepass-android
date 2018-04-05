@@ -37,6 +37,7 @@ public class LikeActivity extends AppCompatActivity {
     EditText tags;
     LinearLayout syndicationLayout;
     private List<Syndication> Syndications = new ArrayList<>();
+    private MenuItem sendItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +93,7 @@ public class LikeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.send:
+                sendItem = item;
                 send();
                 return true;
         }
@@ -104,6 +106,7 @@ public class LikeActivity extends AppCompatActivity {
      */
     public void send() {
 
+        sendItem.setEnabled(false);
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
         url = findViewById(R.id.likeUrl);
@@ -127,6 +130,7 @@ public class LikeActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getApplicationContext(), "Like posting failed", Toast.LENGTH_LONG).show();
                         Log.d("indigenous_debug", error.getMessage());
+                        sendItem.setEnabled(true);
                     }
                 }
         )

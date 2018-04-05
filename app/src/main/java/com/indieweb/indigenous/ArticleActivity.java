@@ -48,6 +48,7 @@ public class ArticleActivity extends AppCompatActivity {
     Bitmap bitmap;
     LinearLayout syndicationLayout;
     private List<Syndication> Syndications = new ArrayList<>();
+    private MenuItem sendItem;
 
     private int PICK_ARTICLE_IMAGE_REQUEST = 1;
 
@@ -135,6 +136,7 @@ public class ArticleActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.send:
+                sendItem = item;
                 send();
                 return true;
         }
@@ -171,6 +173,7 @@ public class ArticleActivity extends AppCompatActivity {
      */
     public void send() {
 
+        sendItem.setEnabled(false);
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
         title = findViewById(R.id.articleTitle);
@@ -194,6 +197,7 @@ public class ArticleActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getApplicationContext(), "Note posting failed", Toast.LENGTH_LONG).show();
                         Log.d("indigenous_debug", error.getMessage());
+                        sendItem.setEnabled(true);
                     }
                 }
         )
