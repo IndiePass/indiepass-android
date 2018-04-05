@@ -113,9 +113,9 @@ public class LikeActivity extends AppCompatActivity {
         url = findViewById(R.id.likeUrl);
         tags = findViewById(R.id.likeTags);
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-        String MicropubEndPoint = preferences.getString("micropub_endpoint", "");
+        String MicropubEndpoint = preferences.getString("micropub_endpoint", "");
 
-        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, MicropubEndPoint,
+        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, MicropubEndpoint,
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {

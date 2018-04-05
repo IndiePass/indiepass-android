@@ -179,9 +179,9 @@ public class NoteActivity extends AppCompatActivity {
 
         tags = findViewById(R.id.noteTags);
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-        String MicropubEndPoint = preferences.getString("micropub_endpoint", "");
+        String MicropubEndpoint = preferences.getString("micropub_endpoint", "");
 
-        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, MicropubEndPoint,
+        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, MicropubEndpoint,
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {

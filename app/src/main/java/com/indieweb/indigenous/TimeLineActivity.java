@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -20,12 +21,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class TimeLineActivity extends AppCompatActivity {
 
+    String channelId;
+    String entryId;
+    Integer unread;
     private TimelineListAdapter adapter;
     private List<TimelineItem> TimelineItems = new ArrayList<TimelineItem>();
 
@@ -39,25 +44,79 @@ public class TimeLineActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
 
         Bundle extras = getIntent().getExtras();
-        assert extras != null;
-        String channelId = extras.getString("channelId");
+        if (extras != null) {
+            channelId = extras.getString("channelId");
+            unread = extras.getInt("unread");
+            getTimeLineItems();
+        }
+        else {
+            Toast.makeText(this, "Channel not found", Toast.LENGTH_LONG).show();
+        }
 
-        getTimeLineItems(channelId);
+    }
+
+    /**
+     * Notify the server that all is read.
+     */
+    public void notifyAllRead() {
+        final SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
+        String MicrosubEndpoint = preferences.getString("microsub_endpoint", "");
+
+        StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {}
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {}
+                }
+        )
+        {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+
+                params.put("action", "timeline");
+                params.put("method", "mark_read");
+                params.put("channel", channelId);
+                params.put("last_read_entry", entryId.toString());
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+
+                // Add access token to header.
+                SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
+                String AccessToken = preferences.getString("access_token", "");
+                headers.put("Authorization", "Bearer " + AccessToken);
+
+                return headers;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        queue.add(getRequest);
     }
 
     /**
      * Get items in channel.
      */
-    public void getTimeLineItems(String channelId) {
+    public void getTimeLineItems() {
 
         // TODO abstract this all in one helper request class.
         // probably use jsonArrayRequest too, will be faster, but we'll see once we get all
         // kind of calls more or less ready.
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-        String microbSubEndPoint = preferences.getString("microsub_endpoint", "");
-        microbSubEndPoint += "?action=timeline&channel=" + channelId;
+        String MicrosubEndpoint = preferences.getString("microsub_endpoint", "");
+        MicrosubEndpoint += "?action=timeline&channel=" + channelId;
 
-        StringRequest getRequest = new StringRequest(Request.Method.GET, microbSubEndPoint,
+        StringRequest getRequest = new StringRequest(Request.Method.GET, MicrosubEndpoint,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -70,6 +129,11 @@ public class TimeLineActivity extends AppCompatActivity {
                             for (int i = 0; i < itemList.length(); i++) {
                                 object = itemList.getJSONObject(i);
                                 TimelineItem item = new TimelineItem();
+
+                                item.setId(object.getString("_id"));
+                                if (i == 0) {
+                                    entryId = item.getId();
+                                }
 
                                 String name = "";
                                 String textContent = "";
@@ -143,6 +207,11 @@ public class TimeLineActivity extends AppCompatActivity {
                             }
 
                             adapter.notifyDataSetChanged();
+
+                            // TODO This sets all to read, which isn't 100% right.
+                            if (unread > 0) {
+                                notifyAllRead();
+                            }
 
                         }
                         catch (JSONException e) {

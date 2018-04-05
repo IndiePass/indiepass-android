@@ -96,10 +96,10 @@ public class ChannelsActivity extends AppCompatActivity implements View.OnClickL
         // probably use jsonArrayRequest too, will be faster, but we'll see once we get all
         // kind of calls more or less ready.
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-        String microbSubEndPoint = preferences.getString("microsub_endpoint", "");
-        microbSubEndPoint += "?action=channels";
+        String MicrosubEndpoint = preferences.getString("microsub_endpoint", "");
+        MicrosubEndpoint += "?action=channels";
 
-        StringRequest getRequest = new StringRequest(Request.Method.GET, microbSubEndPoint,
+        StringRequest getRequest = new StringRequest(Request.Method.GET, MicrosubEndpoint,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -219,10 +219,10 @@ public class ChannelsActivity extends AppCompatActivity implements View.OnClickL
      */
     public void refreshSyndications() {
         final SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-        String microbPubEndPoint = preferences.getString("micropub_endpoint", "");
-        microbPubEndPoint += "?q=syndicate-to";
+        String microPubEndpoint = preferences.getString("micropub_endpoint", "");
+        microPubEndpoint += "?q=syndicate-to";
 
-        StringRequest getRequest = new StringRequest(Request.Method.GET, microbPubEndPoint,
+        StringRequest getRequest = new StringRequest(Request.Method.GET, microPubEndpoint,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

@@ -81,6 +81,7 @@ public class ChannelsListAdapter extends BaseAdapter implements OnClickListener 
                             row.setBackgroundColor(Color.parseColor(backColor));
                             Intent intent = new Intent(context, TimeLineActivity.class);
                             intent.putExtra("channelId", channel.getUid());
+                            intent.putExtra("unread", channel.getUnread());
                             context.startActivity(intent);
                             break;
                     }
