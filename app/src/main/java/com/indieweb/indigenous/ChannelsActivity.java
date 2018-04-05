@@ -1,10 +1,9 @@
 package com.indieweb.indigenous;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,7 +13,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -39,7 +37,8 @@ import java.util.Map;
 
 public class ChannelsActivity extends AppCompatActivity implements View.OnClickListener, BottomSheetListener {
 
-    String incoming;
+    String incomingText = "";
+    String incomingImage = "";
     private ChannelsListAdapter adapter;
     private List<Channel> Channels = new ArrayList<Channel>();
 
@@ -57,16 +56,31 @@ public class ChannelsActivity extends AppCompatActivity implements View.OnClickL
             try {
                 assert extras != null;
                 if (extras.containsKey(Intent.EXTRA_TEXT)) {
-                    incoming = extras.get(Intent.EXTRA_TEXT).toString();
-                    if (incoming.length() > 0) {
-                        // Open selection.
-                        openBottomSheet();
-                    }
+                    incomingText = extras.get(Intent.EXTRA_TEXT).toString();
+                }
+                if (extras.containsKey(Intent.EXTRA_STREAM)) {
+                    incomingImage = extras.get(Intent.EXTRA_STREAM).toString();
+                }
+
+                if (incomingText.length() > 0 || incomingImage.length() > 0) {
+                    // Open selection.
+                    openBottomSheet();
+                }
+                else {
+                    startChannels();
                 }
             }
             catch (NullPointerException ignored) {}
         }
+        else {
+            startChannels();
+        }
+    }
 
+    /**
+     * Start channels.
+     */
+    public void startChannels() {
         ListView listView = findViewById(R.id.channel_list);
         adapter = new ChannelsListAdapter(this, Channels);
         listView.setAdapter(adapter);
@@ -204,22 +218,28 @@ public class ChannelsActivity extends AppCompatActivity implements View.OnClickL
         switch (menuItem.getItemId()) {
             case R.id.createArticle:
                 Intent CreateArticle = new Intent(getBaseContext(), ArticleActivity.class);
-                if (incoming.length() > 0) {
-                    CreateArticle.putExtra("incoming", incoming);
+                if (incomingText != null && incomingText.length() > 0) {
+                    CreateArticle.putExtra("incomingText", incomingText);
+                }
+                if (incomingImage != null && incomingImage.length() > 0) {
+                    CreateArticle.putExtra("incomingImage", incomingImage);
                 }
                 startActivity(CreateArticle);
                 break;
             case R.id.createNote:
                 Intent CreateNote = new Intent(getBaseContext(), NoteActivity.class);
-                if (incoming.length() > 0) {
-                    CreateNote.putExtra("incoming", incoming);
+                if (incomingText != null && incomingText.length() > 0) {
+                    CreateNote.putExtra("incomingText", incomingText);
+                }
+                if (incomingImage != null && incomingImage.length() > 0) {
+                    CreateNote.putExtra("incomingImage", incomingImage);
                 }
                 startActivity(CreateNote);
                 break;
             case R.id.createLike:
                 Intent CreateLike = new Intent(getBaseContext(), LikeActivity.class);
-                if (incoming.length() > 0) {
-                    CreateLike.putExtra("incoming", incoming);
+                if (incomingText.length() > 0) {
+                    CreateLike.putExtra("incomingText", incomingText);
                 }
                 startActivity(CreateLike);
                 break;

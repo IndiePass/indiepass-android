@@ -43,13 +43,13 @@
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
+                <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
         <activity
             android:name=".TimeLineActivity"
             android:label="@string/timeline"
             android:parentActivityName="com.indieweb.indigenous.ChannelsActivity">
-            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.indieweb.indigenous.ChannelsActivity" />

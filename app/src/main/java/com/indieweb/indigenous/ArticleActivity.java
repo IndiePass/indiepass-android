@@ -54,13 +54,21 @@ public class ArticleActivity extends AppCompatActivity {
         image = findViewById(R.id.imageView);
         image.setOnClickListener(selectImage);
 
-        // Set incoming in content.
+        // Check incoming text or image.
         article = findViewById(R.id.articleText);
         Bundle extras = getIntent().getExtras();
         assert extras != null;
-        String incoming = extras.getString("incoming");
-        if (incoming != null && incoming.length() > 0) {
-            article.setText(incoming);
+        String incomingText = extras.getString("incomingText");
+        if (incomingText != null && incomingText.length() > 0) {
+            article.setText(incomingText);
+        }
+        String incomingImage = extras.getString("incomingImage");
+        if (incomingImage != null && incomingImage.length() > 0) {
+            try {
+                bitmap = Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(incomingImage)), 1000, 750, false);
+                image.setImageBitmap(bitmap);
+            }
+            catch (IOException ignored) {}
         }
 
     }

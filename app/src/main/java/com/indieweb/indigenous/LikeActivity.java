@@ -40,11 +40,11 @@ public class LikeActivity extends AppCompatActivity {
         createLike = findViewById(R.id.createLikeButton);
         createLike.setOnClickListener(doCreateLike);
 
-        // Set incoming in content.
+        // Set incomingText in content.
         url = findViewById(R.id.likeUrl);
         Bundle extras = getIntent().getExtras();
         assert extras != null;
-        String incoming = extras.getString("incoming");
+        String incoming = extras.getString("incomingText");
         if (incoming != null && incoming.length() > 0) {
             url.setText(incoming);
         }
