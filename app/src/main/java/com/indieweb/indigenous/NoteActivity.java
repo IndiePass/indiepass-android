@@ -52,6 +52,16 @@ public class NoteActivity extends AppCompatActivity {
 
         image = findViewById(R.id.imageView);
         image.setOnClickListener(selectImage);
+
+        // Set incoming in content.
+        note = findViewById(R.id.noteText);
+        Bundle extras = getIntent().getExtras();
+        assert extras != null;
+        String incoming = extras.getString("incoming");
+        if (incoming != null && incoming.length() > 0) {
+            note.setText(incoming);
+        }
+
     }
 
     @Override
@@ -106,7 +116,6 @@ public class NoteActivity extends AppCompatActivity {
 
             createNote.setEnabled(false);
 
-            note = findViewById(R.id.noteText);
             tags = findViewById(R.id.noteTags);
             SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
             String MicropubEndPoint = preferences.getString("micropub_endpoint", "");

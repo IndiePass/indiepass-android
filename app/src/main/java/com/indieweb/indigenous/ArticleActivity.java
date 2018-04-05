@@ -53,6 +53,16 @@ public class ArticleActivity extends AppCompatActivity {
 
         image = findViewById(R.id.imageView);
         image.setOnClickListener(selectImage);
+
+        // Set incoming in content.
+        article = findViewById(R.id.articleText);
+        Bundle extras = getIntent().getExtras();
+        assert extras != null;
+        String incoming = extras.getString("incoming");
+        if (incoming != null && incoming.length() > 0) {
+            article.setText(incoming);
+        }
+
     }
 
     @Override
@@ -108,7 +118,6 @@ public class ArticleActivity extends AppCompatActivity {
             createArticle.setEnabled(false);
 
             title = findViewById(R.id.articleTitle);
-            article = findViewById(R.id.articleText);
             tags = findViewById(R.id.articleTags);
             SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
             String MicropubEndPoint = preferences.getString("micropub_endpoint", "");

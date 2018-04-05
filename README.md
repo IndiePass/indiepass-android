@@ -10,9 +10,12 @@ As soon as an alpha state is reached, we'll start deploying alpha releases.
 - Login with your domain, discover indieauth, micropub and microsub endpoints.
   The microsub endpoint is optional so you can simply use this as a micropub 
   client too.
+- Read channels and basic items in it (no paging yet)
 - Post a note or article with tags and picture (currently scaled to 1000x750)
 - Post a like
-- Read channels and basic items in it (no paging yet)
+- Share text from other apps. You can choose then in which type of post you want
+  to put the text in. For a like, this will be put in the URL, for others into
+  the content
 
 ## Sneak preview video
 

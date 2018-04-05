@@ -39,6 +39,7 @@ import java.util.Map;
 
 public class ChannelsActivity extends AppCompatActivity implements View.OnClickListener, BottomSheetListener {
 
+    String incoming;
     private ChannelsListAdapter adapter;
     private List<Channel> Channels = new ArrayList<Channel>();
 
@@ -47,6 +48,24 @@ public class ChannelsActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_channels);
         findViewById(R.id.actionButton).setOnClickListener(this);
+
+        // Listen to share menu.
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        String action = intent.getAction();
+        if (Intent.ACTION_SEND.equals(action)) {
+            try {
+                assert extras != null;
+                if (extras.containsKey(Intent.EXTRA_TEXT)) {
+                    incoming = extras.get(Intent.EXTRA_TEXT).toString();
+                    if (incoming.length() > 0) {
+                        // Open selection.
+                        openBottomSheet();
+                    }
+                }
+            }
+            catch (NullPointerException ignored) {}
+        }
 
         ListView listView = findViewById(R.id.channel_list);
         adapter = new ChannelsListAdapter(this, Channels);
@@ -121,14 +140,21 @@ public class ChannelsActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
+    /**
+     * Opens the bottom sheet.
+     */
+    public void openBottomSheet() {
+        new BottomSheet.Builder(this)
+                .setSheet(R.menu.menu)
+                .setListener(this)
+                .show();
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.actionButton:
-                new BottomSheet.Builder(this)
-                        .setSheet(R.menu.menu)
-                        .setListener(this)
-                        .show();
+                openBottomSheet();
                 break;
         }
     }
@@ -178,14 +204,23 @@ public class ChannelsActivity extends AppCompatActivity implements View.OnClickL
         switch (menuItem.getItemId()) {
             case R.id.createArticle:
                 Intent CreateArticle = new Intent(getBaseContext(), ArticleActivity.class);
+                if (incoming.length() > 0) {
+                    CreateArticle.putExtra("incoming", incoming);
+                }
                 startActivity(CreateArticle);
                 break;
             case R.id.createNote:
                 Intent CreateNote = new Intent(getBaseContext(), NoteActivity.class);
+                if (incoming.length() > 0) {
+                    CreateNote.putExtra("incoming", incoming);
+                }
                 startActivity(CreateNote);
                 break;
             case R.id.createLike:
                 Intent CreateLike = new Intent(getBaseContext(), LikeActivity.class);
+                if (incoming.length() > 0) {
+                    CreateLike.putExtra("incoming", incoming);
+                }
                 startActivity(CreateLike);
                 break;
         }
