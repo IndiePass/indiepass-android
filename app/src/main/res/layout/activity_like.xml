@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.indieweb.indigenous.MainActivity">
+    android:padding="10dp">
 
     <EditText
-        android:id="@+id/domain"
-        android:layout_width="wrap_content"
+        android:id="@+id/likeUrl"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
-        android:ems="10"
+        android:layout_marginTop="10dp"
         android:hint="@string/domain_hint"
         android:inputType="textUri"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,23 +18,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/likeTags"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:ems="10"
+        android:hint="@string/tags"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
-        android:id="@+id/signInButton"
+        android:id="@+id/createLikeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="13dp"
-        android:text="@string/sign_in_with_domain"
+        android:layout_marginTop="80dp"
+        android:text="@string/post_like"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/domain" />
-
-    <WebView
-        android:visibility="invisible"
-        android:id="@+id/webView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signInButton" />
+        app:layout_constraintTop_toBottomOf="@+id/likeUrl" />
 
 </android.support.constraint.ConstraintLayout>

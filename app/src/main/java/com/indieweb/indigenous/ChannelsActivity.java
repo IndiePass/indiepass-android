@@ -184,6 +184,10 @@ public class ChannelsActivity extends AppCompatActivity implements View.OnClickL
                 Intent CreateNote = new Intent(getBaseContext(), NoteActivity.class);
                 startActivity(CreateNote);
                 break;
+            case R.id.createLike:
+                Intent CreateLike = new Intent(getBaseContext(), LikeActivity.class);
+                startActivity(CreateLike);
+                break;
         }
     }
 

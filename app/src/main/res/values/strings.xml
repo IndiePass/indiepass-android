@@ -18,4 +18,6 @@
     <string name="channels">Channels</string>
     <string name="read_more">Read more</string>
     <string name="close">Close</string>
+    <string name="add_like">Add like</string>
+    <string name="post_like">Post like</string>
 </resources>

@@ -49,6 +49,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.indieweb.indigenous.ChannelsActivity" />
         </activity>
+        <activity
+            android:name=".LikeActivity"
+            android:label="@string/add_like"
+            android:parentActivityName="com.indieweb.indigenous.ChannelsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.ChannelsActivity" />
+        </activity>
+
     </application>
 
 </manifest>

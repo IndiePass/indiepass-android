@@ -11,4 +11,9 @@
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/add_article" />
 
+    <item
+        android:id="@+id/createLike"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="@string/add_like" />
+
 </menu>
