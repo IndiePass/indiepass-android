@@ -13,7 +13,8 @@ As soon as an alpha state is reached, we'll start deploying alpha releases.
 - Read channels and basic items in it (no paging yet).
 - Expose in share intents to receive text or images.
 - Post a note or article with tags and picture (currently scaled to 1000x750).
-- Post a like.
+- Post a like with url.
+- Syndicate.
 
 ## Sneak preview video
 

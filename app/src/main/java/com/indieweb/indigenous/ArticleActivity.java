@@ -10,8 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -22,6 +24,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -40,6 +46,8 @@ public class ArticleActivity extends AppCompatActivity {
     ImageView image;
     Uri imageUri;
     Bitmap bitmap;
+    LinearLayout syndicationLayout;
+    private List<Syndication> Syndications = new ArrayList<>();
 
     private int PICK_ARTICLE_IMAGE_REQUEST = 1;
 
@@ -53,6 +61,34 @@ public class ArticleActivity extends AppCompatActivity {
 
         image = findViewById(R.id.imageView);
         image.setOnClickListener(selectImage);
+
+        // TODO make helper function.
+        SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
+        String syndicationsString = preferences.getString("syndications", "");
+        if (syndicationsString.length() > 0) {
+            JSONObject object;
+            try {
+                syndicationLayout = findViewById(R.id.syndicate);
+                JSONObject s = new JSONObject(syndicationsString);
+                JSONArray itemList = s.getJSONArray("syndicate-to");
+                for (int i = 0; i < itemList.length(); i++) {
+                    object = itemList.getJSONObject(i);
+                    Syndication syndication = new Syndication();
+                    syndication.setUid(object.getString("uid"));
+                    syndication.setName(object.getString("name"));
+                    Syndications.add(syndication);
+
+                    CheckBox ch = new CheckBox(this);
+                    ch.setText(syndication.getName());
+                    ch.setId(i);
+                    syndicationLayout.addView(ch);
+                }
+
+            }
+            catch (JSONException e) {
+                Log.d("indigenous_debug", e.getMessage());
+            }
+        }
 
         // Check incoming text or image.
         article = findViewById(R.id.articleText);
@@ -172,6 +208,18 @@ public class ArticleActivity extends AppCompatActivity {
                         if (tag.length() > 0) {
                             params.put("category["+ i +"]", tag);
                             i++;
+                        }
+                    }
+
+                    // Syndications.
+                    if (Syndications.size() > 0) {
+                        CheckBox checkbox;
+                        for (int j = 0; j < Syndications.size(); j++) {
+
+                            checkbox = findViewById(j);
+                            if (checkbox.isChecked()) {
+                                params.put("mp-syndicate-to[" + j + "]", Syndications.get(j).getUid());
+                            }
                         }
                     }
 

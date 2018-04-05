@@ -5,4 +5,8 @@
         android:id="@+id/logout"
         android:title="@string/log_out" />
 
+    <item
+        android:id="@+id/refreshSyndications"
+        android:title="@string/refresh_syndications" />
+
 </menu>
