@@ -6,11 +6,28 @@
     android:weightSum="1.0"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/timeline_author"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:layout_width="fill_parent" />
+    <LinearLayout
+        android:layout_margin="5dp"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/timeline_author_photo"
+            android:layout_height="50dp"
+            android:padding="5dp"
+            android:layout_marginRight="5dp"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/author_photo"
+            android:layout_width="50dp" />
+
+        <TextView
+            android:id="@+id/timeline_author"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_width="fill_parent" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/timeline_name"

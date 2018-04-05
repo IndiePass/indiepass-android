@@ -140,6 +140,7 @@ public class TimeLineActivity extends AppCompatActivity {
                                 String htmlContent = "";
                                 String photo = "";
                                 String authorName = "";
+                                String authorPhoto = "";
 
                                 // Author name.
                                 if (object.has("author")) {
@@ -148,6 +149,10 @@ public class TimeLineActivity extends AppCompatActivity {
                                     String authorUrl = object.getJSONObject("author").getString("url");
                                     if (authorName.equals("null") && authorUrl.length() > 0) {
                                         authorName = authorUrl;
+                                    }
+                                    authorPhoto = object.getJSONObject("author").getString("photo");
+                                    if (!authorPhoto.equals("null")) {
+                                        item.setAuthorPhoto(authorPhoto);
                                     }
                                 }
                                 item.setAuthorName(authorName);

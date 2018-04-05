@@ -9,6 +9,7 @@ public class TimelineItem {
     private String type;
     private String url;
     private String authorName;
+    private String authorPhoto = "";
     // TODO allow multiple photos
     private String photo;
 
@@ -66,6 +67,14 @@ public class TimelineItem {
 
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
+    }
+
+    public String getAuthorPhoto() {
+        return authorPhoto;
+    }
+
+    public void setAuthorPhoto(String authorPhoto) {
+        this.authorPhoto = authorPhoto;
     }
 
     public String getPhoto() {

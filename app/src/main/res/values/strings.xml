@@ -2,13 +2,11 @@
     <string name="app_name">Indigenous</string>
     <string name="domain_hint">http://example.com</string>
     <string name="sign_in_with_domain">Sign in with domain</string>
-    <string name="post_note">Post note</string>
     <string name="no_channels_found">No channels found</string>
     <string name="no_posts_found">No posts found</string>
     <string name="tags">Tags - separate with comma</string>
     <string name="note">Note</string>
     <string name="image_preview">Image preview</string>
-    <string name="post_article">Post article</string>
     <string name="title">Title</string>
     <string name="body">Body</string>
     <string name="add_note">Add note</string>
@@ -19,7 +17,7 @@
     <string name="read_more">Read more</string>
     <string name="close">Close</string>
     <string name="add_like">Add like</string>
-    <string name="post_like">Post like</string>
     <string name="refresh_syndications">Refresh syndications</string>
     <string name="send">Send</string>
+    <string name="author_photo">Author photo</string>
 </resources>

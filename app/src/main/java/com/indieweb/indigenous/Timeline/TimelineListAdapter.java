@@ -53,6 +53,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
     public static class ViewHolder {
         public TextView author;
+        public ImageView authorPhoto;
         public TextView name;
         public Button expand;
         public ExpandableTextView content;
@@ -67,6 +68,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             convertView = mInflater.inflate(R.layout.timeline_list_item, null);
             holder = new ViewHolder();
             holder.author = convertView.findViewById(R.id.timeline_author);
+            holder.authorPhoto = convertView.findViewById(R.id.timeline_author_photo);
             holder.name = convertView.findViewById(R.id.timeline_name);
             holder.content = convertView.findViewById(R.id.timeline_content);
             holder.content.setInterpolator(new OvershootInterpolator());
@@ -94,9 +96,18 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.author.setVisibility(View.GONE);
             }
 
+            // Author photo.
+            if (item.getAuthorPhoto().length() > 0) {
+                holder.authorPhoto.setVisibility(View.VISIBLE);
+                Glide.with(context).load(item.getAuthorPhoto()).into(holder.authorPhoto);
+            }
+            else {
+                holder.authorPhoto.setVisibility(View.GONE);
+            }
+
             // Name.
             if (item.getName().length() > 0) {
-                holder.author.setVisibility(View.VISIBLE);
+                holder.name.setVisibility(View.VISIBLE);
                 holder.name.setText(item.getName());
             }
             else {
