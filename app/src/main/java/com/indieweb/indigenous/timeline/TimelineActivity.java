@@ -20,6 +20,11 @@ import com.indieweb.indigenous.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.safety.Whitelist;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,7 +89,7 @@ public class TimelineActivity extends AppCompatActivity {
                 params.put("action", "timeline");
                 params.put("method", "mark_read");
                 params.put("channel", channelId);
-                params.put("last_read_entry", entryId.toString());
+                params.put("last_read_entry", entryId);
 
                 return params;
             }
@@ -173,11 +178,17 @@ public class TimelineActivity extends AppCompatActivity {
                                         textContent += ", in reply to " + object.getJSONArray("in-reply-to").get(0);
                                     }
 
-                                    // TODO don't store this yet, there's a lot to fix here
-                                    // e.g.
-                                    // when images or videos are embedded
                                     if (content.has("html")) {
-                                        //htmlContent = content.getString("html");
+                                        htmlContent = content.getString("html");
+
+                                        // Clean html, remove images and put them in photo.
+                                        // No fully ideal, but it's a good start.
+                                        Document doc = Jsoup.parse(htmlContent);
+                                        Elements imgs = doc.select("img");
+                                        for (Element img : imgs) {
+                                            photo = img.absUrl("src");
+                                        }
+                                        htmlContent = Jsoup.clean(htmlContent, Whitelist.basic());
                                     }
 
                                 }
