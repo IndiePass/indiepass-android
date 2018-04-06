@@ -1,4 +1,4 @@
-package com.indieweb.indigenous.Channel;
+package com.indieweb.indigenous.channel;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,9 +12,9 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.indieweb.indigenous.Object.Channel;
+import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.Timeline.TimeLineActivity;
+import com.indieweb.indigenous.timeline.TimelineActivity;
 
 import java.util.List;
 
@@ -85,7 +85,7 @@ public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
                     switch(motionEvent.getAction()) {
                         case MotionEvent.ACTION_UP:
                             row.setBackgroundColor(Color.parseColor(backColor));
-                            Intent intent = new Intent(context, TimeLineActivity.class);
+                            Intent intent = new Intent(context, TimelineActivity.class);
                             intent.putExtra("channelId", channel.getUid());
                             intent.putExtra("channelName", channel.getName());
                             intent.putExtra("unread", channel.getUnread());

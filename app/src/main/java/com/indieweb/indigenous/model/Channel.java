@@ -1,4 +1,4 @@
-package com.indieweb.indigenous.Object;
+package com.indieweb.indigenous.model;
 
 public class Channel {
 

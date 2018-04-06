@@ -1,4 +1,4 @@
-package com.indieweb.indigenous.Channel;
+package com.indieweb.indigenous.channel;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,10 +23,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.MainActivity;
-import com.indieweb.indigenous.Object.Channel;
-import com.indieweb.indigenous.PostType.ArticleActivity;
-import com.indieweb.indigenous.PostType.LikeActivity;
-import com.indieweb.indigenous.PostType.NoteActivity;
+import com.indieweb.indigenous.model.Channel;
+import com.indieweb.indigenous.post.ArticleActivity;
+import com.indieweb.indigenous.post.LikeActivity;
+import com.indieweb.indigenous.post.NoteActivity;
 import com.indieweb.indigenous.R;
 import com.kennyc.bottomsheet.BottomSheet;
 import com.kennyc.bottomsheet.BottomSheetListener;

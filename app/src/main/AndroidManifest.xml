@@ -21,23 +21,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PostType.NoteActivity"
+            android:name=".post.NoteActivity"
             android:label="@string/add_note"
-            android:parentActivityName="com.indieweb.indigenous.Channel.ChannelActivity">
+            android:parentActivityName="com.indieweb.indigenous.channel.ChannelActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.Channel.ChannelActivity" />
+                android:value="com.indieweb.indigenous.channel.ChannelActivity" />
         </activity>
         <activity
-            android:name=".PostType.ArticleActivity"
+            android:name=".post.ArticleActivity"
             android:label="@string/add_article"
-            android:parentActivityName="com.indieweb.indigenous.Channel.ChannelActivity">
+            android:parentActivityName="com.indieweb.indigenous.channel.ChannelActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.Channel.ChannelActivity" />
+                android:value="com.indieweb.indigenous.channel.ChannelActivity" />
         </activity>
         <activity
-            android:name=".Channel.ChannelActivity"
+            android:name=".channel.ChannelActivity"
             android:label="@string/channels">
             <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.SEND" />
@@ -47,20 +47,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Timeline.TimeLineActivity"
+            android:name=".timeline.TimelineActivity"
             android:label="@string/timeline"
-            android:parentActivityName="com.indieweb.indigenous.Channel.ChannelActivity">
+            android:parentActivityName="com.indieweb.indigenous.channel.ChannelActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.Channel.ChannelActivity" />
+                android:value="com.indieweb.indigenous.channel.ChannelActivity" />
         </activity>
         <activity
-            android:name=".PostType.LikeActivity"
+            android:name=".post.LikeActivity"
             android:label="@string/add_like"
-            android:parentActivityName="com.indieweb.indigenous.Channel.ChannelActivity">
+            android:parentActivityName="com.indieweb.indigenous.channel.ChannelActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.Channel.ChannelActivity" />
+                android:value="com.indieweb.indigenous.channel.ChannelActivity" />
         </activity>
 
     </application>

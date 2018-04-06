@@ -1,4 +1,4 @@
-package com.indieweb.indigenous.Timeline;
+package com.indieweb.indigenous.timeline;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.indieweb.indigenous.Object.TimelineItem;
+import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.R;
 
 import org.json.JSONArray;
@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TimeLineActivity extends AppCompatActivity {
+public class TimelineActivity extends AppCompatActivity {
 
     String channelId;
     String channelName;
