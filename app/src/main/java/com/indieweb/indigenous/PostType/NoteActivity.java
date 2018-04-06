@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +47,7 @@ public class NoteActivity extends AppCompatActivity {
 
     EditText note;
     EditText tags;
+    CardView card;
     ImageView image;
     Uri imageUri;
     Bitmap bitmap;
@@ -61,7 +63,7 @@ public class NoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_note);
 
         image = findViewById(R.id.imageView);
-        image.setOnClickListener(selectImage);
+        card = findViewById(R.id.imageCard);
 
         // TODO make helper function.
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
@@ -102,6 +104,7 @@ public class NoteActivity extends AppCompatActivity {
             String incomingImage = extras.getString("incomingImage");
             if (incomingImage != null && incomingImage.length() > 0) {
                 try {
+                    card.setVisibility(View.VISIBLE);
                     bitmap = Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(incomingImage)), 1000, 750, false);
                     image.setImageBitmap(bitmap);
                 }
@@ -124,6 +127,13 @@ public class NoteActivity extends AppCompatActivity {
                 sendItem = item;
                 send();
                 return true;
+
+            case R.id.addImage:
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_NOTE_IMAGE_REQUEST);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -137,6 +147,7 @@ public class NoteActivity extends AppCompatActivity {
             imageUri = data.getData();
             try {
                 // TODO hardcoded to 1000x750 - fix this.
+                card.setVisibility(View.VISIBLE);
                 bitmap = Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri), 1000, 750, false);
                 image.setImageBitmap(bitmap);
             }
@@ -146,18 +157,6 @@ public class NoteActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "No image selected", Toast.LENGTH_SHORT).show();
         }
     }
-
-    /**
-     * OnClickListener for the 'select image' button.
-     */
-    private final View.OnClickListener selectImage = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_NOTE_IMAGE_REQUEST);
-        }
-    };
 
    /**
     * Convert bitmap to byte[] array.

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,6 +49,7 @@ public class ArticleActivity extends AppCompatActivity {
     EditText article;
     EditText tags;
     ImageView image;
+    CardView card;
     Uri imageUri;
     Bitmap bitmap;
     LinearLayout syndicationLayout;
@@ -62,7 +64,7 @@ public class ArticleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_article);
 
         image = findViewById(R.id.imageView);
-        image.setOnClickListener(selectImage);
+        card = findViewById(R.id.imageCard);
 
         // TODO make helper function.
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
@@ -103,6 +105,7 @@ public class ArticleActivity extends AppCompatActivity {
             String incomingImage = extras.getString("incomingImage");
             if (incomingImage != null && incomingImage.length() > 0) {
                 try {
+                    card.setVisibility(View.VISIBLE);
                     bitmap = Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(incomingImage)), 1000, 750, false);
                     image.setImageBitmap(bitmap);
                 }
@@ -120,6 +123,7 @@ public class ArticleActivity extends AppCompatActivity {
             imageUri = data.getData();
             try {
                 // TODO hardcoded to 1000x750 - fix this.
+                card.setVisibility(View.VISIBLE);
                 bitmap = Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri), 1000, 750, false);
                 image.setImageBitmap(bitmap);
             }
@@ -139,26 +143,23 @@ public class ArticleActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
             case R.id.send:
                 sendItem = item;
                 send();
                 return true;
+
+            case R.id.addImage:
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_ARTICLE_IMAGE_REQUEST);
+                return true;
+
         }
 
         return super.onOptionsItemSelected(item);
     }
-
-    /**
-     * OnClickListener for the 'select image' button.
-     */
-    private final View.OnClickListener selectImage = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_ARTICLE_IMAGE_REQUEST);
-        }
-    };
 
    /**
     * Convert bitmap to byte[] array.
