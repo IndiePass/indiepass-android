@@ -20,4 +20,5 @@
     <string name="refresh_syndications">Refresh syndications</string>
     <string name="send">Send</string>
     <string name="author_photo">Author photo</string>
+    <string name="timeline_image">Timeline image</string>
 </resources>

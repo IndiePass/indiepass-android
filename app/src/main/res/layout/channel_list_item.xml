@@ -8,9 +8,8 @@
 
     <TextView
         android:id="@+id/channel_name"
-        android:paddingBottom="10dp"
+        android:padding="10dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_width="wrap_content" />
 
 </LinearLayout>

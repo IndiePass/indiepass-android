@@ -29,6 +29,7 @@ import java.util.Map;
 public class TimeLineActivity extends AppCompatActivity {
 
     String channelId;
+    String channelName;
     String entryId;
     Integer unread;
     private TimelineListAdapter adapter;
@@ -47,6 +48,8 @@ public class TimeLineActivity extends AppCompatActivity {
         if (extras != null) {
             channelId = extras.getString("channelId");
             unread = extras.getInt("unread");
+            channelName = extras.getString("channelName");
+            this.setTitle(channelName);
             getTimeLineItems();
         }
         else {

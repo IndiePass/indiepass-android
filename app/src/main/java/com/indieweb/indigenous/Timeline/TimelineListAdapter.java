@@ -14,13 +14,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.indieweb.indigenous.Object.TimelineItem;
 import com.indieweb.indigenous.R;
 
 import at.blogc.android.views.ExpandableTextView;
 
 import java.util.List;
-
 
 /**
  * Timeline items list adapter.
@@ -98,11 +98,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
             // Author photo.
             if (item.getAuthorPhoto().length() > 0) {
-                holder.authorPhoto.setVisibility(View.VISIBLE);
-                Glide.with(context).load(item.getAuthorPhoto()).into(holder.authorPhoto);
-            }
-            else {
-                holder.authorPhoto.setVisibility(View.GONE);
+                Glide.with(context).load(item.getAuthorPhoto()).apply(RequestOptions.circleCropTransform()).into(holder.authorPhoto);
             }
 
             // Name.
@@ -155,7 +151,11 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
             // Image.
             if (item.getPhoto().length() > 0) {
-                Glide.with(context).load(item.getPhoto()).into(holder.image);
+                int radius = 30;
+                int margin = 0;
+                Glide.with(context)
+                        .load(item.getPhoto())
+                        .into(holder.image);
                 holder.image.setVisibility(View.VISIBLE);
             }
             else {
