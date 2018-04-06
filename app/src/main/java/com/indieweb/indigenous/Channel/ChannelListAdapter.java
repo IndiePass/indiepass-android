@@ -56,22 +56,25 @@ public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
         final Channel channel = channels.get(position);
         if (channel != null) {
 
+            // TODO use ViewHolder
+
             // Change color of row.
             assert convertView != null;
             String color = ((position % 2) == 0) ? "#f8f7f1" :  "#ffffff";
-            final LinearLayout row = (LinearLayout) convertView.findViewById(R.id.channel_row);
+            final LinearLayout row = convertView.findViewById(R.id.channel_row);
             row.setBackgroundColor(Color.parseColor(color));
 
             // Name.
-            final TextView name = (TextView) convertView.findViewById(R.id.channel_name);
+            final TextView name = convertView.findViewById(R.id.channel_name);
             String text = channel.getName();
-            if (channel.getUnread() == 0) {
-                text += " - no unread items";
-            }
-            else {
-                text += " - unread items: " + channel.getUnread();
-            }
             name.setText(text);
+
+            // Unread.
+            if (channel.getUnread() > 0) {
+                final TextView unread = convertView.findViewById(R.id.channel_unread);
+                Integer unreadText = channel.getUnread();
+                unread.setText(unreadText.toString());
+            }
 
             // Set on touch listener.
             // TODO check performclick

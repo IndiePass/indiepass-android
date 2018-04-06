@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.OvershootInterpolator;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -71,7 +70,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.authorPhoto = convertView.findViewById(R.id.timeline_author_photo);
             holder.name = convertView.findViewById(R.id.timeline_name);
             holder.content = convertView.findViewById(R.id.timeline_content);
-            holder.content.setInterpolator(new OvershootInterpolator());
             holder.expand = convertView.findViewById(R.id.timeline_content_more);
             holder.image = convertView.findViewById(R.id.timeline_image);
             holder.row = convertView.findViewById(R.id.timeline_item_row);
@@ -151,8 +149,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
             // Image.
             if (item.getPhoto().length() > 0) {
-                int radius = 30;
-                int margin = 0;
                 Glide.with(context)
                         .load(item.getPhoto())
                         .into(holder.image);

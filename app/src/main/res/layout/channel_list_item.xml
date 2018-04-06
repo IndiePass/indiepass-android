@@ -8,7 +8,17 @@
 
     <TextView
         android:id="@+id/channel_name"
-        android:padding="10dp"
+        android:padding="15dp"
+        android:textSize="18sp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp" />
+
+    <TextView
+        android:id="@+id/channel_unread"
+        android:padding="15dp"
+        android:textSize="18sp"
+        android:gravity="end"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content" />
 
