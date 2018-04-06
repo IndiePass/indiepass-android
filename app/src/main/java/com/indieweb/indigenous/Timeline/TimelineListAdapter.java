@@ -2,6 +2,7 @@ package com.indieweb.indigenous.Timeline;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +58,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public Button expand;
         public ExpandableTextView content;
         public ImageView image;
+        public CardView card;
         public LinearLayout row;
     }
 
@@ -72,6 +74,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.content = convertView.findViewById(R.id.timeline_content);
             holder.expand = convertView.findViewById(R.id.timeline_content_more);
             holder.image = convertView.findViewById(R.id.timeline_image);
+            holder.card = convertView.findViewById(R.id.timeline_card);
             holder.row = convertView.findViewById(R.id.timeline_item_row);
             convertView.setTag(holder);
         }
@@ -95,9 +98,10 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
 
             // Author photo.
-            if (item.getAuthorPhoto().length() > 0) {
-                Glide.with(context).load(item.getAuthorPhoto()).apply(RequestOptions.circleCropTransform()).into(holder.authorPhoto);
-            }
+            Glide.with(context)
+                    .load(item.getAuthorPhoto())
+                    .apply(RequestOptions.circleCropTransform().placeholder(R.drawable.avatar_small))
+                    .into(holder.authorPhoto);
 
             // Name.
             if (item.getName().length() > 0) {
@@ -153,9 +157,11 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                         .load(item.getPhoto())
                         .into(holder.image);
                 holder.image.setVisibility(View.VISIBLE);
+                holder.card.setVisibility(View.VISIBLE);
             }
             else {
                 holder.image.setVisibility(View.GONE);
+                holder.card.setVisibility(View.GONE);
             }
         }
 
