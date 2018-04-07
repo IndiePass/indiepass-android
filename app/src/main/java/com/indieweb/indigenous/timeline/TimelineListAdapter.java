@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.post.ReplyActivity;
 
 import at.blogc.android.views.ExpandableTextView;
 
@@ -62,6 +63,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public ImageView image;
         public CardView card;
         public LinearLayout row;
+        public Button reply;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -78,6 +80,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.image = convertView.findViewById(R.id.timeline_image);
             holder.card = convertView.findViewById(R.id.timeline_card);
             holder.row = convertView.findViewById(R.id.timeline_item_row);
+            holder.reply = convertView.findViewById(R.id.itemReply);
             convertView.setTag(holder);
         }
         else {
@@ -166,9 +169,29 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.image.setVisibility(View.GONE);
                 holder.card.setVisibility(View.GONE);
             }
+
+            holder.reply.setOnClickListener(new OnReplyClickListener(position));
         }
 
         return convertView;
+    }
+
+    class OnReplyClickListener implements OnClickListener {
+
+        int position;
+
+        OnReplyClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent i = new Intent(context, ReplyActivity.class);
+            TimelineItem item = items.get(this.position);
+            i.putExtra("incomingText", item.getUrl());
+            context.startActivity(i);
+        }
+
     }
 
     class OnImageClickListener implements OnClickListener {

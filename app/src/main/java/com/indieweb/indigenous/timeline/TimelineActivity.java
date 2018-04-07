@@ -155,6 +155,9 @@ public class TimelineActivity extends AppCompatActivity {
                                 String authorName = "";
                                 String authorPhoto = "";
 
+                                // Url.
+                                item.setUrl(object.getString("url"));
+
                                 // Author name.
                                 if (object.has("author")) {
 
