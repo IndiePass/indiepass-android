@@ -67,6 +67,15 @@
             android:name=".timeline.TimelineImageActivity"
             android:label="@string/title_activity_timeline_image"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".post.ReplyActivity"
+            android:label="@string/reply_to"
+            android:parentActivityName=".channel.ChannelActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.channel.ChannelActivity" />
+
+        </activity>
     </application>
 
 </manifest>

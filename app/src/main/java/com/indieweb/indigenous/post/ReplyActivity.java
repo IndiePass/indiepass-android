@@ -20,8 +20,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.indieweb.indigenous.channel.ChannelActivity;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.channel.ChannelActivity;
 import com.indieweb.indigenous.model.Syndication;
 import com.indieweb.indigenous.util.VolleyMultipartRequest;
 
@@ -35,9 +35,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LikeActivity extends AppCompatActivity {
+public class ReplyActivity extends AppCompatActivity {
 
     EditText url;
+    EditText reply;
     EditText tags;
     LinearLayout syndicationLayout;
     private List<Syndication> Syndications = new ArrayList<>();
@@ -46,7 +47,7 @@ public class LikeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_like);
+        setContentView(R.layout.activity_reply);
 
         // TODO make helper function.
         int index = 0;
@@ -79,7 +80,7 @@ public class LikeActivity extends AppCompatActivity {
         }
 
         // Set incomingText in content.
-        url = findViewById(R.id.likeUrl);
+        url = findViewById(R.id.replyUrl);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String incoming = extras.getString("incomingText");
@@ -89,13 +90,12 @@ public class LikeActivity extends AppCompatActivity {
                 // Add to syndications.
                 Syndication syndication = new Syndication();
                 syndication.setUid(incoming);
-                syndication.setName("To like URL");
+                syndication.setName("To reply URL");
                 Syndications.add(syndication);
                 CheckBox ch = new CheckBox(this);
                 ch.setText(syndication.getName());
                 ch.setId(index);
                 syndicationLayout.addView(ch);
-
             }
         }
     }
@@ -126,8 +126,8 @@ public class LikeActivity extends AppCompatActivity {
         sendItem.setEnabled(false);
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
-        url = findViewById(R.id.likeUrl);
-        tags = findViewById(R.id.likeTags);
+        reply = findViewById(R.id.replyText);
+        tags = findViewById(R.id.replyTags);
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
         String MicropubEndpoint = preferences.getString("micropub_endpoint", "");
 
@@ -136,7 +136,7 @@ public class LikeActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(NetworkResponse response) {
 
-                        Toast.makeText(getApplicationContext(), "Like success", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Reply success", Toast.LENGTH_LONG).show();
 
                         Intent Channels = new Intent(getBaseContext(), ChannelActivity.class);
                         startActivity(Channels);
@@ -145,7 +145,7 @@ public class LikeActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Like posting failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Reply posting failed", Toast.LENGTH_LONG).show();
                         Log.d("indigenous_debug", error.getMessage());
                         sendItem.setEnabled(true);
                     }
@@ -158,7 +158,8 @@ public class LikeActivity extends AppCompatActivity {
 
                 // Url and entry.
                 params.put("h", "entry");
-                params.put("like-of", url.getText().toString());
+                params.put("in-reply-to", url.getText().toString());
+                params.put("content", reply.getText().toString());
 
                 // Tags.
                 // TODO make sure the UI is ok

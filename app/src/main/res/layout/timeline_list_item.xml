@@ -33,7 +33,7 @@
             android:textSize="20sp"
             android:layout_width="fill_parent" />
 
-        <at.blogc.android.views.ExpandableTextView
+        <TextView
             android:id="@+id/timeline_content"
             android:padding="5dp"
             android:layout_width="wrap_content"

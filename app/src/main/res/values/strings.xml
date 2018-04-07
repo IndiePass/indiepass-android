@@ -9,13 +9,14 @@
     <string name="image_preview">Image preview</string>
     <string name="title">Title</string>
     <string name="body">Body</string>
-    <string name="add_note">Add note</string>
-    <string name="add_article">Add article</string>
+    <string name="add_note">Create note</string>
+    <string name="add_article">Create article</string>
+    <string name="add_reply">Create reply</string>
     <string name="log_out">Log out</string>
     <string name="timeline">Timeline</string>
     <string name="channels">Channels</string>
     <string name="read_more">Read more</string>
-    <string name="add_like">Add like</string>
+    <string name="add_like">Create like</string>
     <string name="refresh_syndications">Refresh syndications</string>
     <string name="send">Send</string>
     <string name="author_photo">Author photo</string>
@@ -24,4 +25,6 @@
     <string name="title_activity_timeline_image">TimelineImageActivity</string>
     <string name="close">Close</string>
     <string name="full_screen_image">Full screen image</string>
+    <string name="your_reply">Your message</string>
+    <string name="reply_to">Reply to</string>
 </resources>
