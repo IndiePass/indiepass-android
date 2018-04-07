@@ -3,27 +3,28 @@
     package="com.indieweb.indigenous">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
-        android:label="@string/app_name"
         android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".post.NoteActivity"
             android:label="@string/add_note"
-            android:parentActivityName="com.indieweb.indigenous.channel.ChannelActivity">
+            android:parentActivityName=".channel.ChannelActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.indieweb.indigenous.channel.ChannelActivity" />
@@ -31,7 +32,7 @@
         <activity
             android:name=".post.ArticleActivity"
             android:label="@string/add_article"
-            android:parentActivityName="com.indieweb.indigenous.channel.ChannelActivity">
+            android:parentActivityName=".channel.ChannelActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.indieweb.indigenous.channel.ChannelActivity" />
@@ -49,7 +50,7 @@
         <activity
             android:name=".timeline.TimelineActivity"
             android:label="@string/timeline"
-            android:parentActivityName="com.indieweb.indigenous.channel.ChannelActivity">
+            android:parentActivityName=".channel.ChannelActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.indieweb.indigenous.channel.ChannelActivity" />
@@ -57,12 +58,15 @@
         <activity
             android:name=".post.LikeActivity"
             android:label="@string/add_like"
-            android:parentActivityName="com.indieweb.indigenous.channel.ChannelActivity">
+            android:parentActivityName=".channel.ChannelActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.indieweb.indigenous.channel.ChannelActivity" />
         </activity>
-
+        <activity
+            android:name=".timeline.TimelineImageActivity"
+            android:label="@string/title_activity_timeline_image"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

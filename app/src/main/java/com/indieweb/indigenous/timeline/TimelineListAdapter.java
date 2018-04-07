@@ -1,6 +1,7 @@
 package com.indieweb.indigenous.timeline;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.text.Html;
@@ -159,6 +160,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                         .into(holder.image);
                 holder.image.setVisibility(View.VISIBLE);
                 holder.card.setVisibility(View.VISIBLE);
+                holder.image.setOnClickListener(new OnImageClickListener(position));
             }
             else {
                 holder.image.setVisibility(View.GONE);
@@ -167,5 +169,23 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         }
 
         return convertView;
+    }
+
+    class OnImageClickListener implements OnClickListener {
+
+        int position;
+
+        OnImageClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent i = new Intent(context, TimelineImageActivity.class);
+            TimelineItem item = items.get(this.position);
+            i.putExtra("imageUrl", item.getPhoto());
+            context.startActivity(i);
+        }
+
     }
 }

@@ -15,11 +15,13 @@
     <string name="timeline">Timeline</string>
     <string name="channels">Channels</string>
     <string name="read_more">Read more</string>
-    <string name="close">Close</string>
     <string name="add_like">Add like</string>
     <string name="refresh_syndications">Refresh syndications</string>
     <string name="send">Send</string>
     <string name="author_photo">Author photo</string>
     <string name="timeline_image">Timeline image</string>
     <string name="add_image">Add image</string>
+    <string name="title_activity_timeline_image">TimelineImageActivity</string>
+    <string name="close">Close</string>
+    <string name="full_screen_image">Full screen image</string>
 </resources>
