@@ -12,6 +12,8 @@ public class TimelineItem {
     private String authorPhoto = "";
     // TODO allow multiple photos
     private String photo;
+    // TODO allow multiple audio
+    private String audio;
 
     public String getId() {
         return id;
@@ -83,5 +85,13 @@ public class TimelineItem {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public String getAudio() {
+        return audio;
+    }
+
+    public void setAudio(String audio) {
+        this.audio = audio;
     }
 }

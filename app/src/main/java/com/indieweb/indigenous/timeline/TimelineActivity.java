@@ -155,6 +155,7 @@ public class TimelineActivity extends AppCompatActivity {
                                 String textContent = "";
                                 String htmlContent = "";
                                 String photo = "";
+                                String audio = "";
                                 String authorName = "";
                                 String authorPhoto = "";
 
@@ -214,6 +215,12 @@ public class TimelineActivity extends AppCompatActivity {
                                     photo = object.getJSONArray("photo").getString(0);
                                 }
                                 item.setPhoto(photo);
+
+                                // audio.
+                                if (object.has("audio")) {
+                                    audio = object.getJSONArray("audio").getString(0);
+                                }
+                                item.setAudio(audio);
 
                                 // A like.
                                 // TODO there can me more than one.

@@ -27,4 +27,5 @@
     <string name="full_screen_image">Full screen image</string>
     <string name="your_reply">Your message</string>
     <string name="reply_to">Reply to</string>
+    <string name="title_activity_timeline_audio">Audio</string>
 </resources>

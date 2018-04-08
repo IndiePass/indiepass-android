@@ -76,6 +76,9 @@
                 android:value="com.indieweb.indigenous.channel.ChannelActivity" />
 
         </activity>
+        <activity
+            android:name=".timeline.TimelineAudioActivity"
+            android:label="@string/title_activity_timeline_audio" />
     </application>
 
 </manifest>

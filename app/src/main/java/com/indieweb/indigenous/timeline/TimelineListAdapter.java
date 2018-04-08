@@ -67,6 +67,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public LinearLayout row;
         public Button reply;
         public Button like;
+        public Button audio;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -85,6 +86,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.row = convertView.findViewById(R.id.timeline_item_row);
             holder.reply = convertView.findViewById(R.id.itemReply);
             holder.like = convertView.findViewById(R.id.itemLike);
+            holder.audio = convertView.findViewById(R.id.itemAudio);
             convertView.setTag(holder);
         }
         else {
@@ -180,6 +182,16 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.card.setVisibility(View.GONE);
             }
 
+            // Audio.
+            if (item.getAudio().length() > 0) {
+                holder.audio.setVisibility(View.VISIBLE);
+                holder.audio.setOnClickListener(new OnAudioClickListener(position));
+            }
+            else {
+                holder.audio.setVisibility(View.GONE);
+            }
+
+            // Button listeners.
             holder.reply.setOnClickListener(new OnReplyClickListener(position));
             holder.like.setOnClickListener(new OnLikeClickListener(position));
         }
@@ -187,6 +199,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         return convertView;
     }
 
+    // Reply listener.
     class OnReplyClickListener implements OnClickListener {
 
         int position;
@@ -206,6 +219,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
     }
 
+    // Like listener.
     class OnLikeClickListener implements OnClickListener {
 
         int position;
@@ -225,6 +239,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
     }
 
+    // Image listener.
     class OnImageClickListener implements OnClickListener {
 
         int position;
@@ -242,4 +257,28 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         }
 
     }
+
+    // Audio listener.
+    class OnAudioClickListener implements OnClickListener {
+
+        int position;
+
+        OnAudioClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent i = new Intent(context, TimelineAudioActivity.class);
+            TimelineItem item = items.get(this.position);
+            i.putExtra("audio", item.getAudio());
+            i.putExtra("title", item.getName());
+            i.putExtra("authorPhoto", item.getAuthorPhoto());
+            i.putExtra("authorName", item.getAuthorName());
+            i.putExtra("fromTimeline", true);
+            context.startActivity(i);
+        }
+
+    }
+
 }

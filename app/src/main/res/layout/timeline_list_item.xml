@@ -91,6 +91,14 @@
                 android:layout_width="22dp"
                 android:layout_height="19dp" />
 
+            <Button
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/audio"
+                android:id="@+id/itemAudio"
+                android:layout_width="22dp"
+                android:layout_height="19dp" />
+
         </LinearLayout>
 
     </LinearLayout>
