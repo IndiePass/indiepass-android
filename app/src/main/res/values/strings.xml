@@ -12,6 +12,7 @@
     <string name="add_note">Create note</string>
     <string name="add_article">Create article</string>
     <string name="add_reply">Create reply</string>
+    <string name="add_repost">Create repost</string>
     <string name="log_out">Log out</string>
     <string name="timeline">Timeline</string>
     <string name="channels">Channels</string>
@@ -28,4 +29,5 @@
     <string name="your_reply">Your message</string>
     <string name="reply_to">Reply to</string>
     <string name="title_activity_timeline_audio">Audio</string>
+    <string name="repost">Repost</string>
 </resources>

@@ -21,4 +21,9 @@
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/add_reply" />
 
+    <item
+        android:id="@+id/createRepost"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="@string/add_repost" />
+
 </menu>

@@ -29,6 +29,7 @@ import com.indieweb.indigenous.post.LikeActivity;
 import com.indieweb.indigenous.post.NoteActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.post.ReplyActivity;
+import com.indieweb.indigenous.post.RepostActivity;
 import com.kennyc.bottomsheet.BottomSheet;
 import com.kennyc.bottomsheet.BottomSheetListener;
 
@@ -318,6 +319,12 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                     CreateReply.putExtra("incomingText", incomingText);
                 }
                 startActivity(CreateReply);
+            case R.id.createRepost:
+                Intent CreateRepost = new Intent(getBaseContext(), RepostActivity.class);
+                if (incomingText.length() > 0) {
+                    CreateRepost.putExtra("incomingText", incomingText);
+                }
+                startActivity(CreateRepost);
                 break;
         }
     }

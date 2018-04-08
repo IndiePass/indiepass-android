@@ -35,10 +35,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ReplyActivity extends AppCompatActivity {
+public class RepostActivity extends AppCompatActivity {
 
     EditText url;
-    EditText reply;
     EditText tags;
     LinearLayout syndicationLayout;
     private List<Syndication> Syndications = new ArrayList<>();
@@ -48,7 +47,7 @@ public class ReplyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reply);
+        setContentView(R.layout.activity_repost);
 
         // TODO make helper function.
         int index = 0;
@@ -81,7 +80,7 @@ public class ReplyActivity extends AppCompatActivity {
         }
 
         // Check extras.
-        url = findViewById(R.id.replyUrl);
+        url = findViewById(R.id.repostUrl);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
 
@@ -98,12 +97,13 @@ public class ReplyActivity extends AppCompatActivity {
                 // Add to syndications.
                 Syndication syndication = new Syndication();
                 syndication.setUid(incoming);
-                syndication.setName("To reply URL");
+                syndication.setName("To repost URL");
                 Syndications.add(syndication);
                 CheckBox ch = new CheckBox(this);
                 ch.setText(syndication.getName());
                 ch.setId(index);
                 syndicationLayout.addView(ch);
+
             }
         }
     }
@@ -127,15 +127,15 @@ public class ReplyActivity extends AppCompatActivity {
     }
 
     /**
-     * Send reply.
+     * Send repost.
      */
     public void send() {
 
         sendItem.setEnabled(false);
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
-        reply = findViewById(R.id.replyText);
-        tags = findViewById(R.id.replyTags);
+        url = findViewById(R.id.repostUrl);
+        tags = findViewById(R.id.repostTags);
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
         String MicropubEndpoint = preferences.getString("micropub_endpoint", "");
 
@@ -144,7 +144,7 @@ public class ReplyActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(NetworkResponse response) {
 
-                        Toast.makeText(getApplicationContext(), "Reply success", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Repost success", Toast.LENGTH_LONG).show();
 
                         if (fromTimeline) {
                             finish();
@@ -158,7 +158,7 @@ public class ReplyActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Reply posting failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Repost posting failed", Toast.LENGTH_LONG).show();
                         Log.d("indigenous_debug", error.getMessage());
                         sendItem.setEnabled(true);
                     }
@@ -171,8 +171,7 @@ public class ReplyActivity extends AppCompatActivity {
 
                 // Url and entry.
                 params.put("h", "entry");
-                params.put("in-reply-to", url.getText().toString());
-                params.put("content", reply.getText().toString());
+                params.put("repost-of", url.getText().toString());
 
                 // Tags.
                 // TODO make sure the UI is ok

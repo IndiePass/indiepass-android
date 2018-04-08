@@ -77,6 +77,15 @@
 
         </activity>
         <activity
+            android:name=".post.RepostActivity"
+            android:label="@string/repost"
+            android:parentActivityName=".channel.ChannelActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.channel.ChannelActivity" />
+
+        </activity>
+        <activity
             android:name=".timeline.TimelineAudioActivity"
             android:label="@string/title_activity_timeline_audio" />
     </application>

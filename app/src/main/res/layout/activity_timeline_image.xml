@@ -12,7 +12,7 @@
 
     <Button
         android:id="@+id/close"
-        android:layout_width="wrap_content"
+        android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
@@ -20,11 +20,8 @@
         android:layout_marginTop="15dp"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
-        android:background="@drawable/button_background"
-        android:textColor="#ffffff"
-        android:text="@string/close"
+        android:background="@drawable/close"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="15dp" />
-
 
 </RelativeLayout>

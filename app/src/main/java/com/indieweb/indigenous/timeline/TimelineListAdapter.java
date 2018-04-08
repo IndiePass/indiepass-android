@@ -22,6 +22,7 @@ import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.post.LikeActivity;
 import com.indieweb.indigenous.post.ReplyActivity;
+import com.indieweb.indigenous.post.RepostActivity;
 
 import at.blogc.android.views.ExpandableTextView;
 
@@ -67,6 +68,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public LinearLayout row;
         public Button reply;
         public Button like;
+        public Button repost;
         public Button audio;
     }
 
@@ -86,6 +88,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.row = convertView.findViewById(R.id.timeline_item_row);
             holder.reply = convertView.findViewById(R.id.itemReply);
             holder.like = convertView.findViewById(R.id.itemLike);
+            holder.repost = convertView.findViewById(R.id.itemRepost);
             holder.audio = convertView.findViewById(R.id.itemAudio);
             convertView.setTag(holder);
         }
@@ -194,6 +197,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             // Button listeners.
             holder.reply.setOnClickListener(new OnReplyClickListener(position));
             holder.like.setOnClickListener(new OnLikeClickListener(position));
+            holder.repost.setOnClickListener(new OnRepostClickListener(position));
         }
 
         return convertView;
@@ -231,6 +235,26 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         @Override
         public void onClick(View v) {
             Intent i = new Intent(context, LikeActivity.class);
+            TimelineItem item = items.get(this.position);
+            i.putExtra("incomingText", item.getUrl());
+            i.putExtra("fromTimeline", true);
+            context.startActivity(i);
+        }
+
+    }
+
+    // Repost listener.
+    class OnRepostClickListener implements OnClickListener {
+
+        int position;
+
+        OnRepostClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent i = new Intent(context, RepostActivity.class);
             TimelineItem item = items.get(this.position);
             i.putExtra("incomingText", item.getUrl());
             i.putExtra("fromTimeline", true);
