@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -120,6 +121,8 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             // Content.
             if (item.getHtmlContent().length() > 0 || item.getTextContent().length() > 0) {
 
+                holder.content.setVisibility(View.VISIBLE);
+
                 if (item.getHtmlContent().length() > 0) {
                     String html = item.getHtmlContent();
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -154,6 +157,10 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 else {
                     holder.expand.setVisibility(View.GONE);
                 }
+            }
+            else {
+                holder.content.setVisibility(View.GONE);
+                holder.expand.setVisibility(View.GONE);
             }
 
             // Image.

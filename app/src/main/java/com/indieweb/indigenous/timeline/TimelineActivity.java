@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -129,6 +130,8 @@ public class TimelineActivity extends AppCompatActivity {
         String MicrosubEndpoint = preferences.getString("microsub_endpoint", "");
         MicrosubEndpoint += "?action=timeline&channel=" + channelId;
 
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+
         StringRequest getRequest = new StringRequest(Request.Method.GET, MicrosubEndpoint,
                 new Response.Listener<String>() {
                     @Override
@@ -230,6 +233,7 @@ public class TimelineActivity extends AppCompatActivity {
                                 item.setName(name);
                                 item.setTextContent(textContent);
                                 item.setHtmlContent(htmlContent);
+
                                 TimelineItems.add(item);
                             }
 
@@ -271,7 +275,10 @@ public class TimelineActivity extends AppCompatActivity {
 
         };
 
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        getRequest.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                -1,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(getRequest);
 
     }

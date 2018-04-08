@@ -23,14 +23,14 @@
             android:id="@+id/timeline_author"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:layout_width="fill_parent" />
 
         <TextView
             android:id="@+id/timeline_name"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:layout_width="fill_parent" />
 
         <at.blogc.android.views.ExpandableTextView
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:maxLines="5"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:lineSpacingExtra="5dp"
             android:ellipsize="end" />
 
@@ -73,8 +73,8 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/reply"
             android:id="@+id/itemReply"
-            android:layout_width="30dp"
-            android:layout_height="23dp" />
+            android:layout_width="25dp"
+            android:layout_height="19dp" />
 
     </LinearLayout>
 
