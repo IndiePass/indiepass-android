@@ -3,6 +3,7 @@ package com.indieweb.indigenous.model;
 public class TimelineItem {
 
     private String id;
+    private String published;
     private String name;
     private String textContent;
     private String htmlContent;
@@ -21,6 +22,14 @@ public class TimelineItem {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getPublished() {
+        return published;
+    }
+
+    public void setPublished(String published) {
+        this.published = published;
     }
 
     public String getName() {

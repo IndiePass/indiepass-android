@@ -162,6 +162,9 @@ public class TimelineActivity extends AppCompatActivity {
                                 // Url.
                                 item.setUrl(object.getString("url"));
 
+                                // Published
+                                item.setPublished(object.getString("published"));
+
                                 // Author name.
                                 if (object.has("author")) {
 

@@ -3,6 +3,7 @@ package com.indieweb.indigenous.timeline;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -26,6 +28,10 @@ import com.indieweb.indigenous.post.RepostActivity;
 
 import at.blogc.android.views.ExpandableTextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,6 +67,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public TextView author;
         public ImageView authorPhoto;
         public TextView name;
+        public TextView published;
         public Button expand;
         public ExpandableTextView content;
         public ImageView image;
@@ -70,6 +77,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public Button like;
         public Button repost;
         public Button audio;
+        public Button external;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -78,6 +86,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.timeline_list_item, null);
             holder = new ViewHolder();
+            holder.published = convertView.findViewById(R.id.timeline_published);
             holder.author = convertView.findViewById(R.id.timeline_author);
             holder.authorPhoto = convertView.findViewById(R.id.timeline_author_photo);
             holder.name = convertView.findViewById(R.id.timeline_name);
@@ -90,6 +99,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.like = convertView.findViewById(R.id.itemLike);
             holder.repost = convertView.findViewById(R.id.itemRepost);
             holder.audio = convertView.findViewById(R.id.itemAudio);
+            holder.external = convertView.findViewById(R.id.itemExternal);
             convertView.setTag(holder);
         }
         else {
@@ -101,6 +111,18 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
             String color = ((position % 2) == 0) ? "#f8f7f1" :  "#ffffff";
             holder.row.setBackgroundColor(Color.parseColor(color));
+
+            // Published.
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
+            Date result;
+            try {
+                result = df.parse(item.getPublished());
+                holder.published.setVisibility(View.VISIBLE);
+                holder.published.setText(result.toString());
+            }
+            catch (ParseException ignored) {
+                holder.published.setVisibility(View.GONE);
+            }
 
             // Author.
             if (item.getAuthorName().length() > 0) {
@@ -198,6 +220,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.reply.setOnClickListener(new OnReplyClickListener(position));
             holder.like.setOnClickListener(new OnLikeClickListener(position));
             holder.repost.setOnClickListener(new OnRepostClickListener(position));
+            holder.external.setOnClickListener(new OnExternalClickListener(position));
         }
 
         return convertView;
@@ -220,7 +243,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             i.putExtra("fromTimeline", true);
             context.startActivity(i);
         }
-
     }
 
     // Like listener.
@@ -240,7 +262,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             i.putExtra("fromTimeline", true);
             context.startActivity(i);
         }
-
     }
 
     // Repost listener.
@@ -260,7 +281,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             i.putExtra("fromTimeline", true);
             context.startActivity(i);
         }
-
     }
 
     // Image listener.
@@ -279,7 +299,23 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             i.putExtra("imageUrl", item.getPhoto());
             context.startActivity(i);
         }
+    }
 
+    // External listener.
+    class OnExternalClickListener implements OnClickListener {
+
+        int position;
+
+        OnExternalClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            TimelineItem item = items.get(this.position);
+            Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(item.getUrl()));
+            context.startActivity(intent);
+        }
     }
 
     // Audio listener.
@@ -302,7 +338,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             i.putExtra("fromTimeline", true);
             context.startActivity(i);
         }
-
     }
 
 }
