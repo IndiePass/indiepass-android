@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.post.LikeActivity;
 import com.indieweb.indigenous.post.ReplyActivity;
 
 import at.blogc.android.views.ExpandableTextView;
@@ -65,6 +66,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public CardView card;
         public LinearLayout row;
         public Button reply;
+        public Button like;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -82,6 +84,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.card = convertView.findViewById(R.id.timeline_card);
             holder.row = convertView.findViewById(R.id.timeline_item_row);
             holder.reply = convertView.findViewById(R.id.itemReply);
+            holder.like = convertView.findViewById(R.id.itemLike);
             convertView.setTag(holder);
         }
         else {
@@ -178,6 +181,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
 
             holder.reply.setOnClickListener(new OnReplyClickListener(position));
+            holder.like.setOnClickListener(new OnLikeClickListener(position));
         }
 
         return convertView;
@@ -196,6 +200,26 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             Intent i = new Intent(context, ReplyActivity.class);
             TimelineItem item = items.get(this.position);
             i.putExtra("incomingText", item.getUrl());
+            i.putExtra("fromTimeline", true);
+            context.startActivity(i);
+        }
+
+    }
+
+    class OnLikeClickListener implements OnClickListener {
+
+        int position;
+
+        OnLikeClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent i = new Intent(context, LikeActivity.class);
+            TimelineItem item = items.get(this.position);
+            i.putExtra("incomingText", item.getUrl());
+            i.putExtra("fromTimeline", true);
             context.startActivity(i);
         }
 

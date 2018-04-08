@@ -43,6 +43,7 @@ public class ReplyActivity extends AppCompatActivity {
     LinearLayout syndicationLayout;
     private List<Syndication> Syndications = new ArrayList<>();
     private MenuItem sendItem;
+    boolean fromTimeline = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,10 +80,17 @@ public class ReplyActivity extends AppCompatActivity {
             }
         }
 
-        // Set incomingText in content.
+        // Check extras.
         url = findViewById(R.id.replyUrl);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+
+            // Coming from timeline.
+            if (extras.getBoolean("fromTimeline")) {
+                fromTimeline = true;
+            }
+
+            // Incoming text.
             String incoming = extras.getString("incomingText");
             if (incoming != null && incoming.length() > 0) {
                 url.setText(incoming);
@@ -138,8 +146,13 @@ public class ReplyActivity extends AppCompatActivity {
 
                         Toast.makeText(getApplicationContext(), "Reply success", Toast.LENGTH_LONG).show();
 
-                        Intent Channels = new Intent(getBaseContext(), ChannelActivity.class);
-                        startActivity(Channels);
+                        if (fromTimeline) {
+                            finish();
+                        }
+                        else {
+                            Intent Channels = new Intent(getBaseContext(), ChannelActivity.class);
+                            startActivity(Channels);
+                        }
                     }
                 },
                 new Response.ErrorListener() {
