@@ -1,4 +1,4 @@
-package com.indieweb.indigenous.channel;
+package com.indieweb.indigenous.microsub.channel;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.timeline.TimelineActivity;
+import com.indieweb.indigenous.microsub.timeline.TimelineActivity;
 
 import java.util.List;
 

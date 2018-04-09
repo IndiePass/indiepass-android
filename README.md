@@ -10,14 +10,22 @@ As soon as an alpha state is reached, we'll start deploying alpha releases.
 - Login with your domain, discover indieauth, micropub and microsub endpoints.
   The microsub endpoint is optional so you can simply use this as a micropub 
   client too.
-- Read channels and basic items in it, all items are marked unread.
-- Like or reply directly on an item
-- Listen to audio
-- View fullscreen image
-- Expose in share intents to receive text or images.
-- Post a note or article with tags and picture (currently scaled to 1000x750).
-- Post a like or reply.
-- Syndicate.
+- Micropub
+  - post article
+  - post note
+  - post reply
+  - post repost
+  - post like
+  - add image, tags
+- Microsub
+  - read channels
+  - read items per channel
+  - reply, like, repost directly
+  - go to external URL
+  - listen to audio if available
+  - view fullscreen images
+- Share intents: receive text or images from other apps to directly share
+- Syndication targets: reload, toggle favorite channels or reply/like/repost URL
 
 ## Sneak preview video
 
@@ -29,4 +37,4 @@ iOS version is available at https://github.com/EdwardHinkle/indigenous-ios
 
 ## Other clients
 
-https://github.com/pstuifzand/micropub-android (micropub only)
+https://github.com/pstuifzand/micropub-android

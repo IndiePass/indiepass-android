@@ -88,40 +88,40 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/reply"
                 android:id="@+id/itemReply"
-                android:layout_width="20dp"
-                android:layout_height="15dp" />
+                android:layout_width="25dp"
+                android:layout_height="19dp" />
 
             <Button
                 android:layout_marginLeft="25dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/like"
                 android:id="@+id/itemLike"
-                android:layout_width="17dp"
-                android:layout_height="15dp" />
+                android:layout_width="22dp"
+                android:layout_height="19dp" />
 
             <Button
                 android:layout_marginLeft="25dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/repost"
                 android:id="@+id/itemRepost"
-                android:layout_width="30dp"
-                android:layout_height="15dp" />
+                android:layout_width="38dp"
+                android:layout_height="19dp" />
 
             <Button
                 android:layout_marginLeft="25dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/external"
                 android:id="@+id/itemExternal"
-                android:layout_width="15dp"
-                android:layout_height="15dp" />
+                android:layout_width="19dp"
+                android:layout_height="19dp" />
 
             <Button
                 android:layout_marginLeft="25dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/audio"
                 android:id="@+id/itemAudio"
-                android:layout_width="19dp"
-                android:layout_height="15dp" />
+                android:layout_width="22dp"
+                android:layout_height="19dp" />
 
         </LinearLayout>
 

@@ -1,4 +1,4 @@
-package com.indieweb.indigenous.post;
+package com.indieweb.indigenous.micropub.post;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,7 +26,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.indieweb.indigenous.channel.ChannelActivity;
+import com.indieweb.indigenous.microsub.channel.ChannelActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Syndication;
 import com.indieweb.indigenous.util.VolleyMultipartRequest;
@@ -43,35 +43,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class NoteActivity extends AppCompatActivity {
+public class ArticleActivity extends AppCompatActivity {
 
-    EditText note;
+    EditText title;
+    EditText article;
     EditText tags;
-    CardView card;
     ImageView image;
+    CardView card;
     Uri imageUri;
     Bitmap bitmap;
     LinearLayout syndicationLayout;
     private List<Syndication> Syndications = new ArrayList<>();
     private MenuItem sendItem;
 
-    private int PICK_NOTE_IMAGE_REQUEST = 1;
+    private int PICK_ARTICLE_IMAGE_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_note);
+        setContentView(R.layout.activity_article);
 
         image = findViewById(R.id.imageView);
         card = findViewById(R.id.imageCard);
 
         // TODO make helper function.
+        syndicationLayout = findViewById(R.id.syndicate);
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
         String syndicationsString = preferences.getString("syndications", "");
         if (syndicationsString.length() > 0) {
             JSONObject object;
             try {
-                syndicationLayout = findViewById(R.id.syndicate);
                 JSONObject s = new JSONObject(syndicationsString);
                 JSONArray itemList = s.getJSONArray("syndicate-to");
                 for (int i = 0; i < itemList.length(); i++) {
@@ -94,12 +95,12 @@ public class NoteActivity extends AppCompatActivity {
         }
 
         // Check incoming text or image.
-        note = findViewById(R.id.noteText);
+        article = findViewById(R.id.articleText);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String incomingText = extras.getString("incomingText");
             if (incomingText != null && incomingText.length() > 0) {
-                note.setText(incomingText);
+                article.setText(incomingText);
             }
             String incomingImage = extras.getString("incomingImage");
             if (incomingImage != null && incomingImage.length() > 0) {
@@ -115,34 +116,9 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.action_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.send:
-                sendItem = item;
-                send();
-                return true;
-
-            case R.id.addImage:
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_NOTE_IMAGE_REQUEST);
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_NOTE_IMAGE_REQUEST && resultCode == RESULT_OK) {
+        if (requestCode == PICK_ARTICLE_IMAGE_REQUEST && resultCode == RESULT_OK) {
             Toast.makeText(getApplicationContext(), "Image selected", Toast.LENGTH_SHORT).show();
             imageUri = data.getData();
             try {
@@ -158,6 +134,33 @@ public class NoteActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.action_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.send:
+                sendItem = item;
+                send();
+                return true;
+
+            case R.id.addImage:
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_ARTICLE_IMAGE_REQUEST);
+                return true;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
    /**
     * Convert bitmap to byte[] array.
     *
@@ -171,15 +174,15 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     /**
-     * Send note.
+     * OnClickListener for the 'create post' button.
      */
     public void send() {
 
         sendItem.setEnabled(false);
-
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
-        tags = findViewById(R.id.noteTags);
+        title = findViewById(R.id.articleTitle);
+        tags = findViewById(R.id.articleTags);
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
         String MicropubEndpoint = preferences.getString("micropub_endpoint", "");
 
@@ -189,9 +192,7 @@ public class NoteActivity extends AppCompatActivity {
                     public void onResponse(NetworkResponse response) {
 
                         Toast.makeText(getApplicationContext(), "Post success", Toast.LENGTH_LONG).show();
-
-                        Intent Channels = new Intent(getBaseContext(), ChannelActivity.class);
-                        startActivity(Channels);
+                        finish();
                     }
                 },
                 new Response.ErrorListener() {
@@ -208,9 +209,10 @@ public class NoteActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
 
-                // Content and entry.
+                // name, content and entry.
                 params.put("h", "entry");
-                params.put("content", note.getText().toString());
+                params.put("name", title.getText().toString());
+                params.put("content", article.getText().toString());
 
                 // Tags.
                 // TODO make sure the UI is ok
@@ -268,6 +270,7 @@ public class NoteActivity extends AppCompatActivity {
                 -1,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(request);
+
     }
 
 }

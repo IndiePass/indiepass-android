@@ -1,4 +1,4 @@
-package com.indieweb.indigenous.timeline;
+package com.indieweb.indigenous.microsub.timeline;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

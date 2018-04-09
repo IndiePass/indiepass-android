@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Indigenous</string>
     <string name="domain_hint">http://example.com</string>
-    <string name="sign_in_with_domain">Sign in with domain</string>
+    <string name="sign_in_with_domain">Sign in</string>
+    <string name="sign_in_info">This login uses IndieAuth and requires you to have a website on your domain that supports IndieAuth.</string>
+
     <string name="no_channels_found">No channels found</string>
     <string name="no_posts_found">No posts found</string>
     <string name="tags">Tags - separate with comma</string>
@@ -9,25 +11,34 @@
     <string name="image_preview">Image preview</string>
     <string name="title">Title</string>
     <string name="body">Body</string>
-    <string name="add_note">Create note</string>
-    <string name="add_article">Create article</string>
-    <string name="add_reply">Create reply</string>
-    <string name="add_repost">Create repost</string>
+
+    <string name="add_note">Note</string>
+    <string name="add_article">Article</string>
+    <string name="add_reply">Reply</string>
+    <string name="add_repost">Repost</string>
+    <string name="add_like">Like</string>
+
     <string name="log_out">Log out</string>
     <string name="timeline">Timeline</string>
     <string name="channels">Channels</string>
     <string name="read_more">Read more</string>
-    <string name="add_like">Create like</string>
     <string name="refresh_syndications">Refresh syndications</string>
     <string name="send">Send</string>
     <string name="author_photo">Author photo</string>
     <string name="timeline_image">Timeline image</string>
     <string name="add_image">Add image</string>
-    <string name="title_activity_timeline_image">TimelineImageActivity</string>
     <string name="close">Close</string>
     <string name="full_screen_image">Full screen image</string>
     <string name="your_reply">Your message</string>
     <string name="reply_to">Reply to</string>
-    <string name="title_activity_timeline_audio">Audio</string>
     <string name="repost">Repost</string>
+    <string name="title_activity_timeline_audio">Audio</string>
+    <string name="title_activity_timeline_image">Image</string>
+    <string name="title_activity_indieauth">Sign in</string>
+    <string name="title_activity_micropub">Post</string>
+    <string name="select_post_type">Select a post type</string>
+    <string name="go_to_reader">Go to reader</string>
+    <string name="channels_not_found">Channels not found, check your connection</string>
+    <string name="reload">Reload</string>
+
 </resources>

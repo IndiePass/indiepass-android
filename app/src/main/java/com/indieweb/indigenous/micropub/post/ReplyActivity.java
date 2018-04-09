@@ -1,4 +1,4 @@
-package com.indieweb.indigenous.post;
+package com.indieweb.indigenous.micropub.post;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,7 +21,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.channel.ChannelActivity;
 import com.indieweb.indigenous.model.Syndication;
 import com.indieweb.indigenous.util.VolleyMultipartRequest;
 
@@ -35,28 +34,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RepostActivity extends AppCompatActivity {
+public class ReplyActivity extends AppCompatActivity {
 
     EditText url;
+    EditText reply;
     EditText tags;
     LinearLayout syndicationLayout;
     private List<Syndication> Syndications = new ArrayList<>();
     private MenuItem sendItem;
-    boolean fromTimeline = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_repost);
+        setContentView(R.layout.activity_reply);
 
         // TODO make helper function.
         int index = 0;
+        syndicationLayout = findViewById(R.id.syndicate);
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
         String syndicationsString = preferences.getString("syndications", "");
         if (syndicationsString.length() > 0) {
             JSONObject object;
             try {
-                syndicationLayout = findViewById(R.id.syndicate);
                 JSONObject s = new JSONObject(syndicationsString);
                 JSONArray itemList = s.getJSONArray("syndicate-to");
                 for (int i = 0; i < itemList.length(); i++) {
@@ -80,14 +79,9 @@ public class RepostActivity extends AppCompatActivity {
         }
 
         // Check extras.
-        url = findViewById(R.id.repostUrl);
+        url = findViewById(R.id.replyUrl);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-
-            // Coming from timeline.
-            if (extras.getBoolean("fromTimeline")) {
-                fromTimeline = true;
-            }
 
             // Incoming text.
             String incoming = extras.getString("incomingText");
@@ -97,13 +91,12 @@ public class RepostActivity extends AppCompatActivity {
                 // Add to syndications.
                 Syndication syndication = new Syndication();
                 syndication.setUid(incoming);
-                syndication.setName("To repost URL");
+                syndication.setName("To reply URL");
                 Syndications.add(syndication);
                 CheckBox ch = new CheckBox(this);
                 ch.setText(syndication.getName());
                 ch.setId(index);
                 syndicationLayout.addView(ch);
-
             }
         }
     }
@@ -127,15 +120,15 @@ public class RepostActivity extends AppCompatActivity {
     }
 
     /**
-     * Send repost.
+     * Send reply.
      */
     public void send() {
 
         sendItem.setEnabled(false);
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
-        url = findViewById(R.id.repostUrl);
-        tags = findViewById(R.id.repostTags);
+        reply = findViewById(R.id.replyText);
+        tags = findViewById(R.id.replyTags);
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
         String MicropubEndpoint = preferences.getString("micropub_endpoint", "");
 
@@ -143,22 +136,14 @@ public class RepostActivity extends AppCompatActivity {
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
-
-                        Toast.makeText(getApplicationContext(), "Repost success", Toast.LENGTH_LONG).show();
-
-                        if (fromTimeline) {
-                            finish();
-                        }
-                        else {
-                            Intent Channels = new Intent(getBaseContext(), ChannelActivity.class);
-                            startActivity(Channels);
-                        }
+                        Toast.makeText(getApplicationContext(), "Reply success", Toast.LENGTH_LONG).show();
+                        finish();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Repost posting failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Reply posting failed", Toast.LENGTH_LONG).show();
                         Log.d("indigenous_debug", error.getMessage());
                         sendItem.setEnabled(true);
                     }
@@ -171,7 +156,8 @@ public class RepostActivity extends AppCompatActivity {
 
                 // Url and entry.
                 params.put("h", "entry");
-                params.put("repost-of", url.getText().toString());
+                params.put("in-reply-to", url.getText().toString());
+                params.put("content", reply.getText().toString());
 
                 // Tags.
                 // TODO make sure the UI is ok

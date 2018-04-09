@@ -1,4 +1,4 @@
-package com.indieweb.indigenous.post;
+package com.indieweb.indigenous.micropub.post;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,7 +20,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.indieweb.indigenous.channel.ChannelActivity;
+import com.indieweb.indigenous.microsub.channel.ChannelActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Syndication;
 import com.indieweb.indigenous.util.VolleyMultipartRequest;
@@ -42,7 +42,6 @@ public class LikeActivity extends AppCompatActivity {
     LinearLayout syndicationLayout;
     private List<Syndication> Syndications = new ArrayList<>();
     private MenuItem sendItem;
-    boolean fromTimeline = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +50,12 @@ public class LikeActivity extends AppCompatActivity {
 
         // TODO make helper function.
         int index = 0;
+        syndicationLayout = findViewById(R.id.syndicate);
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
         String syndicationsString = preferences.getString("syndications", "");
         if (syndicationsString.length() > 0) {
             JSONObject object;
             try {
-                syndicationLayout = findViewById(R.id.syndicate);
                 JSONObject s = new JSONObject(syndicationsString);
                 JSONArray itemList = s.getJSONArray("syndicate-to");
                 for (int i = 0; i < itemList.length(); i++) {
@@ -83,11 +82,6 @@ public class LikeActivity extends AppCompatActivity {
         url = findViewById(R.id.likeUrl);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-
-            // Coming from timeline.
-            if (extras.getBoolean("fromTimeline")) {
-                fromTimeline = true;
-            }
 
             // Incoming text.
             String incoming = extras.getString("incomingText");
@@ -145,14 +139,7 @@ public class LikeActivity extends AppCompatActivity {
                     public void onResponse(NetworkResponse response) {
 
                         Toast.makeText(getApplicationContext(), "Like success", Toast.LENGTH_LONG).show();
-
-                        if (fromTimeline) {
-                            finish();
-                        }
-                        else {
-                            Intent Channels = new Intent(getBaseContext(), ChannelActivity.class);
-                            startActivity(Channels);
-                        }
+                        finish();
                     }
                 },
                 new Response.ErrorListener() {

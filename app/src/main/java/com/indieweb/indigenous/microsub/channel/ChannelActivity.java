@@ -1,4 +1,4 @@
-package com.indieweb.indigenous.channel;
+package com.indieweb.indigenous.microsub.channel;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -24,12 +26,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.model.Channel;
-import com.indieweb.indigenous.post.ArticleActivity;
-import com.indieweb.indigenous.post.LikeActivity;
-import com.indieweb.indigenous.post.NoteActivity;
+import com.indieweb.indigenous.micropub.post.ArticleActivity;
+import com.indieweb.indigenous.micropub.post.LikeActivity;
+import com.indieweb.indigenous.micropub.post.NoteActivity;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.post.ReplyActivity;
-import com.indieweb.indigenous.post.RepostActivity;
+import com.indieweb.indigenous.micropub.post.ReplyActivity;
+import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.kennyc.bottomsheet.BottomSheet;
 import com.kennyc.bottomsheet.BottomSheetListener;
 
@@ -46,6 +48,9 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
 
     String incomingText = "";
     String incomingImage = "";
+    ListView listChannel;
+    TextView notFound;
+    Button reloadChannels;
     private ChannelListAdapter adapter;
     private List<Channel> Channels = new ArrayList<Channel>();
 
@@ -54,45 +59,33 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_channels);
         findViewById(R.id.actionButton).setOnClickListener(this);
-
-        // Listen to share menu.
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        String action = intent.getAction();
-        if (Intent.ACTION_SEND.equals(action)) {
-            try {
-                assert extras != null;
-                if (extras.containsKey(Intent.EXTRA_TEXT)) {
-                    incomingText = extras.get(Intent.EXTRA_TEXT).toString();
-                }
-                if (extras.containsKey(Intent.EXTRA_STREAM)) {
-                    incomingImage = extras.get(Intent.EXTRA_STREAM).toString();
-                }
-
-                if (incomingText.length() > 0 || incomingImage.length() > 0) {
-                    // Open selection.
-                    openBottomSheet();
-                }
-                else {
-                    startChannels();
-                }
-            }
-            catch (NullPointerException ignored) {}
-        }
-        else {
-            startChannels();
-        }
+        listChannel = findViewById(R.id.channel_list);
+        notFound = findViewById(R.id.notFound);
+        reloadChannels = findViewById(R.id.reloadChannels);
+        reloadChannels.setOnClickListener(new reloadChannelsListener());
+        startChannels();
     }
 
     /**
      * Start channels.
      */
     public void startChannels() {
-        ListView listView = findViewById(R.id.channel_list);
+        notFound.setVisibility(View.GONE);
+        reloadChannels.setVisibility(View.GONE);
+        listChannel.setVisibility(View.VISIBLE);
         adapter = new ChannelListAdapter(this, Channels);
-        listView.setAdapter(adapter);
+        listChannel.setAdapter(adapter);
         getChannels();
     }
+
+    // Reload channels.
+    class reloadChannelsListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            startChannels();
+        }
+    }
+
 
     /**
      * Get channels.
@@ -135,6 +128,9 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        notFound.setVisibility(View.VISIBLE);
+                        reloadChannels.setVisibility(View.VISIBLE);
+                        listChannel.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(), "Request failed", Toast.LENGTH_LONG).show();
                         Log.d("indigenous_debug", error.getMessage());
                     }
@@ -166,7 +162,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
      */
     public void openBottomSheet() {
         new BottomSheet.Builder(this)
-                .setSheet(R.menu.menu)
+                .setSheet(R.menu.post_menu)
                 .setListener(this)
                 .show();
     }
@@ -188,6 +184,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // TODO create helper method as we have the same in MicropubActivity
         switch (item.getItemId()) {
             case R.id.logout:
                 new AlertDialog.Builder(this)
@@ -202,7 +199,6 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                                 SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
                                 editor.clear().apply();
 
-                                // Go to main activity.
                                 Intent main = new Intent(getBaseContext(), MainActivity.class);
                                 startActivity(main);
                                 finish();
@@ -223,6 +219,8 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
 
     /**
      * Refresh syndications.
+     *
+     // TODO create helper method as we have the same in MicropubActivity
      */
     public void refreshSyndications() {
         final SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
@@ -285,6 +283,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onSheetItemSelected(@NonNull BottomSheet bottomSheet, MenuItem menuItem, @Nullable Object o) {
+        // TODO create helper method, we have the same in MicropubActivity
         switch (menuItem.getItemId()) {
             case R.id.createArticle:
                 Intent CreateArticle = new Intent(getBaseContext(), ArticleActivity.class);

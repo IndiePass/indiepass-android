@@ -1,4 +1,4 @@
-package com.indieweb.indigenous.timeline;
+package com.indieweb.indigenous.microsub.timeline;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,15 +15,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.post.LikeActivity;
-import com.indieweb.indigenous.post.ReplyActivity;
-import com.indieweb.indigenous.post.RepostActivity;
+import com.indieweb.indigenous.micropub.post.LikeActivity;
+import com.indieweb.indigenous.micropub.post.ReplyActivity;
+import com.indieweb.indigenous.micropub.post.RepostActivity;
 
 import at.blogc.android.views.ExpandableTextView;
 
@@ -240,7 +238,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             Intent i = new Intent(context, ReplyActivity.class);
             TimelineItem item = items.get(this.position);
             i.putExtra("incomingText", item.getUrl());
-            i.putExtra("fromTimeline", true);
             context.startActivity(i);
         }
     }
@@ -259,7 +256,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             Intent i = new Intent(context, LikeActivity.class);
             TimelineItem item = items.get(this.position);
             i.putExtra("incomingText", item.getUrl());
-            i.putExtra("fromTimeline", true);
             context.startActivity(i);
         }
     }
@@ -278,7 +274,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             Intent i = new Intent(context, RepostActivity.class);
             TimelineItem item = items.get(this.position);
             i.putExtra("incomingText", item.getUrl());
-            i.putExtra("fromTimeline", true);
             context.startActivity(i);
         }
     }
@@ -335,7 +330,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             i.putExtra("title", item.getName());
             i.putExtra("authorPhoto", item.getAuthorPhoto());
             i.putExtra("authorName", item.getAuthorName());
-            i.putExtra("fromTimeline", true);
             context.startActivity(i);
         }
     }
