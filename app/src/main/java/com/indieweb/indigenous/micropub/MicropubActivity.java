@@ -74,15 +74,14 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
         if (incomingText.length() > 0 || incomingImage.length() > 0) {
             createTitle.setVisibility(View.VISIBLE);
         }
-        else {
-            SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-            String MicroSubEndpoint = preferences.getString("microsub_endpoint", "");
 
-            if (MicroSubEndpoint.length() > 0) {
-                Button goToReader = findViewById(R.id.goToReader);
-                goToReader.setVisibility(View.VISIBLE);
-                goToReader.setOnClickListener(new goToReaderOnClickListener());
-            }
+        SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
+        String MicroSubEndpoint = preferences.getString("microsub_endpoint", "");
+
+        if (MicroSubEndpoint.length() > 0) {
+            Button goToReader = findViewById(R.id.goToReader);
+            goToReader.setVisibility(View.VISIBLE);
+            goToReader.setOnClickListener(new goToReaderOnClickListener());
         }
 
         // TODO this is ugly for now, but will do.
