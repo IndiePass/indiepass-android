@@ -17,6 +17,7 @@ As soon as an alpha state is reached, we'll start deploying alpha releases.
   - post repost
   - post like
   - add image, tags
+    (images are currently scaled to 1000px width/height)
 - Microsub
   - read channels
   - read items per channel

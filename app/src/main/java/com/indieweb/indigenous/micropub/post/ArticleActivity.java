@@ -106,13 +106,37 @@ public class ArticleActivity extends AppCompatActivity {
             if (incomingImage != null && incomingImage.length() > 0) {
                 try {
                     card.setVisibility(View.VISIBLE);
-                    bitmap = Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(incomingImage)), 1000, 750, false);
+                    bitmap = scaleDown(MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(incomingImage)), 1000, false);
                     image.setImageBitmap(bitmap);
                 }
                 catch (IOException ignored) {}
             }
         }
 
+    }
+
+    /**
+     * Scale down to max image size.
+     *
+     * TODO move to util, as we have the same in note.
+     *
+     * @param realImage
+     *   The image.
+     * @param maxImageSize
+     *   The maximum image size.
+     * @param filter
+     *   Bitmap filter.
+     *
+     * @return Bitmap
+     */
+    public static Bitmap scaleDown(Bitmap realImage, float maxImageSize, boolean filter) {
+        float ratio = Math.min(
+                maxImageSize / realImage.getWidth(),
+                maxImageSize / realImage.getHeight());
+        int width = Math.round(ratio * realImage.getWidth());
+        int height = Math.round(ratio * realImage.getHeight());
+
+        return Bitmap.createScaledBitmap(realImage, width, height, filter);
     }
 
     @Override
@@ -122,9 +146,8 @@ public class ArticleActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Image selected", Toast.LENGTH_SHORT).show();
             imageUri = data.getData();
             try {
-                // TODO hardcoded to 1000x750 - fix this.
                 card.setVisibility(View.VISIBLE);
-                bitmap = Bitmap.createScaledBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri), 1000, 750, false);
+                bitmap = scaleDown(MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri), 1000, false);
                 image.setImageBitmap(bitmap);
             }
             catch (IOException ignored) {}
@@ -163,9 +186,6 @@ public class ArticleActivity extends AppCompatActivity {
 
    /**
     * Convert bitmap to byte[] array.
-    *
-    * 0 means worse quality
-    * 100 means best quality
     */
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
