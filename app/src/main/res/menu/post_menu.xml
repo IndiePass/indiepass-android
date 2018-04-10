@@ -3,27 +3,27 @@
 
     <item
         android:id="@+id/createNote"
-        android:icon="@android:drawable/ic_menu_add"
+        android:icon="@drawable/note"
         android:title="@string/add_note" />
 
     <item
         android:id="@+id/createArticle"
-        android:icon="@android:drawable/ic_menu_add"
+        android:icon="@drawable/article"
         android:title="@string/add_article" />
 
     <item
         android:id="@+id/createLike"
-        android:icon="@android:drawable/ic_menu_add"
+        android:icon="@drawable/like"
         android:title="@string/add_like" />
 
     <item
         android:id="@+id/createReply"
-        android:icon="@android:drawable/ic_menu_add"
+        android:icon="@drawable/reply"
         android:title="@string/add_reply" />
 
     <item
         android:id="@+id/createRepost"
-        android:icon="@android:drawable/ic_menu_add"
+        android:icon="@drawable/repost"
         android:title="@string/add_repost" />
 
 </menu>
