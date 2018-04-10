@@ -8,12 +8,16 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
@@ -54,10 +58,24 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
 
         TextView createTitle = findViewById(R.id.createTitle);
 
-        // Add title.
-        // TODO add preview of what comes in
+        // Add title and preview.
         if (incomingText.length() > 0 || incomingImage.length() > 0) {
             createTitle.setVisibility(View.VISIBLE);
+
+            if (incomingText.length() > 0) {
+                TextView preview = findViewById(R.id.previewText);
+                preview.setVisibility(View.VISIBLE);
+                preview.setText(incomingText);
+            }
+
+            if (incomingImage.length() > 0) {
+                CardView card = findViewById(R.id.previewCard);
+                card.setVisibility(View.VISIBLE);
+                ImageView previewImage = findViewById(R.id.previewImage);
+                Glide.with(getApplicationContext())
+                        .load(incomingImage)
+                        .into(previewImage);
+            }
         }
 
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
