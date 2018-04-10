@@ -158,7 +158,11 @@ public class TimelineActivity extends AppCompatActivity {
                                 item.setUrl(object.getString("url"));
 
                                 // Published
-                                item.setPublished(object.getString("published"));
+                                String published = "";
+                                if (object.has("published")) {
+                                    published = object.getString("published");
+                                }
+                                item.setPublished(published);
 
                                 // Author name.
                                 if (object.has("author")) {
@@ -244,13 +248,13 @@ public class TimelineActivity extends AppCompatActivity {
 
                             adapter.notifyDataSetChanged();
 
-                            // TODO This sets all to read, which isn't 100% right.
                             if (unread > 0) {
                                 notifyAllRead();
                             }
 
                         }
                         catch (JSONException e) {
+                            Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                             Log.d("indigenous_debug", e.getMessage());
                         }
 
