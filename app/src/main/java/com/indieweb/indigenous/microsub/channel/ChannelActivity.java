@@ -32,6 +32,7 @@ import com.indieweb.indigenous.micropub.post.NoteActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
+import com.indieweb.indigenous.util.Syndications;
 import com.kennyc.bottomsheet.BottomSheet;
 import com.kennyc.bottomsheet.BottomSheetListener;
 
@@ -210,72 +211,11 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                 return true;
 
             case R.id.refreshSyndications:
-                refreshSyndications();
+                new Syndications(getApplicationContext()).refresh();
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Refresh syndications.
-     *
-     // TODO create helper method as we have the same in MicropubActivity
-     */
-    public void refreshSyndications() {
-        final SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-        String microPubEndpoint = preferences.getString("micropub_endpoint", "");
-        microPubEndpoint += "?q=syndicate-to";
-
-        StringRequest getRequest = new StringRequest(Request.Method.GET, microPubEndpoint,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        try {
-                            JSONObject micropubResponse = new JSONObject(response);
-                            JSONArray itemList = micropubResponse.getJSONArray("syndicate-to");
-                            if (itemList.length() > 0) {
-                                SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
-                                editor.putString("syndications", response).apply();
-                                Toast.makeText(getApplicationContext(), "Syndications reloaded", Toast.LENGTH_LONG).show();
-                            }
-                            else {
-                                Toast.makeText(getApplicationContext(), "No syndications found", Toast.LENGTH_LONG).show();
-                            }
-
-                        }
-                        catch (JSONException e) {
-                            Log.d("indigenous_debug", e.getMessage());
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Request failed", Toast.LENGTH_LONG).show();
-                        Log.d("indigenous_debug", error.getMessage());
-                    }
-                }
-        )
-        {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Accept", "application/json");
-
-                // Add access token to header.
-                SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-                String AccessToken = preferences.getString("access_token", "");
-                headers.put("Authorization", "Bearer " + AccessToken);
-
-                return headers;
-            }
-        };
-
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        queue.add(getRequest);
     }
 
     @Override

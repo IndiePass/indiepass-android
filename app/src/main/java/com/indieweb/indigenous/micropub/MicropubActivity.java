@@ -8,21 +8,12 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
@@ -31,13 +22,7 @@ import com.indieweb.indigenous.micropub.post.NoteActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.microsub.channel.ChannelActivity;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.indieweb.indigenous.util.Syndications;
 
 public class MicropubActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -183,72 +168,11 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
                 return true;
 
             case R.id.refreshSyndications:
-                refreshSyndications();
+                new Syndications(getApplicationContext()).refresh();
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Refresh syndications.
-     *
-     // TODO create helper method as we have the same in ChannelsActivity
-     */
-    public void refreshSyndications() {
-        final SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-        String microPubEndpoint = preferences.getString("micropub_endpoint", "");
-        microPubEndpoint += "?q=syndicate-to";
-
-        StringRequest getRequest = new StringRequest(Request.Method.GET, microPubEndpoint,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        try {
-                            JSONObject micropubResponse = new JSONObject(response);
-                            JSONArray itemList = micropubResponse.getJSONArray("syndicate-to");
-                            if (itemList.length() > 0) {
-                                SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
-                                editor.putString("syndications", response).apply();
-                                Toast.makeText(getApplicationContext(), "Syndications reloaded", Toast.LENGTH_LONG).show();
-                            }
-                            else {
-                                Toast.makeText(getApplicationContext(), "No syndications found", Toast.LENGTH_LONG).show();
-                            }
-
-                        }
-                        catch (JSONException e) {
-                            Log.d("indigenous_debug", e.getMessage());
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Request failed", Toast.LENGTH_LONG).show();
-                        Log.d("indigenous_debug", error.getMessage());
-                    }
-                }
-        )
-        {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Accept", "application/json");
-
-                // Add access token to header.
-                SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-                String AccessToken = preferences.getString("access_token", "");
-                headers.put("Authorization", "Bearer " + AccessToken);
-
-                return headers;
-            }
-        };
-
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        queue.add(getRequest);
     }
 
 }
