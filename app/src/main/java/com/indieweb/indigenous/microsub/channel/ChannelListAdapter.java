@@ -85,7 +85,7 @@ public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
             Integer unreadText = channel.getUnread();
             if (unreadText > 0) {
                 holder.unread.setVisibility(View.VISIBLE);
-                holder.unread.setText(unreadText);
+                holder.unread.setText(String.valueOf(unreadText));
             }
             else {
                 holder.unread.setVisibility(View.GONE);
