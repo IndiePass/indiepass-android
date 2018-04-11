@@ -46,7 +46,8 @@ public class IndieAuth extends AppCompatActivity {
     TextView info;
     String code;
     String domainInput;
-    String clientId = "https://indigenous.abode.pub";
+    String ClientId = "https://indigenous.abode.pub";
+    String RedirectUri = "https://indigenous.abode.pub";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,7 +203,7 @@ public class IndieAuth extends AppCompatActivity {
         webview.getSettings().setJavaScriptEnabled(true);
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
         String AuthEndPoint = preferences.getString("authorization_endpoint", "");
-        webview.loadUrl(AuthEndPoint + "?redirect_uri=" + clientId + "&client_id=" + clientId + "&me=" + domainInput + "&scope=create+update+read+follow+channels");
+        webview.loadUrl(AuthEndPoint + "?redirect_uri=" + RedirectUri + "&client_id=" + ClientId + "&me=" + domainInput + "&scope=create+update+read+follow+channels");
     }
 
     /**
@@ -280,7 +281,7 @@ public class IndieAuth extends AppCompatActivity {
                 params.put("code", code);
                 params.put("me", domainInput);
                 params.put("redirect_uri", "https://indigenous.abode.pub");
-                params.put("client_id", clientId);
+                params.put("client_id", ClientId);
                 params.put("grant_type", "authorization_code");
 
                 return params;
