@@ -109,6 +109,8 @@ public class IndieAuth extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
+        Toast.makeText(getApplicationContext(), "Connecting to domain, one moment", Toast.LENGTH_SHORT).show();
+
         try {
             // TODO the links can also be exposed in the response headers.
             Document doc = Jsoup.connect($domain).get();
@@ -150,10 +152,10 @@ public class IndieAuth extends AppCompatActivity {
 
         }
         catch (IllegalArgumentException ignored) {
-            Toast.makeText(getApplicationContext(), "Could not connect to domain.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Could not connect to domain", Toast.LENGTH_LONG).show();
         }
         catch (IOException error) {
-            Toast.makeText(getApplicationContext(), "Could not connect to domain.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Could not connect to domain", Toast.LENGTH_LONG).show();
         }
 
         // If we have 3 endpoints, let's go.
@@ -180,7 +182,7 @@ public class IndieAuth extends AppCompatActivity {
                     // Clear the webview.
                     webview.setVisibility(View.INVISIBLE);
                     webview.loadUrl("about:blank");
-                    Toast.makeText(getApplicationContext(), "Validating code ...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Validating code", Toast.LENGTH_SHORT).show();
 
                     // Get the code if available.
                     code = uri.getQueryParameter("code");
@@ -228,7 +230,7 @@ public class IndieAuth extends AppCompatActivity {
                         editor.putString("me", domainInput);
                         editor.apply();
 
-                        Toast.makeText(getApplicationContext(), "Authentication succesful", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Authentication successful", Toast.LENGTH_SHORT).show();
 
                         if (preferences.getString("microsub_endpoint", "").length() > 0) {
                             Intent Channels = new Intent(getBaseContext(), ChannelActivity.class);
