@@ -132,6 +132,8 @@ public class ReplyActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
         String MicropubEndpoint = preferences.getString("micropub_endpoint", "");
 
+        Toast.makeText(getApplicationContext(), "Sending, please wait", Toast.LENGTH_SHORT).show();
+
         VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, MicropubEndpoint,
                 new Response.Listener<NetworkResponse>() {
                     @Override
