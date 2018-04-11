@@ -147,8 +147,15 @@ public class LikeActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Like posting failed: " + error.getMessage(), Toast.LENGTH_LONG).show();
-                        Log.d("indigenous_debug", error.getMessage());
+                        NetworkResponse networkResponse = error.networkResponse;
+                        if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
+                            Integer code = networkResponse.statusCode;
+                            String result = new String(networkResponse.data);
+                            Toast.makeText(getApplicationContext(), "Like posting failed. Status code: " + code + "; message: " + result, Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                        }
                         sendItem.setEnabled(true);
                     }
                 }
