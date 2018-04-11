@@ -261,6 +261,9 @@ public class IndieAuth extends AppCompatActivity {
                         catch (UnsupportedEncodingException e1) {
                             errorMessage += " - " + e1.getMessage();
                         }
+                        catch (Exception e2) {
+                            errorMessage += " - " + e2.getMessage();
+                        }
 
                     }
 
