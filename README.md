@@ -2,8 +2,11 @@
 
 An app with extensions for sharing information to micropub endpoints and reading from microsub endpoints.
 
-BEWARE: This is still in extreme alpha, so things might break.
-As soon as an alpha state is reached, we'll start deploying alpha releases.
+This is still in alpha, so things might break.
+
+If you want to help testing out, ping me (swentel) on one of the #IndieWeb channels on
+irc.freenode.net or send me a message through my contact form at https://realize.be/contact
+You need an email address connected with Google.
 
 ## Current functionality
 
