@@ -76,9 +76,9 @@ public class IndieAuth extends AppCompatActivity {
 
             if (validDomain(domainInput)) {
 
-                info.setVisibility(View.INVISIBLE);
-                domain.setVisibility(View.INVISIBLE);
-                signIn.setVisibility(View.INVISIBLE);
+                info.setVisibility(View.GONE);
+                domain.setVisibility(View.GONE);
+                signIn.setVisibility(View.GONE);
                 webview.setVisibility(View.VISIBLE);
 
                 startOauthDance();
@@ -191,6 +191,9 @@ public class IndieAuth extends AppCompatActivity {
                     if (code != null && code.length() > 0) {
                         validateCode(code);
                     }
+                    else {
+                        Toast.makeText(getApplicationContext(), "No code found in URL to validate", Toast.LENGTH_SHORT).show();
+                    }
 
                     return true;
                 }
@@ -203,7 +206,7 @@ public class IndieAuth extends AppCompatActivity {
         webview.getSettings().setJavaScriptEnabled(true);
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
         String AuthEndPoint = preferences.getString("authorization_endpoint", "");
-        webview.loadUrl(AuthEndPoint + "?redirect_uri=" + RedirectUri + "&client_id=" + ClientId + "&me=" + domainInput + "&scope=create+update+read+follow+channels");
+        webview.loadUrl(AuthEndPoint + "?response_type=code&redirect_uri=" + RedirectUri + "&client_id=" + ClientId + "&me=" + domainInput + "&scope=create+update+read+follow+channels");
     }
 
     /**
@@ -245,7 +248,7 @@ public class IndieAuth extends AppCompatActivity {
 
                     }
                     catch (JSONException e) {
-                        Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Authentication failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         Log.d("indigenous_debug", e.getMessage());
 
                         // TODO use helper method
@@ -262,7 +265,7 @@ public class IndieAuth extends AppCompatActivity {
             new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Authentication failed: " + error.getMessage(), Toast.LENGTH_LONG).show();
 
                     // TODO use helper method
                     info.setVisibility(View.VISIBLE);
