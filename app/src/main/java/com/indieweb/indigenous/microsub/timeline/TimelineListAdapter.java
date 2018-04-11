@@ -218,7 +218,14 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.reply.setOnClickListener(new OnReplyClickListener(position));
             holder.like.setOnClickListener(new OnLikeClickListener(position));
             holder.repost.setOnClickListener(new OnRepostClickListener(position));
-            holder.external.setOnClickListener(new OnExternalClickListener(position));
+
+            if (item.getUrl().length() > 0) {
+                holder.external.setVisibility(View.VISIBLE);
+                holder.external.setOnClickListener(new OnExternalClickListener(position));
+            }
+            else {
+                holder.external.setVisibility(View.GONE);
+            }
         }
 
         return convertView;

@@ -146,6 +146,7 @@ public class TimelineActivity extends AppCompatActivity {
                                     entryId = item.getId();
                                 }
 
+                                String url = "";
                                 String name = "";
                                 String textContent = "";
                                 String htmlContent = "";
@@ -155,7 +156,10 @@ public class TimelineActivity extends AppCompatActivity {
                                 String authorPhoto = "";
 
                                 // Url.
-                                item.setUrl(object.getString("url"));
+                                if (object.has("url")) {
+                                    url = object.getString("url");
+                                }
+                                item.setUrl(url);
 
                                 // Published
                                 String published = "";
