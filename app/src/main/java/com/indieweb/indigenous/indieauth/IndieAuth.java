@@ -35,7 +35,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class IndieAuth extends AppCompatActivity {
@@ -225,11 +228,43 @@ public class IndieAuth extends AppCompatActivity {
                 @Override
                 public void onResponse(String response) {
 
+                    String accessToken = "";
+                    String errorMessage = "";
+                    boolean accessTokenFound = false;
+
                     try {
                         JSONObject indieAuthResponse = new JSONObject(response);
-                        String accessToken = indieAuthResponse.getString("access_token");
-                        Log.d("indigenous_debug", accessToken);
+                        accessToken = indieAuthResponse.getString("access_token");
+                        accessTokenFound = true;
+                    }
+                    catch (JSONException e) {
 
+                        // Catch the json exception. However, we're not done yet.
+                        errorMessage = e.getMessage();
+
+                        // Known, and maybe other projects, do not return a json response (yet), so
+                        // the access token might be in the body as an URL-encoded query string.
+                        // @see https://github.com/idno/Known/issues/1986
+                        try {
+                            Map<String, String> query_pairs = new LinkedHashMap<>();
+                            String[] pairs = response.split("&");
+                            for (String pair : pairs) {
+                                int idx = pair.indexOf("=");
+                                query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
+                            }
+                            accessToken = query_pairs.get("access_token");
+                            if (accessToken.length() > 0) {
+                                accessTokenFound = true;
+                            }
+
+                        }
+                        catch (UnsupportedEncodingException e1) {
+                            errorMessage += " - " + e1.getMessage();
+                        }
+
+                    }
+
+                    if (accessTokenFound) {
                         SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
                         editor.putString("access_token", accessToken);
                         editor.putString("me", domainInput);
@@ -245,21 +280,15 @@ public class IndieAuth extends AppCompatActivity {
                             Intent Micropub = new Intent(getBaseContext(), MicropubActivity.class);
                             startActivity(Micropub);
                         }
-
                     }
-                    catch (JSONException e) {
-                        Toast.makeText(getApplicationContext(), "Authentication failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                        Log.d("indigenous_debug", e.getMessage());
+                    else {
+                        Toast.makeText(getApplicationContext(), "Authentication failed: " + errorMessage, Toast.LENGTH_LONG).show();
 
                         // TODO use helper method
                         info.setVisibility(View.VISIBLE);
                         domain.setVisibility(View.VISIBLE);
                         signIn.setVisibility(View.VISIBLE);
-
                     }
-
-                    // response
-                    Log.d("indigenous_debug", response);
                 }
             },
             new Response.ErrorListener() {
