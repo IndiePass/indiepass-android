@@ -35,6 +35,11 @@ You need an email address connected with Google.
 
 https://realize.be/notes/1333
 
+## Screenshot
+
+<img src="https://realize.be/sites/default/files/Screenshot_20180411-111033.png" width="400" />
+
+
 ## iOS
 
 iOS version is available at https://github.com/EdwardHinkle/indigenous-ios
