@@ -137,6 +137,7 @@ public class TimelineActivity extends AppCompatActivity {
                             JSONObject microsubResponse = new JSONObject(response);
                             JSONArray itemList = microsubResponse.getJSONArray("items");
 
+                            // TODO refactor this code to crash less.
                             for (int i = 0; i < itemList.length(); i++) {
                                 object = itemList.getJSONObject(i);
                                 TimelineItem item = new TimelineItem();
@@ -171,14 +172,23 @@ public class TimelineActivity extends AppCompatActivity {
                                 // Author name.
                                 if (object.has("author")) {
 
-                                    authorName = object.getJSONObject("author").getString("name");
-                                    String authorUrl = object.getJSONObject("author").getString("url");
+                                    JSONObject author = object.getJSONObject("author");
+                                    if (author.has("name")) {
+                                        authorName = author.getString("name");
+                                    }
+                                    String authorUrl = "";
+                                    if (author.has("url")) {
+                                        authorUrl = author.getString("url");
+                                    }
                                     if (authorName.equals("null") && authorUrl.length() > 0) {
                                         authorName = authorUrl;
                                     }
-                                    authorPhoto = object.getJSONObject("author").getString("photo");
-                                    if (!authorPhoto.equals("null")) {
-                                        item.setAuthorPhoto(authorPhoto);
+
+                                    if (author.has("photo")) {
+                                        authorPhoto = author.getString("photo");
+                                        if (!authorPhoto.equals("null") && authorPhoto.length() > 0) {
+                                            item.setAuthorPhoto(authorPhoto);
+                                        }
                                     }
                                 }
                                 item.setAuthorName(authorName);
@@ -187,7 +197,9 @@ public class TimelineActivity extends AppCompatActivity {
                                 if (object.has("content")) {
                                     JSONObject content = object.getJSONObject("content");
 
-                                    textContent = content.getString("text");
+                                    if (content.has("text")) {
+                                        textContent = content.getString("text");
+                                    }
 
                                     // in-reply-to
                                     // TODO there can me more than one and fix this otherwise
