@@ -145,7 +145,7 @@ public class ReplyActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Reply posting failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Reply posting failed: " + error.getMessage(), Toast.LENGTH_LONG).show();
                         Log.d("indigenous_debug", error.getMessage());
                         sendItem.setEnabled(true);
                     }

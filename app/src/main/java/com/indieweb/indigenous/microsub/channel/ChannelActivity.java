@@ -122,7 +122,9 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                             adapter.notifyDataSetChanged();
 
                         }
-                        catch (JSONException ignored) {}
+                        catch (JSONException e) {
+                            Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
 
                     }
                 },
@@ -132,7 +134,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                         notFound.setVisibility(View.VISIBLE);
                         reloadChannels.setVisibility(View.VISIBLE);
                         listChannel.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), "Request failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Request failed: " + error.getMessage(), Toast.LENGTH_LONG).show();
                         Log.d("indigenous_debug", error.getMessage());
                     }
                 }
