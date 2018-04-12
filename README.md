@@ -27,7 +27,7 @@ You need an email address connected with Google.
   - reply, like, repost directly
   - go to external URL
   - listen to audio if available
-  - view fullscreen images
+  - view fullscreen images, zoom and pinch
 - Share intents: receive text or images from other apps to directly share
 - Syndication targets: reload, toggle favorite channels or reply/like/repost URL
 
