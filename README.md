@@ -8,6 +8,8 @@ If you want to help testing out, ping me (swentel) on one of the #IndieWeb chann
 irc.freenode.net or send me a message through my contact form at https://realize.be/contact
 You need an email address connected with Google.
 
+More information is https://indieweb.org/Indigenous
+
 ## Current functionality
 
 - Login with your domain, discover indieauth, micropub and microsub endpoints.
@@ -38,7 +40,6 @@ https://realize.be/notes/1333
 ## Screenshot
 
 <img src="https://realize.be/sites/default/files/Screenshot_20180411-111033.png" width="400" />
-
 
 ## iOS
 
