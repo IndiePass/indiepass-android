@@ -40,9 +40,11 @@ import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class IndieAuth extends AppCompatActivity {
 
+    String state;
     WebView webview;
     Button signIn;
     EditText domain;
@@ -56,6 +58,9 @@ public class IndieAuth extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_indieauth);
+
+        // Generate state, use uuid and take first 10 chars.
+        state = UUID.randomUUID().toString().substring(0, 10);
 
         domain = findViewById(R.id.domain);
         webview = findViewById(R.id.webView);
@@ -189,10 +194,11 @@ public class IndieAuth extends AppCompatActivity {
                     webview.loadUrl("about:blank");
                     Toast.makeText(getApplicationContext(), "Validating code", Toast.LENGTH_SHORT).show();
 
-                    // Get the code if available.
+                    // Get the code and state.
                     code = uri.getQueryParameter("code");
-                    if (code != null && code.length() > 0) {
-                        validateCode(code);
+                    String returnedState = uri.getQueryParameter("state");
+                    if (code != null && code.length() > 0 && returnedState != null && returnedState.length() > 0) {
+                        validateCode(code, returnedState);
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "No code found in URL to validate", Toast.LENGTH_SHORT).show();
@@ -209,7 +215,7 @@ public class IndieAuth extends AppCompatActivity {
         webview.getSettings().setJavaScriptEnabled(true);
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
         String AuthEndPoint = preferences.getString("authorization_endpoint", "");
-        webview.loadUrl(AuthEndPoint + "?response_type=code&redirect_uri=" + RedirectUri + "&client_id=" + ClientId + "&me=" + domainInput + "&scope=create+update+read+follow+channels");
+        webview.loadUrl(AuthEndPoint + "?response_type=code&redirect_uri=" + RedirectUri + "&client_id=" + ClientId + "&me=" + domainInput + "&scope=create+update+read+follow+channels&state=" + state);
     }
 
     /**
@@ -217,8 +223,10 @@ public class IndieAuth extends AppCompatActivity {
      *
      * @param code
      *   The code we got back after the oauth dance with the authorization endpoint.
+     * @param returnedState
+     *   The returned state.
      */
-    private void validateCode(final String code) {
+    private void validateCode(final String code, final String returnedState) {
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         final SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
         String TokenEndPoint = preferences.getString("token_endpoint", "");
@@ -267,7 +275,7 @@ public class IndieAuth extends AppCompatActivity {
 
                     }
 
-                    if (accessTokenFound) {
+                    if (accessTokenFound && returnedState.equals(state)) {
                         SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
                         editor.putString("access_token", accessToken);
                         editor.putString("me", domainInput);
