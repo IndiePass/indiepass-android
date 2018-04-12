@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -40,13 +42,16 @@ public class TimelineActivity extends AppCompatActivity {
     Integer unread;
     private TimelineListAdapter adapter;
     private List<TimelineItem> TimelineItems = new ArrayList<TimelineItem>();
+    ListView listView;
+    Button loadMoreButton;
+    boolean loadMoreButtonAdded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
-        ListView listView = findViewById(R.id.timeline_list);
+        listView = findViewById(R.id.timeline_list);
         adapter = new TimelineListAdapter(this, TimelineItems);
         listView.setAdapter(adapter);
 
@@ -56,7 +61,9 @@ public class TimelineActivity extends AppCompatActivity {
             unread = extras.getInt("unread");
             channelName = extras.getString("channelName");
             this.setTitle(channelName);
-            getTimeLineItems();
+            loadMoreButton = new Button(this);
+            loadMoreButton.setText(R.string.load_more);
+            getTimeLineItems("");
         }
         else {
             Toast.makeText(this, "Channel not found", Toast.LENGTH_LONG).show();
@@ -116,7 +123,7 @@ public class TimelineActivity extends AppCompatActivity {
     /**
      * Get items in channel.
      */
-    public void getTimeLineItems() {
+    public void getTimeLineItems(String pagerAfter) {
 
         // TODO abstract this all in one helper request class.
         // probably use jsonArrayRequest too, will be faster, but we'll see once we get all
@@ -124,6 +131,11 @@ public class TimelineActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
         String MicrosubEndpoint = preferences.getString("microsub_endpoint", "");
         MicrosubEndpoint += "?action=timeline&channel=" + channelId;
+        if (pagerAfter.length() > 0) {
+            MicrosubEndpoint += "&after=" + pagerAfter;
+        }
+
+        final String[] olderItems = new String[1];
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
@@ -136,6 +148,16 @@ public class TimelineActivity extends AppCompatActivity {
                             JSONObject object;
                             JSONObject microsubResponse = new JSONObject(response);
                             JSONArray itemList = microsubResponse.getJSONArray("items");
+
+                            // Paging. Can be empty.
+                            if (microsubResponse.has("paging")) {
+                                try {
+                                    if (microsubResponse.getJSONObject("paging").has("after")) {
+                                        olderItems[0] = microsubResponse.getJSONObject("paging").getString("after");
+                                    }
+                                }
+                                catch (JSONException ignored) {}
+                            }
 
                             // TODO refactor this code to crash less.
                             for (int i = 0; i < itemList.length(); i++) {
@@ -274,6 +296,26 @@ public class TimelineActivity extends AppCompatActivity {
 
                             if (unread > 0) {
                                 notifyAllRead();
+                            }
+
+                            if (olderItems[0] != null && olderItems[0].length() > 0) {
+
+                                if (!loadMoreButtonAdded) {
+                                    loadMoreButtonAdded = true;
+                                    listView.addFooterView(loadMoreButton);
+                                }
+
+                                loadMoreButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View arg0) {
+                                        getTimeLineItems(olderItems[0]);
+                                    }
+                                });
+                            }
+                            else {
+                                if (loadMoreButtonAdded) {
+                                    listView.removeFooterView(loadMoreButton);
+                                }
                             }
 
                         }

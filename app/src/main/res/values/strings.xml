@@ -40,5 +40,6 @@
     <string name="go_to_reader">Go to reader</string>
     <string name="channels_not_found">Channels not found, check your connection</string>
     <string name="reload">Reload</string>
+    <string name="load_more">Load More</string>
 
 </resources>
