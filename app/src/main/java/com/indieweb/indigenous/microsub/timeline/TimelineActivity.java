@@ -142,11 +142,7 @@ public class TimelineActivity extends AppCompatActivity {
                                 object = itemList.getJSONObject(i);
                                 TimelineItem item = new TimelineItem();
 
-                                item.setId(object.getString("_id"));
-                                if (i == 0) {
-                                    entryId = item.getId();
-                                }
-
+                                String type = "entry";
                                 String url = "";
                                 String name = "";
                                 String textContent = "";
@@ -155,6 +151,39 @@ public class TimelineActivity extends AppCompatActivity {
                                 String audio = "";
                                 String authorName = "";
                                 String authorPhoto = "";
+
+                                item.setId(object.getString("_id"));
+                                if (i == 0) {
+                                    entryId = item.getId();
+                                }
+
+                                // Type.
+                                if (object.has("type")) {
+                                    type = object.getString("type");
+                                }
+
+                                // In reply to.
+                                // TODO there can me more than one
+                                if (object.has("in-reply-to")) {
+                                    type = "in-reply-to";
+                                    item.addToSubType(type, object.getJSONArray("in-reply-to").get(0).toString());
+                                }
+
+                                // Like.
+                                // TODO there can me more than one.
+                                if (object.has("like-of")) {
+                                    type = "like-of";
+                                    item.addToSubType(type, object.getJSONArray("like-of").get(0).toString());
+                                }
+
+                                // A checkin.
+                                if (object.has("checkin")) {
+                                    type = "checkin";
+                                    item.addToSubType(type, object.getJSONObject("checkin").getString("name"));
+                                }
+
+                                // Set type.
+                                item.setType(type);
 
                                 // Url.
                                 if (object.has("url")) {
@@ -169,7 +198,7 @@ public class TimelineActivity extends AppCompatActivity {
                                 }
                                 item.setPublished(published);
 
-                                // Author name.
+                                // Author.
                                 if (object.has("author")) {
 
                                     JSONObject author = object.getJSONObject("author");
@@ -199,13 +228,6 @@ public class TimelineActivity extends AppCompatActivity {
 
                                     if (content.has("text")) {
                                         textContent = content.getString("text");
-                                    }
-
-                                    // in-reply-to
-                                    // TODO there can me more than one and fix this otherwise
-                                    // as I think it's in the name as well
-                                    if (object.has("in-reply-to")) {
-                                        textContent += ", in reply to " + object.getJSONArray("in-reply-to").get(0);
                                     }
 
                                     if (content.has("html")) {
@@ -240,21 +262,7 @@ public class TimelineActivity extends AppCompatActivity {
                                 }
                                 item.setAudio(audio);
 
-                                // A like.
-                                // TODO there can me more than one.
-                                // TODO it seems this is set in name, so we can probably remove this
-                                /*if (object.has("like-of")) {
-                                    text = "like " + object.getJSONArray("like-of").get(0);
-                                    // reset name.
-                                    name = "";
-                                }*/
-
-                                // A checkin.
-                                // TODO store in different property
-                                if (object.has("checkin")) {
-                                    textContent = "Checked in at " + object.getJSONObject("checkin").getString("name");
-                                }
-
+                                // Set values of name, text and html content.
                                 item.setName(name);
                                 item.setTextContent(textContent);
                                 item.setHtmlContent(htmlContent);

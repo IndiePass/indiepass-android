@@ -33,6 +33,14 @@
             android:layout_width="fill_parent" />
 
         <TextView
+            android:id="@+id/timeline_context"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textSize="16sp"
+            android:layout_width="fill_parent" />
+
+        <TextView
             android:id="@+id/timeline_name"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"

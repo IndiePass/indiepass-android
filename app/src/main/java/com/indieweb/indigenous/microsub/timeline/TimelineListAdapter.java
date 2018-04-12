@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -65,6 +66,8 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public TextView author;
         public ImageView authorPhoto;
         public TextView name;
+        // TODO might need a better name
+        public TextView context;
         public TextView published;
         public Button expand;
         public ExpandableTextView content;
@@ -88,6 +91,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.author = convertView.findViewById(R.id.timeline_author);
             holder.authorPhoto = convertView.findViewById(R.id.timeline_author_photo);
             holder.name = convertView.findViewById(R.id.timeline_name);
+            holder.context = convertView.findViewById(R.id.timeline_context);
             holder.content = convertView.findViewById(R.id.timeline_content);
             holder.expand = convertView.findViewById(R.id.timeline_content_more);
             holder.image = convertView.findViewById(R.id.timeline_image);
@@ -107,7 +111,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         final TimelineItem item = items.get(position);
         if (item != null) {
 
-            String color = ((position % 2) == 0) ? "#f8f7f1" :  "#ffffff";
+            String color = ((position % 2) == 0) ? "#f8f7f1" : "#ffffff";
             holder.row.setBackgroundColor(Color.parseColor(color));
 
             // Published.
@@ -117,8 +121,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 result = df.parse(item.getPublished());
                 holder.published.setVisibility(View.VISIBLE);
                 holder.published.setText(result.toString());
-            }
-            catch (ParseException ignored) {
+            } catch (ParseException ignored) {
                 holder.published.setVisibility(View.GONE);
             }
 
@@ -126,8 +129,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             if (item.getAuthorName().length() > 0) {
                 holder.author.setVisibility(View.VISIBLE);
                 holder.author.setText(item.getAuthorName());
-            }
-            else {
+            } else {
                 holder.author.setVisibility(View.GONE);
             }
 
@@ -138,12 +140,46 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     .into(holder.authorPhoto);
 
             // Name.
-            if (item.getName().length() > 0) {
+            if (item.getType().equals("entry") && item.getName().length() > 0) {
                 holder.name.setVisibility(View.VISIBLE);
                 holder.name.setText(item.getName());
+            } else {
+                holder.name.setVisibility(View.GONE);
+            }
+
+            // TODO we should probably create subtype classes per 'type'
+            String ContextData = "";
+            if (item.getType().equals("in-reply-to") || item.getType().equals("like-of") || item.getType().equals("checkin")) {
+                String ContextText = "";
+                String ContextUrl = "";
+                switch (item.getType()) {
+                    case "in-reply-to":
+                        ContextText = "In reply to";
+                        ContextUrl = item.getSubType("in-reply-to");
+                        break;
+                    case "like-of":
+                        ContextText = "Like of";
+                        ContextUrl = item.getSubType("like-of");
+                        break;
+                    case "checkin":
+                        ContextText = "Checked in at";
+                        ContextUrl = item.getSubType("checkin");
+                        break;
+                }
+
+                if (ContextText.length() > 0 && ContextUrl.length() > 0) {
+                    ContextData = ContextText + " <a href=\"" + ContextUrl + "\">" + ContextUrl + "</a>";
+                }
+            }
+
+            if (ContextData.length() > 0) {
+                holder.context.setVisibility(View.VISIBLE);
+                holder.context.setClickable(true);
+                holder.context.setMovementMethod(LinkMovementMethod.getInstance());
+                holder.context.setText(Html.fromHtml(ContextData));
             }
             else {
-                holder.name.setVisibility(View.GONE);
+                holder.context.setVisibility(View.GONE);
             }
 
             // Content.

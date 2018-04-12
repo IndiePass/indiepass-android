@@ -1,13 +1,16 @@
 package com.indieweb.indigenous.model;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class TimelineItem {
 
     private String id;
+    private String type;
     private String published;
     private String name;
     private String textContent;
     private String htmlContent;
-    private String type;
     private String url;
     private String authorName;
     private String authorPhoto = "";
@@ -15,6 +18,8 @@ public class TimelineItem {
     private String photo;
     // TODO allow multiple audio
     private String audio;
+    // TODO there can actually be multiple of say reply (at least in theory)
+    private Map<String, String> subType = new LinkedHashMap<>();
 
     public String getId() {
         return id;
@@ -22,6 +27,22 @@ public class TimelineItem {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getSubType(String key) {
+        return subType.get(key);
+    }
+
+    public void addToSubType(String key, String value) {
+        this.subType.put(key, value);
     }
 
     public String getPublished() {
@@ -54,14 +75,6 @@ public class TimelineItem {
 
     public void setHtmlContent(String htmlContent) {
         this.htmlContent = htmlContent;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getUrl() {
