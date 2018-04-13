@@ -337,7 +337,6 @@ public class TimelineActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getApplicationContext(), "Request failed", Toast.LENGTH_LONG).show();
-                        Log.d("indigenous_debug", error.getMessage());
                     }
                 }
         )

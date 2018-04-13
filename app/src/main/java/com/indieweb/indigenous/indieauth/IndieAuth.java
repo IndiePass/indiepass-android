@@ -306,14 +306,19 @@ public class IndieAuth extends AppCompatActivity {
             new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    NetworkResponse networkResponse = error.networkResponse;
-                    if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
-                        Integer code = networkResponse.statusCode;
-                        String result = new String(networkResponse.data);
-                        Toast.makeText(getApplicationContext(), "Authentication failed: Status code: " + code + "; message: " + result, Toast.LENGTH_LONG).show();
+                    try {
+                        NetworkResponse networkResponse = error.networkResponse;
+                        if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
+                            Integer code = networkResponse.statusCode;
+                            String result = new String(networkResponse.data);
+                            Toast.makeText(getApplicationContext(), "Authentication failed: Status code: " + code + "; message: " + result, Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "Authentication failed: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                        }
                     }
-                    else {
-                        Toast.makeText(getApplicationContext(), "Authentication failed: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                    catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
 
                     // TODO use helper method

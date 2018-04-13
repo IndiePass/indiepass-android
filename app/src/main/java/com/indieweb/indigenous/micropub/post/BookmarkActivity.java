@@ -133,6 +133,7 @@ public class BookmarkActivity extends AppCompatActivity {
         body = findViewById(R.id.bookmarkText);
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
         String MicropubEndpoint = preferences.getString("micropub_endpoint", "");
+        final String AccessToken = preferences.getString("access_token", "");
 
         Toast.makeText(getApplicationContext(), "Sending, please wait", Toast.LENGTH_SHORT).show();
 
@@ -148,14 +149,19 @@ public class BookmarkActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        NetworkResponse networkResponse = error.networkResponse;
-                        if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
-                            Integer code = networkResponse.statusCode;
-                            String result = new String(networkResponse.data);
-                            Toast.makeText(getApplicationContext(), "Bookmark posting failed. Status code: " + code + "; message: " + result, Toast.LENGTH_LONG).show();
+                        try {
+                            NetworkResponse networkResponse = error.networkResponse;
+                            if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
+                                Integer code = networkResponse.statusCode;
+                                String result = new String(networkResponse.data);
+                                Toast.makeText(getApplicationContext(), "Bookmark posting failed. Status code: " + code + "; message: " + result, Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                            }
                         }
-                        else {
-                            Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                        catch (Exception e) {
+                            Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                         sendItem.setEnabled(true);
                     }
@@ -165,6 +171,9 @@ public class BookmarkActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
+
+                // Post access token too, Wordpress scans for the token in the body.
+                params.put("access_token", AccessToken);
 
                 // name, content, entry and bookmark-of.
                 params.put("h", "entry");
@@ -205,8 +214,6 @@ public class BookmarkActivity extends AppCompatActivity {
                 headers.put("Accept", "application/json");
 
                 // Add access token to header.
-                SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-                String AccessToken = preferences.getString("access_token", "");
                 headers.put("Authorization", "Bearer " + AccessToken);
 
                 return headers;
