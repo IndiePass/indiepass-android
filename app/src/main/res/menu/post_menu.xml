@@ -17,6 +17,11 @@
         android:title="@string/add_like" />
 
     <item
+        android:id="@+id/createBookmark"
+        android:icon="@drawable/bookmark"
+        android:title="@string/add_bookmark" />
+
+    <item
         android:id="@+id/createReply"
         android:icon="@drawable/reply"
         android:title="@string/add_reply" />

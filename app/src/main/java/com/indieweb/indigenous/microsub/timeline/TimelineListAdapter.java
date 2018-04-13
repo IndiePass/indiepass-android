@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
@@ -77,6 +78,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public Button reply;
         public Button like;
         public Button repost;
+        public Button bookmark;
         public Button audio;
         public Button external;
     }
@@ -98,6 +100,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.card = convertView.findViewById(R.id.timeline_card);
             holder.row = convertView.findViewById(R.id.timeline_item_row);
             holder.reply = convertView.findViewById(R.id.itemReply);
+            holder.bookmark = convertView.findViewById(R.id.itemBookmark);
             holder.like = convertView.findViewById(R.id.itemLike);
             holder.repost = convertView.findViewById(R.id.itemRepost);
             holder.audio = convertView.findViewById(R.id.itemAudio);
@@ -143,13 +146,14 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             if (item.getType().equals("entry") && item.getName().length() > 0) {
                 holder.name.setVisibility(View.VISIBLE);
                 holder.name.setText(item.getName());
-            } else {
+            }
+            else {
                 holder.name.setVisibility(View.GONE);
             }
 
             // TODO we should probably create subtype classes per 'type'
             String ContextData = "";
-            if (item.getType().equals("in-reply-to") || item.getType().equals("like-of") || item.getType().equals("checkin")) {
+            if (item.getType().equals("bookmark-of") || item.getType().equals("in-reply-to") || item.getType().equals("like-of") || item.getType().equals("checkin")) {
                 String ContextText = "";
                 String ContextUrl = "";
                 switch (item.getType()) {
@@ -160,6 +164,10 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     case "like-of":
                         ContextText = "Like of";
                         ContextUrl = item.getSubType("like-of");
+                        break;
+                    case "bookmark-of":
+                        ContextText = "Bookmark of";
+                        ContextUrl = item.getSubType("bookmark-of");
                         break;
                     case "checkin":
                         ContextText = "Checked in at";
@@ -252,17 +260,20 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
             // Button listeners.
             if (item.getUrl().length() > 0) {
+                holder.bookmark.setVisibility(View.VISIBLE);
                 holder.reply.setVisibility(View.VISIBLE);
                 holder.like.setVisibility(View.VISIBLE);
                 holder.repost.setVisibility(View.VISIBLE);
                 holder.external.setVisibility(View.VISIBLE);
 
+                holder.bookmark.setOnClickListener(new OnBookmarkClickListener(position));
                 holder.reply.setOnClickListener(new OnReplyClickListener(position));
                 holder.like.setOnClickListener(new OnLikeClickListener(position));
                 holder.repost.setOnClickListener(new OnRepostClickListener(position));
                 holder.external.setOnClickListener(new OnExternalClickListener(position));
             }
             else {
+                holder.bookmark.setVisibility(View.VISIBLE);
                 holder.reply.setVisibility(View.GONE);
                 holder.like.setVisibility(View.GONE);
                 holder.repost.setVisibility(View.GONE);
@@ -321,6 +332,24 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         @Override
         public void onClick(View v) {
             Intent i = new Intent(context, RepostActivity.class);
+            TimelineItem item = items.get(this.position);
+            i.putExtra("incomingText", item.getUrl());
+            context.startActivity(i);
+        }
+    }
+
+    // Bookmark listener.
+    class OnBookmarkClickListener implements OnClickListener {
+
+        int position;
+
+        OnBookmarkClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent i = new Intent(context, BookmarkActivity.class);
             TimelineItem item = items.get(this.position);
             i.putExtra("incomingText", item.getUrl());
             context.startActivity(i);

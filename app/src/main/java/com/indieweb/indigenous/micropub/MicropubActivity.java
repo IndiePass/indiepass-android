@@ -21,6 +21,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
+import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
 import com.indieweb.indigenous.micropub.post.NoteActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
@@ -139,6 +140,14 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
                     CreateReply.putExtra("incomingText", incomingText);
                 }
                 startActivity(CreateReply);
+                break;
+            case R.id.createBookmark:
+                Intent CreateBookmark = new Intent(getBaseContext(), BookmarkActivity.class);
+                if (incomingText.length() > 0) {
+                    CreateBookmark.putExtra("incomingText", incomingText);
+                }
+                startActivity(CreateBookmark);
+                break;
             case R.id.createRepost:
                 Intent CreateRepost = new Intent(getBaseContext(), RepostActivity.class);
                 if (incomingText.length() > 0) {

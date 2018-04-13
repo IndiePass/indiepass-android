@@ -106,6 +106,15 @@
 
         </activity>
 
+        <activity
+            android:name=".micropub.post.BookmarkActivity"
+            android:label="@string/add_bookmark"
+            android:parentActivityName=".micropub.MicropubActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.micropub.MicropubActivity" />
+        </activity>
+
     </application>
 
 </manifest>

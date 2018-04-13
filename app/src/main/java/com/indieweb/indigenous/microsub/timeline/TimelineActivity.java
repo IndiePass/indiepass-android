@@ -198,6 +198,13 @@ public class TimelineActivity extends AppCompatActivity {
                                     item.addToSubType(type, object.getJSONArray("like-of").get(0).toString());
                                 }
 
+                                // Like.
+                                // TODO there can me more than one.
+                                if (object.has("bookmark-of")) {
+                                    type = "bookmark-of";
+                                    item.addToSubType(type, object.getJSONArray("bookmark-of").get(0).toString());
+                                }
+
                                 // A checkin.
                                 if (object.has("checkin")) {
                                     type = "checkin";

@@ -17,6 +17,7 @@
     <string name="add_reply">Reply</string>
     <string name="add_repost">Repost</string>
     <string name="add_like">Like</string>
+    <string name="add_bookmark">Bookmark</string>
 
     <string name="log_out">Log out</string>
     <string name="timeline">Timeline</string>

@@ -25,6 +25,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.MainActivity;
+import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
@@ -260,6 +261,14 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                     CreateReply.putExtra("incomingText", incomingText);
                 }
                 startActivity(CreateReply);
+                break;
+            case R.id.createBookmark:
+                Intent CreateBookmark = new Intent(getBaseContext(), BookmarkActivity.class);
+                if (incomingText.length() > 0) {
+                    CreateBookmark.putExtra("incomingText", incomingText);
+                }
+                startActivity(CreateBookmark);
+                break;
             case R.id.createRepost:
                 Intent CreateRepost = new Intent(getBaseContext(), RepostActivity.class);
                 if (incomingText.length() > 0) {

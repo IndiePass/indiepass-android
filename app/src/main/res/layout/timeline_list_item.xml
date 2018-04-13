@@ -100,7 +100,7 @@
                 android:layout_height="19dp" />
 
             <Button
-                android:layout_marginLeft="25dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/like"
                 android:id="@+id/itemLike"
@@ -108,7 +108,7 @@
                 android:layout_height="19dp" />
 
             <Button
-                android:layout_marginLeft="25dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/repost"
                 android:id="@+id/itemRepost"
@@ -116,7 +116,15 @@
                 android:layout_height="19dp" />
 
             <Button
-                android:layout_marginLeft="25dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bookmark"
+                android:id="@+id/itemBookmark"
+                android:layout_width="19dp"
+                android:layout_height="19dp" />
+
+            <Button
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/external"
                 android:id="@+id/itemExternal"
@@ -124,7 +132,7 @@
                 android:layout_height="19dp" />
 
             <Button
-                android:layout_marginLeft="25dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/audio"
                 android:id="@+id/itemAudio"
