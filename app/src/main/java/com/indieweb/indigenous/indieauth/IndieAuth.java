@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -305,14 +306,21 @@ public class IndieAuth extends AppCompatActivity {
             new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), "Authentication failed: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                    NetworkResponse networkResponse = error.networkResponse;
+                    if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
+                        Integer code = networkResponse.statusCode;
+                        String result = new String(networkResponse.data);
+                        Toast.makeText(getApplicationContext(), "Authentication failed: Status code: " + code + "; message: " + result, Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "Authentication failed: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                    }
 
                     // TODO use helper method
                     info.setVisibility(View.VISIBLE);
                     domain.setVisibility(View.VISIBLE);
                     signIn.setVisibility(View.VISIBLE);
 
-                    Log.d("indigenous_debug", error.getMessage());
                 }
             }
         )
