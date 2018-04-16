@@ -143,7 +143,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     .into(holder.authorPhoto);
 
             // Name.
-            if (item.getType().equals("entry") && item.getName().length() > 0) {
+            if ((item.getType().equals("entry") || item.getType().equals("event")) && item.getName().length() > 0) {
                 holder.name.setVisibility(View.VISIBLE);
                 holder.name.setText(item.getName());
             }
