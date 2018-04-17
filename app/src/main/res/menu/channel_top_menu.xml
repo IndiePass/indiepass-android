@@ -7,6 +7,11 @@
         android:title="@string/log_out" />
 
     <item
+        android:id="@+id/channel_list_refresh"
+        android:title="@string/channel_list_refresh"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/refreshSyndications"
         android:title="@string/refresh_syndications" />
 

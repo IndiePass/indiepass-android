@@ -4,30 +4,38 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/channel_list"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/refreshChannels"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:text="@string/channels_not_found"
-        android:layout_margin="20dp"
-        android:visibility="gone"
-        android:textSize="20sp"
-        android:id="@+id/notFound"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <ListView
+            android:id="@+id/channel_list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
 
-    <Button
-        android:layout_marginStart="20dp"
-        android:visibility="gone"
-        android:textSize="16sp"
-        android:layout_below="@+id/notFound"
-        android:text="@string/reload"
-        android:id="@+id/reloadChannels"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp" />
+        <TextView
+            android:text="@string/channels_not_found"
+            android:layout_margin="20dp"
+            android:visibility="gone"
+            android:textSize="20sp"
+            android:id="@+id/notFound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_marginStart="20dp"
+            android:visibility="gone"
+            android:textSize="16sp"
+            android:layout_below="@+id/notFound"
+            android:text="@string/reload"
+            android:id="@+id/reloadChannels"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/actionButton"

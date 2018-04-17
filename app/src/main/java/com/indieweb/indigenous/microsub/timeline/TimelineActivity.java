@@ -1,9 +1,15 @@
 package com.indieweb.indigenous.microsub.timeline;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -17,8 +23,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.util.Syndications;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,14 +42,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TimelineActivity extends AppCompatActivity {
+public class TimelineActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     String channelId;
     String channelName;
     String entryId;
     Integer unread;
     private TimelineListAdapter adapter;
-    private List<TimelineItem> TimelineItems = new ArrayList<TimelineItem>();
+    private List<TimelineItem> TimelineItems = new ArrayList<>();
+    SwipeRefreshLayout refreshLayout;
     ListView listView;
     Button loadMoreButton;
     boolean loadMoreButtonAdded = false;
@@ -52,8 +61,6 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
 
         listView = findViewById(R.id.timeline_list);
-        adapter = new TimelineListAdapter(this, TimelineItems);
-        listView.setAdapter(adapter);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -63,12 +70,55 @@ public class TimelineActivity extends AppCompatActivity {
             this.setTitle(channelName);
             loadMoreButton = new Button(this);
             loadMoreButton.setText(R.string.load_more);
-            getTimeLineItems("");
+            refreshLayout = findViewById(R.id.refreshTimeline);
+            refreshLayout.setOnRefreshListener(this);
+            startTimeline();
         }
         else {
             Toast.makeText(this, "Channel not found", Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.timeline_top_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.timeline_list_refresh:
+                refreshLayout.setRefreshing(true);
+                startTimeline();
+                return true;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onRefresh() {
+        startTimeline();
+    }
+
+    /**
+     * Checks the state of the pull to refresh.
+     */
+    public void checkRefreshingStatus() {
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
+    }
+
+    public void startTimeline() {
+        TimelineItems = new ArrayList<>();
+        adapter = new TimelineListAdapter(this, TimelineItems);
+        listView.setAdapter(adapter);
+        getTimeLineItems("");
     }
 
     /**
@@ -337,12 +387,14 @@ public class TimelineActivity extends AppCompatActivity {
                             Log.d("indigenous_debug", e.getMessage());
                         }
 
+                        checkRefreshingStatus();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getApplicationContext(), "Request failed", Toast.LENGTH_LONG).show();
+                        checkRefreshingStatus();
                     }
                 }
         )

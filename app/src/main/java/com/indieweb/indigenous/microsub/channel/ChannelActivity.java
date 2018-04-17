@@ -6,9 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,15 +46,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ChannelActivity extends AppCompatActivity implements View.OnClickListener, BottomSheetListener {
+public class ChannelActivity extends AppCompatActivity implements View.OnClickListener, BottomSheetListener, SwipeRefreshLayout.OnRefreshListener {
 
     String incomingText = "";
     String incomingImage = "";
     ListView listChannel;
     TextView notFound;
     Button reloadChannels;
+    SwipeRefreshLayout refreshLayout;
     private ChannelListAdapter adapter;
-    private List<Channel> Channels = new ArrayList<Channel>();
+    private List<Channel> Channels = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,8 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
         listChannel = findViewById(R.id.channel_list);
         notFound = findViewById(R.id.notFound);
         reloadChannels = findViewById(R.id.reloadChannels);
+        refreshLayout = findViewById(R.id.refreshChannels);
+        refreshLayout.setOnRefreshListener(this);
         reloadChannels.setOnClickListener(new reloadChannelsListener());
         startChannels();
     }
@@ -72,6 +75,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
      * Start channels.
      */
     public void startChannels() {
+        Channels = new ArrayList<>();
         notFound.setVisibility(View.GONE);
         reloadChannels.setVisibility(View.GONE);
         listChannel.setVisibility(View.VISIBLE);
@@ -88,6 +92,10 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    @Override
+    public void onRefresh() {
+        startChannels();
+    }
 
     /**
      * Get channels.
@@ -121,10 +129,12 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                             }
 
                             adapter.notifyDataSetChanged();
+                            checkRefreshingStatus();
 
                         }
                         catch (JSONException e) {
                             Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            checkRefreshingStatus();
                         }
 
                     }
@@ -135,6 +145,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                         notFound.setVisibility(View.VISIBLE);
                         reloadChannels.setVisibility(View.VISIBLE);
                         listChannel.setVisibility(View.GONE);
+                        checkRefreshingStatus();
                     }
                 }
         )
@@ -156,7 +167,15 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         queue.add(getRequest);
+    }
 
+    /**
+     * Checks the state of the pull to refresh.
+     */
+    public void checkRefreshingStatus() {
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
     }
 
     /**
@@ -180,7 +199,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.top_menu, menu);
+        getMenuInflater().inflate(R.menu.channel_top_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -214,6 +233,11 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.refreshSyndications:
                 new Syndications(getApplicationContext()).refresh();
                 return true;
+
+            case R.id.channel_list_refresh:
+                startChannels();
+                return true;
+
         }
 
         return super.onOptionsItemSelected(item);

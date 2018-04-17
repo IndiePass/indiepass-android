@@ -4,6 +4,8 @@
     <string name="sign_in_with_domain">Sign in</string>
     <string name="sign_in_info">This login uses IndieAuth and requires you to have a website on your domain that supports IndieAuth.</string>
 
+    <string name="timeline_list_refresh">Refresh items</string>
+    <string name="channel_list_refresh">Refresh channels</string>
     <string name="no_channels_found">No channels found</string>
     <string name="no_posts_found">No posts found</string>
     <string name="tags">Tags - separate with comma</string>
@@ -19,6 +21,7 @@
     <string name="add_like">Like</string>
     <string name="add_bookmark">Bookmark</string>
 
+    <string name="unread">New</string>
     <string name="log_out">Log out</string>
     <string name="timeline">Timeline</string>
     <string name="channels">Channels</string>
