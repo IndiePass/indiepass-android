@@ -104,6 +104,8 @@ public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
                             intent.putExtra("channelId", channel.getUid());
                             intent.putExtra("channelName", channel.getName());
                             intent.putExtra("unread", channel.getUnread());
+                            channels.get(position).setUnread(0);
+                            holder.unread.setVisibility(View.GONE);
                             context.startActivity(intent);
                             break;
                     }
