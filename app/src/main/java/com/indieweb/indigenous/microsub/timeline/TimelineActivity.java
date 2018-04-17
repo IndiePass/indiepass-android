@@ -164,6 +164,7 @@ public class TimelineActivity extends AppCompatActivity {
                                 object = itemList.getJSONObject(i);
                                 TimelineItem item = new TimelineItem();
 
+                                Boolean isRead = false;
                                 String type = "entry";
                                 String url = "";
                                 String name = "";
@@ -178,6 +179,11 @@ public class TimelineActivity extends AppCompatActivity {
                                 if (i == 0) {
                                     entryId = item.getId();
                                 }
+
+                                if (object.has("_is_read")) {
+                                    isRead = object.getBoolean("_is_read");
+                                }
+                                item.setRead(isRead);
 
                                 // Type.
                                 if (object.has("type")) {

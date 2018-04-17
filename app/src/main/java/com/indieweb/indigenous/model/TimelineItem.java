@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class TimelineItem {
 
+    private boolean isRead;
     private String id;
     private String type;
     private String published;
@@ -20,6 +21,14 @@ public class TimelineItem {
     private String audio;
     // TODO there can actually be multiple of say reply (at least in theory)
     private Map<String, String> subType = new LinkedHashMap<>();
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
+    }
 
     public String getId() {
         return id;

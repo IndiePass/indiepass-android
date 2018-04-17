@@ -64,6 +64,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     public void onClick(View view) {}
 
     public static class ViewHolder {
+        public TextView unread;
         public TextView author;
         public ImageView authorPhoto;
         public TextView name;
@@ -89,6 +90,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.timeline_list_item, null);
             holder = new ViewHolder();
+            holder.unread = convertView.findViewById(R.id.timeline_new);
             holder.published = convertView.findViewById(R.id.timeline_published);
             holder.author = convertView.findViewById(R.id.timeline_author);
             holder.authorPhoto = convertView.findViewById(R.id.timeline_author_photo);
@@ -117,13 +119,23 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             String color = ((position % 2) == 0) ? "#f8f7f1" : "#ffffff";
             holder.row.setBackgroundColor(Color.parseColor(color));
 
+            // Unread.
+            if (!item.isRead()) {
+                holder.unread.setVisibility(View.VISIBLE);
+                holder.unread.setText(R.string.unread);
+            }
+            else {
+                holder.unread.setVisibility(View.GONE);
+            }
+
             // Published.
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
             Date result;
             try {
                 result = df.parse(item.getPublished());
                 holder.published.setVisibility(View.VISIBLE);
-                holder.published.setText(result.toString());
+                String published = result.toString();
+                holder.published.setText(published);
             } catch (ParseException ignored) {
                 holder.published.setVisibility(View.GONE);
             }
@@ -132,7 +144,8 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             if (item.getAuthorName().length() > 0) {
                 holder.author.setVisibility(View.VISIBLE);
                 holder.author.setText(item.getAuthorName());
-            } else {
+            }
+            else {
                 holder.author.setVisibility(View.GONE);
             }
 
