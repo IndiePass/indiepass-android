@@ -87,17 +87,6 @@ public class RepostActivity extends AppCompatActivity {
             String incoming = extras.getString("incomingText");
             if (incoming != null && incoming.length() > 0) {
                 url.setText(incoming);
-
-                // Add to syndications.
-                Syndication syndication = new Syndication();
-                syndication.setUid(incoming);
-                syndication.setName("To repost URL");
-                Syndications.add(syndication);
-                CheckBox ch = new CheckBox(this);
-                ch.setText(syndication.getName());
-                ch.setId(index);
-                syndicationLayout.addView(ch);
-
             }
         }
     }
