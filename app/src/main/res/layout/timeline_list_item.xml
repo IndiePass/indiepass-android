@@ -54,7 +54,9 @@
             android:layout_marginBottom="5dp"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:maxLines="5"
+            android:maxLines="10"
+            android:clickable="true"
+            android:focusable="true"
             android:textSize="16sp"
             android:lineSpacingExtra="5dp"
             android:ellipsize="end" />

@@ -203,8 +203,10 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     else {
                         holder.content.setText(Html.fromHtml(html));
                     }
+                    holder.content.setMovementMethod(LinkMovementMethod.getInstance());
                 }
                 else {
+                    holder.content.setMovementMethod(null);
                     holder.content.setText(item.getTextContent());
                 }
 
@@ -231,6 +233,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 }
             }
             else {
+                holder.content.setMovementMethod(null);
                 holder.content.setVisibility(View.GONE);
                 holder.expand.setVisibility(View.GONE);
             }
