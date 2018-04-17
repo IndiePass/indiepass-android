@@ -33,6 +33,7 @@ import com.indieweb.indigenous.micropub.post.NoteActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
+import com.indieweb.indigenous.util.PopupMessage;
 import com.indieweb.indigenous.util.Syndications;
 import com.kennyc.bottomsheet.BottomSheet;
 import com.kennyc.bottomsheet.BottomSheetListener;
@@ -174,6 +175,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
      */
     public void checkRefreshingStatus() {
         if (refreshLayout.isRefreshing()) {
+            new PopupMessage(getString(R.string.channels_refreshed), findViewById(R.id.channel_root)).show();
             refreshLayout.setRefreshing(false);
         }
     }

@@ -4,6 +4,8 @@
     <string name="sign_in_with_domain">Sign in</string>
     <string name="sign_in_info">This login uses IndieAuth and requires you to have a website on your domain that supports IndieAuth.</string>
 
+    <string name="channels_refreshed">Channels refreshed</string>
+    <string name="timeline_items_refreshed">Items refreshed</string>
     <string name="timeline_list_refresh">Refresh items</string>
     <string name="channel_list_refresh">Refresh channels</string>
     <string name="no_channels_found">No channels found</string>
