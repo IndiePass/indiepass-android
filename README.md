@@ -25,9 +25,9 @@ More information is https://indieweb.org/Indigenous
   - add image, tags
     (images are currently scaled to 1000px width/height)
 - Microsub
-  - read channels
-  - read items per channel
-  - reply, like, repost directly
+  - read channels, with pull to refresh
+  - read items per channel, with pull to refresh
+  - reply, like, repost or bookmark directly
   - go to external URL
   - listen to audio if available
   - view fullscreen images, zoom and pinch
