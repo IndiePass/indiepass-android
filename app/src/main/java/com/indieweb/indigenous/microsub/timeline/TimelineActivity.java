@@ -250,14 +250,12 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 }
 
                                 // Like.
-                                // TODO there can me more than one.
                                 if (object.has("like-of")) {
                                     type = "like-of";
                                     item.addToSubType(type, object.getJSONArray("like-of").get(0).toString());
                                 }
 
                                 // Like.
-                                // TODO there can me more than one.
                                 if (object.has("bookmark-of")) {
                                     type = "bookmark-of";
                                     item.addToSubType(type, object.getJSONArray("bookmark-of").get(0).toString());
@@ -335,6 +333,9 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 // Name.
                                 if (object.has("name")) {
                                     name = object.getString("name").replace("\n", "").replace("\r", "");
+                                }
+                                else if (object.has("summary")) {
+                                    name = object.getString("summary").replace("\n", "").replace("\r", "");
                                 }
 
                                 // Photo.
