@@ -21,6 +21,7 @@ More information is https://indieweb.org/Indigenous
   - post reply
   - post repost
   - post like
+  - post bookmark
   - add image, tags
     (images are currently scaled to 1000px width/height)
 - Microsub
