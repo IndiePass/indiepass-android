@@ -26,6 +26,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
+import com.indieweb.indigenous.micropub.post.EventActivity;
+import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
@@ -299,6 +301,20 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                     CreateRepost.putExtra("incomingText", incomingText);
                 }
                 startActivity(CreateRepost);
+                break;
+            case R.id.createEvent:
+                Intent CreateEvent = new Intent(getBaseContext(), EventActivity.class);
+                if (incomingText.length() > 0) {
+                    CreateEvent.putExtra("incomingText", incomingText);
+                }
+                startActivity(CreateEvent);
+                break;
+            case R.id.createRSVP:
+                Intent CreateRSVP = new Intent(getBaseContext(), RsvpActivity.class);
+                if (incomingText.length() > 0) {
+                    CreateRSVP.putExtra("incomingText", incomingText);
+                }
+                startActivity(CreateRSVP);
                 break;
         }
     }

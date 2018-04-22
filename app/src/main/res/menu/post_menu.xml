@@ -31,4 +31,13 @@
         android:icon="@drawable/repost"
         android:title="@string/add_repost" />
 
+    <item
+        android:id="@+id/createEvent"
+        android:icon="@drawable/event"
+        android:title="@string/add_event" />
+
+    <item
+        android:id="@+id/createRSVP"
+        android:icon="@drawable/rsvp"
+        android:title="@string/add_rsvp" />
 </menu>

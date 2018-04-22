@@ -129,9 +129,10 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
 
             // Published.
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ssZ");
             Date result;
             try {
+                // TODO use format (cf event)
                 result = df.parse(item.getPublished());
                 holder.published.setVisibility(View.VISIBLE);
                 String published = result.toString();

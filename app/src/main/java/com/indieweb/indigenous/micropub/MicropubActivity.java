@@ -22,10 +22,12 @@ import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
+import com.indieweb.indigenous.micropub.post.EventActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
 import com.indieweb.indigenous.micropub.post.NoteActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
+import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.microsub.channel.ChannelActivity;
 import com.indieweb.indigenous.util.Syndications;
 
@@ -155,7 +157,20 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
                 }
                 startActivity(CreateRepost);
                 break;
-
+            case R.id.createEvent:
+                Intent CreateEvent = new Intent(getBaseContext(), EventActivity.class);
+                if (incomingText.length() > 0) {
+                    CreateEvent.putExtra("incomingText", incomingText);
+                }
+                startActivity(CreateEvent);
+                break;
+            case R.id.createRSVP:
+                Intent CreateRSVP = new Intent(getBaseContext(), RsvpActivity.class);
+                if (incomingText.length() > 0) {
+                    CreateRSVP.putExtra("incomingText", incomingText);
+                }
+                startActivity(CreateRSVP);
+                break;
         }
         return false;
     }

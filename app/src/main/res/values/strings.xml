@@ -22,6 +22,8 @@
     <string name="add_repost">Repost</string>
     <string name="add_like">Like</string>
     <string name="add_bookmark">Bookmark</string>
+    <string name="add_event">Event</string>
+    <string name="add_rsvp">RSVP</string>
 
     <string name="unread">New</string>
     <string name="log_out">Log out</string>
@@ -47,5 +49,16 @@
     <string name="channels_not_found">Channels not found, check your connection</string>
     <string name="reload">Reload</string>
     <string name="load_more">Load More</string>
+    <string name="event">Event</string>
+    <string name="rsvp">RSVP</string>
+
+
+    <string name="rsvp_select">Select RSVP</string>
+    <string-array name="rsvp_arrays">
+        <item>yes</item>
+        <item>no</item>
+        <item>maybe</item>
+        <item>interested</item>
+    </string-array>
 
 </resources>

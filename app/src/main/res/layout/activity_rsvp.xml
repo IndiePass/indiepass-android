@@ -10,8 +10,16 @@
         android:orientation="vertical"
         android:padding="10dp">
 
+        <Spinner
+            android:id="@+id/rsvpValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/rsvp_arrays"
+            android:prompt="@string/rsvp_select"
+            android:layout_margin="5dp" />
+
         <EditText
-            android:id="@+id/replyUrl"
+            android:id="@+id/rsvpUrl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -19,7 +27,7 @@
             android:inputType="textUri" />
 
         <EditText
-            android:id="@+id/replyText"
+            android:id="@+id/rsvpText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -30,7 +38,7 @@
             android:singleLine="false" />
 
         <EditText
-            android:id="@+id/replyTags"
+            android:id="@+id/rsvpTags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"

@@ -12,18 +12,44 @@
         android:padding="10dp">
 
         <EditText
-            android:id="@+id/noteText"
+            android:id="@+id/eventTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:ems="10"
-            android:hint="@string/note"
-            android:inputType="textMultiLine"
-            android:lines="4"
-            android:singleLine="false" />
+            android:hint="@string/title"
+            android:inputType="text" />
 
         <EditText
-            android:id="@+id/noteTags"
+            android:inputType="none"
+            android:focusable="false"
+            android:layout_margin="5dp"
+            android:hint="Start date"
+            android:id="@+id/startDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:inputType="none"
+            android:focusable="false"
+            android:layout_margin="5dp"
+            android:hint="End date"
+            android:id="@+id/endDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/eventText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:lines="4"
+            android:ems="10"
+            android:hint="@string/body"
+            android:inputType="textMultiLine" />
+
+        <EditText
+            android:id="@+id/eventTags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
