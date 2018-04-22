@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
+import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
@@ -82,6 +83,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public Button bookmark;
         public Button audio;
         public Button external;
+        public Button rsvp;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -107,6 +109,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.repost = convertView.findViewById(R.id.itemRepost);
             holder.audio = convertView.findViewById(R.id.itemAudio);
             holder.external = convertView.findViewById(R.id.itemExternal);
+            holder.rsvp = convertView.findViewById(R.id.itemRSVP);
             convertView.setTag(holder);
         }
         else {
@@ -288,6 +291,14 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.like.setOnClickListener(new OnLikeClickListener(position));
                 holder.repost.setOnClickListener(new OnRepostClickListener(position));
                 holder.external.setOnClickListener(new OnExternalClickListener(position));
+
+                if (item.getType().equals("event")) {
+                    holder.rsvp.setVisibility(View.VISIBLE);
+                    holder.rsvp.setOnClickListener(new OnRsvpClickListener(position));
+                }
+                else {
+                    holder.rsvp.setVisibility(View.GONE);
+                }
             }
             else {
                 holder.bookmark.setVisibility(View.VISIBLE);
@@ -295,6 +306,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.like.setVisibility(View.GONE);
                 holder.repost.setVisibility(View.GONE);
                 holder.external.setVisibility(View.GONE);
+                holder.rsvp.setVisibility(View.GONE);
             }
         }
 
@@ -405,6 +417,24 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             TimelineItem item = items.get(this.position);
             Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(item.getUrl()));
             context.startActivity(intent);
+        }
+    }
+
+    // RSVP listener.
+    class OnRsvpClickListener implements OnClickListener {
+
+        int position;
+
+        OnRsvpClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent i = new Intent(context, RsvpActivity.class);
+            TimelineItem item = items.get(this.position);
+            i.putExtra("incomingText", item.getUrl());
+            context.startActivity(i);
         }
     }
 
