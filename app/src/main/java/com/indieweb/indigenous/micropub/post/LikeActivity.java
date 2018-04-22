@@ -3,6 +3,7 @@ package com.indieweb.indigenous.micropub.post;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -80,14 +81,31 @@ public class LikeActivity extends AppCompatActivity {
 
         // Check extras.
         url = findViewById(R.id.likeUrl);
+        Intent intent = getIntent();
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
 
-            // Incoming text.
-            String incoming = extras.getString("incomingText");
-            if (incoming != null && incoming.length() > 0) {
-                url.setText(incoming);
+            String action = intent.getAction();
+            if (Intent.ACTION_SEND.equals(action)) {
+                try {
+                    if (extras.containsKey(Intent.EXTRA_TEXT)) {
+                        String urlIncoming = extras.get(Intent.EXTRA_TEXT).toString();
+                        if (urlIncoming != null && urlIncoming.length() > 0) {
+                            url.setText(urlIncoming);
+                            send();
+                        }
+                    }
+                }
+                catch (NullPointerException ignored) {}
             }
+            else {
+                // Incoming text.
+                String incoming = extras.getString("incomingText");
+                if (incoming != null && incoming.length() > 0) {
+                    url.setText(incoming);
+                }
+            }
+
         }
     }
 
@@ -114,7 +132,9 @@ public class LikeActivity extends AppCompatActivity {
      */
     public void send() {
 
-        sendItem.setEnabled(false);
+        if (sendItem != null) {
+            sendItem.setEnabled(false);
+        }
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
         url = findViewById(R.id.likeUrl);
@@ -151,7 +171,10 @@ public class LikeActivity extends AppCompatActivity {
                         catch (Exception e) {
                             Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
-                        sendItem.setEnabled(true);
+
+                        if (sendItem != null) {
+                            sendItem.setEnabled(true);
+                        }
                     }
                 }
         )

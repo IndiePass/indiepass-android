@@ -10,4 +10,8 @@
         android:id="@+id/refreshSyndications"
         android:title="@string/refresh_syndications" />
 
+    <item
+        android:id="@+id/settings"
+        android:title="@string/settings" />
+
 </menu>

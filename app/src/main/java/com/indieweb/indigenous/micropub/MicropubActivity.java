@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.SettingsActivity;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.EventActivity;
@@ -212,6 +213,12 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
             case R.id.refreshSyndications:
                 new Syndications(getApplicationContext()).refresh();
                 return true;
+
+            case R.id.settings:
+                Intent goSettings = new Intent(getBaseContext(), SettingsActivity.class);
+                startActivity(goSettings);
+                return true;
+
         }
 
         return super.onOptionsItemSelected(item);

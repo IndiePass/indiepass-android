@@ -25,6 +25,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.MainActivity;
+import com.indieweb.indigenous.SettingsActivity;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.EventActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
@@ -242,6 +243,10 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                 startChannels();
                 return true;
 
+            case R.id.settings:
+                Intent goSettings = new Intent(getBaseContext(), SettingsActivity.class);
+                startActivity(goSettings);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

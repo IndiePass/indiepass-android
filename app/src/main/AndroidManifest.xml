@@ -18,7 +18,6 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -84,8 +83,19 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.indieweb.indigenous.micropub.MicropubActivity" />
-
         </activity>
+
+        <activity-alias
+            android:enabled="false"
+            android:targetActivity=".micropub.post.RepostActivity"
+            android:name=".RepostAlias"
+            android:label="@string/add_repost">
+            <intent-filter android:label="@string/add_repost">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity-alias>
 
         <activity
             android:name=".micropub.post.LikeActivity"
@@ -96,6 +106,18 @@
                 android:value="com.indieweb.indigenous.micropub.MicropubActivity" />
         </activity>
 
+        <activity-alias
+            android:enabled="false"
+            android:targetActivity=".micropub.post.LikeActivity"
+            android:name=".LikeAlias"
+            android:label="@string/add_like">
+            <intent-filter android:label="@string/add_like">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity-alias>
+
         <activity
             android:name=".micropub.post.ReplyActivity"
             android:label="@string/reply_to"
@@ -103,8 +125,19 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.indieweb.indigenous.micropub.MicropubActivity" />
-
         </activity>
+
+        <activity-alias
+            android:enabled="false"
+            android:targetActivity=".micropub.post.ReplyActivity"
+            android:name=".ReplyAlias"
+            android:label="@string/add_reply">
+            <intent-filter android:label="@string/add_reply">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity-alias>
 
         <activity
             android:name=".micropub.post.BookmarkActivity"
@@ -114,6 +147,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.indieweb.indigenous.micropub.MicropubActivity" />
         </activity>
+
+        <activity-alias
+            android:enabled="false"
+            android:targetActivity=".micropub.post.BookmarkActivity"
+            android:name=".BookmarkAlias"
+            android:label="@string/add_bookmark">
+            <intent-filter android:label="@string/add_bookmark">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity-alias>
 
         <activity
             android:name=".micropub.post.EventActivity"
@@ -134,6 +179,8 @@
                 android:value="com.indieweb.indigenous.micropub.MicropubActivity" />
 
         </activity>
+
+        <activity android:name=".SettingsActivity" />
 
     </application>
 
