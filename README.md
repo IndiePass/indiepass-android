@@ -22,12 +22,14 @@ More information is https://indieweb.org/Indigenous
   - post repost
   - post like
   - post bookmark
+  - post event
+  - post rsvp
   - add image, tags
     (images are currently scaled to 1000px width/height)
 - Microsub
   - read channels, with pull to refresh
   - read items per channel, with pull to refresh
-  - reply, like, repost or bookmark directly
+  - reply, like, repost, rsvp or bookmark directly
   - go to external URL
   - listen to audio if available
   - view fullscreen images, zoom and pinch
