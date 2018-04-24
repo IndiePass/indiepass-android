@@ -1,5 +1,6 @@
 package com.indieweb.indigenous.micropub.post;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -29,6 +30,7 @@ import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.microsub.channel.ChannelActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Syndication;
+import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.VolleyMultipartRequest;
 
 import org.json.JSONArray;
@@ -43,6 +45,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Integer.parseInt;
+
 public class ArticleActivity extends AppCompatActivity {
 
     EditText title;
@@ -52,6 +56,7 @@ public class ArticleActivity extends AppCompatActivity {
     CardView card;
     Uri imageUri;
     Bitmap bitmap;
+    String mime = "image/jpg";
     LinearLayout syndicationLayout;
     private List<Syndication> Syndications = new ArrayList<>();
     private MenuItem sendItem;
@@ -106,7 +111,10 @@ public class ArticleActivity extends AppCompatActivity {
             if (incomingImage != null && incomingImage.length() > 0) {
                 try {
                     card.setVisibility(View.VISIBLE);
-                    bitmap = scaleDown(MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(incomingImage)), 1000, false);
+                    ContentResolver cR = this.getContentResolver();
+                    imageUri = Uri.parse(incomingImage);
+                    mime = cR.getType(imageUri);
+                    bitmap = scaleDown(MediaStore.Images.Media.getBitmap(cR, imageUri), 1000, false);
                     image.setImageBitmap(bitmap);
                 }
                 catch (IOException ignored) {}
@@ -147,7 +155,9 @@ public class ArticleActivity extends AppCompatActivity {
             imageUri = data.getData();
             try {
                 card.setVisibility(View.VISIBLE);
-                bitmap = scaleDown(MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri), 1000, false);
+                ContentResolver cR = this.getContentResolver();
+                mime = cR.getType(imageUri);
+                bitmap = scaleDown(MediaStore.Images.Media.getBitmap(cR, imageUri), 1000, false);
                 image.setImageBitmap(bitmap);
             }
             catch (IOException ignored) {}
@@ -188,8 +198,24 @@ public class ArticleActivity extends AppCompatActivity {
     * Convert bitmap to byte[] array.
     */
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
+
+        // Default quality. The preference is stored as a string, but cast it to an integer.
+        Integer ImageQuality = 80;
+        String qualityPreference = Preferences.getPreference(getApplicationContext(), "pref_key_image_quality", ImageQuality.toString());
+        if (parseInt(qualityPreference) <= 100 && parseInt(qualityPreference) > 0) {
+            ImageQuality = parseInt(qualityPreference);
+        }
+
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
+        switch (mime) {
+            case "image/png":
+                bitmap.compress(Bitmap.CompressFormat.PNG, ImageQuality, byteArrayOutputStream);
+                break;
+            case "image/jpg":
+            default:
+                bitmap.compress(Bitmap.CompressFormat.JPEG, ImageQuality, byteArrayOutputStream);
+                break;
+        }
         return byteArrayOutputStream.toByteArray();
     }
 
@@ -294,8 +320,13 @@ public class ArticleActivity extends AppCompatActivity {
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
                 long imagename = System.currentTimeMillis();
+                String extension = "jpg";
+                if (mime.equals("image/png")) {
+                    extension = "png";
+                }
+
                 if (bitmap != null) {
-                    params.put("photo[0]", new DataPart(imagename + ".png", getFileDataFromDrawable(bitmap)));
+                    params.put("photo[0]", new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap)));
                 }
                 return params;
             }

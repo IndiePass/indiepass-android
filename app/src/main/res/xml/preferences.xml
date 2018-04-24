@@ -2,8 +2,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
-    <PreferenceCategory
-        android:title="@string/pref_category_sharing">
+    <PreferenceScreen
+        android:title="@string/pref_category_sharing_title"
+        android:summary="@string/pref_category_sharing_summary"
+        android:persistent="false">
         <CheckBoxPreference
             android:key="pref_key_share_expose_like"
             android:summary="@string/pref_summary_expose_like"
@@ -24,6 +26,18 @@
             android:summary="@string/pref_summary_expose_reply"
             android:title="@string/pref_share_reply_enabled"
             android:defaultValue="false" />
-    </PreferenceCategory>
-</PreferenceScreen>
+    </PreferenceScreen>
+    <PreferenceScreen
+        android:title="@string/pref_category_media_title"
+        android:summary="@string/pref_category_media_summary"
+        android:persistent="false">
+        <EditTextPreference
+            android:inputType="number"
+            android:key="pref_key_image_quality"
+            android:title="@string/pref_key_image_quality_title"
+            android:summary="@string/pref_key_image_quality_summary"
+            android:defaultValue="80" />
+    </PreferenceScreen>
+
+    </PreferenceScreen>
 
