@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -37,7 +38,15 @@ public class Syndications {
 
         final SharedPreferences preferences = context.getSharedPreferences("indigenous", MODE_PRIVATE);
         String microPubEndpoint = preferences.getString("micropub_endpoint", "");
-        microPubEndpoint += "?q=syndicate-to";
+
+        // Some endpoints already contain GET params. Instead of overriding the getParams method, we
+        // just check it here.
+        if (microPubEndpoint.contains("?")) {
+            microPubEndpoint += "&syndicate-to";
+        }
+        else {
+            microPubEndpoint += "?q=syndicate-to";
+        }
 
         StringRequest getRequest = new StringRequest(Request.Method.GET, microPubEndpoint,
                 new Response.Listener<String>() {
@@ -50,7 +59,7 @@ public class Syndications {
                             if (itemList.length() > 0) {
                                 SharedPreferences.Editor editor = context.getSharedPreferences("indigenous", MODE_PRIVATE).edit();
                                 editor.putString("syndications", response).apply();
-                                Toast.makeText(context, "Syndications reloaded", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Syndications saved", Toast.LENGTH_LONG).show();
                             }
                             else {
                                 Toast.makeText(context, "No syndications found", Toast.LENGTH_LONG).show();
@@ -58,7 +67,7 @@ public class Syndications {
 
                         }
                         catch (JSONException e) {
-                            Log.d("indigenous_debug", e.getMessage());
+                            Toast.makeText(context, "Error getting syndications: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -66,8 +75,20 @@ public class Syndications {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Request failed", Toast.LENGTH_LONG).show();
-                        Log.d("indigenous_debug", error.getMessage());
+                        try {
+                            NetworkResponse networkResponse = error.networkResponse;
+                            if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
+                                Integer code = networkResponse.statusCode;
+                                String result = new String(networkResponse.data);
+                                Toast.makeText(context, "Error getting syndications. Status code: " + code + "; message: " + result, Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                Toast.makeText(context, "Error getting syndications: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        catch (Exception e) {
+                            Toast.makeText(context, "Error getting syndications " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
         )

@@ -27,6 +27,7 @@ import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.MicropubActivity;
 import com.indieweb.indigenous.microsub.channel.ChannelActivity;
+import com.indieweb.indigenous.util.Syndications;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -283,6 +284,9 @@ public class IndieAuth extends AppCompatActivity {
                         editor.apply();
 
                         Toast.makeText(getApplicationContext(), "Authentication successful", Toast.LENGTH_SHORT).show();
+
+                        // Get syndications.
+                        new Syndications(getApplicationContext()).refresh();
 
                         if (preferences.getString("microsub_endpoint", "").length() > 0) {
                             Intent Channels = new Intent(getBaseContext(), ChannelActivity.class);
