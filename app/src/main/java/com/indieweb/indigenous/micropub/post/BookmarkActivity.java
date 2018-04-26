@@ -3,7 +3,6 @@ package com.indieweb.indigenous.micropub.post;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -49,6 +48,9 @@ public class BookmarkActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookmark);
+
+        title = findViewById(R.id.bookmarkTitle);
+        body = findViewById(R.id.bookmarkText);
 
         // TODO make helper function.
         int index = 0;
@@ -100,14 +102,24 @@ public class BookmarkActivity extends AppCompatActivity {
                 catch (NullPointerException ignored) {}
             }
             else {
-                // Incoming text.
-                String incoming = extras.getString("incomingText");
-                if (incoming != null && incoming.length() > 0) {
-                    url.setText(incoming);
+                String urlIncoming = extras.getString("incomingText");
+                if (urlIncoming != null && urlIncoming.length() > 0) {
+                    setUrlAndFocusOnTitle(urlIncoming);
                 }
             }
         }
 
+    }
+
+    /**
+     * Sets the incoming text as URL and puts focus on title field.
+     *
+     * @param incomingUrl
+     *   The incoming URL.
+     */
+    public void setUrlAndFocusOnTitle(String incomingUrl) {
+        url.setText(incomingUrl);
+        title.requestFocus();
     }
 
     @Override
@@ -138,9 +150,7 @@ public class BookmarkActivity extends AppCompatActivity {
         }
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
-        title = findViewById(R.id.bookmarkTitle);
         tags = findViewById(R.id.bookmarkTags);
-        body = findViewById(R.id.bookmarkText);
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
         String MicropubEndpoint = preferences.getString("micropub_endpoint", "");
         final String AccessToken = preferences.getString("access_token", "");

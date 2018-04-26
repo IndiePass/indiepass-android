@@ -2,6 +2,7 @@ package com.indieweb.indigenous.micropub.post;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -49,6 +50,8 @@ public class ReplyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reply);
 
+        reply = findViewById(R.id.replyText);
+
         // TODO make helper function.
         int index = 0;
         syndicationLayout = findViewById(R.id.syndicate);
@@ -91,20 +94,30 @@ public class ReplyActivity extends AppCompatActivity {
                     if (extras.containsKey(Intent.EXTRA_TEXT)) {
                         String urlIncoming = extras.get(Intent.EXTRA_TEXT).toString();
                         if (urlIncoming != null && urlIncoming.length() > 0) {
-                            url.setText(urlIncoming);
+                            setUrlAndFocusOnMessage(urlIncoming);
                         }
                     }
                 }
                 catch (NullPointerException ignored) {}
             }
             else {
-                // Incoming text.
-                String incoming = extras.getString("incomingText");
-                if (incoming != null && incoming.length() > 0) {
-                    url.setText(incoming);
+                String urlIncoming = extras.getString("incomingText");
+                if (urlIncoming != null && urlIncoming.length() > 0) {
+                    setUrlAndFocusOnMessage(urlIncoming);
                 }
             }
         }
+    }
+
+    /**
+     * Sets the incoming text as URL and puts focus on message field.
+     *
+     * @param incomingUrl
+     *   The incoming URL.
+     */
+    public void setUrlAndFocusOnMessage(String incomingUrl) {
+        url.setText(incomingUrl);
+        reply.requestFocus();
     }
 
     @Override
@@ -133,7 +146,6 @@ public class ReplyActivity extends AppCompatActivity {
         sendItem.setEnabled(false);
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
-        reply = findViewById(R.id.replyText);
         tags = findViewById(R.id.replyTags);
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
         String MicropubEndpoint = preferences.getString("micropub_endpoint", "");
