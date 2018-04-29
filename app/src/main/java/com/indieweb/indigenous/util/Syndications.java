@@ -42,7 +42,7 @@ public class Syndications {
         // Some endpoints already contain GET params. Instead of overriding the getParams method, we
         // just check it here.
         if (microPubEndpoint.contains("?")) {
-            microPubEndpoint += "&syndicate-to";
+            microPubEndpoint += "&q=syndicate-to";
         }
         else {
             microPubEndpoint += "?q=syndicate-to";
