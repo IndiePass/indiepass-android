@@ -227,6 +227,16 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 String authorName = "";
                                 String authorPhoto = "";
 
+                                // Type.
+                                if (object.has("type")) {
+                                    type = object.getString("type");
+                                }
+
+                                // Ignore 'card' type.
+                                if (type.equals("card")) {
+                                    continue;
+                                }
+
                                 item.setId(object.getString("_id"));
                                 if (i == 0) {
                                     entryId = item.getId();
@@ -236,11 +246,6 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                     isRead = object.getBoolean("_is_read");
                                 }
                                 item.setRead(isRead);
-
-                                // Type.
-                                if (object.has("type")) {
-                                    type = object.getString("type");
-                                }
 
                                 // In reply to.
                                 // TODO there can me more than one
