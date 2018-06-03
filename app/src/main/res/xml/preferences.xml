@@ -38,6 +38,5 @@
             android:summary="@string/pref_key_image_quality_summary"
             android:defaultValue="80" />
     </PreferenceScreen>
-
-    </PreferenceScreen>
+</PreferenceScreen>
 

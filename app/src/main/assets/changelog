@@ -1,0 +1,19 @@
+Current version: 0.9
+<br /><br />
+Development happens on <a href="https://github.com/swentel/indigenous–android">GitHub</a>
+<h2>Changelog</h2>
+<h3>10/06/2018 - 0.9</h3>
+<ul>
+    <li>Set focus on title for bookmark and reply when URL is prefilled</li>
+    <li>Check photo mimetype for compressing</li><li>Get syndication targets on login</li>
+    <li>Ignore h-card types in reader</li>
+    <li>Add image settings</li>
+    <li>Add changelog</li>
+</ul>
+<h3>22/04/2018 - 0.8</h3>
+<ul>
+    <li>Create events and allow RSVP</li>
+    <li>Allow to configure the like/share/repost/reply intents in the share screen</li>
+    <li>Pull to refresh for channels and timelines</li>
+    <li>Various bug fixes and some cleaning in channels</li>
+</ul>

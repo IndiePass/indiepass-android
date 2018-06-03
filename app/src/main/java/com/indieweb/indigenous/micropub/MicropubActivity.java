@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.indieweb.indigenous.AboutActivity;
 import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.SettingsActivity;
@@ -219,6 +220,10 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
                 startActivity(goSettings);
                 return true;
 
+            case R.id.about:
+                Intent goAbout = new Intent(getBaseContext(), AboutActivity.class);
+                startActivity(goAbout);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
