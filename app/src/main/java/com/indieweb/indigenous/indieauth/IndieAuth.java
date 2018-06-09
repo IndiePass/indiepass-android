@@ -255,10 +255,10 @@ public class IndieAuth extends AccountAuthenticatorActivity {
                         am.addAccountExplicitly(account, null, null);
                         am.setAuthToken(account, "full_access", accessToken);
 
-                        //SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
-                        //editor.putString("access_token", accessToken);
-                        //editor.putString("me", domainInput);
-                        //editor.apply();
+                        SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
+                        editor.putString("access_token", accessToken);
+                        editor.putString("me", domainInput);
+                        editor.apply();
 
                         Toast.makeText(getApplicationContext(), "Authentication successful", Toast.LENGTH_SHORT).show();
 
