@@ -1,6 +1,5 @@
 package com.indieweb.indigenous.microsub.timeline;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +11,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,6 +20,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.PopupMessage;
 
 import org.json.JSONArray;
@@ -50,6 +50,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     ListView listView;
     Button loadMoreButton;
     boolean loadMoreButtonAdded = false;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             loadMoreButton.setText(R.string.load_more);
             refreshLayout = findViewById(R.id.refreshTimeline);
             refreshLayout.setOnRefreshListener(this);
+            user = new Accounts(this).getCurrentUser();
             startTimeline();
         }
         else {
@@ -122,8 +124,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
      * Notify the server that all is read.
      */
     public void notifyAllRead() {
-        final SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-        String MicrosubEndpoint = preferences.getString("microsub_endpoint", "");
+        String MicrosubEndpoint = user.getMicrosubEndpoint();
 
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
                 new Response.Listener<String>() {
@@ -150,15 +151,10 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             }
 
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Accept", "application/json");
-
-                // Add access token to header.
-                SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-                String AccessToken = preferences.getString("access_token", "");
-                headers.put("Authorization", "Bearer " + AccessToken);
-
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
                 return headers;
             }
         };
@@ -172,11 +168,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
      */
     public void getTimeLineItems(String pagerAfter) {
 
-        // TODO abstract this all in one helper request class.
-        // probably use jsonArrayRequest too, will be faster, but we'll see once we get all
-        // kind of calls more or less ready.
-        SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-        String MicrosubEndpoint = preferences.getString("microsub_endpoint", "");
+        String MicrosubEndpoint = user.getMicrosubEndpoint();
         MicrosubEndpoint += "?action=timeline&channel=" + channelId;
         if (pagerAfter.length() > 0) {
             MicrosubEndpoint += "&after=" + pagerAfter;
@@ -403,15 +395,10 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         )
         {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Accept", "application/json");
-
-                // Add access token to header.
-                SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-                String AccessToken = preferences.getString("access_token", "");
-                headers.put("Authorization", "Bearer " + AccessToken);
-
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
                 return headers;
             }
 

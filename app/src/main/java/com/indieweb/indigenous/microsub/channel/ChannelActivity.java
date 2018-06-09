@@ -1,7 +1,6 @@
 package com.indieweb.indigenous.microsub.channel;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -60,6 +58,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
     SwipeRefreshLayout refreshLayout;
     private ChannelListAdapter adapter;
     private List<Channel> Channels = new ArrayList<>();
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +72,8 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
         refreshLayout.setOnRefreshListener(this);
         reloadChannels.setOnClickListener(new reloadChannelsListener());
 
-        User u = new Accounts(this).getCurrentUser();
-        this.setTitle(u.getMeWithoutProtocol());
+        user = new Accounts(this).getCurrentUser();
+        this.setTitle(user.getMeWithoutProtocol());
 
         startChannels();
     }
@@ -110,7 +109,6 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
      */
     public void getChannels() {
 
-        User user = new Accounts(this).getCurrentUser();
         String microsubEndpoint = user.getMicrosubEndpoint();
 
         // TODO abstract this all in one helper request class.
@@ -159,15 +157,10 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
         )
         {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json");
-
-                // Add access token to header.
-                SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-                String AccessToken = preferences.getString("access_token", "");
-                headers.put("Authorization", "Bearer " + AccessToken);
-
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
                 return headers;
             }
 
