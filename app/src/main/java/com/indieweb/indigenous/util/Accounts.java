@@ -10,7 +10,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.model.IndigenousUser;
+import com.indieweb.indigenous.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +25,8 @@ public class Accounts {
         this.context = context;
     }
 
-    public IndigenousUser getCurrentUser() {
-        IndigenousUser u = new IndigenousUser();
+    public User getCurrentUser() {
+        User u = new User();
 
         SharedPreferences preferences = context.getSharedPreferences("indigenous", MODE_PRIVATE);
         String accountName = preferences.getString("account", "");
@@ -65,7 +65,7 @@ public class Accounts {
     public void switchAccount(final Activity a) {
         final List<String> accounts = new ArrayList<>();
 
-        final IndigenousUser currentUser = new Accounts(context).getCurrentUser();
+        final User currentUser = new Accounts(context).getCurrentUser();
         final Account[] AllAccounts = new Accounts(context).getAllAccounts();
         for (Account account: AllAccounts) {
             accounts.add(account.name);

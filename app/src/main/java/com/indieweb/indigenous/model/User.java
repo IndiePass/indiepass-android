@@ -1,6 +1,6 @@
 package com.indieweb.indigenous.model;
 
-public class IndigenousUser {
+public class User {
 
     private String me;
     private String accessToken;
@@ -12,6 +12,10 @@ public class IndigenousUser {
 
     public String getMe() {
         return me;
+    }
+
+    public String getMeWithoutProtocol() {
+        return me.replace("https://","").replace("http://", "");
     }
 
     public void setMe(String me) {

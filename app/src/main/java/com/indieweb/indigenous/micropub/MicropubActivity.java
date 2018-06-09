@@ -1,7 +1,5 @@
 package com.indieweb.indigenous.micropub;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +27,7 @@ import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.microsub.channel.ChannelActivity;
-import com.indieweb.indigenous.model.IndigenousUser;
+import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Syndications;
 
@@ -44,30 +41,8 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_micropub);
 
-        IndigenousUser u = new Accounts(this).getCurrentUser();
-        this.setTitle(u.getMe());
-
-        AccountManager accountManager = AccountManager.get(this);
-        Account[] accounts = accountManager.getAccounts();
-        if (accounts.length > 0) {
-            for (Account account: accounts) {
-                Log.d("indigenous_debug", "token: " + account.name + ": " + accountManager.getUserData(account, "token_endpoint"));
-                Log.d("indigenous_debug", "auth: " + account.name + ": " + accountManager.getUserData(account, "authorization_endpoint"));
-                Log.d("indigenous_debug", "microsub: " + account.name + ": " + accountManager.getUserData(account, "microsub_endpoint"));
-                Log.d("indigenous_debug", "micropub: " + account.name + ": " + accountManager.getUserData(account, "micropub_endpoint"));
-/*                try {
-                    Log.d("indigenous_debug", "IndigenousUser: " + account.toString());
-                    Log.d("indigenous_debug", "IndigenousUser: " + accountManager.getAuthToken(account, "full_access", null, this, null, null).getResult().get("authtoken"));
-                } catch (OperationCanceledException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (AuthenticatorException e) {
-                    e.printStackTrace();
-                }*/
-            }
-
-        }
+        User u = new Accounts(this).getCurrentUser();
+        this.setTitle(u.getMeWithoutProtocol());
 
         // Listen to incoming data.
         Intent intent = getIntent();

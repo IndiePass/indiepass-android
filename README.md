@@ -12,7 +12,7 @@ More information is https://indieweb.org/Indigenous
 
 ## Current functionality
 
-- Login with your domain, discover indieauth, micropub and microsub endpoints.
+- Login with multiple domains, discover indieauth, micropub and microsub endpoints.
   The microsub endpoint is optional so you can simply use this as a micropub 
   client too.
 - Micropub

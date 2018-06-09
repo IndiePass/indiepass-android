@@ -354,7 +354,6 @@ public class EventActivity extends AppCompatActivity  {
                 params.put("end", endDate.getText().toString());
 
                 // Tags.
-                // TODO make sure the UI is ok
                 List<String> tagsList = new ArrayList<>(Arrays.asList(tags.getText().toString().split(",")));
                 int i = 0;
                 for (String tag: tagsList) {

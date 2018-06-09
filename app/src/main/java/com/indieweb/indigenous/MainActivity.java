@@ -6,7 +6,7 @@ import android.os.Bundle;
 import com.indieweb.indigenous.indieauth.IndieAuth;
 import com.indieweb.indigenous.micropub.MicropubActivity;
 import com.indieweb.indigenous.microsub.channel.ChannelActivity;
-import com.indieweb.indigenous.model.IndigenousUser;
+import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 
 public class MainActivity extends AppCompatActivity {
@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        IndigenousUser user = new Accounts(this).getCurrentUser();
+        User user = new Accounts(this).getCurrentUser();
         if (user.isValid()) {
             if (user.getMicrosubEndpoint() != null && user.getMicrosubEndpoint().length() > 0) {
                 Intent Channels = new Intent(getBaseContext(), ChannelActivity.class);
