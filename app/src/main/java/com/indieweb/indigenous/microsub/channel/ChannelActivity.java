@@ -163,7 +163,6 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                 headers.put("Authorization", "Bearer " + user.getAccessToken());
                 return headers;
             }
-
         };
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());

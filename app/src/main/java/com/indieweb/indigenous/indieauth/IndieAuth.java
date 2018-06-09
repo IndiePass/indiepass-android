@@ -25,6 +25,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.util.Syndications;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -113,6 +114,8 @@ public class IndieAuth extends AccountAuthenticatorActivity {
                 intentBuilder.setToolbarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
                 intentBuilder.setSecondaryToolbarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
                 CustomTabsIntent customTabsIntent = intentBuilder.build();
+                customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 customTabsIntent.launchUrl(getApplicationContext(), uri);
 
             }
@@ -261,7 +264,7 @@ public class IndieAuth extends AccountAuthenticatorActivity {
                         Toast.makeText(getApplicationContext(), "Authentication successful", Toast.LENGTH_SHORT).show();
 
                         // Get syndication targets.
-                        //new Syndications(getApplicationContext()).refresh();
+                        new Syndications(getApplicationContext()).refresh();
 
                         // Start main activity which will determine where it will go.
                         Intent main = new Intent(getBaseContext(), MainActivity.class);

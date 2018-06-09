@@ -25,8 +25,13 @@ public class Accounts {
         this.context = context;
     }
 
+    /**
+     * Gets the current user.
+     *
+     * @return User
+     */
     public User getCurrentUser() {
-        User u = new User();
+        User user = new User();
 
         SharedPreferences preferences = context.getSharedPreferences("indigenous", MODE_PRIVATE);
         String accountName = preferences.getString("account", "");
@@ -35,38 +40,31 @@ public class Accounts {
         if (accounts.length > 0) {
             for (Account account : accounts) {
                 if (account.name.equals(accountName)) {
-                    u.setValid(true);
-                    u.setMe(accountName);
-                    u.setAccessToken(accountManager.getUserData(account, "access_token"));
-                    u.setTokenEndpoint(accountManager.getUserData(account, "token_endpoint"));
-                    u.setAuthorizationEndpoint(accountManager.getUserData(account, "authorization_endpoint"));
-                    u.setMicrosubEndpoint(accountManager.getUserData(account, "microsub_endpoint"));
-                    u.setMicropubEndpoint(accountManager.getUserData(account, "micropub_endpoint"));
+                    user.setValid(true);
+                    user.setMe(accountName);
+                    user.setAccessToken(accountManager.getUserData(account, "access_token"));
+                    user.setTokenEndpoint(accountManager.getUserData(account, "token_endpoint"));
+                    user.setAuthorizationEndpoint(accountManager.getUserData(account, "authorization_endpoint"));
+                    user.setMicrosubEndpoint(accountManager.getUserData(account, "microsub_endpoint"));
+                    user.setMicropubEndpoint(accountManager.getUserData(account, "micropub_endpoint"));
                 }
             }
         }
 
-        return u;
-    }
-
-    /**
-     * Returns all accounts.
-     *
-     * @return Account[]
-     */
-    public Account[] getAllAccounts() {
-        AccountManager accountManager = AccountManager.get(context);
-        return accountManager.getAccounts();
+        return user;
     }
 
     /**
      * Switch account dialog.
+     *
+     * @param activity
+     *   The current activity
      */
-    public void switchAccount(final Activity a) {
+    public void switchAccount(final Activity activity) {
         final List<String> accounts = new ArrayList<>();
 
         final User currentUser = new Accounts(context).getCurrentUser();
-        final Account[] AllAccounts = new Accounts(context).getAllAccounts();
+        final Account[] AllAccounts = this.getAllAccounts();
         for (Account account: AllAccounts) {
             accounts.add(account.name);
         }
@@ -91,11 +89,22 @@ public class Accounts {
                     editor.apply();
                     Intent Main = new Intent(context, com.indieweb.indigenous.MainActivity.class);
                     context.startActivity(Main);
-                    a.finish();
+                    activity.finish();
                 }
 
             }
         });
         builder.show();
     }
+
+    /**
+     * Returns all accounts.
+     *
+     * @return Account[]
+     */
+    private Account[] getAllAccounts() {
+        AccountManager accountManager = AccountManager.get(context);
+        return accountManager.getAccounts();
+    }
+
 }

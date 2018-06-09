@@ -13,6 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.indieweb.indigenous.model.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,8 +37,8 @@ public class Syndications {
      */
     public void refresh() {
 
-        final SharedPreferences preferences = context.getSharedPreferences("indigenous", MODE_PRIVATE);
-        String microPubEndpoint = preferences.getString("micropub_endpoint", "");
+        final User user = new Accounts(context).getCurrentUser();
+        String microPubEndpoint = user.getMicropubEndpoint();
 
         // Some endpoints already contain GET params. Instead of overriding the getParams method, we
         // just check it here.
@@ -94,14 +95,10 @@ public class Syndications {
         )
         {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Accept", "application/json");
-
-                // Add access token to header.
-                SharedPreferences preferences = context.getSharedPreferences("indigenous", MODE_PRIVATE);
-                String AccessToken = preferences.getString("access_token", "");
-                headers.put("Authorization", "Bearer " + AccessToken);
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
 
                 return headers;
             }
