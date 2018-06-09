@@ -1,14 +1,15 @@
 package com.indieweb.indigenous.micropub;
 
-import android.content.DialogInterface;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,9 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.indieweb.indigenous.AboutActivity;
-import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.SettingsActivity;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
@@ -31,6 +30,8 @@ import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.microsub.channel.ChannelActivity;
+import com.indieweb.indigenous.model.IndigenousUser;
+import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Syndications;
 
 public class MicropubActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,6 +43,31 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_micropub);
+
+        IndigenousUser u = new Accounts(this).getCurrentUser();
+        this.setTitle(u.getMe());
+
+        AccountManager accountManager = AccountManager.get(this);
+        Account[] accounts = accountManager.getAccounts();
+        if (accounts.length > 0) {
+            for (Account account: accounts) {
+                Log.d("indigenous_debug", "token: " + account.name + ": " + accountManager.getUserData(account, "token_endpoint"));
+                Log.d("indigenous_debug", "auth: " + account.name + ": " + accountManager.getUserData(account, "authorization_endpoint"));
+                Log.d("indigenous_debug", "microsub: " + account.name + ": " + accountManager.getUserData(account, "microsub_endpoint"));
+                Log.d("indigenous_debug", "micropub: " + account.name + ": " + accountManager.getUserData(account, "micropub_endpoint"));
+/*                try {
+                    Log.d("indigenous_debug", "IndigenousUser: " + account.toString());
+                    Log.d("indigenous_debug", "IndigenousUser: " + accountManager.getAuthToken(account, "full_access", null, this, null, null).getResult().get("authtoken"));
+                } catch (OperationCanceledException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (AuthenticatorException e) {
+                    e.printStackTrace();
+                }*/
+            }
+
+        }
 
         // Listen to incoming data.
         Intent intent = getIntent();
@@ -188,29 +214,6 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             // TODO create helper method as we have the same in ChannelsActivity
-            case R.id.logout:
-                new AlertDialog.Builder(this)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle("Log out")
-                        .setMessage("Are you sure you want to log out?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                // Remove shared preferences.
-                                SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
-                                editor.clear().apply();
-
-                                Intent main = new Intent(getBaseContext(), MainActivity.class);
-                                startActivity(main);
-                                finish();
-                            }
-
-                        })
-                        .setNegativeButton("No", null)
-                        .show();
-                return true;
-
             case R.id.refreshSyndications:
                 new Syndications(getApplicationContext()).refresh();
                 return true;
@@ -223,6 +226,10 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
             case R.id.about:
                 Intent goAbout = new Intent(getBaseContext(), AboutActivity.class);
                 startActivity(goAbout);
+                return true;
+
+            case R.id.accounts:
+                new Accounts(this).switchAccount(this);
                 return true;
         }
 

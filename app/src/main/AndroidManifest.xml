@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:installLocation="internalOnly"
-    package="com.indieweb.indigenous">
+    package="com.indieweb.indigenous"
+    android:installLocation="internalOnly">
 
+    <uses-permission
+        android:name="android.permission.AUTHENTICATE_ACCOUNTS"
+        android:maxSdkVersion="22" />
+    <uses-permission
+        android:name="android.permission.GET_ACCOUNTS"
+        android:maxSdkVersion="22" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission
+        android:name="android.permission.USE_CREDENTIALS"
+        android:maxSdkVersion="22" />
 
     <application
         android:allowBackup="true"
@@ -20,7 +25,7 @@
         android:theme="@style/AppTheme">
 
         <service
-            android:name="com.indieweb.indigenous.indieauth.AuthenticatorService"
+            android:name=".indieauth.AuthenticatorService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -40,21 +45,22 @@
         </activity>
 
         <activity
-            android:launchMode="singleTask"
             android:name=".indieauth.IndieAuth"
-            android:label="@string/title_activity_indieauth">
+            android:label="@string/title_activity_indieauth"
+            android:launchMode="singleTask">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="indigenous-android" android:host="oauthcallback" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="oauthcallback"
+                    android:scheme="indigenous-android" />
             </intent-filter>
         </activity>
 
         <activity
             android:name=".microsub.channel.ChannelActivity"
-            android:label="@string/channels">
-        </activity>
+            android:label="@string/channels" />
 
         <activity
             android:name=".microsub.timeline.TimelineActivity"
@@ -74,16 +80,18 @@
             android:name=".microsub.timeline.TimelineAudioActivity"
             android:label="@string/title_activity_timeline_audio" />
 
-        <activity android:name=".micropub.MicropubActivity"
+        <activity
+            android:name=".micropub.MicropubActivity"
             android:label="@string/title_activity_micropub">
             <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".micropub.post.NoteActivity"
             android:label="@string/add_note"
@@ -112,13 +120,15 @@
         </activity>
 
         <activity-alias
-            android:enabled="false"
-            android:targetActivity=".micropub.post.RepostActivity"
             android:name=".RepostAlias"
-            android:label="@string/add_repost">
+            android:enabled="false"
+            android:label="@string/add_repost"
+            android:targetActivity=".micropub.post.RepostActivity">
             <intent-filter android:label="@string/add_repost">
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity-alias>
@@ -133,13 +143,15 @@
         </activity>
 
         <activity-alias
-            android:enabled="false"
-            android:targetActivity=".micropub.post.LikeActivity"
             android:name=".LikeAlias"
-            android:label="@string/add_like">
+            android:enabled="false"
+            android:label="@string/add_like"
+            android:targetActivity=".micropub.post.LikeActivity">
             <intent-filter android:label="@string/add_like">
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity-alias>
@@ -154,13 +166,15 @@
         </activity>
 
         <activity-alias
-            android:enabled="false"
-            android:targetActivity=".micropub.post.ReplyActivity"
             android:name=".ReplyAlias"
-            android:label="@string/add_reply">
+            android:enabled="false"
+            android:label="@string/add_reply"
+            android:targetActivity=".micropub.post.ReplyActivity">
             <intent-filter android:label="@string/add_reply">
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity-alias>
@@ -175,10 +189,10 @@
         </activity>
 
         <activity-alias
-            android:enabled="false"
-            android:targetActivity=".micropub.post.BookmarkActivity"
             android:name=".BookmarkAlias"
-            android:label="@string/add_bookmark">
+            android:enabled="false"
+            android:label="@string/add_bookmark"
+            android:targetActivity=".micropub.post.BookmarkActivity">
             <intent-filter android:label="@string/add_bookmark">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -193,7 +207,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.indieweb.indigenous.micropub.MicropubActivity" />
-
         </activity>
 
         <activity
@@ -203,13 +216,18 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.indieweb.indigenous.micropub.MicropubActivity" />
+        </activity>
 
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/about"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.MainActivity" />
         </activity>
 
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".AboutActivity"
-            android:label="@string/about"
-            />
 
     </application>
 

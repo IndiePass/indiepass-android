@@ -3,10 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/logout"
-        android:title="@string/log_out" />
-
-    <item
         android:id="@+id/channel_list_refresh"
         android:title="@string/channel_list_refresh"
         app:showAsAction="never" />
@@ -22,5 +18,10 @@
     <item
         android:id="@+id/about"
         android:title="@string/about" />
+
+    <item
+        android:id="@+id/accounts"
+        android:title="@string/accounts"
+        app:showAsAction="never" />
 
 </menu>

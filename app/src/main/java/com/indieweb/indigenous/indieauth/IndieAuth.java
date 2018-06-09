@@ -23,10 +23,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.micropub.MicropubActivity;
-import com.indieweb.indigenous.microsub.channel.ChannelActivity;
-import com.indieweb.indigenous.util.Syndications;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,11 +43,17 @@ import java.util.UUID;
 
 public class IndieAuth extends AccountAuthenticatorActivity {
 
+    public final static String ACCOUNT_TYPE = "IndieAuth";
+
     String state;
     Button signIn;
     EditText domain;
     TextView info;
     String domainInput;
+    String authorizationEndpoint;
+    String tokenEndpoint;
+    String micropubEndpoint;
+    String microsubEndpoint;
     String ClientId = "https://indigenous.abode.pub";
     String RedirectUri = "https://realize.be/indigenous-android.php";
 
@@ -102,13 +106,10 @@ public class IndieAuth extends AccountAuthenticatorActivity {
 
             if (validDomain(domainInput)) {
 
-                SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-                String AuthEndPoint = preferences.getString("authorization_endpoint", "");
-                String url = AuthEndPoint + "?response_type=code&redirect_uri=" + RedirectUri + "&client_id=" + ClientId + "&me=" + domainInput + "&scope=create+update+read+follow+channels&state=" + state;
-
+                String url = authorizationEndpoint + "?response_type=code&redirect_uri=" + RedirectUri + "&client_id=" + ClientId + "&me=" + domainInput + "&scope=create+update+read+follow+channels&state=" + state;
                 Uri uri = Uri.parse(url);
-                CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
 
+                CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
                 intentBuilder.setToolbarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
                 intentBuilder.setSecondaryToolbarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
                 CustomTabsIntent customTabsIntent = intentBuilder.build();
@@ -148,34 +149,25 @@ public class IndieAuth extends AccountAuthenticatorActivity {
             Document doc = Jsoup.connect($domain).get();
             Elements imports = doc.select("link[href]");
             for (Element link : imports) {
-                if (link.attr("rel").equals("micropub")) {
-                    SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
-                    editor.putString("micropub_endpoint", link.attr("abs:href"));
-                    editor.apply();
-                    found++;
-                }
-
-                // Microsub is optional for now, so we don't increment the counter here.
-                if (link.attr("rel").equals("microsub")) {
-                    SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
-                    editor.putString("microsub_endpoint", link.attr("abs:href"));
-                    editor.apply();
-                }
-
                 if (link.attr("rel").equals("authorization_endpoint")) {
-                    SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
-                    editor.putString("authorization_endpoint", link.attr("abs:href"));
-                    editor.apply();
+                    authorizationEndpoint = link.attr("abs:href");
                     found++;
                 }
 
                 if (link.attr("rel").equals("token_endpoint")) {
-                    SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
-                    editor.putString("token_endpoint", link.attr("abs:href"));
-                    editor.apply();
+                    tokenEndpoint = link.attr("abs:href");
                     found++;
                 }
 
+                if (link.attr("rel").equals("micropub")) {
+                    micropubEndpoint = link.attr("abs:href");
+                    found++;
+                }
+
+                // Microsub is optional, so we don't increment the counter here.
+                if (link.attr("rel").equals("microsub")) {
+                    microsubEndpoint = link.attr("abs:href");
+                }
             }
 
         }
@@ -200,10 +192,8 @@ public class IndieAuth extends AccountAuthenticatorActivity {
      */
     private void validateCode(final String code, final String returnedState) {
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        final SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-        String TokenEndPoint = preferences.getString("token_endpoint", "");
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, TokenEndPoint,
+        StringRequest postRequest = new StringRequest(Request.Method.POST, tokenEndpoint,
             new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -249,30 +239,34 @@ public class IndieAuth extends AccountAuthenticatorActivity {
 
                     if (accessTokenFound && returnedState.equals(state)) {
 
-
-                        Account account = new Account(domainInput, "IndieAuth");
                         AccountManager am = AccountManager.get(getApplicationContext());
+                        int numberOfAccounts = am.getAccounts().length;
+
+                        // Create new account.
+                        Account account = new Account(domainInput, IndieAuth.ACCOUNT_TYPE);
                         am.addAccountExplicitly(account, null, null);
                         am.setAuthToken(account, "full_access", accessToken);
+                        am.setUserData(account, "micropub_endpoint", micropubEndpoint);
+                        am.setUserData(account, "microsub_endpoint", microsubEndpoint);
+                        am.setUserData(account, "authorization_endpoint", authorizationEndpoint);
+                        am.setUserData(account, "token_endpoint", tokenEndpoint);
+                        am.setUserData(account, "access_token", accessToken);
 
-                        SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
-                        editor.putString("access_token", accessToken);
-                        editor.putString("me", domainInput);
-                        editor.apply();
+                        if (numberOfAccounts == 0) {
+                            SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
+                            editor.putString("account", domainInput);
+                            editor.apply();
+                        }
 
                         Toast.makeText(getApplicationContext(), "Authentication successful", Toast.LENGTH_SHORT).show();
 
                         // Get syndication targets.
                         //new Syndications(getApplicationContext()).refresh();
 
-                        if (preferences.getString("microsub_endpoint", "").length() > 0) {
-                            Intent Channels = new Intent(getBaseContext(), ChannelActivity.class);
-                            startActivity(Channels);
-                        }
-                        else {
-                            Intent Micropub = new Intent(getBaseContext(), MicropubActivity.class);
-                            startActivity(Micropub);
-                        }
+                        // Start main activity which will determine where it will go.
+                        Intent main = new Intent(getBaseContext(), MainActivity.class);
+                        startActivity(main);
+                        finish();
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "Authentication failed: " + errorMessage, Toast.LENGTH_LONG).show();
