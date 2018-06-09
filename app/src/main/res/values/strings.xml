@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Indigenous</string>
     <string name="about">About</string>
+    <string name="account_type">IndieAuth</string>
 
     <string name="domain_hint">http://example.com</string>
     <string name="sign_in_with_domain">Sign in</string>
