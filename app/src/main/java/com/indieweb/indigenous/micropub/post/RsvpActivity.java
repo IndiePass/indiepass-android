@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -22,6 +21,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Syndication;
+import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.VolleyMultipartRequest;
 
 import org.json.JSONArray;
@@ -43,11 +44,14 @@ public class RsvpActivity extends AppCompatActivity {
     LinearLayout syndicationLayout;
     private List<Syndication> Syndications = new ArrayList<>();
     private MenuItem sendItem;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rsvp);
+
+        user = new Accounts(this).getCurrentUser();
 
         // TODO make helper function.
         int index = 0;
@@ -121,13 +125,10 @@ public class RsvpActivity extends AppCompatActivity {
         reply = findViewById(R.id.rsvpText);
         tags = findViewById(R.id.rsvpTags);
         rsvp = findViewById(R.id.rsvpValue);
-        SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-        String MicropubEndpoint = preferences.getString("micropub_endpoint", "");
-        final String AccessToken = preferences.getString("access_token", "");
 
         Toast.makeText(getApplicationContext(), "Sending, please wait", Toast.LENGTH_SHORT).show();
 
-        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, MicropubEndpoint,
+        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, user.getMicropubEndpoint(),
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
@@ -162,7 +163,7 @@ public class RsvpActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
 
                 // Post access token too, Wordpress scans for the token in the body.
-                params.put("access_token", AccessToken);
+                params.put("access_token", user.getAccessToken());
 
                 // Url, rsvp, content and entry.
                 params.put("h", "entry");
@@ -198,13 +199,10 @@ public class RsvpActivity extends AppCompatActivity {
             }
 
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json");
-
-                // Add access token to header.
-                headers.put("Authorization", "Bearer " + AccessToken);
-
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
                 return headers;
             }
 

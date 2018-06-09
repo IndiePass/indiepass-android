@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -25,7 +24,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -35,7 +33,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Syndication;
-import com.indieweb.indigenous.model.TimelineItem;
+import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.VolleyMultipartRequest;
 
@@ -46,7 +45,6 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,6 +71,7 @@ public class EventActivity extends AppCompatActivity  {
     LinearLayout syndicationLayout;
     private List<Syndication> Syndications = new ArrayList<>();
     private MenuItem sendItem;
+    User user;
 
     private int PICK_EVENT_IMAGE_REQUEST = 1;
 
@@ -83,6 +82,7 @@ public class EventActivity extends AppCompatActivity  {
 
         image = findViewById(R.id.imageView);
         card = findViewById(R.id.imageCard);
+        user = new Accounts(this).getCurrentUser();
 
         // TODO make helper function.
         syndicationLayout = findViewById(R.id.syndicate);
@@ -302,13 +302,10 @@ public class EventActivity extends AppCompatActivity  {
 
         title = findViewById(R.id.eventTitle);
         tags = findViewById(R.id.eventTags);
-        SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-        String MicropubEndpoint = preferences.getString("micropub_endpoint", "");
-        final String AccessToken = preferences.getString("access_token", "");
 
         Toast.makeText(getApplicationContext(), "Sending, please wait", Toast.LENGTH_SHORT).show();
 
-        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, MicropubEndpoint,
+        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, user.getMicropubEndpoint(),
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
@@ -344,7 +341,7 @@ public class EventActivity extends AppCompatActivity  {
                 Map<String, String> params = new HashMap<>();
 
                 // Post access token too, Wordpress scans for the token in the body.
-                params.put("access_token", AccessToken);
+                params.put("access_token", user.getMicropubEndpoint());
 
                 // name, content and entry.
                 params.put("h", "event");
@@ -380,13 +377,10 @@ public class EventActivity extends AppCompatActivity  {
             }
 
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json");
-
-                // Add access token to header.
-                headers.put("Authorization", "Bearer " + AccessToken);
-
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
                 return headers;
             }
 

@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -29,6 +28,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Syndication;
+import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.VolleyMultipartRequest;
 
@@ -58,6 +59,7 @@ public class NoteActivity extends AppCompatActivity {
     LinearLayout syndicationLayout;
     private List<Syndication> Syndications = new ArrayList<>();
     private MenuItem sendItem;
+    User user;
 
     private int PICK_NOTE_IMAGE_REQUEST = 1;
 
@@ -68,6 +70,7 @@ public class NoteActivity extends AppCompatActivity {
 
         image = findViewById(R.id.imageView);
         card = findViewById(R.id.imageCard);
+        user = new Accounts(this).getCurrentUser();
 
         // TODO make helper function.
         syndicationLayout = findViewById(R.id.syndicate);
@@ -226,13 +229,10 @@ public class NoteActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
         tags = findViewById(R.id.noteTags);
-        SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-        String MicropubEndpoint = preferences.getString("micropub_endpoint", "");
-        final String AccessToken = preferences.getString("access_token", "");
 
         Toast.makeText(getApplicationContext(), "Sending, please wait", Toast.LENGTH_SHORT).show();
 
-        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, MicropubEndpoint,
+        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, user.getMicropubEndpoint(),
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
@@ -268,7 +268,7 @@ public class NoteActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
 
                 // Post access token too, Wordpress scans for the token in the body.
-                params.put("access_token", AccessToken);
+                params.put("access_token", user.getAccessToken());
 
                 // Content and entry.
                 params.put("h", "entry");
@@ -302,13 +302,10 @@ public class NoteActivity extends AppCompatActivity {
             }
 
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json");
-
-                // Add access token to header.
-                headers.put("Authorization", "Bearer " + AccessToken);
-
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
                 return headers;
             }
 

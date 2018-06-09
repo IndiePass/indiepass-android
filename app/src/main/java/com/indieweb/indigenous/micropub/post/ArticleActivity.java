@@ -27,9 +27,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.indieweb.indigenous.microsub.channel.ChannelActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Syndication;
+import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.VolleyMultipartRequest;
 
@@ -60,6 +61,7 @@ public class ArticleActivity extends AppCompatActivity {
     LinearLayout syndicationLayout;
     private List<Syndication> Syndications = new ArrayList<>();
     private MenuItem sendItem;
+    User user;
 
     private int PICK_ARTICLE_IMAGE_REQUEST = 1;
 
@@ -68,6 +70,7 @@ public class ArticleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
 
+        user = new Accounts(this).getCurrentUser();
         image = findViewById(R.id.imageView);
         card = findViewById(R.id.imageCard);
 
@@ -229,13 +232,10 @@ public class ArticleActivity extends AppCompatActivity {
 
         title = findViewById(R.id.articleTitle);
         tags = findViewById(R.id.articleTags);
-        SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-        String MicropubEndpoint = preferences.getString("micropub_endpoint", "");
-        final String AccessToken = preferences.getString("access_token", "");
 
         Toast.makeText(getApplicationContext(), "Sending, please wait", Toast.LENGTH_SHORT).show();
 
-        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, MicropubEndpoint,
+        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, user.getMicropubEndpoint(),
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
@@ -271,7 +271,7 @@ public class ArticleActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
 
                 // Post access token too, Wordpress scans for the token in the body.
-                params.put("access_token", AccessToken);
+                params.put("access_token", user.getAccessToken());
 
                 // name, content and entry.
                 params.put("h", "entry");
@@ -306,13 +306,10 @@ public class ArticleActivity extends AppCompatActivity {
             }
 
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json");
-
-                // Add access token to header.
-                headers.put("Authorization", "Bearer " + AccessToken);
-
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
                 return headers;
             }
 
