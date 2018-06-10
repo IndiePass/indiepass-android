@@ -3,7 +3,7 @@ package com.indieweb.indigenous;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import com.indieweb.indigenous.indieauth.IndieAuth;
+import com.indieweb.indigenous.indieauth.IndieAuthActivity;
 import com.indieweb.indigenous.micropub.MicropubActivity;
 import com.indieweb.indigenous.microsub.channel.ChannelActivity;
 import com.indieweb.indigenous.model.User;
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         else {
-            Intent IndieAuth = new Intent(getBaseContext(), IndieAuth.class);
+            Intent IndieAuth = new Intent(getBaseContext(), IndieAuthActivity.class);
             startActivity(IndieAuth);
             this.finish();
         }

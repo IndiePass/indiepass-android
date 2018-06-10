@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.indieauth.IndieAuthActivity;
 import com.indieweb.indigenous.model.User;
 
 import java.util.ArrayList;
@@ -42,7 +43,14 @@ public class Accounts {
                 if (account.name.equals(accountName)) {
                     user.setValid(true);
                     user.setMe(accountName);
-                    user.setAccessToken(accountManager.getUserData(account, "access_token"));
+
+                    String token = "";
+                    try {
+                        token = accountManager.peekAuthToken(account, IndieAuthActivity.TOKEN_TYPE);
+                    }
+                    catch (Exception ignored) {}
+
+                    user.setAccessToken(token);
                     user.setTokenEndpoint(accountManager.getUserData(account, "token_endpoint"));
                     user.setAuthorizationEndpoint(accountManager.getUserData(account, "authorization_endpoint"));
                     user.setMicrosubEndpoint(accountManager.getUserData(account, "microsub_endpoint"));
@@ -75,7 +83,7 @@ public class Accounts {
 
         builder.setPositiveButton(context.getString(R.string.add_new_account),new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int id) {
-                Intent IndieAuth = new Intent(context, com.indieweb.indigenous.indieauth.IndieAuth.class);
+                Intent IndieAuth = new Intent(context, IndieAuthActivity.class);
                 context.startActivity(IndieAuth);
             }
         });

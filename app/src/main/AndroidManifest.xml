@@ -45,7 +45,7 @@
         </activity>
 
         <activity
-            android:name=".indieauth.IndieAuth"
+            android:name=".indieauth.IndieAuthActivity"
             android:label="@string/title_activity_indieauth"
             android:launchMode="singleTask">
             <intent-filter>

@@ -42,9 +42,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class IndieAuth extends AccountAuthenticatorActivity {
+public class IndieAuthActivity extends AccountAuthenticatorActivity {
 
     public final static String ACCOUNT_TYPE = "IndieAuth";
+    public final static String TOKEN_TYPE = "IndieAuth";
 
     String state;
     Button signIn;
@@ -246,14 +247,13 @@ public class IndieAuth extends AccountAuthenticatorActivity {
                         int numberOfAccounts = am.getAccounts().length;
 
                         // Create new account.
-                        Account account = new Account(domainInput, IndieAuth.ACCOUNT_TYPE);
+                        Account account = new Account(domainInput, ACCOUNT_TYPE);
                         am.addAccountExplicitly(account, null, null);
-                        am.setAuthToken(account, "full_access", accessToken);
+                        am.setAuthToken(account, TOKEN_TYPE, accessToken);
                         am.setUserData(account, "micropub_endpoint", micropubEndpoint);
                         am.setUserData(account, "microsub_endpoint", microsubEndpoint);
                         am.setUserData(account, "authorization_endpoint", authorizationEndpoint);
                         am.setUserData(account, "token_endpoint", tokenEndpoint);
-                        am.setUserData(account, "access_token", accessToken);
 
                         if (numberOfAccounts == 0) {
                             SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
