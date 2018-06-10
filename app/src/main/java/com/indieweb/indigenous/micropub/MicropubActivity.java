@@ -29,7 +29,7 @@ import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.microsub.channel.ChannelActivity;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
-import com.indieweb.indigenous.util.Syndications;
+import com.indieweb.indigenous.util.SyndicationTargets;
 
 public class MicropubActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -190,7 +190,7 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
         switch (item.getItemId()) {
             // TODO create helper method as we have the same in ChannelsActivity
             case R.id.refreshSyndications:
-                new Syndications(getApplicationContext()).refresh();
+                new SyndicationTargets(getApplicationContext(), new Accounts(this).getCurrentUser()).refresh();
                 return true;
 
             case R.id.settings:

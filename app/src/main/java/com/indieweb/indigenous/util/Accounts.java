@@ -55,6 +55,8 @@ public class Accounts {
                     user.setAuthorizationEndpoint(accountManager.getUserData(account, "authorization_endpoint"));
                     user.setMicrosubEndpoint(accountManager.getUserData(account, "microsub_endpoint"));
                     user.setMicropubEndpoint(accountManager.getUserData(account, "micropub_endpoint"));
+                    user.setSyndicationTargets(accountManager.getUserData(account, "syndication_targets"));
+                    user.setAccount(account);
                 }
             }
         }

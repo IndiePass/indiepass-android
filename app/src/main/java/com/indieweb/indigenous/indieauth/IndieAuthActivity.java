@@ -25,7 +25,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.util.Syndications;
+import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.util.SyndicationTargets;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -255,16 +256,21 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                         am.setUserData(account, "authorization_endpoint", authorizationEndpoint);
                         am.setUserData(account, "token_endpoint", tokenEndpoint);
 
+                        // Set first account.
                         if (numberOfAccounts == 0) {
                             SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
                             editor.putString("account", domainInput);
                             editor.apply();
                         }
 
-                        Toast.makeText(getApplicationContext(), "Authentication successful", Toast.LENGTH_SHORT).show();
+                        // Refresh syndication targets.
+                        User user = new User();
+                        user.setMicropubEndpoint(micropubEndpoint);
+                        user.setAccessToken(accessToken);
+                        user.setAccount(account);
+                        new SyndicationTargets(getApplicationContext(), user).refresh();
 
-                        // Get syndication targets.
-                        new Syndications(getApplicationContext()).refresh();
+                        Toast.makeText(getApplicationContext(), "Authentication successful", Toast.LENGTH_SHORT).show();
 
                         // Start main activity which will determine where it will go.
                         Intent main = new Intent(getBaseContext(), MainActivity.class);

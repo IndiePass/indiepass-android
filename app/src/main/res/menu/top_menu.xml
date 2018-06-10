@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/refreshSyndications"
-        android:title="@string/refresh_syndications" />
+        android:title="@string/refresh_syndication_targets" />
 
     <item
         android:id="@+id/settings"

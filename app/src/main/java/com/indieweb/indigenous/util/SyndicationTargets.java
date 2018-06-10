@@ -1,11 +1,9 @@
 package com.indieweb.indigenous.util;
 
+import android.accounts.AccountManager;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,14 +20,14 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.content.Context.MODE_PRIVATE;
-
-public class Syndications {
+public class SyndicationTargets {
 
     private final Context context;
+    private final User user;
 
-    public Syndications(Context context) {
+    public SyndicationTargets(Context context, User user) {
         this.context = context;
+        this.user = user;
     }
 
     /**
@@ -37,7 +35,6 @@ public class Syndications {
      */
     public void refresh() {
 
-        final User user = new Accounts(context).getCurrentUser();
         String microPubEndpoint = user.getMicropubEndpoint();
 
         // Some endpoints already contain GET params. Instead of overriding the getParams method, we
@@ -58,17 +55,17 @@ public class Syndications {
                             JSONObject micropubResponse = new JSONObject(response);
                             JSONArray itemList = micropubResponse.getJSONArray("syndicate-to");
                             if (itemList.length() > 0) {
-                                SharedPreferences.Editor editor = context.getSharedPreferences("indigenous", MODE_PRIVATE).edit();
-                                editor.putString("syndications", response).apply();
-                                Toast.makeText(context, "Syndications saved", Toast.LENGTH_LONG).show();
+                                AccountManager am = AccountManager.get(context);
+                                am.setUserData(user.getAccount(), "syndication_targets", response);
+                                Toast.makeText(context, "Syndication targets saved", Toast.LENGTH_LONG).show();
                             }
                             else {
-                                Toast.makeText(context, "No syndications found", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "No syndication targets found", Toast.LENGTH_LONG).show();
                             }
 
                         }
                         catch (JSONException e) {
-                            Toast.makeText(context, "Error getting syndications: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Error getting syndication targets: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -81,14 +78,14 @@ public class Syndications {
                             if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
                                 Integer code = networkResponse.statusCode;
                                 String result = new String(networkResponse.data);
-                                Toast.makeText(context, "Error getting syndications. Status code: " + code + "; message: " + result, Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Error getting syndication targets. Status code: " + code + "; message: " + result, Toast.LENGTH_LONG).show();
                             }
                             else {
-                                Toast.makeText(context, "Error getting syndications: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Error getting syndication targets: " + error.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         }
                         catch (Exception e) {
-                            Toast.makeText(context, "Error getting syndications " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Error getting syndication targets " + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 }
@@ -99,7 +96,6 @@ public class Syndications {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Accept", "application/json");
                 headers.put("Authorization", "Bearer " + user.getAccessToken());
-
                 return headers;
             }
         };

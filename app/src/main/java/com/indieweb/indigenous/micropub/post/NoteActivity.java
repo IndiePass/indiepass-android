@@ -2,7 +2,6 @@ package com.indieweb.indigenous.micropub.post;
 
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -74,8 +73,7 @@ public class NoteActivity extends AppCompatActivity {
 
         // TODO make helper function.
         syndicationLayout = findViewById(R.id.syndicate);
-        SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-        String syndicationsString = preferences.getString("syndications", "");
+        String syndicationsString = user.getSyndicationTargets();
         if (syndicationsString.length() > 0) {
             JSONObject object;
             try {
@@ -286,7 +284,7 @@ public class NoteActivity extends AppCompatActivity {
                     }
                 }
 
-                // Syndications.
+                // SyndicationTargets.
                 if (Syndications.size() > 0) {
                     CheckBox checkbox;
                     for (int j = 0; j < Syndications.size(); j++) {

@@ -1,5 +1,7 @@
 package com.indieweb.indigenous.model;
 
+import android.accounts.Account;
+
 public class User {
 
     private String me;
@@ -8,7 +10,9 @@ public class User {
     private String micropubEndpoint;
     private String tokenEndpoint;
     private String authorizationEndpoint;
+    private String syndicationTargets;
     private boolean valid = false;
+    private Account account;
 
     public String getMe() {
         return me;
@@ -69,5 +73,21 @@ public class User {
 
     public void setValid(boolean valid) {
         this.valid = valid;
+    }
+
+    public String getSyndicationTargets() {
+        return syndicationTargets != null ? syndicationTargets : "";
+    }
+
+    public void setSyndicationTargets(String syndicationTargets) {
+        this.syndicationTargets = syndicationTargets;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }

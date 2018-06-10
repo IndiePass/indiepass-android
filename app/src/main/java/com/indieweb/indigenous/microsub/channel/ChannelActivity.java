@@ -35,7 +35,7 @@ import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.PopupMessage;
-import com.indieweb.indigenous.util.Syndications;
+import com.indieweb.indigenous.util.SyndicationTargets;
 import com.kennyc.bottomsheet.BottomSheet;
 import com.kennyc.bottomsheet.BottomSheetListener;
 
@@ -209,7 +209,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
         // TODO create helper method as we have the same in MicropubActivity
         switch (item.getItemId()) {
             case R.id.refreshSyndications:
-                new Syndications(getApplicationContext()).refresh();
+                new SyndicationTargets(getApplicationContext(), user).refresh();
                 return true;
 
             case R.id.channel_list_refresh:

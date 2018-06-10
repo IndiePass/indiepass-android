@@ -1,7 +1,6 @@
 package com.indieweb.indigenous.micropub.post;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -54,8 +53,7 @@ public class RepostActivity extends AppCompatActivity {
         // TODO make helper function.
         int index = 0;
         syndicationLayout = findViewById(R.id.syndicate);
-        SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-        String syndicationsString = preferences.getString("syndications", "");
+        String syndicationsString = user.getSyndicationTargets();
         if (syndicationsString.length() > 0) {
             JSONObject object;
             try {
@@ -199,7 +197,7 @@ public class RepostActivity extends AppCompatActivity {
                     }
                 }
 
-                // Syndications.
+                // SyndicationTargets.
                 if (Syndications.size() > 0) {
                     CheckBox checkbox;
                     for (int j = 0; j < Syndications.size(); j++) {
