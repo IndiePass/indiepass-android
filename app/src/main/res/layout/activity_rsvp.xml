@@ -11,7 +11,7 @@
         android:padding="10dp">
 
         <Spinner
-            android:id="@+id/rsvpValue"
+            android:id="@+id/rsvp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:entries="@array/rsvp_arrays"
@@ -19,7 +19,7 @@
             android:layout_margin="5dp" />
 
         <EditText
-            android:id="@+id/rsvpUrl"
+            android:id="@+id/url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -27,7 +27,7 @@
             android:inputType="textUri" />
 
         <EditText
-            android:id="@+id/rsvpText"
+            android:id="@+id/body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -38,7 +38,7 @@
             android:singleLine="false" />
 
         <EditText
-            android:id="@+id/rsvpTags"
+            android:id="@+id/tags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -48,7 +48,7 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:id="@+id/syndicate"
+            android:id="@+id/syndicationTargets"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </LinearLayout>

@@ -13,7 +13,7 @@
         android:padding="10dp">
 
         <EditText
-            android:id="@+id/bookmarkUrl"
+            android:id="@+id/url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -21,7 +21,7 @@
             android:inputType="textUri" />
 
         <EditText
-            android:id="@+id/bookmarkTitle"
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -30,7 +30,7 @@
             android:inputType="text" />
 
         <EditText
-            android:id="@+id/bookmarkText"
+            android:id="@+id/body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -40,7 +40,7 @@
             android:inputType="textMultiLine" />
 
         <EditText
-            android:id="@+id/bookmarkTags"
+            android:id="@+id/tags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -50,7 +50,7 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:id="@+id/syndicate"
+            android:id="@+id/syndicationTargets"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </LinearLayout>

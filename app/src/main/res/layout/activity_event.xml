@@ -12,7 +12,7 @@
         android:padding="10dp">
 
         <EditText
-            android:id="@+id/eventTitle"
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -21,25 +21,25 @@
             android:inputType="text" />
 
         <EditText
-            android:inputType="none"
+            android:inputType="date"
             android:focusable="false"
             android:layout_margin="5dp"
-            android:hint="Start date"
+            android:hint="@string/start_date"
             android:id="@+id/startDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <EditText
-            android:inputType="none"
+            android:inputType="date"
             android:focusable="false"
             android:layout_margin="5dp"
-            android:hint="End date"
+            android:hint="@string/end_date"
             android:id="@+id/endDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <EditText
-            android:id="@+id/eventText"
+            android:id="@+id/body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -49,7 +49,7 @@
             android:inputType="textMultiLine" />
 
         <EditText
-            android:id="@+id/eventTags"
+            android:id="@+id/tags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -59,7 +59,7 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:id="@+id/syndicate"
+            android:id="@+id/syndicationTargets"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </LinearLayout>
@@ -73,7 +73,7 @@
             android:layout_margin="5dp">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imagePreview"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/image_preview"
                 android:layout_width="fill_parent"

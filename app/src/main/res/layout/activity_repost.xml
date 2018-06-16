@@ -11,7 +11,7 @@
         android:padding="10dp">
 
         <EditText
-            android:id="@+id/repostUrl"
+            android:id="@+id/url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -19,7 +19,7 @@
             android:inputType="textUri" />
 
         <EditText
-            android:id="@+id/repostTags"
+            android:id="@+id/tags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -29,7 +29,7 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:id="@+id/syndicate"
+            android:id="@+id/syndicationTargets"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </LinearLayout>

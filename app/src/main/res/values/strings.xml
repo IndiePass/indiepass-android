@@ -79,6 +79,8 @@
     <string name="pref_key_image_quality_summary">Define the quality for image manipulations. Ranges from 0 to 100. Higher values mean better image quality but bigger files.</string>
 
     <string name="settings">Settings</string>
+    <string name="end_date">End date</string>
+    <string name="start_date">Start date</string>
     <string-array name="rsvp_arrays">
         <item>yes</item>
         <item>no</item>

@@ -24,4 +24,22 @@ public class Preferences {
         return preference.getString(pref, DefaultValue);
     }
 
+    /**
+     * Get a boolean preference.
+     *
+     * @param context
+     *   The current context
+     * @param pref
+     *   The preference key
+     * @param DefaultValue
+     *   The default value
+     *
+     * @return
+     *   The preference
+     */
+    public static boolean getPreference(Context context, String pref, boolean DefaultValue) {
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
+        return preference.getBoolean(pref, DefaultValue);
+    }
+
 }

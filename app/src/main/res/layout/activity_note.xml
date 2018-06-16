@@ -12,7 +12,7 @@
         android:padding="10dp">
 
         <EditText
-            android:id="@+id/noteText"
+            android:id="@+id/body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -23,7 +23,7 @@
             android:singleLine="false" />
 
         <EditText
-            android:id="@+id/noteTags"
+            android:id="@+id/tags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -33,7 +33,7 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:id="@+id/syndicate"
+            android:id="@+id/syndicationTargets"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </LinearLayout>
@@ -47,7 +47,7 @@
             android:layout_margin="5dp">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imagePreview"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/image_preview"
                 android:layout_width="fill_parent"
