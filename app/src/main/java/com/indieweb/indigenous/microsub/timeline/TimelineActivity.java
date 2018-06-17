@@ -312,12 +312,15 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
                                         // Clean html, remove images and put them in photo.
                                         // No fully ideal, but it's a good start.
-                                        Document doc = Jsoup.parse(htmlContent);
-                                        Elements imgs = doc.select("img");
-                                        for (Element img : imgs) {
-                                            photo = img.absUrl("src");
+                                        try {
+                                            Document doc = Jsoup.parse(htmlContent);
+                                            Elements imgs = doc.select("img");
+                                            for (Element img : imgs) {
+                                                photo = img.absUrl("src");
+                                            }
+                                            htmlContent = Jsoup.clean(htmlContent, Whitelist.basic());
                                         }
-                                        htmlContent = Jsoup.clean(htmlContent, Whitelist.basic());
+                                        catch (Exception ignored) {}
                                     }
 
                                 }

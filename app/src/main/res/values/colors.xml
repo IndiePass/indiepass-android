@@ -3,4 +3,6 @@
     <color name="colorPrimary">#8c4646</color>
     <color name="colorPrimaryDark">#6b3c3c</color>
     <color name="colorAccent">#8c4646</color>
+    <color name="iconTint">#000000</color>
+    <color name="menuTextcolor">#D9000000</color>
 </resources>

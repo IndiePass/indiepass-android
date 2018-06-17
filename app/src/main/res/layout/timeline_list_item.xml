@@ -113,7 +113,7 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/like"
                 android:id="@+id/itemLike"
-                android:layout_width="22dp"
+                android:layout_width="19dp"
                 android:layout_height="19dp" />
 
             <Button
@@ -121,7 +121,7 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/repost"
                 android:id="@+id/itemRepost"
-                android:layout_width="38dp"
+                android:layout_width="24dp"
                 android:layout_height="19dp" />
 
             <Button

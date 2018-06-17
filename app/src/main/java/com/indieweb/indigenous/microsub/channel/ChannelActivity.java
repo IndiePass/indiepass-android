@@ -184,7 +184,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
      */
     public void openBottomSheet() {
         new BottomSheet.Builder(this)
-                .setSheet(R.menu.post_menu)
+                .setSheet(R.menu.micropub_post_menu)
                 .setListener(this)
                 .show();
     }
