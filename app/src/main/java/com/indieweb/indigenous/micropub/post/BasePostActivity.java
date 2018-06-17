@@ -29,6 +29,7 @@ import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Syndication;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
+import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.VolleyMultipartRequest;
 
@@ -258,6 +259,11 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
      */
     public void sendBasePost(MenuItem item) {
         sendItem = item;
+
+        if (!new Connection(this).hasConnection()) {
+            Toast.makeText(this, getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (sendItem != null) {
             sendItem.setEnabled(false);

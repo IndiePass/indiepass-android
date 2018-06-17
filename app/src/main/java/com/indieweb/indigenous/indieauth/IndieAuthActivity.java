@@ -26,6 +26,7 @@ import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.SyndicationTargets;
 
 import org.json.JSONException;
@@ -99,6 +100,11 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
      */
     private final View.OnClickListener doSignIn = new View.OnClickListener() {
         public void onClick(View v) {
+
+            if (!new Connection(getApplicationContext()).hasConnection()) {
+                Toast.makeText(getApplicationContext(), getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             domainInput = domain.getText().toString();
 

@@ -53,8 +53,6 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
     String incomingText = "";
     String incomingImage = "";
     ListView listChannel;
-    TextView notFound;
-    Button reloadChannels;
     SwipeRefreshLayout refreshLayout;
     private ChannelListAdapter adapter;
     private List<Channel> Channels = new ArrayList<>();
@@ -66,11 +64,8 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_channels);
         findViewById(R.id.actionButton).setOnClickListener(this);
         listChannel = findViewById(R.id.channel_list);
-        notFound = findViewById(R.id.notFound);
-        reloadChannels = findViewById(R.id.reloadChannels);
         refreshLayout = findViewById(R.id.refreshChannels);
         refreshLayout.setOnRefreshListener(this);
-        reloadChannels.setOnClickListener(new reloadChannelsListener());
 
         user = new Accounts(this).getCurrentUser();
         this.setTitle(user.getMeWithoutProtocol());
@@ -83,20 +78,10 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
      */
     public void startChannels() {
         Channels = new ArrayList<>();
-        notFound.setVisibility(View.GONE);
-        reloadChannels.setVisibility(View.GONE);
         listChannel.setVisibility(View.VISIBLE);
         adapter = new ChannelListAdapter(this, Channels);
         listChannel.setAdapter(adapter);
         getChannels();
-    }
-
-    // Reload channels.
-    class reloadChannelsListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            startChannels();
-        }
     }
 
     @Override
@@ -148,9 +133,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        notFound.setVisibility(View.VISIBLE);
-                        reloadChannels.setVisibility(View.VISIBLE);
-                        listChannel.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), getString(R.string.channels_not_found), Toast.LENGTH_SHORT).show();
                         checkRefreshingStatus();
                     }
                 }

@@ -391,7 +391,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Request failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.no_posts_found), Toast.LENGTH_SHORT).show();
                         checkRefreshingStatus();
                     }
                 }
