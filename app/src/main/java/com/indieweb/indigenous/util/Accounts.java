@@ -92,10 +92,10 @@ public class Accounts {
         builder.setCancelable(true);
         builder.setItems(accountItems, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (!accounts.get(which).equals(currentUser.getMe())) {
+            public void onClick(DialogInterface dialog, int index) {
+                if (!accounts.get(index).equals(currentUser.getMe())) {
                     SharedPreferences.Editor editor = context.getSharedPreferences("indigenous", MODE_PRIVATE).edit();
-                    editor.putString("account", accounts.get(which));
+                    editor.putString("account", accounts.get(index));
                     editor.apply();
                     Intent Main = new Intent(context, com.indieweb.indigenous.MainActivity.class);
                     context.startActivity(Main);
