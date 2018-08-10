@@ -46,7 +46,8 @@ https://realize.be/notes/1333
 
 ## iOS
 
-iOS version is available at https://github.com/EdwardHinkle/indigenous-ios
+https://indigenous.abode.pub/ios/
+Code is at https://github.com/EdwardHinkle/indigenous-ios
 
 ## Other clients
 
