@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.support.customtabs.CustomTabsIntent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -415,8 +417,18 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         @Override
         public void onClick(View v) {
             TimelineItem item = items.get(this.position);
-            Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(item.getUrl()));
-            context.startActivity(intent);
+
+            try {
+                CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
+                intentBuilder.setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                intentBuilder.setSecondaryToolbarColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
+                CustomTabsIntent customTabsIntent = intentBuilder.build();
+                customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                customTabsIntent.launchUrl(context, Uri.parse(item.getUrl()));
+            }
+            catch (Exception ignored) { }
+
         }
     }
 
