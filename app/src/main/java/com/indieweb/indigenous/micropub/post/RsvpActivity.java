@@ -13,6 +13,7 @@ public class RsvpActivity extends BasePostActivity {
     protected void onCreate(Bundle savedInstanceState) {
         postType = "RSVP";
         urlPostKey = "in-reply-to";
+        addCounter = true;
         rsvp = findViewById(R.id.rsvp);
         setContentView(R.layout.activity_rsvp);
         super.onCreate(savedInstanceState);

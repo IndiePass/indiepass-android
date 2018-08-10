@@ -11,6 +11,7 @@ public class ArticleActivity extends BasePostActivity {
     protected void onCreate(Bundle savedInstanceState) {
         canAddImage = true;
         postType = "Article";
+        addCounter = true;
         setContentView(R.layout.activity_article);
         super.onCreate(savedInstanceState);
     }

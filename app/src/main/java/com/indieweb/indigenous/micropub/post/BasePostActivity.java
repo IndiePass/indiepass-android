@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.Menu;
@@ -69,6 +70,7 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
     String hType = "entry";
     String postType = "Post";
     boolean canAddImage = false;
+    boolean addCounter = false;
     Map<String, String> bodyParams = new HashMap<>();
 
     @Override
@@ -110,6 +112,12 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
         imagePreview = findViewById(R.id.imagePreview);
         imageCard = findViewById(R.id.imageCard);
         url = findViewById(R.id.url);
+
+        // Add counter.
+        if (addCounter) {
+            TextInputLayout textInputLayout = findViewById(R.id.textInputLayout);
+            textInputLayout.setCounterEnabled(true);
+        }
 
         Intent intent = getIntent();
         Bundle extras = getIntent().getExtras();

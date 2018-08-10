@@ -11,6 +11,7 @@ public class BookmarkActivity extends BasePostActivity {
         postType = "Bookmark";
         urlPostKey = "bookmark-of";
         directSend = "pref_key_share_expose_bookmark";
+        addCounter = true;
         setContentView(R.layout.activity_bookmark);
         super.onCreate(savedInstanceState);
     }

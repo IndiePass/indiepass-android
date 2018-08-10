@@ -11,6 +11,7 @@ public class ReplyActivity extends BasePostActivity {
     protected void onCreate(Bundle savedInstanceState) {
         postType = "Reply";
         urlPostKey = "in-reply-to";
+        addCounter = true;
         setContentView(R.layout.activity_reply);
         super.onCreate(savedInstanceState);
     }
