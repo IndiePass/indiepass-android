@@ -46,7 +46,7 @@ https://realize.be/notes/1333
 
 ## iOS
 
-https://indigenous.abode.pub/ios/
+https://indigenous.abode.pub/ios/  
 Code is at https://github.com/EdwardHinkle/indigenous-ios
 
 ## Other clients
