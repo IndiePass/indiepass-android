@@ -4,6 +4,7 @@ Development happens on <a href="https://github.com/swentel/indigenous–android"
 <h2>Changelog</h2>
 <h3>10/06/2018 - 0.10</h3>
 <ul>
+<li>Use indigenous.abode.pub for authentication</li>
 <li>Detect connection when trying to post or read channels</li>
 <li>Better styling of micropub overview screen</li>
 <li>A lot of cleanup in code</li>
