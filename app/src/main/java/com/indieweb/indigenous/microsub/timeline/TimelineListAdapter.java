@@ -348,7 +348,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
      * @param span
      *   The span with url.
      */
-    protected void makeLinkClickable(SpannableStringBuilder strBuilder, final URLSpan span) {
+    private void makeLinkClickable(SpannableStringBuilder strBuilder, final URLSpan span) {
         int start = strBuilder.getSpanStart(span);
         int end = strBuilder.getSpanEnd(span);
         int flags = strBuilder.getSpanFlags(span);
