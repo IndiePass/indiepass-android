@@ -8,7 +8,11 @@ import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.Html;
+import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -175,35 +179,48 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             if (item.getType().equals("bookmark-of") || item.getType().equals("in-reply-to") || item.getType().equals("like-of") || item.getType().equals("checkin")) {
                 String ContextText = "";
                 String ContextUrl = "";
+                String ContextLinkText = "";
                 switch (item.getType()) {
                     case "in-reply-to":
                         ContextText = "In reply to";
                         ContextUrl = item.getSubType("in-reply-to");
+                        ContextLinkText = ContextUrl;
                         break;
                     case "like-of":
                         ContextText = "Like of";
                         ContextUrl = item.getSubType("like-of");
+                        ContextLinkText = ContextUrl;
                         break;
                     case "bookmark-of":
                         ContextText = "Bookmark of";
                         ContextUrl = item.getSubType("bookmark-of");
+                        ContextLinkText = ContextUrl;
                         break;
                     case "checkin":
-                        ContextText = "Checked in at";
-                        ContextUrl = item.getSubType("checkin");
+                        ContextText = "Checked in at ";
+                        ContextUrl = item.getSubType("checkin-url");
+                        ContextLinkText = item.getSubType("checkin");
                         break;
                 }
 
                 if (ContextText.length() > 0 && ContextUrl.length() > 0) {
-                    ContextData = ContextText + " <a href=\"" + ContextUrl + "\">" + ContextUrl + "</a>";
+                    ContextData = ContextText + " <a href=\"" + ContextUrl + "\">" + ContextLinkText + "</a>";
                 }
             }
 
             if (ContextData.length() > 0) {
                 holder.context.setVisibility(View.VISIBLE);
-                holder.context.setClickable(true);
+                //holder.context.setClickable(true);
+
+                CharSequence sequence = Html.fromHtml(ContextData);
+                SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
+                URLSpan[] urls = strBuilder.getSpans(0, sequence.length(), URLSpan.class);
+                for (URLSpan span : urls) {
+                    makeLinkClickable(strBuilder, span);
+                }
+
+                holder.context.setText(strBuilder);
                 holder.context.setMovementMethod(LinkMovementMethod.getInstance());
-                holder.context.setText(Html.fromHtml(ContextData));
             }
             else {
                 holder.context.setVisibility(View.GONE);
@@ -215,13 +232,21 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.content.setVisibility(View.VISIBLE);
 
                 if (item.getHtmlContent().length() > 0) {
+                    CharSequence sequence;
                     String html = item.getHtmlContent();
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                        holder.content.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY));
+                        sequence = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
                     }
                     else {
-                        holder.content.setText(Html.fromHtml(html));
+                        sequence = Html.fromHtml(html);
                     }
+
+                    SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
+                    URLSpan[] urls = strBuilder.getSpans(0, sequence.length(), URLSpan.class);
+                    for (URLSpan span : urls) {
+                        makeLinkClickable(strBuilder, span);
+                    }
+                    holder.content.setText(strBuilder);
                     holder.content.setMovementMethod(LinkMovementMethod.getInstance());
                 }
                 else {
@@ -313,6 +338,36 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         }
 
         return convertView;
+    }
+
+    /**
+     * Link clickable.
+     *
+     * @param strBuilder
+     *   A string builder.
+     * @param span
+     *   The span with url.
+     */
+    protected void makeLinkClickable(SpannableStringBuilder strBuilder, final URLSpan span) {
+        int start = strBuilder.getSpanStart(span);
+        int end = strBuilder.getSpanEnd(span);
+        int flags = strBuilder.getSpanFlags(span);
+        ClickableSpan clickable = new ClickableSpan() {
+            public void onClick(View view) {
+                try {
+                    CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
+                    intentBuilder.setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                    intentBuilder.setSecondaryToolbarColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
+                    CustomTabsIntent customTabsIntent = intentBuilder.build();
+                    customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    customTabsIntent.launchUrl(context, Uri.parse(span.getURL()));
+                }
+                catch (Exception ignored) { }
+            }
+        };
+        strBuilder.setSpan(clickable, start, end, flags);
+        strBuilder.removeSpan(span);
     }
 
     // Reply listener.

@@ -257,6 +257,12 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 if (object.has("checkin")) {
                                     type = "checkin";
                                     item.addToSubType(type, object.getJSONObject("checkin").getString("name"));
+                                    String checkinUrl = "";
+                                    try {
+                                        checkinUrl = object.getJSONObject("checkin").getString("url");
+                                    }
+                                    catch (Exception ignored) {}
+                                    item.addToSubType("checkin-url", checkinUrl);
                                 }
 
                                 // Set type.
