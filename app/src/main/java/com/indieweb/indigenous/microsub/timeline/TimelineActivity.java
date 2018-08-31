@@ -329,6 +329,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                         catch (Exception ignored) {}
                                     }
 
+                                } else if(object.has("summary")) {
+                                    textContent = object.getString("summary");
                                 }
 
                                 // Name.
