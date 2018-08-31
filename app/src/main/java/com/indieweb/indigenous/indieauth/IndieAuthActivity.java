@@ -58,7 +58,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
     String tokenEndpoint;
     String micropubEndpoint;
     String microsubEndpoint;
-    String ClientId = "https://indigenous.abode.pub";
+    String ClientId = "https://indigenous.abode.pub/android/";
     String RedirectUri = "https://indigenous.abode.pub/android/login/";
 
     @Override
