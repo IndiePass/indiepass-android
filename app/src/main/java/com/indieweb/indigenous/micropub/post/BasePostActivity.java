@@ -284,7 +284,7 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
-                        Toast.makeText(getApplicationContext(), "Post success", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Post success", Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 },

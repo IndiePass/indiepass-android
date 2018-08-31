@@ -183,10 +183,10 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
 
         }
         catch (IllegalArgumentException ignored) {
-            Toast.makeText(getApplicationContext(), "Could not connect to domain", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Could not connect to domain", Toast.LENGTH_SHORT).show();
         }
         catch (IOException error) {
-            Toast.makeText(getApplicationContext(), "Could not connect to domain", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Could not connect to domain", Toast.LENGTH_SHORT).show();
         }
 
         // If we have 3 endpoints, let's go.

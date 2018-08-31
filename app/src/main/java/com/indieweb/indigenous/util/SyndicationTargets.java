@@ -57,10 +57,10 @@ public class SyndicationTargets {
                             if (itemList.length() > 0) {
                                 AccountManager am = AccountManager.get(context);
                                 am.setUserData(user.getAccount(), "syndication_targets", response);
-                                Toast.makeText(context, "Syndication targets saved", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Syndication targets saved", Toast.LENGTH_SHORT).show();
                             }
                             else {
-                                Toast.makeText(context, "No syndication targets found", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "No syndication targets found", Toast.LENGTH_SHORT).show();
                             }
 
                         }

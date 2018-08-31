@@ -2,15 +2,9 @@ package com.indieweb.indigenous;
 
 import android.content.ComponentName;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 public class SettingsActivity extends PreferenceActivity {
     @Override

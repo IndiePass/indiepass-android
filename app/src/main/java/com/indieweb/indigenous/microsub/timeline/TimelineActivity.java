@@ -22,7 +22,6 @@ import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
-import com.indieweb.indigenous.util.PopupMessage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -73,7 +72,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             startTimeline();
         }
         else {
-            Toast.makeText(this, "Channel not found", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Channel not found", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -108,7 +107,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
      */
     public void checkRefreshingStatus() {
         if (refreshLayout.isRefreshing()) {
-            new PopupMessage(getString(R.string.timeline_items_refreshed), findViewById(R.id.timeline_root)).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.timeline_items_refreshed), Toast.LENGTH_SHORT).show();
             refreshLayout.setRefreshing(false);
         }
     }
@@ -329,7 +328,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                         catch (Exception ignored) {}
                                     }
 
-                                } else if(object.has("summary")) {
+                                }
+                                else if(object.has("summary")) {
                                     textContent = object.getString("summary");
                                 }
 

@@ -9,9 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -34,7 +32,6 @@ import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
-import com.indieweb.indigenous.util.PopupMessage;
 import com.indieweb.indigenous.util.SyndicationTargets;
 import com.kennyc.bottomsheet.BottomSheet;
 import com.kennyc.bottomsheet.BottomSheetListener;
@@ -157,7 +154,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
      */
     public void checkRefreshingStatus() {
         if (refreshLayout.isRefreshing()) {
-            new PopupMessage(getString(R.string.channels_refreshed), findViewById(R.id.channel_root)).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.channels_refreshed), Toast.LENGTH_SHORT).show();
             refreshLayout.setRefreshing(false);
         }
     }
