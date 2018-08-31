@@ -1,18 +1,21 @@
-Current version: 0.10
+Current version: 0.11
+<br /><br />
+<a href="https://indigenous.abode.pub/android/privacy/">Privacy policy</a>
 <br /><br />
 Development happens on <a href="https://github.com/swentel/indigenous–android">GitHub</a>
 <h2>Changelog</h2>
-<h3>10/08/2018 - 0.11</h3>
+<h3>01/09/2018 - 0.11</h3>
 <ul>
-<li>Add counter on all bodies</li>
-<li>Use custom tabs for external link</li>
+    <li>Public release</li>
+    <li>Add counter on all bodies</li>
+    <li>Use custom tabs for external link</li>
 </ul>
 <h3>10/08/2018 - 0.10</h3>
 <ul>
-<li>Use indigenous.abode.pub for authentication</li>
-<li>Detect connection when trying to post or read channels</li>
-<li>Better styling of micropub overview screen</li>
-<li>A lot of cleanup in code</li>
+    <li>Use indigenous.abode.pub for authentication</li>
+    <li>Detect connection when trying to post or read channels</li>
+    <li>Better styling of micropub overview screen</li>
+    <li>A lot of cleanup in code</li>
 </ul>
 <h3>10/06/2018 - 0.9</h3>
 <ul>
