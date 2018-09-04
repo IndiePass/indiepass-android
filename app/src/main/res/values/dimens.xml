@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <dimen tools:override="true" name="design_navigation_icon_padding">14dp</dimen>
+    <dimen name="channel_list_item_padding">17sp</dimen>
+    <dimen name="channel_list_item_text_size">16sp</dimen>
+    <dimen name="channel_list_divider_height">2px</dimen>
 </resources>

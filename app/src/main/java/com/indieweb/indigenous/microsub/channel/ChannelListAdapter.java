@@ -55,6 +55,7 @@ public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
     }
 
     public static class ViewHolder {
+        public int position;
         public TextView name;
         public TextView unread;
         public LinearLayout row;
@@ -78,10 +79,14 @@ public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
         final Channel channel = channels.get(position);
         if (channel != null) {
 
-            // Change color of row.
-            String color = ((position % 2) == 0) ? "#f8f7f1" :  "#ffffff";
+            holder.position = position;
+
+            // Color of row.
+            int color = context.getResources().getColor(R.color.listRowBackgroundColor);
+            holder.row.setBackgroundColor(color);
+
+            // Get row id.
             holder.row = convertView.findViewById(R.id.channel_row);
-            holder.row.setBackgroundColor(Color.parseColor(color));
 
             // Name.
             holder.name.setText(channel.getName());
@@ -97,29 +102,44 @@ public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
             }
 
             // Set on touch listener.
-            // TODO check performclick
-            holder.row.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    String backColor = ((position % 2) == 0) ? "#f8f7f1" :  "#ffffff";
-                    switch(motionEvent.getAction()) {
-                        case MotionEvent.ACTION_UP:
-                            holder.row.setBackgroundColor(Color.parseColor(backColor));
-                            Intent intent = new Intent(context, TimelineActivity.class);
-                            intent.putExtra("channelId", channel.getUid());
-                            intent.putExtra("channelName", channel.getName());
-                            intent.putExtra("unread", channel.getUnread());
-                            channels.get(position).setUnread(0);
-                            holder.unread.setVisibility(View.GONE);
-                            context.startActivity(intent);
-                            break;
-                    }
-                    return true;
-                }
-            });
-
+            convertView.setOnTouchListener(eventTouch);
         }
 
         return convertView;
     }
+
+    /**
+     * OnTouchListener for channel row.
+     */
+    private View.OnTouchListener eventTouch = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent motionEvent) {
+            ViewHolder holder = (ViewHolder)v.getTag();
+            switch(motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    int downColor = context.getResources().getColor(R.color.listRowBackgroundColorTouched);
+                    holder.row.setBackgroundColor(downColor);
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    int cancelColor = context.getResources().getColor(R.color.listRowBackgroundColor);
+                    holder.row.setBackgroundColor(cancelColor);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    int position = holder.position;
+                    int color = context.getResources().getColor(R.color.listRowBackgroundColor);
+                    Channel channel = channels.get(position);
+                    holder.row.setBackgroundColor(color);
+                    Intent intent = new Intent(context, TimelineActivity.class);
+                    intent.putExtra("channelId", channel.getUid());
+                    intent.putExtra("channelName", channel.getName());
+                    intent.putExtra("unread", channel.getUnread());
+                    channels.get(position).setUnread(0);
+                    holder.unread.setVisibility(View.GONE);
+                    context.startActivity(intent);
+                    break;
+            }
+            return true;
+        }
+    };
+
 }
