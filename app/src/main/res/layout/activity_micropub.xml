@@ -2,38 +2,37 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scroll"
-    android:padding="10dp"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
         <TextView
+            android:padding="10dp"
             android:id="@+id/createTitle"
             android:textSize="18sp"
             android:visibility="gone"
             android:text="@string/select_post_type"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 
         <TextView
+            android:padding="10dp"
             android:visibility="gone"
             android:textStyle="italic"
             android:id="@+id/previewText"
             android:textColor="@color/textColor"
-            android:layout_marginTop="5dp"
             android:textSize="@dimen/timeline_list_item_text_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <android.support.v7.widget.CardView
             android:visibility="gone"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:id="@+id/previewCard"
             app:cardCornerRadius="8dp">
@@ -47,19 +46,20 @@
         </android.support.v7.widget.CardView>
 
         <android.support.design.widget.NavigationView
-            android:layout_marginTop="10dp"
-            android:id="@+id/postMenu"
-            app:theme="@style/NavigationDrawerStyle"
-            android:background="@android:color/transparent"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            app:itemIconTint="@color/iconTint"
-            app:itemTextColor="@color/menuTextcolor"
-            app:itemBackground="@drawable/nav_item_background"
-            app:menu="@menu/micropub_post_menu" />
+                android:id="@+id/postMenu"
+                android:fitsSystemWindows="true"
+                app:theme="@style/NavigationDrawerStyle"
+                android:background="@android:color/transparent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="start"
+                app:itemIconTint="@color/iconTint"
+                app:itemTextColor="@color/menuTextcolor"
+                app:itemBackground="@drawable/nav_item_background"
+                app:menu="@menu/micropub_post_menu" />
 
         <Button
-            android:layout_marginTop="10dp"
+            android:padding="10dp"
             android:visibility="gone"
             android:text="@string/go_to_reader"
             android:id="@+id/goToReader"

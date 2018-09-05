@@ -6,7 +6,7 @@ Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a
 <h2>Changelog</h2>
 <h3>05/09/2018 - 0.11</h3>
 <ul>
-    <li>Public release</li>
+    <li>Allow sending location</li>
     <li>More lighter styling and cleaner icons</li>
     <li>Add counter on all bodies</li>
     <li>Use custom tabs for external link</li>

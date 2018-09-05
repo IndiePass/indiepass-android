@@ -1,7 +1,6 @@
 package com.indieweb.indigenous.micropub;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
