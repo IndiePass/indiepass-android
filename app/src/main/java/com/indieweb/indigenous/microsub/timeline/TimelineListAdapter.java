@@ -2,7 +2,6 @@ package com.indieweb.indigenous.microsub.timeline;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
@@ -12,7 +11,6 @@ import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,21 +23,21 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.indieweb.indigenous.micropub.post.BookmarkActivity;
-import com.indieweb.indigenous.micropub.post.RsvpActivity;
-import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
-
-import at.blogc.android.views.ExpandableTextView;
+import com.indieweb.indigenous.micropub.post.RsvpActivity;
+import com.indieweb.indigenous.model.TimelineItem;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import at.blogc.android.views.ExpandableTextView;
 
 /**
  * Timeline items list adapter.

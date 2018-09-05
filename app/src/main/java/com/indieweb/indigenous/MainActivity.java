@@ -1,8 +1,9 @@
 package com.indieweb.indigenous;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+
 import com.indieweb.indigenous.indieauth.IndieAuthActivity;
 import com.indieweb.indigenous.micropub.MicropubActivity;
 import com.indieweb.indigenous.microsub.channel.ChannelActivity;

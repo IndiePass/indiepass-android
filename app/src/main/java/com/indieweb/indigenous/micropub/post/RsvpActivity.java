@@ -3,6 +3,7 @@ package com.indieweb.indigenous.micropub.post;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Spinner;
+
 import com.indieweb.indigenous.R;
 
 public class RsvpActivity extends BasePostActivity {

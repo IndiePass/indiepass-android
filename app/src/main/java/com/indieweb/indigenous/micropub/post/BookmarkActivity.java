@@ -2,6 +2,7 @@ package com.indieweb.indigenous.micropub.post;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+
 import com.indieweb.indigenous.R;
 
 public class BookmarkActivity extends BasePostActivity {
