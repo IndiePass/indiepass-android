@@ -10,6 +10,7 @@ public class NoteActivity extends BasePostActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         canAddImage = true;
+        canAddLocation = true;
         postType = "Note";
         addCounter = true;
         setContentView(R.layout.activity_note);

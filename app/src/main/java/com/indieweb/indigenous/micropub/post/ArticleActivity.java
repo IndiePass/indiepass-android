@@ -10,6 +10,7 @@ public class ArticleActivity extends BasePostActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         canAddImage = true;
+        canAddLocation = true;
         postType = "Article";
         addCounter = true;
         setContentView(R.layout.activity_article);

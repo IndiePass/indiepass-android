@@ -26,6 +26,7 @@ public class EventActivity extends BasePostActivity  {
         postType = "Event";
         hType = "event";
         canAddImage = true;
+        canAddLocation = true;
         addCounter = true;
         setContentView(R.layout.activity_event);
         super.onCreate(savedInstanceState);

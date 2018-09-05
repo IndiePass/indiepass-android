@@ -35,4 +35,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
     implementation 'com.github.HugoMatilla:AudioPlayerView:v1.0.1'
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
+    implementation 'com.karumi:dexter:4.2.0'
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
 }
