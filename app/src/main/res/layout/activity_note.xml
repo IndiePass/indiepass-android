@@ -22,9 +22,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:ems="10"
+                android:gravity="top"
                 android:hint="@string/note"
                 android:inputType="textMultiLine"
-                android:lines="4"
+                android:lines="8"
                 android:singleLine="false" />
 
         </android.support.design.widget.TextInputLayout>

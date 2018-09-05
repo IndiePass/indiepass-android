@@ -39,7 +39,8 @@
                 android:ems="10"
                 android:hint="@string/your_reply"
                 android:inputType="textMultiLine"
-                android:lines="4"
+                android:gravity="top"
+                android:lines="8"
                 android:singleLine="false" />
 
         </android.support.design.widget.TextInputLayout>
