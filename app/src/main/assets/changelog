@@ -1,12 +1,13 @@
-Current version: 0.11
-<br /><br />
-<a href="https://indigenous.abode.pub/android/privacy/">Privacy policy</a>
+Current version: 0.11 - <a href="https://indigenous.abode.pub/android/privacy/">Privacy policy</a>
 <br /><br />
 Development happens on <a href="https://github.com/swentel/indigenous–android">GitHub</a>
+<br /><br />
+Icons from <a href="https://material.io/tools/icons/">Material Design</a>
 <h2>Changelog</h2>
-<h3>01/09/2018 - 0.11</h3>
+<h3>05/09/2018 - 0.11</h3>
 <ul>
     <li>Public release</li>
+    <li>More lighter styling and cleaner icons</li>
     <li>Add counter on all bodies</li>
     <li>Use custom tabs for external link</li>
 </ul>

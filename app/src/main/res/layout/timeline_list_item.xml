@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/timeline_author_photo"
         android:layout_height="50dp"
-        android:scaleType="centerCrop"
+        android:src="@drawable/avatar_small"
         android:contentDescription="@string/author_photo"
         android:layout_width="50dp" />
 
@@ -104,70 +104,63 @@
             android:layout_width="fill_parent"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <Button
-                android:layout_marginTop="5dp"
-                android:background="@drawable/reply"
+                android:background="@drawable/button_reply"
                 android:id="@+id/itemReply"
-                android:layout_width="25dp"
-                android:layout_height="19dp" />
+                android:layout_width="@dimen/timeline_list_item_icon_size"
+                android:layout_height="@dimen/timeline_list_item_icon_size" />
 
             <Button
                 android:layout_marginLeft="@dimen/timeline_list_item_icon_margin_left"
                 android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/like"
+                android:background="@drawable/button_like"
                 android:id="@+id/itemLike"
-                android:layout_width="19dp"
-                android:layout_height="19dp" />
+                android:layout_width="@dimen/timeline_list_item_icon_size"
+                android:layout_height="@dimen/timeline_list_item_icon_size" />
 
             <Button
                 android:layout_marginLeft="@dimen/timeline_list_item_icon_margin_left"
                 android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/repost"
+                android:background="@drawable/button_repost"
                 android:id="@+id/itemRepost"
-                android:layout_width="24dp"
-                android:layout_height="19dp" />
+                android:layout_width="@dimen/timeline_list_item_icon_size"
+                android:layout_height="@dimen/timeline_list_item_icon_size" />
 
             <Button
                 android:layout_marginLeft="@dimen/timeline_list_item_icon_margin_left"
                 android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/bookmark"
+                android:background="@drawable/button_bookmark"
                 android:id="@+id/itemBookmark"
-                android:layout_width="19dp"
-                android:layout_height="19dp" />
+                android:layout_width="@dimen/timeline_list_item_icon_size"
+                android:layout_height="@dimen/timeline_list_item_icon_size" />
 
             <Button
                 android:layout_marginLeft="@dimen/timeline_list_item_icon_margin_left"
                 android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/external"
+                android:background="@drawable/button_external"
                 android:id="@+id/itemExternal"
-                android:layout_width="19dp"
-                android:layout_height="19dp" />
+                android:layout_width="@dimen/timeline_list_item_icon_size"
+                android:layout_height="@dimen/timeline_list_item_icon_size" />
 
             <Button
                 android:layout_marginLeft="@dimen/timeline_list_item_icon_margin_left"
                 android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/audio"
+                android:background="@drawable/button_audio"
                 android:id="@+id/itemAudio"
-                android:layout_width="22dp"
-                android:layout_height="19dp" />
+                android:layout_width="@dimen/timeline_list_item_icon_size"
+                android:layout_height="@dimen/timeline_list_item_icon_size" />
 
             <Button
                 android:layout_marginLeft="@dimen/timeline_list_item_icon_margin_left"
                 android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/rsvp"
+                android:background="@drawable/button_rsvp"
                 android:id="@+id/itemRSVP"
-                android:layout_width="21dp"
-                android:layout_height="19dp" />
+                android:layout_width="@dimen/timeline_list_item_icon_size"
+                android:layout_height="@dimen/timeline_list_item_icon_size" />
 
         </LinearLayout>
 

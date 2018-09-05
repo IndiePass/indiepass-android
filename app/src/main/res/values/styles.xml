@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:actionMenuTextColor">@color/textColor</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -18,6 +19,14 @@
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/menuTextcolor</item>
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="BottomSheet.StyleDialog" parent="@style/BottomSheet">
+        <item name="bottom_sheet_list_text_appearance">@style/ListAppearance</item>
+    </style>
+
+    <style name="ListAppearance" parent="BottomSheet.ListItem.TextAppearance">
+        <item name="android:textColor">@color/menuTextcolor</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

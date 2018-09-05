@@ -10,5 +10,6 @@
     <dimen name="timeline_list_item_author_size">16sp</dimen>
     <dimen name="timeline_list_item_global">14sp</dimen>
     <dimen name="timeline_list_divider_height">2px</dimen>
+    <dimen name="timeline_list_item_icon_size">25dp</dimen>
     <dimen name="timeline_list_item_icon_margin_left">20dp</dimen>
 </resources>
