@@ -3,7 +3,7 @@
     <color name="colorPrimary">#DD645E</color>
     <color name="colorPrimaryDark">#bd3e38</color>
     <color name="colorAccent">#DD645E</color>
-    <color name="iconTint">#000000</color>
+    <color name="iconTint">#666666</color>
     <color name="menuTextcolor">#666666</color>
     <color name="lightBlue">#b6cbdb</color>
     <color name="textColor">#666666</color>
@@ -13,4 +13,5 @@
     <color name="listRowBackgroundColorTouched">#e2e6e9</color>
     <color name="loadMoreButtonBackgroundColor">#f5f5f5</color>
     <color name="loadMoreButtonBackgroundColorTouched">#e2e6e9</color>
+    <color name="micropubActionTouched">#e2e6e9</color>
 </resources>

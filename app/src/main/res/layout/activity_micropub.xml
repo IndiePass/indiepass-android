@@ -13,7 +13,7 @@
 
         <TextView
             android:id="@+id/createTitle"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:visibility="gone"
             android:text="@string/select_post_type"
             android:layout_width="wrap_content"
@@ -23,8 +23,9 @@
             android:visibility="gone"
             android:textStyle="italic"
             android:id="@+id/previewText"
+            android:textColor="@color/textColor"
             android:layout_marginTop="5dp"
-            android:textSize="18sp"
+            android:textSize="@dimen/timeline_list_item_text_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -50,9 +51,11 @@
             android:id="@+id/postMenu"
             app:theme="@style/NavigationDrawerStyle"
             android:background="@android:color/transparent"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             app:itemIconTint="@color/iconTint"
+            app:itemTextColor="@color/menuTextcolor"
+            app:itemBackground="@drawable/nav_item_background"
             app:menu="@menu/micropub_post_menu" />
 
         <Button
