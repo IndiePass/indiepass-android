@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:icon="@drawable/outline_add_photo_alternate_white_48dp"
+        android:icon="@drawable/outline_add_photo_alternate_white_24dp"
         app:showAsAction="ifRoom"
         android:id="@+id/addImage"
         android:title="@string/add_image" />
 
     <item
-        android:icon="@drawable/ic_send_white_48dp"
+        android:icon="@drawable/ic_send_white_18pt_3x"
         app:showAsAction="ifRoom"
         android:id="@+id/send"
         android:onClick="onPostButtonClick"
