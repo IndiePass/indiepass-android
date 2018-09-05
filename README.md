@@ -42,7 +42,7 @@ https://realize.be/notes/1333
 
 ## Screenshot
 
-<img src="https://realize.be/sites/default/files/Screenshot_20180411-111033.png" width="400" />
+<img src="https://realize.be/sites/default/files/Screenshot_20180905-153456_Indigenous.jpg" width="400" />
 
 ## iOS
 
