@@ -50,7 +50,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     private final List<TimelineItem> items;
     private LayoutInflater mInflater;
 
-    public TimelineListAdapter(Context context, List<TimelineItem> items) {
+    TimelineListAdapter(Context context, List<TimelineItem> items) {
         this.context = context;
         this.items = items;
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -125,8 +125,9 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         final TimelineItem item = items.get(position);
         if (item != null) {
 
-            String color = ((position % 2) == 0) ? "#f8f7f1" : "#ffffff";
-            holder.row.setBackgroundColor(Color.parseColor(color));
+            // Color of row.
+            int color = context.getResources().getColor(R.color.listRowBackgroundColor);
+            holder.row.setBackgroundColor(color);
 
             // Unread.
             if (!item.isRead()) {

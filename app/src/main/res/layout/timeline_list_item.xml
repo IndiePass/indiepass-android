@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/timeline_item_row"
     android:layout_height="wrap_content"
-    android:padding="10dp"
+    android:padding="@dimen/timeline_list_item_padding"
     android:orientation="horizontal">
 
     <ImageView
@@ -14,37 +14,41 @@
         android:layout_width="50dp" />
 
     <LinearLayout
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="@dimen/timeline_list_item_text_margin_left"
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/timeline_list_item_text_margin_left">
 
         <TextView
             android:layout_marginTop="5dp"
             android:id="@+id/timeline_new"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textSize="@dimen/timeline_list_item_global"
             android:layout_width="fill_parent" />
 
         <TextView
             android:layout_marginTop="5dp"
             android:id="@+id/timeline_author"
+            android:textColor="@color/textColor"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textSize="@dimen/timeline_list_item_author_size"
             android:layout_width="fill_parent" />
 
         <TextView
             android:id="@+id/timeline_published"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:textSize="@dimen/timeline_list_item_global"
+            android:textColor="@color/textColor"
             android:layout_width="fill_parent" />
 
         <TextView
             android:id="@+id/timeline_context"
+            android:textColor="@color/textColor"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:textSize="16sp"
+            android:textSize="@dimen/timeline_list_item_text_size"
             android:layout_width="fill_parent" />
 
         <TextView
@@ -52,7 +56,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:textSize="18sp"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/timeline_list_item_text_size"
             android:layout_width="fill_parent" />
 
         <at.blogc.android.views.ExpandableTextView
@@ -64,13 +69,15 @@
             android:maxLines="10"
             android:clickable="true"
             android:focusable="true"
-            android:textSize="16sp"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/timeline_list_item_text_size"
             android:lineSpacingExtra="5dp"
             android:ellipsize="end" />
 
         <Button
             android:id="@+id/timeline_content_more"
             android:layout_width="wrap_content"
+            android:textColor="@color/textColor"
             android:layout_height="wrap_content"
             android:gravity="start|center_vertical"
             android:background="@android:color/transparent"
@@ -109,7 +116,8 @@
                 android:layout_height="19dp" />
 
             <Button
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="@dimen/timeline_list_item_icon_margin_left"
+                android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/like"
                 android:id="@+id/itemLike"
@@ -117,7 +125,8 @@
                 android:layout_height="19dp" />
 
             <Button
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="@dimen/timeline_list_item_icon_margin_left"
+                android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/repost"
                 android:id="@+id/itemRepost"
@@ -125,7 +134,8 @@
                 android:layout_height="19dp" />
 
             <Button
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="@dimen/timeline_list_item_icon_margin_left"
+                android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/bookmark"
                 android:id="@+id/itemBookmark"
@@ -133,7 +143,8 @@
                 android:layout_height="19dp" />
 
             <Button
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="@dimen/timeline_list_item_icon_margin_left"
+                android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/external"
                 android:id="@+id/itemExternal"
@@ -141,7 +152,8 @@
                 android:layout_height="19dp" />
 
             <Button
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="@dimen/timeline_list_item_icon_margin_left"
+                android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/audio"
                 android:id="@+id/itemAudio"
@@ -149,7 +161,8 @@
                 android:layout_height="19dp" />
 
             <Button
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="@dimen/timeline_list_item_icon_margin_left"
+                android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/rsvp"
                 android:id="@+id/itemRSVP"

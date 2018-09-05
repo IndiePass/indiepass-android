@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -49,6 +50,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     ListView listView;
     Button loadMoreButton;
     boolean loadMoreButtonAdded = false;
+    String[] olderItems;
     User user;
 
     @Override
@@ -66,6 +68,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             this.setTitle(channelName);
             loadMoreButton = new Button(this);
             loadMoreButton.setText(R.string.load_more);
+            loadMoreButton.setTextColor(getResources().getColor(R.color.textColor));
+            loadMoreButton.setBackgroundColor(getResources().getColor(R.color.loadMoreButtonBackgroundColor));
             refreshLayout = findViewById(R.id.refreshTimeline);
             refreshLayout.setOnRefreshListener(this);
             user = new Accounts(this).getCurrentUser();
@@ -173,7 +177,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             MicrosubEndpoint += "&after=" + pagerAfter;
         }
 
-        final String[] olderItems = new String[1];
+        olderItems = new String[1];
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
@@ -374,12 +378,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                     listView.addFooterView(loadMoreButton);
                                 }
 
-                                loadMoreButton.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View arg0) {
-                                        getTimeLineItems(olderItems[0]);
-                                    }
-                                });
+                                loadMoreButton.setOnTouchListener(loadMoreTouch);
                             }
                             else {
                                 if (loadMoreButtonAdded) {
@@ -422,5 +421,30 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         queue.add(getRequest);
 
     }
+
+    /**
+     * Load more touch button.
+     */
+    private View.OnTouchListener loadMoreTouch = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent motionEvent) {
+            switch(motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    int downColorTouch = getResources().getColor(R.color.loadMoreButtonBackgroundColorTouched);
+                    loadMoreButton.setBackgroundColor(downColorTouch);
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    loadMoreButton.setBackgroundColor(getResources().getColor(R.color.loadMoreButtonBackgroundColor));
+                    break;
+                case MotionEvent.ACTION_UP:
+                    int downColor = getResources().getColor(R.color.loadMoreButtonBackgroundColor);
+                    loadMoreButton.setBackgroundColor(downColor);
+                    getTimeLineItems(olderItems[0]);
+                    break;
+
+            }
+            return true;
+        }
+    };
 
 }

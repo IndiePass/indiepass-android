@@ -5,10 +5,12 @@
     <color name="colorAccent">#DD645E</color>
     <color name="iconTint">#000000</color>
     <color name="menuTextcolor">#D9000000</color>
-    <color name="lightBlue">#e2e6e9</color>
+    <color name="lightBlue">#b6cbdb</color>
     <color name="textColor">#666666</color>
     <color name="listBackgroundColor">#f5f5f5</color>
     <color name="listDividerColor">#e2e6e9</color>
     <color name="listRowBackgroundColor">#ffffff</color>
     <color name="listRowBackgroundColorTouched">#e2e6e9</color>
+    <color name="loadMoreButtonBackgroundColor">#f5f5f5</color>
+    <color name="loadMoreButtonBackgroundColorTouched">#e2e6e9</color>
 </resources>
