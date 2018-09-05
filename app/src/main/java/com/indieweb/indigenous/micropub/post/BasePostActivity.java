@@ -498,46 +498,49 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
     public void startLocationUpdates() {
 
         initLocationLibraries();
+        if (mSettingsClient == null) {
+            return;
+        }
 
         mSettingsClient
-                .checkLocationSettings(mLocationSettingsRequest)
-                .addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
-                    @SuppressLint("MissingPermission")
-                    @Override
-                    public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+            .checkLocationSettings(mLocationSettingsRequest)
+            .addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
+                @SuppressLint("MissingPermission")
+                @Override
+                public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
 
-                        Toast.makeText(getApplicationContext(), getString(R.string.getting_location), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.getting_location), Toast.LENGTH_SHORT).show();
 
-                        //noinspection MissingPermission
-                        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+                    //noinspection MissingPermission
+                    mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
 
-                        updateLocationUI();
+                    updateLocationUI();
+                }
+            })
+            .addOnFailureListener(this, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    int statusCode = ((ApiException) e).getStatusCode();
+                    switch (statusCode) {
+                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                            try {
+                                // Show the dialog by calling startResolutionForResult(),
+                                // and check the result in onActivityResult().
+                                ResolvableApiException rae = (ResolvableApiException) e;
+                                rae.startResolutionForResult(BasePostActivity.this, REQUEST_CHECK_SETTINGS);
+                            }
+                            catch (IntentSender.SendIntentException sie) {
+                                Toast.makeText(getApplicationContext(), "PendingIntent unable to execute request.", Toast.LENGTH_SHORT).show();
+                            }
+                            break;
+                        case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                            String errorMessage = "Location settings are inadequate, and cannot be fixed here. Fix in Settings.";
+                            Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_LONG).show();
                     }
-                })
-                .addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        int statusCode = ((ApiException) e).getStatusCode();
-                        switch (statusCode) {
-                            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                                try {
-                                    // Show the dialog by calling startResolutionForResult(),
-                                    // and check the result in onActivityResult().
-                                    ResolvableApiException rae = (ResolvableApiException) e;
-                                    rae.startResolutionForResult(BasePostActivity.this, REQUEST_CHECK_SETTINGS);
-                                }
-                                catch (IntentSender.SendIntentException sie) {
-                                    Toast.makeText(getApplicationContext(), "PendingIntent unable to execute request.", Toast.LENGTH_SHORT).show();
-                                }
-                                break;
-                            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                                String errorMessage = "Location settings are inadequate, and cannot be fixed here. Fix in Settings.";
-                                Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_LONG).show();
-                        }
 
-                        updateLocationUI();
-                    }
-                });
+                    updateLocationUI();
+                }
+            });
     }
 
     /**
