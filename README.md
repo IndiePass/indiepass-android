@@ -2,11 +2,7 @@
 
 An app with extensions for sharing information to micropub endpoints and reading from microsub endpoints.
 
-This is still in alpha, so things might break.
-
-If you want to help testing out, ping me (swentel) on one of the #IndieWeb channels on
-irc.freenode.net or send me a message through my contact form at https://realize.be/contact
-You need an email address connected with Google.
+Install from Google Play: https://play.google.com/store/apps/details?id=com.indieweb.indigenous
 
 More information is https://indieweb.org/Indigenous
 
