@@ -43,7 +43,7 @@ No default account was set, you can select one by pressing the "Set account" but
 
 Underneath there will be a button which allows to set the default account. After that, you will go to the channel list (if a microsub endpoint is detected), or see the post types screen.
 
-See https://github.com/swentel/indigenous-android/issues/84
+See https://github.com/swentel/indigenous-android/issues/84  
 This happens sometimes, but not always.
 
 ## Sneak preview video
