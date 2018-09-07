@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/refreshSyndications"
-        android:title="@string/refresh_syndication_targets" />
+        android:id="@+id/refreshConfiguration"
+        android:title="@string/refresh_configuration" />
 
     <item
         android:id="@+id/settings"

@@ -21,6 +21,7 @@ import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.EventActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
+import com.indieweb.indigenous.micropub.post.MediaActivity;
 import com.indieweb.indigenous.micropub.post.NoteActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
@@ -28,7 +29,7 @@ import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.microsub.channel.ChannelActivity;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
-import com.indieweb.indigenous.util.SyndicationTargets;
+import com.indieweb.indigenous.util.MicropubConfig;
 
 public class MicropubActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -92,6 +93,16 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
 
         NavigationView navigationView = findViewById(R.id.postMenu);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Hide Media if micropub media endpoint is empty.
+        String micropubMediaEndpoint = u.getMicropubMediaEndpoint();
+        if (micropubMediaEndpoint == null || micropubMediaEndpoint.length() == 0) {
+            Menu menu = navigationView.getMenu();
+            MenuItem item = menu.getItem(8);
+            if (item != null) {
+                item.setVisible(false);
+            }
+        }
     }
 
     // Go to reader.
@@ -170,6 +181,13 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
                 }
                 startActivity(CreateRSVP);
                 break;
+            case R.id.createMedia:
+                Intent CreateMedia = new Intent(getBaseContext(), MediaActivity.class);
+                if (incomingImage != null && incomingImage.length() > 0) {
+                    CreateMedia.putExtra("incomingImage", incomingImage);
+                }
+                startActivity(CreateMedia);
+                break;
         }
         return false;
     }
@@ -185,8 +203,8 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             // TODO create helper method as we have the same in ChannelsActivity
-            case R.id.refreshSyndications:
-                new SyndicationTargets(getApplicationContext(), new Accounts(this).getCurrentUser()).refresh();
+            case R.id.refreshConfiguration:
+                new MicropubConfig(getApplicationContext(), new Accounts(this).getCurrentUser()).refresh();
                 return true;
 
             case R.id.settings:

@@ -40,4 +40,10 @@
         android:id="@+id/createRSVP"
         android:icon="@drawable/button_rsvp_idle"
         android:title="@string/add_rsvp" />
+
+    <item
+        android:id="@+id/createMedia"
+        android:icon="@drawable/button_media_idle"
+        android:title="@string/media" />
+
 </menu>

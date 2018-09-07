@@ -3,6 +3,7 @@ package com.indieweb.indigenous.micropub.post;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
@@ -25,6 +26,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -101,10 +103,15 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
     String directSend = "";
     String hType = "entry";
     String postType = "Post";
+    boolean finishActivity = true;
     boolean canAddImage = false;
     boolean canAddLocation = false;
     boolean addCounter = false;
     Map<String, String> bodyParams = new HashMap<>();
+
+    String fileUrl;
+    TextView mediaUrl;
+    boolean isMediaRequest = false;
 
     private FusedLocationProviderClient mFusedLocationClient;
     private Boolean mRequestingLocationUpdates = false;
@@ -127,7 +134,7 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
         // Syndication targets.
         LinearLayout syndicationLayout = findViewById(R.id.syndicationTargets);
         String syndicationTargetsString = user.getSyndicationTargets();
-        if (syndicationTargetsString.length() > 0) {
+        if (syndicationLayout != null && syndicationTargetsString.length() > 0) {
             JSONObject object;
             try {
                 JSONObject s = new JSONObject(syndicationTargetsString);
@@ -156,6 +163,10 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
         imagePreview = findViewById(R.id.imagePreview);
         imageCard = findViewById(R.id.imageCard);
         url = findViewById(R.id.url);
+
+        if (isMediaRequest) {
+            mediaUrl = findViewById(R.id.mediaUrl);
+        }
 
         // Add counter.
         if (addCounter) {
@@ -204,7 +215,7 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
                         ContentResolver cR = this.getContentResolver();
                         imageUri = Uri.parse(incomingImage);
                         mime = cR.getType(imageUri);
-                        bitmap = scaleDown(MediaStore.Images.Media.getBitmap(cR, imageUri), 1000, false);
+                        bitmap = scaleDown(MediaStore.Images.Media.getBitmap(cR, imageUri), false);
                         imagePreview.setImageBitmap(bitmap);
                     }
                     catch (IOException ignored) {}
@@ -277,13 +288,12 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
-            Toast.makeText(getApplicationContext(), "Image selected", Toast.LENGTH_SHORT).show();
             imageUri = data.getData();
             try {
                 imageCard.setVisibility(View.VISIBLE);
                 ContentResolver cR = this.getContentResolver();
                 mime = cR.getType(imageUri);
-                bitmap = scaleDown(MediaStore.Images.Media.getBitmap(cR, imageUri), 1000, false);
+                bitmap = scaleDown(MediaStore.Images.Media.getBitmap(cR, imageUri), false);
                 imagePreview.setImageBitmap(bitmap);
             }
             catch (IOException ignored) {}
@@ -299,18 +309,43 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
      *
      * @param realImage
      *   The image.
-     * @param maxImageSize
-     *   The maximum image size.
      * @param filter
      *   Bitmap filter.
      *
      * @return Bitmap
      */
-    public Bitmap scaleDown(Bitmap realImage, float maxImageSize, boolean filter) {
-        float ratio = Math.min(maxImageSize / realImage.getWidth(), maxImageSize / realImage.getHeight());
+    public Bitmap scaleDown(Bitmap realImage, boolean filter) {
+
+        Integer ImageSize = 1000;
+        String qualityPreference = Preferences.getPreference(this, "pref_key_image_size", ImageSize.toString());
+        if (parseInt(qualityPreference) > 0) {
+            ImageSize = parseInt(qualityPreference);
+        }
+
+        float ratio = Math.min(ImageSize.floatValue() / realImage.getWidth(), ImageSize.floatValue() / realImage.getHeight());
         int width = Math.round(ratio * realImage.getWidth());
         int height = Math.round(ratio * realImage.getHeight());
         return Bitmap.createScaledBitmap(realImage, width, height, filter);
+    }
+
+    /**
+     * Copy text to clipboard.
+     *
+     * @param copyText
+     *   The text to copy to clipboard.
+     */
+    @SuppressWarnings({"deprecation", "ConstantConditions"})
+    public void copyToClipboard(String copyText) {
+        int sdk = android.os.Build.VERSION.SDK_INT;
+        if (sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
+            android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            clipboard.setText(copyText);
+        }
+        else {
+            android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            android.content.ClipData clip = android.content.ClipData.newPlainText("Media url", copyText);
+            clipboard.setPrimaryClip(clip);
+        }
     }
 
     /**
@@ -356,13 +391,36 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
 
         Toast.makeText(getApplicationContext(), "Sending, please wait", Toast.LENGTH_SHORT).show();
 
+        String endpoint = user.getMicropubEndpoint();
+        if (isMediaRequest) {
+            endpoint = user.getMicropubMediaEndpoint();
+        }
+
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, user.getMicropubEndpoint(),
+        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, endpoint,
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
-                        Toast.makeText(getApplicationContext(), "Post success", Toast.LENGTH_SHORT).show();
-                        finish();
+
+                        if (finishActivity) {
+                            Toast.makeText(getApplicationContext(), "Post success", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+
+                        if (isMediaRequest) {
+                            fileUrl = response.headers.get("Location");
+                            if (fileUrl != null && fileUrl.length() > 0) {
+                                Toast.makeText(getApplicationContext(), "Media upload success", Toast.LENGTH_SHORT).show();
+                                mediaUrl.setText(fileUrl);
+                                mediaUrl.setVisibility(View.VISIBLE);
+                                copyToClipboard(fileUrl);
+                            }
+                            else {
+                                Toast.makeText(getApplicationContext(), "No file url found", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -429,7 +487,7 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
                     }
                 }
 
-                // SyndicationTargets.
+                // MicropubConfig.
                 if (syndicationTargets.size() > 0) {
                     CheckBox checkbox;
                     for (int j = 0; j < syndicationTargets.size(); j++) {
@@ -468,7 +526,12 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
                         extension = "png";
                     }
                     if (bitmap != null) {
-                        params.put("photo[0]", new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap)));
+                        if (isMediaRequest) {
+                            params.put("file[0]", new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap)));
+                        }
+                        else {
+                            params.put("photo[0]", new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap)));
+                        }
                     }
                 }
                 return params;

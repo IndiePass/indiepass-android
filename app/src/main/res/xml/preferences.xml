@@ -37,6 +37,12 @@
             android:title="@string/pref_key_image_quality_title"
             android:summary="@string/pref_key_image_quality_summary"
             android:defaultValue="80" />
+        <EditTextPreference
+            android:inputType="number"
+            android:key="pref_key_image_size"
+            android:title="@string/pref_key_image_size_title"
+            android:summary="@string/pref_key_image_size_summary"
+            android:defaultValue="1000" />
     </PreferenceScreen>
 </PreferenceScreen>
 

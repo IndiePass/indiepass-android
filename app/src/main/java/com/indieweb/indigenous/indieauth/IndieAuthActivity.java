@@ -27,7 +27,7 @@ import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Connection;
-import com.indieweb.indigenous.util.SyndicationTargets;
+import com.indieweb.indigenous.util.MicropubConfig;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -269,12 +269,12 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                             editor.apply();
                         }
 
-                        // Refresh syndication targets.
+                        // Refresh syndication targets and media endpoint.
                         User user = new User();
                         user.setMicropubEndpoint(micropubEndpoint);
                         user.setAccessToken(accessToken);
                         user.setAccount(account);
-                        new SyndicationTargets(getApplicationContext(), user).refresh();
+                        new MicropubConfig(getApplicationContext(), user).refresh();
 
                         Toast.makeText(getApplicationContext(), "Authentication successful", Toast.LENGTH_SHORT).show();
 

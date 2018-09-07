@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -25,6 +26,7 @@ import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.EventActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
+import com.indieweb.indigenous.micropub.post.MediaActivity;
 import com.indieweb.indigenous.micropub.post.NoteActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
@@ -32,9 +34,10 @@ import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
-import com.indieweb.indigenous.util.SyndicationTargets;
+import com.indieweb.indigenous.util.MicropubConfig;
 import com.kennyc.bottomsheet.BottomSheet;
 import com.kennyc.bottomsheet.BottomSheetListener;
+import com.kennyc.bottomsheet.menu.BottomSheetMenu;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -163,8 +166,18 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
      * Opens the bottom sheet.
      */
     public void openBottomSheet() {
+
+        Menu menu = new BottomSheetMenu(this);
+        new MenuInflater(this).inflate(R.menu.micropub_post_menu, menu);
+
+        // Hide Media if micropub media endpoint is empty.
+        String micropubMediaEndpoint = user.getMicropubMediaEndpoint();
+        if (micropubMediaEndpoint == null || micropubMediaEndpoint.length() == 0) {
+            menu.removeItem(R.id.createMedia);
+        }
+
         new BottomSheet.Builder(this, R.style.BottomSheet_StyleDialog)
-                .setSheet(R.menu.micropub_post_menu)
+                .setMenu(menu)
                 .setListener(this)
                 .show();
     }
@@ -188,8 +201,8 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
     public boolean onOptionsItemSelected(MenuItem item) {
         // TODO create helper method as we have the same in MicropubActivity
         switch (item.getItemId()) {
-            case R.id.refreshSyndications:
-                new SyndicationTargets(getApplicationContext(), user).refresh();
+            case R.id.refreshConfiguration:
+                new MicropubConfig(getApplicationContext(), user).refresh();
                 return true;
 
             case R.id.channel_list_refresh:
@@ -215,7 +228,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
-    public void onSheetShown(@NonNull BottomSheet bottomSheet, @Nullable Object object) {}
+    public void onSheetShown(@NonNull BottomSheet bottomSheet, @Nullable Object object) { }
 
     @Override
     public void onSheetItemSelected(@NonNull BottomSheet bottomSheet, MenuItem menuItem, @Nullable Object o) {
@@ -283,6 +296,12 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 startActivity(CreateRSVP);
                 break;
+            case R.id.createMedia:
+                Intent CreateMedia = new Intent(getBaseContext(), MediaActivity.class);
+                if (incomingImage != null && incomingImage.length() > 0) {
+                    CreateMedia.putExtra("incomingImage", incomingImage);
+                }
+                startActivity(CreateMedia);
         }
     }
 

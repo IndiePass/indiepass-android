@@ -8,6 +8,7 @@ public class User {
     private String accessToken;
     private String microsubEndpoint;
     private String micropubEndpoint;
+    private String micropubMediaEndpoint;
     private String tokenEndpoint;
     private String authorizationEndpoint;
     private String syndicationTargets;
@@ -42,6 +43,14 @@ public class User {
         this.micropubEndpoint = micropubEndpoint;
     }
 
+    public String getMicropubMediaEndpoint() {
+        return micropubMediaEndpoint;
+    }
+
+    public void setMicropubMediaEndpoint(String micropubMediaEndpoint) {
+        this.micropubMediaEndpoint = micropubMediaEndpoint;
+    }
+
     public String getMicrosubEndpoint() {
         return microsubEndpoint;
     }
@@ -49,7 +58,6 @@ public class User {
     public void setMicrosubEndpoint(String microsubEndpoint) {
         this.microsubEndpoint = microsubEndpoint;
     }
-
 
     public String getTokenEndpoint() {
         return tokenEndpoint;
