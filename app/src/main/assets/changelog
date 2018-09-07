@@ -4,6 +4,10 @@ Development happens on <a href="https://github.com/swentel/indigenous–android"
 <br /><br />
 Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://openclipart.org">Openclipart</a>.
 <h2>Changelog</h2>
+<h3>07/09/2018 - 0.12</h3>
+<ul>
+    <li>Fix crash on Lollipop</li>
+</ul>
 <h3>06/09/2018 - 0.11</h3>
 <ul>
     <li>Allow sending location</li>

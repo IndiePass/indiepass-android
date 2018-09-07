@@ -119,12 +119,12 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                 Uri uri = Uri.parse(url);
 
                 CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
-                intentBuilder.setToolbarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-                intentBuilder.setSecondaryToolbarColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark));
+                intentBuilder.setToolbarColor(ContextCompat.getColor(IndieAuthActivity.this, R.color.colorPrimary));
+                intentBuilder.setSecondaryToolbarColor(ContextCompat.getColor(IndieAuthActivity.this, R.color.colorPrimaryDark));
                 CustomTabsIntent customTabsIntent = intentBuilder.build();
                 customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                customTabsIntent.launchUrl(getApplicationContext(), uri);
+                customTabsIntent.launchUrl(IndieAuthActivity.this, uri);
 
             }
             else {
@@ -304,11 +304,11 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                             Toast.makeText(getApplicationContext(), "Authentication failed: Status code: " + code + "; message: " + result, Toast.LENGTH_LONG).show();
                         }
                         else {
-                            Toast.makeText(getApplicationContext(), "Authentication failed: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Authentication failed due to network failure: " + error.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                     catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Network error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
 
                     // TODO use helper method
