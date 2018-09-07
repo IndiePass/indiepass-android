@@ -6,7 +6,7 @@ Install from Google Play: https://play.google.com/store/apps/details?id=com.indi
 
 More information is https://indieweb.org/Indigenous
 
-## Current functionality
+## Functionality
 
 - Login with multiple domains, discover indieauth, micropub and microsub endpoints.
   The microsub endpoint is optional so you can simply use this as a micropub 
@@ -32,6 +32,19 @@ More information is https://indieweb.org/Indigenous
   - view fullscreen images, zoom and pinch
 - Share intents: receive text or images from other apps to directly share
 - Syndication targets: reload, toggle favorite channels or reply/like/repost URL
+
+## Known issues
+
+#### Authentication loop
+
+When authenticating for the first time, you might see a message "Authentication successul" but then returning to the Sign in screen. While the account has been created, the default was not set. In this case, the sign in screen will show a message:
+
+No default account was set, you can select one by pressing the "Set account" button.
+
+Underneath there will be a button which allows to set the default account. After that, you will go to the channel list (if a microsub endpoint is detected), or see the post types screen.
+
+See https://github.com/swentel/indigenous-android/issues/84
+This happens sometimes, but not always.
 
 ## Sneak preview video
 
