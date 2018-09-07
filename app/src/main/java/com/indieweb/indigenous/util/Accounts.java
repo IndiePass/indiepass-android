@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.indieauth.IndieAuthActivity;
@@ -103,6 +104,40 @@ public class Accounts {
                     activity.finish();
                 }
 
+            }
+        });
+        builder.show();
+    }
+
+    /**
+     * Set account dialog.
+     *
+     * @param activity
+     *   The current activity
+     */
+    public void setAccount(final Activity activity) {
+        final List<String> accounts = new ArrayList<>();
+
+        final Account[] AllAccounts = this.getAllAccounts();
+        for (Account account: AllAccounts) {
+            accounts.add(account.name);
+        }
+
+        final CharSequence[] accountItems = accounts.toArray(new CharSequence[accounts.size()]);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Set account");
+
+        builder.setCancelable(true);
+        builder.setItems(accountItems, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int index) {
+                Toast.makeText(context, "Account set to " + accounts.get(index), Toast.LENGTH_SHORT).show();
+                SharedPreferences.Editor editor = context.getSharedPreferences("indigenous", MODE_PRIVATE).edit();
+                editor.putString("account", accounts.get(index));
+                editor.apply();
+                Intent Main = new Intent(context, com.indieweb.indigenous.MainActivity.class);
+                context.startActivity(Main);
+                activity.finish();
             }
         });
         builder.show();

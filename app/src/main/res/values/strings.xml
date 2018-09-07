@@ -4,6 +4,8 @@
     <string name="account_type">IndieAuth</string>
     <string name="accounts">Accounts</string>
     <string name="add_new_account">Add new account</string>
+    <string name="set_account">Set account</string>
+    <string name="set_account_info">No default account was set, you can select one by pressing the "Set account button".</string>
     <string name="no_connection">No internet connection found</string>
 
     <string name="domain_hint">http://example.com</string>

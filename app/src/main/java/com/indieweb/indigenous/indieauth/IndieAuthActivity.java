@@ -26,6 +26,7 @@ import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.MicropubConfig;
 
@@ -73,6 +74,19 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
         info = findViewById(R.id.info);
         signIn = findViewById(R.id.signInButton);
         signIn.setOnClickListener(doSignIn);
+
+        // Show 'switch account' button.
+        SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
+        String accountName = preferences.getString("account", "");
+        AccountManager accountManager = AccountManager.get(this);
+        Account[] accounts = accountManager.getAccounts();
+        if (accountName.length() == 0 && accounts.length > 0) {
+            TextView setAccountInfo = findViewById(R.id.setAccountButtonInfo);
+            setAccountInfo.setVisibility(View.VISIBLE);
+            Button setAccount = findViewById(R.id.setAccountButton);
+            setAccount.setOnClickListener(doSetAccount);
+            setAccount.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -94,6 +108,15 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
             }
         }
     }
+
+    /**
+     * OnClickListener for the 'Set account' button.
+     */
+    private final View.OnClickListener doSetAccount = new View.OnClickListener() {
+        public void onClick(View v) {
+            new Accounts(IndieAuthActivity.this).setAccount(IndieAuthActivity.this);
+        }
+    };
 
     /**
      * OnClickListener for the 'Sign in with your domain' button.

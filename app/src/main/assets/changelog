@@ -9,6 +9,7 @@ Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a
     <li>Support for media endpoint</li>
     <li>Add maximum image size settings</li>
     <li>Syndication targets are now saved via ?q=config</li>
+    <li>Get around a missing account preference</li>
 </ul>
 <h3>07/09/2018 - 0.12</h3>
 <ul>
