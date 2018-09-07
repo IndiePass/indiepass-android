@@ -22,6 +22,7 @@ More information is https://indieweb.org/Indigenous
   - post rsvp
   - add image, tags
     (images are currently scaled to 1000px width/height)
+  - share location on note, article and event
 - Microsub
   - read channels, with pull to refresh
   - read items per channel, with pull to refresh
