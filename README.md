@@ -39,7 +39,7 @@ More information is https://indieweb.org/Indigenous
 
 When authenticating for the first time, you might see a message "Authentication successul" but then returning to the Sign in screen. While the account has been created, the default was not set. In this case, the sign in screen will show a message:
 
-No default account was set, you can select one by pressing the "Set account" button.
+*No default account was set, you can select one by pressing the "Set account" button.*
 
 Underneath there will be a button which allows to set the default account. After that, you will go to the channel list (if a microsub endpoint is detected), or see the post types screen.
 
