@@ -75,7 +75,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
         signIn = findViewById(R.id.signInButton);
         signIn.setOnClickListener(doSignIn);
 
-        // Show 'switch account' button.
+        // Show 'set account' button.
         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
         String accountName = preferences.getString("account", "");
         AccountManager accountManager = AccountManager.get(this);
