@@ -12,17 +12,10 @@ More information is https://indieweb.org/Indigenous
   The microsub endpoint is optional so you can simply use this as a micropub 
   client too.
 - Micropub
-  - post article
-  - post note
-  - post reply
-  - post repost
-  - post like
-  - post bookmark
-  - post event
-  - post rsvp
+  - post types: article, note, reply, repost, like, bookmark, event and rsvp
   - add image, tags
-    (images are currently scaled to 1000px width/height)
   - share location on note, article and event
+  - Toggle post-status (published vs draft)
 - Microsub
   - read channels, with pull to refresh
   - read items per channel, with pull to refresh
