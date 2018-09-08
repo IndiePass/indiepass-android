@@ -6,6 +6,7 @@ Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a
 <h2>Changelog</h2>
 <h3>10/09/2018 - 0.14</h3>
 <ul>
+    <li>Cleaner date formatting in timeline</li>
     <li>Check required fields on post types</li>
     <li>Cleaner positioning of 'new'</li>
     <li>Send post status (published or draft)</li>

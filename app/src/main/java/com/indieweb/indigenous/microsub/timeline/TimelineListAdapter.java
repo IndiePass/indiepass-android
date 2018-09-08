@@ -31,7 +31,6 @@ import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.model.TimelineItem;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -137,14 +136,13 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
 
             // Published.
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ssZ");
+            SimpleDateFormat formatIn = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ssZ");
+            SimpleDateFormat formatOut = new SimpleDateFormat("dd MMM yyyy kk:mm");
             Date result;
             try {
-                // TODO use format (cf event)
-                result = df.parse(item.getPublished());
+                result = formatIn.parse(item.getPublished());
                 holder.published.setVisibility(View.VISIBLE);
-                String published = result.toString();
-                holder.published.setText(published);
+                holder.published.setText(formatOut.format(result));
             } catch (ParseException ignored) {
                 holder.published.setVisibility(View.GONE);
             }
@@ -173,7 +171,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.name.setVisibility(View.GONE);
             }
 
-            // TODO we should probably create subtype classes per 'type'
             String ContextData = "";
             if (item.getType().equals("bookmark-of") || item.getType().equals("in-reply-to") || item.getType().equals("like-of") || item.getType().equals("checkin")) {
                 String ContextText = "";
