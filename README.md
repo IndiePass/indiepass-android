@@ -13,7 +13,8 @@ More information is https://indieweb.org/Indigenous
   client too.
 - Micropub
   - post types: article, note, reply, repost, like, bookmark, event and rsvp
-  - add image, tags
+  - add image, tags, toggle syndication targets
+  - send images to media endpoint
   - share location on note, article and event
   - Toggle post-status (published vs draft)
 - Microsub
@@ -24,7 +25,6 @@ More information is https://indieweb.org/Indigenous
   - listen to audio if available
   - view fullscreen images, zoom and pinch
 - Share intents: receive text or images from other apps to directly share
-- Syndication targets: reload, toggle favorite channels or reply/like/repost URL
 
 ## Known issues
 
