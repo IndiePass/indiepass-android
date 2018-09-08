@@ -157,7 +157,7 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
                 }
 
             } catch (JSONException e) {
-                Toast.makeText(this, "Error parsing syndications: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Error parsing syndication targets: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
 
