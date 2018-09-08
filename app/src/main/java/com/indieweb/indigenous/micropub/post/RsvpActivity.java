@@ -1,6 +1,7 @@
 package com.indieweb.indigenous.micropub.post;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.Spinner;
 
@@ -22,8 +23,13 @@ public class RsvpActivity extends BasePostActivity {
 
     @Override
     public void onPostButtonClick(MenuItem item) {
-        bodyParams.put("rsvp", rsvp.getSelectedItem().toString());
-        sendBasePost(item);
+        if (TextUtils.isEmpty(url.getText())) {
+            url.setError(getString(R.string.field_required));
+        }
+        else {
+            bodyParams.put("rsvp", rsvp.getSelectedItem().toString());
+            sendBasePost(item);
+        }
     }
 
 }

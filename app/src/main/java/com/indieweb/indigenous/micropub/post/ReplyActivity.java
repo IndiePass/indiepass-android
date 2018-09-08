@@ -1,6 +1,7 @@
 package com.indieweb.indigenous.micropub.post;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.indieweb.indigenous.R;
@@ -18,7 +19,21 @@ public class ReplyActivity extends BasePostActivity {
 
     @Override
     public void onPostButtonClick(MenuItem item) {
-        sendBasePost(item);
+        boolean hasErrors = false;
+
+        if (TextUtils.isEmpty(url.getText())) {
+            hasErrors = true;
+            url.setError(getString(R.string.field_required));
+        }
+
+        if (TextUtils.isEmpty(body.getText())) {
+            hasErrors = true;
+            body.setError(getString(R.string.field_required));
+        }
+
+        if (!hasErrors) {
+            sendBasePost(item);
+        }
     }
 
 }

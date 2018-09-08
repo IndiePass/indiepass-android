@@ -3,6 +3,7 @@ package com.indieweb.indigenous.micropub.post;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
@@ -40,9 +41,34 @@ public class EventActivity extends BasePostActivity  {
 
     @Override
     public void onPostButtonClick(MenuItem item) {
-        bodyParams.put("start", startDate.getText().toString());
-        bodyParams.put("end", endDate.getText().toString());
-        sendBasePost(item);
+        boolean hasErrors = false;
+
+        if (TextUtils.isEmpty(title.getText())) {
+            hasErrors = true;
+            title.setError(getString(R.string.field_required));
+        }
+
+        if (TextUtils.isEmpty(body.getText())) {
+            hasErrors = true;
+            body.setError(getString(R.string.field_required));
+        }
+
+        if (TextUtils.isEmpty(startDate.getText())) {
+            hasErrors = true;
+            startDate.setError(getString(R.string.field_required));
+        }
+
+        if (TextUtils.isEmpty(endDate.getText())) {
+            hasErrors = true;
+            endDate.setError(getString(R.string.field_required));
+        }
+
+        if (!hasErrors) {
+            bodyParams.put("start", startDate.getText().toString());
+            bodyParams.put("end", endDate.getText().toString());
+            sendBasePost(item);
+        }
+
     }
 
     /**

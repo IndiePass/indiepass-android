@@ -23,6 +23,7 @@
     <string name="body">Body</string>
     <string name="published">Published</string>
     <string name="syndicate_to">Syndicate to</string>
+    <string name="field_required">This field is required</string>
 
     <string name="add_note">Note</string>
     <string name="add_article">Article</string>

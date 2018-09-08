@@ -79,13 +79,13 @@ import static java.lang.Integer.parseInt;
 @SuppressLint("Registered")
 abstract public class BasePostActivity extends AppCompatActivity implements SendPostInterface {
 
+    EditText body;
+    EditText title;
     private User user;
     private List<Syndication> syndicationTargets = new ArrayList<>();
     private MenuItem sendItem;
     private CardView imageCard;
     private ImageView imagePreview;
-    private EditText title;
-    private EditText body;
     private EditText tags;
     private CheckBox postStatus;
     private Uri imageUri;
@@ -162,7 +162,8 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
         }
 
 
-        // Check incoming text or image.
+        // Get a couple elements for requirement checks or pre-population.
+        title = findViewById(R.id.title);
         body = findViewById(R.id.body);
         imagePreview = findViewById(R.id.imagePreview);
         imageCard = findViewById(R.id.imageCard);
@@ -454,7 +455,6 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
                 bodyParams.put("h", hType);
 
                 // Title
-                title = findViewById(R.id.title);
                 if (title != null) {
                   bodyParams.put("name", title.getText().toString());
                 }
