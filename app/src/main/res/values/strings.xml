@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">Indigenous</string>
     <string name="about">About</string>
+    <string name="no_connection">No internet connection found</string>
+
     <string name="account_type">IndieAuth</string>
     <string name="accounts">Accounts</string>
     <string name="add_new_account">Add new account</string>
     <string name="set_account">Set account</string>
     <string name="set_account_info">No default account was set, you can select one by pressing the "Set account" button.</string>
-    <string name="no_connection">No internet connection found</string>
-
     <string name="domain_hint">http://example.com</string>
     <string name="sign_in_with_domain">Sign in</string>
     <string name="sign_in_info">This login uses IndieAuth and requires you to have a website on your domain that supports IndieAuth.</string>
@@ -21,6 +21,8 @@
     <string name="image_preview">Image preview</string>
     <string name="title">Title</string>
     <string name="body">Body</string>
+    <string name="published">Published</string>
+    <string name="syndicate_to">Syndicate to</string>
 
     <string name="add_note">Note</string>
     <string name="add_article">Article</string>
@@ -57,9 +59,9 @@
     <string name="load_more">Load More</string>
     <string name="event">Event</string>
     <string name="rsvp">RSVP</string>
-
-
     <string name="rsvp_select">Select RSVP</string>
+    <string name="media">Media</string>
+    <string name="media_description">Upload images to your media endpoint. On success, the file URL will be added to the clipboard automatically.</string>
 
     <!-- Preferences: share -->
     <string name="pref_category_sharing_title">Share</string>
@@ -86,8 +88,6 @@
     <string name="start_date">Start date</string>
     <string name="add_location">Add location</string>
     <string name="getting_location">Getting location</string>
-    <string name="media">Media</string>
-    <string name="media_description">Upload images to your media endpoint. On success, the file URL will be added to the clipboard automatically.</string>
     <string-array name="rsvp_arrays">
         <item>yes</item>
         <item>no</item>

@@ -87,6 +87,7 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
     private EditText title;
     private EditText body;
     private EditText tags;
+    private CheckBox postStatus;
     private Uri imageUri;
     private Bitmap bitmap;
     private String mime = "image/jpg";
@@ -133,6 +134,15 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
             try {
                 JSONObject s = new JSONObject(syndicationTargetsString);
                 JSONArray itemList = s.getJSONArray("syndicate-to");
+
+                if (itemList.length() > 0) {
+                    TextView syn = new TextView(this);
+                    syn.setText(R.string.syndicate_to);
+                    syn.setPadding(20, 10, 0, 0);
+                    syn.setTextSize(16);
+                    syndicationLayout.addView(syn);
+                }
+
                 for (int i = 0; i < itemList.length(); i++) {
                     object = itemList.getJSONObject(i);
                     Syndication syndication = new Syndication();
@@ -473,7 +483,17 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
                     }
                 }
 
-                // MicropubConfig.
+                // Post status.
+                postStatus = findViewById(R.id.postStatus);
+                if (postStatus != null) {
+                    String postStatusValue = "draft";
+                    if (postStatus.isChecked()) {
+                        postStatusValue = "published";
+                    }
+                    bodyParams.put("post-status[0]", postStatusValue);
+                }
+
+                // Syndication targets.
                 if (syndicationTargets.size() > 0) {
                     CheckBox checkbox;
                     for (int j = 0; j < syndicationTargets.size(); j++) {

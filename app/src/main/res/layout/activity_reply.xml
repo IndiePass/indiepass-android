@@ -46,6 +46,13 @@
             android:hint="@string/tags"
             android:inputType="text" />
 
+        <CheckBox
+            android:id="@+id/postStatus"
+            android:checked="true"
+            android:text="@string/published"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <LinearLayout
             android:orientation="vertical"
             android:id="@+id/syndicationTargets"
