@@ -2,8 +2,6 @@ package com.indieweb.indigenous.micropub.post;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.indieweb.indigenous.R;
 
