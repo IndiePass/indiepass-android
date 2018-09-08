@@ -16,12 +16,12 @@
         android:title="@string/settings" />
 
     <item
-        android:id="@+id/about"
-        android:title="@string/about" />
-
-    <item
         android:id="@+id/accounts"
         android:title="@string/accounts"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/about"
+        android:title="@string/about" />
 
 </menu>
