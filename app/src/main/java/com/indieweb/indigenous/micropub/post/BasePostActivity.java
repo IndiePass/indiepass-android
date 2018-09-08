@@ -36,6 +36,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -210,15 +213,8 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
             if (canAddImage) {
                 String incomingImage = extras.getString("incomingImage");
                 if (incomingImage != null && incomingImage.length() > 0 && imagePreview != null && imageCard != null) {
-                    try {
-                        imageCard.setVisibility(View.VISIBLE);
-                        ContentResolver cR = this.getContentResolver();
-                        imageUri = Uri.parse(incomingImage);
-                        mime = cR.getType(imageUri);
-                        bitmap = scaleDown(MediaStore.Images.Media.getBitmap(cR, imageUri), false);
-                        imagePreview.setImageBitmap(bitmap);
-                    }
-                    catch (IOException ignored) {}
+                    imageUri = Uri.parse(incomingImage);
+                    prepareImagePreviewAndBitmap();
                 }
             }
         }
@@ -289,14 +285,7 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
             imageUri = data.getData();
-            try {
-                imageCard.setVisibility(View.VISIBLE);
-                ContentResolver cR = this.getContentResolver();
-                mime = cR.getType(imageUri);
-                bitmap = scaleDown(MediaStore.Images.Media.getBitmap(cR, imageUri), false);
-                imagePreview.setImageBitmap(bitmap);
-            }
-            catch (IOException ignored) {}
+            prepareImagePreviewAndBitmap();
         }
 
         if (requestCode == REQUEST_CHECK_SETTINGS && resultCode == RESULT_OK) {
@@ -305,27 +294,30 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
     }
 
     /**
-     * Scale down to max image size.
-     *
-     * @param realImage
-     *   The image.
-     * @param filter
-     *   Bitmap filter.
-     *
-     * @return Bitmap
+     * Prepare image preview and bitmap.
      */
-    public Bitmap scaleDown(Bitmap realImage, boolean filter) {
+    public void prepareImagePreviewAndBitmap() {
+        imageCard.setVisibility(View.VISIBLE);
+        ContentResolver cR = this.getContentResolver();
+        mime = cR.getType(imageUri);
 
         Integer ImageSize = 1000;
-        String qualityPreference = Preferences.getPreference(this, "pref_key_image_size", ImageSize.toString());
-        if (parseInt(qualityPreference) > 0) {
-            ImageSize = parseInt(qualityPreference);
+        String sizePreference = Preferences.getPreference(this, "pref_key_image_size", ImageSize.toString());
+        if (parseInt(sizePreference) > 0) {
+            ImageSize = parseInt(sizePreference);
         }
 
-        float ratio = Math.min(ImageSize.floatValue() / realImage.getWidth(), ImageSize.floatValue() / realImage.getHeight());
-        int width = Math.round(ratio * realImage.getWidth());
-        int height = Math.round(ratio * realImage.getHeight());
-        return Bitmap.createScaledBitmap(realImage, width, height, filter);
+        Glide
+            .with(getApplicationContext())
+            .asBitmap()
+            .load(imageUri)
+            .into(new SimpleTarget<Bitmap>(ImageSize,ImageSize) {
+                @Override
+                public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
+                    imagePreview.setImageBitmap(resource);
+                    bitmap = resource;
+                }
+            });
     }
 
     /**
@@ -419,6 +411,9 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
                                 Toast.makeText(getApplicationContext(), "No file url found", Toast.LENGTH_SHORT).show();
                             }
 
+                            if (sendItem != null) {
+                                sendItem.setEnabled(true);
+                            }
                         }
 
                     }

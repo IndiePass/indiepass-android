@@ -9,9 +9,6 @@ import com.indieweb.indigenous.R;
 
 public class MediaActivity extends BasePostActivity {
 
-    String fileUrl = "";
-    TextView mediaUrl;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         isMediaRequest = true;
@@ -19,7 +16,6 @@ public class MediaActivity extends BasePostActivity {
         canAddImage = true;
         postType = "Media";
         setContentView(R.layout.activity_media);
-        mediaUrl = findViewById(R.id.mediaUrl);
         super.onCreate(savedInstanceState);
     }
 
