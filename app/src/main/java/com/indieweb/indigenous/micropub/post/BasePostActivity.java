@@ -81,6 +81,7 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
 
     EditText body;
     EditText title;
+    Bitmap bitmap;
     private User user;
     private List<Syndication> syndicationTargets = new ArrayList<>();
     private MenuItem sendItem;
@@ -89,7 +90,6 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
     private EditText tags;
     private CheckBox postStatus;
     private Uri imageUri;
-    private Bitmap bitmap;
     private String mime = "image/jpg";
     private int PICK_IMAGE_REQUEST = 1;
 

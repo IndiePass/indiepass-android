@@ -24,12 +24,12 @@ public class ArticleActivity extends BasePostActivity {
 
         if (TextUtils.isEmpty(title.getText())) {
             hasErrors = true;
-            title.setError(getString(R.string.field_required));
+            title.setError(getString(R.string.required_field));
         }
 
         if (TextUtils.isEmpty(body.getText())) {
             hasErrors = true;
-            body.setError(getString(R.string.field_required));
+            body.setError(getString(R.string.required_field));
         }
 
         if (!hasErrors) {

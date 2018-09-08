@@ -23,7 +23,7 @@ public class NoteActivity extends BasePostActivity {
     @Override
     public void onPostButtonClick(MenuItem item) {
         if (TextUtils.isEmpty(body.getText())) {
-            body.setError(getString(R.string.field_required));
+            body.setError(getString(R.string.required_field));
         }
         else {
             sendBasePost(item);

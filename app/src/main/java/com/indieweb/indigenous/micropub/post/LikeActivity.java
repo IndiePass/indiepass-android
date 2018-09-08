@@ -21,7 +21,7 @@ public class LikeActivity extends BasePostActivity {
     @Override
     public void onPostButtonClick(MenuItem item) {
         if (TextUtils.isEmpty(url.getText())) {
-            url.setError(getString(R.string.field_required));
+            url.setError(getString(R.string.required_field));
         }
         else {
             sendBasePost(item);

@@ -2,6 +2,7 @@ package com.indieweb.indigenous.micropub.post;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.indieweb.indigenous.R;
 
@@ -19,7 +20,12 @@ public class MediaActivity extends BasePostActivity {
 
     @Override
     public void onPostButtonClick(MenuItem item) {
-        sendBasePost(item);
+        if (bitmap == null) {
+            Toast.makeText(getApplicationContext(), getString(R.string.required_select_image), Toast.LENGTH_SHORT).show();
+        }
+        else {
+            sendBasePost(item);
+        }
     }
 
 }

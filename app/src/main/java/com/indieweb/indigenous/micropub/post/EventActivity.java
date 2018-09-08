@@ -45,22 +45,22 @@ public class EventActivity extends BasePostActivity  {
 
         if (TextUtils.isEmpty(title.getText())) {
             hasErrors = true;
-            title.setError(getString(R.string.field_required));
+            title.setError(getString(R.string.required_field));
         }
 
         if (TextUtils.isEmpty(body.getText())) {
             hasErrors = true;
-            body.setError(getString(R.string.field_required));
+            body.setError(getString(R.string.required_field));
         }
 
         if (TextUtils.isEmpty(startDate.getText())) {
             hasErrors = true;
-            startDate.setError(getString(R.string.field_required));
+            startDate.setError(getString(R.string.required_field));
         }
 
         if (TextUtils.isEmpty(endDate.getText())) {
             hasErrors = true;
-            endDate.setError(getString(R.string.field_required));
+            endDate.setError(getString(R.string.required_field));
         }
 
         if (!hasErrors) {
