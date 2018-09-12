@@ -324,7 +324,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 }
             }
             else {
-                holder.bookmark.setVisibility(View.VISIBLE);
+                holder.bookmark.setVisibility(View.GONE);
                 holder.reply.setVisibility(View.GONE);
                 holder.like.setVisibility(View.GONE);
                 holder.repost.setVisibility(View.GONE);
