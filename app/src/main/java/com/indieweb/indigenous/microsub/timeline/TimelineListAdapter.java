@@ -172,7 +172,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
 
             String ContextData = "";
-            if (item.getType().equals("bookmark-of") || item.getType().equals("in-reply-to") || item.getType().equals("like-of") || item.getType().equals("checkin")) {
+            if (item.getType().equals("bookmark-of") || item.getType().equals("repost-of") || item.getType().equals("in-reply-to") || item.getType().equals("like-of") || item.getType().equals("checkin")) {
                 String ContextText = "";
                 String ContextUrl = "";
                 String ContextLinkText = "";
@@ -185,6 +185,11 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     case "like-of":
                         ContextText = "Like of";
                         ContextUrl = item.getSubType("like-of");
+                        ContextLinkText = ContextUrl;
+                        break;
+                    case "repost-of":
+                        ContextText = "Repost of";
+                        ContextUrl = item.getSubType("repost-of");
                         ContextLinkText = ContextUrl;
                         break;
                     case "bookmark-of":

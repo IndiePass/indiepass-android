@@ -238,10 +238,15 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 item.setRead(isRead);
 
                                 // In reply to.
-                                // TODO there can me more than one
                                 if (object.has("in-reply-to")) {
                                     type = "in-reply-to";
                                     item.addToSubType(type, object.getJSONArray("in-reply-to").get(0).toString());
+                                }
+
+                                // Repost.
+                                if (object.has("repost-of")) {
+                                    type = "repost-of";
+                                    item.addToSubType(type, object.getJSONArray("repost-of").get(0).toString());
                                 }
 
                                 // Like.
@@ -250,7 +255,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                     item.addToSubType(type, object.getJSONArray("like-of").get(0).toString());
                                 }
 
-                                // Like.
+                                // Bookmark.
                                 if (object.has("bookmark-of")) {
                                     type = "bookmark-of";
                                     item.addToSubType(type, object.getJSONArray("bookmark-of").get(0).toString());
