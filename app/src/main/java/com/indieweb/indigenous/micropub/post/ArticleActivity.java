@@ -6,7 +6,7 @@ import android.view.MenuItem;
 
 import com.indieweb.indigenous.R;
 
-public class ArticleActivity extends BasePostActivity {
+public class ArticleActivity extends BaseCreateActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

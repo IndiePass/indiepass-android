@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class EventActivity extends BasePostActivity  {
+public class EventActivity extends BaseCreateActivity {
 
     TextView startDate;
     TextView endDate;

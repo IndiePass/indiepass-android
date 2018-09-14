@@ -77,7 +77,7 @@ import java.util.Map;
 import static java.lang.Integer.parseInt;
 
 @SuppressLint("Registered")
-abstract public class BasePostActivity extends AppCompatActivity implements SendPostInterface {
+abstract public class BaseCreateActivity extends AppCompatActivity implements SendPostInterface {
 
     EditText body;
     EditText title;
@@ -596,7 +596,7 @@ abstract public class BasePostActivity extends AppCompatActivity implements Send
                                 // Show the dialog by calling startResolutionForResult(),
                                 // and check the result in onActivityResult().
                                 ResolvableApiException rae = (ResolvableApiException) e;
-                                rae.startResolutionForResult(BasePostActivity.this, REQUEST_CHECK_SETTINGS);
+                                rae.startResolutionForResult(BaseCreateActivity.this, REQUEST_CHECK_SETTINGS);
                             }
                             catch (IntentSender.SendIntentException sie) {
                                 Toast.makeText(getApplicationContext(), "PendingIntent unable to execute request.", Toast.LENGTH_SHORT).show();

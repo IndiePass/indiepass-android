@@ -31,10 +31,12 @@ import com.indieweb.indigenous.micropub.post.NoteActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
+import com.indieweb.indigenous.micropub.post.UpdateActivity;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.MicropubConfig;
+import com.indieweb.indigenous.util.Preferences;
 import com.kennyc.bottomsheet.BottomSheet;
 import com.kennyc.bottomsheet.BottomSheetListener;
 import com.kennyc.bottomsheet.menu.BottomSheetMenu;
@@ -176,6 +178,12 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
             menu.removeItem(R.id.createMedia);
         }
 
+        // Hide Update if setting is not enabled.
+        boolean updateEnabled = Preferences.getPreference(this, "pref_key_experimental_update", false);
+        if (!updateEnabled) {
+            menu.removeItem(R.id.updatePost);
+        }
+
         new BottomSheet.Builder(this, R.style.BottomSheet_StyleDialog)
                 .setMenu(menu)
                 .setListener(this)
@@ -302,6 +310,11 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                     CreateMedia.putExtra("incomingImage", incomingImage);
                 }
                 startActivity(CreateMedia);
+                break;
+            case R.id.updatePost:
+                Intent UpdatePost = new Intent(getBaseContext(), UpdateActivity.class);
+                startActivity(UpdatePost);
+                break;
         }
     }
 

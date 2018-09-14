@@ -6,7 +6,7 @@ import android.view.MenuItem;
 
 import com.indieweb.indigenous.R;
 
-public class BookmarkActivity extends BasePostActivity {
+public class BookmarkActivity extends BaseCreateActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

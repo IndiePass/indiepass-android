@@ -7,7 +7,7 @@ import android.widget.Spinner;
 
 import com.indieweb.indigenous.R;
 
-public class RsvpActivity extends BasePostActivity {
+public class RsvpActivity extends BaseCreateActivity {
 
     Spinner rsvp;
 

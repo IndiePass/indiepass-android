@@ -26,10 +26,12 @@ import com.indieweb.indigenous.micropub.post.NoteActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
+import com.indieweb.indigenous.micropub.post.UpdateActivity;
 import com.indieweb.indigenous.microsub.channel.ChannelActivity;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.MicropubConfig;
+import com.indieweb.indigenous.util.Preferences;
 
 public class MicropubActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -103,6 +105,17 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
                 item.setVisible(false);
             }
         }
+
+        // Hide Update if setting is not enabled.
+        boolean updateEnabled = Preferences.getPreference(this, "pref_key_experimental_update", false);
+        if (!updateEnabled) {
+            Menu menu = navigationView.getMenu();
+            MenuItem item = menu.getItem(9);
+            if (item != null) {
+                item.setVisible(false);
+            }
+        }
+
     }
 
     // Go to reader.
@@ -187,6 +200,10 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
                     CreateMedia.putExtra("incomingImage", incomingImage);
                 }
                 startActivity(CreateMedia);
+                break;
+            case R.id.updatePost:
+                Intent UpdatePost = new Intent(getBaseContext(), UpdateActivity.class);
+                startActivity(UpdatePost);
                 break;
         }
         return false;

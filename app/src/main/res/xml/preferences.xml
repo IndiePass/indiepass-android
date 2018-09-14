@@ -2,6 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
+
     <PreferenceScreen
         android:title="@string/pref_category_sharing_title"
         android:summary="@string/pref_category_sharing_summary"
@@ -27,6 +28,7 @@
             android:title="@string/pref_share_reply_enabled"
             android:defaultValue="false" />
     </PreferenceScreen>
+
     <PreferenceScreen
         android:title="@string/pref_category_media_title"
         android:summary="@string/pref_category_media_summary"
@@ -44,5 +46,17 @@
             android:summary="@string/pref_key_image_size_summary"
             android:defaultValue="1000" />
     </PreferenceScreen>
+
+    <PreferenceScreen
+        android:title="@string/pref_category_extra_title"
+        android:summary="@string/pref_category_extra_summary"
+        android:persistent="false">
+        <CheckBoxPreference
+            android:key="pref_key_experimental_update"
+            android:title="@string/pref_key_experimental_update_title"
+            android:summary="@string/pref_key_experimental_update_summary"
+            android:defaultValue="false" />
+    </PreferenceScreen>
+
 </PreferenceScreen>
 

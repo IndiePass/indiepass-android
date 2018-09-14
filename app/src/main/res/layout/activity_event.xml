@@ -51,7 +51,7 @@
                 android:lines="4"
                 android:gravity="top"
                 android:ems="10"
-                android:hint="@string/body"
+                android:hint="@string/content"
                 android:inputType="textMultiLine" />
 
         </android.support.design.widget.TextInputLayout>

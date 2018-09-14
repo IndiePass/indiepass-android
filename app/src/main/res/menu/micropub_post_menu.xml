@@ -46,4 +46,9 @@
         android:icon="@drawable/button_media_idle"
         android:title="@string/media" />
 
+    <item
+        android:id="@+id/updatePost"
+        android:icon="@drawable/button_update_idle"
+        android:title="@string/update_post" />
+
 </menu>

@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:hint="@string/domain_hint"
+            android:hint="@string/url_hint"
             android:inputType="textUri" />
 
         <EditText
@@ -41,7 +41,7 @@
                 android:lines="4"
                 android:gravity="top"
                 android:ems="10"
-                android:hint="@string/body"
+                android:hint="@string/content"
                 android:inputType="textMultiLine" />
 
         </android.support.design.widget.TextInputLayout>

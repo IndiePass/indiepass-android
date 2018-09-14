@@ -6,7 +6,7 @@ import android.view.MenuItem;
 
 import com.indieweb.indigenous.R;
 
-public class LikeActivity extends BasePostActivity {
+public class LikeActivity extends BaseCreateActivity {
 
 
     @Override

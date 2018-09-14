@@ -17,6 +17,7 @@ More information at https://indieweb.org/Indigenous and https://indigenous.abode
   - send images to media endpoint
   - share location on note, article and event
   - Toggle post-status (published vs draft)
+  - Update: update basic properties of a post (experimental)
 - Microsub
   - read channels, with pull to refresh
   - read items per channel, with pull to refresh
