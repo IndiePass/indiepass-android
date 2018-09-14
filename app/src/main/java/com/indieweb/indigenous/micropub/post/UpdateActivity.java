@@ -5,12 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -23,16 +21,12 @@ import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Connection;
-import com.indieweb.indigenous.util.VolleyMultipartRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class UpdateActivity extends AppCompatActivity implements SendPostInterface {
