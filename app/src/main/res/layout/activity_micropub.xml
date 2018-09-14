@@ -59,7 +59,8 @@
             app:menu="@menu/micropub_post_menu" />
 
         <Button
-            android:padding="20dp"
+            android:layout_margin="10dp"
+            android:padding="10dp"
             android:visibility="gone"
             android:text="@string/go_to_reader"
             android:id="@+id/goToReader"
