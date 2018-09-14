@@ -203,6 +203,9 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
                 break;
             case R.id.updatePost:
                 Intent UpdatePost = new Intent(getBaseContext(), UpdateActivity.class);
+                if (incomingText.length() > 0) {
+                    UpdatePost.putExtra("incomingText", incomingText);
+                }
                 startActivity(UpdatePost);
                 break;
         }

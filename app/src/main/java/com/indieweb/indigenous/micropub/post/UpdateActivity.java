@@ -1,10 +1,12 @@
 package com.indieweb.indigenous.micropub.post;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.URLUtil;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -50,6 +52,19 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
         postStatus = findViewById(R.id.postStatus);
         title = findViewById(R.id.title);
         body = findViewById(R.id.body);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String incomingText = extras.getString("incomingText");
+            if (incomingText != null && incomingText.length() > 0) {
+                if (URLUtil.isValidUrl(incomingText)) {
+                    url.setText(incomingText);
+                }
+                else {
+                    body.setText(incomingText);
+                }
+            }
+        }
     }
 
     @Override
