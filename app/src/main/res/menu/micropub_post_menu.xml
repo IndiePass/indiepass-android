@@ -51,4 +51,9 @@
         android:icon="@drawable/button_update_idle"
         android:title="@string/update_post" />
 
+    <item
+        android:id="@+id/sourcePostList"
+        android:icon="@drawable/button_list_idle"
+        android:title="@string/source_post_list" />
+
 </menu>

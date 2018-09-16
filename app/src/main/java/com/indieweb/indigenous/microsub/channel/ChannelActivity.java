@@ -32,6 +32,7 @@ import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.micropub.post.UpdateActivity;
+import com.indieweb.indigenous.micropub.source.PostListActivity;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
@@ -184,6 +185,12 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
             menu.removeItem(R.id.updatePost);
         }
 
+        // Hide Posts if setting is not enabled.
+        boolean postListEnabled = Preferences.getPreference(this, "pref_key_experimental_post_list", false);
+        if (!postListEnabled) {
+            menu.removeItem(R.id.sourcePostList);
+        }
+
         new BottomSheet.Builder(this, R.style.BottomSheet_StyleDialog)
                 .setMenu(menu)
                 .setListener(this)
@@ -318,6 +325,11 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 startActivity(UpdatePost);
                 break;
+            case R.id.sourcePostList:
+                Intent SourcePostList = new Intent(getBaseContext(), PostListActivity.class);
+                startActivity(SourcePostList);
+                break;
+
         }
     }
 

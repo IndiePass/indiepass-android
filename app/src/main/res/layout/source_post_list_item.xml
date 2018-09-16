@@ -1,0 +1,64 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:id="@+id/source_post_list_item_row"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/timeline_list_item_padding"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/source_post_list_published"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/source_post_list_item_global"
+        android:textColor="@color/textColor"
+        android:layout_width="fill_parent" />
+
+    <TextView
+        android:id="@+id/source_post_list_name"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:textIsSelectable="true"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/timeline_list_item_text_size"
+        android:layout_width="fill_parent" />
+
+    <at.blogc.android.views.ExpandableTextView
+        android:id="@+id/source_post_list_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:maxLines="10"
+        android:textIsSelectable="true"
+        android:clickable="true"
+        android:focusable="true"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/timeline_list_item_text_size"
+        android:lineSpacingExtra="5dp"
+        android:ellipsize="end" />
+
+    <Button
+        android:id="@+id/source_post_list_content_more"
+        android:layout_width="wrap_content"
+        android:textColor="@color/textColor"
+        android:layout_height="wrap_content"
+        android:gravity="start|center_vertical"
+        android:background="@android:color/transparent"
+        android:text="@string/read_more" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:background="@drawable/button_update"
+            android:id="@+id/itemUpdate"
+            android:layout_width="@dimen/source_post_list_item_icon_size"
+            android:layout_height="@dimen/source_post_list_item_icon_size" />
+
+    </LinearLayout>
+
+</LinearLayout>

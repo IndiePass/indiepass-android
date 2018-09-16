@@ -238,6 +238,15 @@
         </activity>
 
         <activity
+            android:name=".micropub.source.PostListActivity"
+            android:label="@string/source_post_list"
+            android:parentActivityName=".micropub.MicropubActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.micropub.MicropubActivity" />
+        </activity>
+
+        <activity
             android:name=".AboutActivity"
             android:label="@string/about"
             android:parentActivityName=".MainActivity">

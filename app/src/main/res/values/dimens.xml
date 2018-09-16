@@ -12,4 +12,8 @@
     <dimen name="timeline_list_divider_height">2px</dimen>
     <dimen name="timeline_list_item_icon_size">25dp</dimen>
     <dimen name="timeline_list_item_icon_margin_left">20dp</dimen>
+    <dimen name="source_post_list_item_padding">15dp</dimen>
+    <dimen name="source_post_list_item_icon_size">25dp</dimen>
+    <dimen name="source_post_list_divider_height">2px</dimen>
+    <dimen name="source_post_list_item_global">14sp</dimen>
 </resources>

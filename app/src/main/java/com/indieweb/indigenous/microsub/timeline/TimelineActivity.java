@@ -116,6 +116,9 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         }
     }
 
+    /**
+     * Start with the timline.
+     */
     public void startTimeline() {
         TimelineItems = new ArrayList<>();
         adapter = new TimelineListAdapter(this, TimelineItems);
@@ -201,7 +204,6 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 catch (JSONException ignored) {}
                             }
 
-                            // TODO refactor this code to crash less.
                             for (int i = 0; i < itemList.length(); i++) {
                                 object = itemList.getJSONObject(i);
                                 TimelineItem item = new TimelineItem();
@@ -394,7 +396,6 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                         }
                         catch (JSONException e) {
                             Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                            Log.d("indigenous_debug", e.getMessage());
                         }
 
                         checkRefreshingStatus();

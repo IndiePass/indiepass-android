@@ -35,18 +35,18 @@ public class MicropubConfig {
      */
     public void refresh() {
 
-        String microPubEndpoint = user.getMicropubEndpoint();
+        String MicropubEndpoint = user.getMicropubEndpoint();
 
         // Some endpoints already contain GET params. Instead of overriding the getParams method, we
         // just check it here.
-        if (microPubEndpoint.contains("?")) {
-            microPubEndpoint += "&q=config";
+        if (MicropubEndpoint.contains("?")) {
+            MicropubEndpoint += "&q=config";
         }
         else {
-            microPubEndpoint += "?q=config";
+            MicropubEndpoint += "?q=config";
         }
 
-        StringRequest getRequest = new StringRequest(Request.Method.GET, microPubEndpoint,
+        StringRequest getRequest = new StringRequest(Request.Method.GET, MicropubEndpoint,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

@@ -27,6 +27,7 @@ import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.micropub.post.UpdateActivity;
+import com.indieweb.indigenous.micropub.source.PostListActivity;
 import com.indieweb.indigenous.microsub.channel.ChannelActivity;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
@@ -116,6 +117,15 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
             }
         }
 
+        // Hide Posts if setting is not enabled.
+        boolean postListEnabled = Preferences.getPreference(this, "pref_key_experimental_post_list", false);
+        if (!postListEnabled) {
+            Menu menu = navigationView.getMenu();
+            MenuItem item = menu.getItem(10);
+            if (item != null) {
+                item.setVisible(false);
+            }
+        }
     }
 
     // Go to reader.
@@ -207,6 +217,10 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
                     UpdatePost.putExtra("incomingText", incomingText);
                 }
                 startActivity(UpdatePost);
+                break;
+            case R.id.sourcePostList:
+                Intent SourcePostList = new Intent(getBaseContext(), PostListActivity.class);
+                startActivity(SourcePostList);
                 break;
         }
         return false;

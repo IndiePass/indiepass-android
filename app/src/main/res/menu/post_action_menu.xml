@@ -3,19 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:icon="@drawable/ic_my_location_white_24dp"
+        android:icon="@drawable/button_location_white"
         app:showAsAction="ifRoom"
         android:id="@+id/addLocation"
         android:title="@string/add_location" />
 
     <item
-        android:icon="@drawable/outline_add_photo_alternate_white_24dp"
+        android:icon="@drawable/button_photo_add_white"
         app:showAsAction="ifRoom"
         android:id="@+id/addImage"
         android:title="@string/add_image" />
 
     <item
-        android:icon="@drawable/ic_send_white_18pt_3x"
+        android:icon="@drawable/button_send_white"
         app:showAsAction="ifRoom"
         android:id="@+id/send"
         android:onClick="onPostButtonClick"
