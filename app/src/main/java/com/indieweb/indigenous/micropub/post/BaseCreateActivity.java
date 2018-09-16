@@ -533,7 +533,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                     }
                     if (bitmap != null) {
                         if (isMediaRequest) {
-                            params.put("file[0]", new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap)));
+                            params.put("file", new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap)));
                         }
                         else {
                             params.put("photo[0]", new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap)));

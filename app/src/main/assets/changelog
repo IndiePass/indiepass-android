@@ -6,6 +6,7 @@ Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a
 <h2>Changelog</h2>
 <h4>17/09/2018 - 0.15</h4>
 <ul>
+    <li>Fix sending a file to media endpoints</li>
     <li>Support for rendering repost</li>
     <li>Basic support for updating posts (see Settings)</li>
 </ul>
