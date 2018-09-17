@@ -4,9 +4,10 @@ Development happens on <a href="https://github.com/swentel/indigenous–android"
 <br /><br />
 Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://openclipart.org">Openclipart</a>.
 <h2>Changelog</h2>
-<h4>16/09/2018 - 0.16</h4>
+<h4>17/09/2018 - 0.16</h4>
 <ul>
-    <li>Experimental support for q=source</li>
+    <li>Allow posts to be deleted</li>
+    <li>Experimental support for q=source (see Settings)</li>
 </ul>
 <h4>16/09/2018 - 0.15</h4>
 <ul>
