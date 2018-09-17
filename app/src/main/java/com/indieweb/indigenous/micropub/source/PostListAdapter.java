@@ -2,6 +2,7 @@ package com.indieweb.indigenous.micropub.source;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -109,8 +110,17 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             // Content.
             if (item.getContent().length() > 0) {
 
+                CharSequence sequence;
+                String html = item.getContent();
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    sequence = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
+                }
+                else {
+                    sequence = Html.fromHtml(html);
+                }
+
                 holder.content.setVisibility(View.VISIBLE);
-                holder.content.setText(item.getContent());
+                holder.content.setText(sequence);
 
                 if (item.getContent().length() > 400) {
                     holder.expand.setVisibility(View.VISIBLE);
