@@ -7,6 +7,9 @@ Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a
 <h4>23/09/2018 - 0.16</h4>
 <ul>
     <li>Fix RSVP crash</li>
+    <li>Allow filtering on post types on the list</li>
+    <li>Save post-types in user account, if available</li>
+    <li>Proper storage of syndication targets</li>
     <li>Allow delete action in post list and update screen</li>
     <li>Experimental support for q=source (see Settings)</li>
 </ul>

@@ -127,6 +127,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
      * Send update post.
      */
     public void updatePost(MenuItem item) {
+        // TODO move this to MicropubActionUpdate
         sendItem = item;
 
         if (!new Connection(this).hasConnection()) {
@@ -153,6 +154,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        // TODO refactor this out, we have too many of these.
                         try {
                             NetworkResponse networkResponse = error.networkResponse;
                             if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {

@@ -42,4 +42,19 @@ public class Preferences {
         return preference.getBoolean(pref, DefaultValue);
     }
 
+    /**
+     * Set a string preference.
+     *
+     * @param context
+     *   The current context
+     * @param pref
+     *   The preference key
+     * @param value
+     *   The default value
+     */
+    public static void setPreference(Context context, String pref, String value) {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.putString(pref, value).apply();
+    }
+
 }

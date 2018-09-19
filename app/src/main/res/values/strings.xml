@@ -39,6 +39,7 @@
     <string name="delete_post">Delete</string>
     <string name="source_post_list">Posts</string>
     <string name="cancel">Cancel</string>
+    <string name="source_post_list_filter">Filter posts</string>
 
     <string name="unread">New</string>
     <string name="log_out">Log out</string>
@@ -106,6 +107,7 @@
     <string name="start_date">Start date</string>
     <string name="add_location">Add location</string>
     <string name="getting_location">Getting location</string>
+    <string name="apply_filter">Apply</string>
 
     <string-array name="rsvp_arrays">
         <item>yes</item>

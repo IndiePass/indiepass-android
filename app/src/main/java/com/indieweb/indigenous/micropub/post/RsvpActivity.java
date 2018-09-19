@@ -20,6 +20,7 @@ public class RsvpActivity extends BaseCreateActivity {
         super.onCreate(savedInstanceState);
 
         // Get spinner.
+        // TODO make the options translatable
         rsvp = findViewById(R.id.rsvp);
     }
 

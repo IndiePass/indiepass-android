@@ -57,13 +57,8 @@ public class MicropubConfig {
                             JSONArray itemList = micropubResponse.getJSONArray("syndicate-to");
                             if (itemList.length() > 0) {
                                 AccountManager am = AccountManager.get(context);
-                                am.setUserData(user.getAccount(), "syndication_targets", response);
-                                Toast.makeText(context, "Syndication targets saved", Toast.LENGTH_SHORT).show();
+                                am.setUserData(user.getAccount(), "syndication_targets", itemList.toString());
                             }
-                            else {
-                                Toast.makeText(context, "No syndication targets found", Toast.LENGTH_SHORT).show();
-                            }
-
                         }
                         catch (JSONException e) {
                             Toast.makeText(context, "Error getting syndication targets: " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -77,20 +72,29 @@ public class MicropubConfig {
                                 if (micropubMediaEndpoint.length() > 0) {
                                     AccountManager am = AccountManager.get(context);
                                     am.setUserData(user.getAccount(), "micropub_media_endpoint", micropubMediaEndpoint);
-                                    Toast.makeText(context, "Media endpoint saved", Toast.LENGTH_SHORT).show();
                                 }
-                                else {
-                                    Toast.makeText(context, "No media endpoint found", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                            else {
-                                Toast.makeText(context, "No media endpoint found", Toast.LENGTH_SHORT).show();
                             }
                         }
                         catch (JSONException e) {
-                            Toast.makeText(context, "Error getting syndication targets: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Error getting media endpoint: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
 
+                        // Post types.
+                        try {
+                            JSONObject micropubResponse = new JSONObject(response);
+                            if (micropubResponse.has("post-types")) {
+                                JSONArray itemList = micropubResponse.getJSONArray("post-types");
+                                if (itemList.length() > 0) {
+                                    AccountManager am = AccountManager.get(context);
+                                    am.setUserData(user.getAccount(), "post_types", itemList.toString());
+                                }
+                            }
+                        }
+                        catch (JSONException e) {
+                            Toast.makeText(context, "Error getting post-types: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+
+                        Toast.makeText(context, "Configuration updated", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {

@@ -1,5 +1,6 @@
 package com.indieweb.indigenous.micropub.source;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.model.PostListItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
@@ -53,6 +55,15 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.source_post_list_top_menu, menu);
+
+        String postTypes = user.getPostTypes();
+        if (postTypes == null || postTypes.length() == 0) {
+            // TODO make button names consistent (everywhere)
+            // TODO check names of all id's and check the 'standards' and document that.
+            MenuItem itemDelete = menu.findItem(R.id.source_post_list_filter);
+            itemDelete.setVisible(false);
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -63,6 +74,10 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
                 refreshLayout.setRefreshing(true);
                 startPostList();
                 return true;
+            case R.id.source_post_list_filter:
+                Intent PostListFilter = new Intent(getBaseContext(), PostListFilterActivity.class);
+                startActivityForResult(PostListFilter, 1);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -71,6 +86,19 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
     @Override
     public void onRefresh() {
         startPostList();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                boolean refresh = data.getBooleanExtra("refresh", false);
+                if (refresh) {
+                    refreshLayout.setRefreshing(true);
+                    startPostList();
+                }
+            }
+        }
     }
 
     /**
@@ -109,8 +137,13 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
             MicropubEndpoint += "?q=source";
         }
 
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        // Filter on post type.
+        String postType = Preferences.getPreference(getApplicationContext(), "source_post_list_filter_post_type", "all_source_post_types");
+        if (!postType.equals("all_source_post_types")) {
+            MicropubEndpoint += "&post-type=" + postType;
+        }
 
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         StringRequest getRequest = new StringRequest(Request.Method.GET, MicropubEndpoint,
                 new Response.Listener<String>() {
                     @Override

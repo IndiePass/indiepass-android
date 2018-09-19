@@ -12,6 +12,7 @@ public class User {
     private String tokenEndpoint;
     private String authorizationEndpoint;
     private String syndicationTargets;
+    private String postTypes;
     private boolean valid = false;
     private Account account;
 
@@ -89,6 +90,14 @@ public class User {
 
     public void setSyndicationTargets(String syndicationTargets) {
         this.syndicationTargets = syndicationTargets;
+    }
+
+    public String getPostTypes() {
+        return postTypes != null ? postTypes : "";
+    }
+
+    public void setPostTypes(String postTypes) {
+        this.postTypes = postTypes;
     }
 
     public Account getAccount() {

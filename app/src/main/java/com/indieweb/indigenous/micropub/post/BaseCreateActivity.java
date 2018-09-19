@@ -132,8 +132,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         if (syndicationLayout != null && syndicationTargetsString.length() > 0) {
             JSONObject object;
             try {
-                JSONObject s = new JSONObject(syndicationTargetsString);
-                JSONArray itemList = s.getJSONArray("syndicate-to");
+                JSONArray itemList = new JSONArray(syndicationTargetsString);
 
                 if (itemList.length() > 0) {
                     TextView syn = new TextView(this);
@@ -372,6 +371,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
      * Send post.
      */
     public void sendBasePost(MenuItem item) {
+        // TODO move this to MicropubActionCreate
         sendItem = item;
 
         if (!new Connection(this).hasConnection()) {

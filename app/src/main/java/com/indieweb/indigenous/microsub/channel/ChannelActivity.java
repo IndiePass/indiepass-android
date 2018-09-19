@@ -221,6 +221,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                 return true;
 
             case R.id.channel_list_refresh:
+                refreshLayout.setRefreshing(true);
                 startChannels();
                 return true;
 

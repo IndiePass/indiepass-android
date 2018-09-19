@@ -19,7 +19,7 @@ public class TimelineItem {
     private String photo;
     // TODO allow multiple audio
     private String audio;
-    // TODO there can actually be multiple of say reply (at least in theory)
+    // TODO there can actually be multiple of say reply
     private Map<String, String> subType = new LinkedHashMap<>();
 
     public boolean isRead() {
