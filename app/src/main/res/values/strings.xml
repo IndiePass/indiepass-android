@@ -36,7 +36,9 @@
     <string name="add_event">Event</string>
     <string name="add_rsvp">RSVP</string>
     <string name="update_post">Update</string>
+    <string name="delete_post">Delete</string>
     <string name="source_post_list">Posts</string>
+    <string name="cancel">Cancel</string>
 
     <string name="unread">New</string>
     <string name="log_out">Log out</string>
@@ -96,6 +98,8 @@
     <string name="pref_key_experimental_update_summary">Expose an "Update" screen which allows you to update basic properties of a post.</string>
     <string name="pref_key_experimental_post_list_title">Posts list</string>
     <string name="pref_key_experimental_post_list_summary">Expose an "Posts list" screen which queries your micropub endpoint on q=source. Experimental as not many servers support this.</string>
+    <string name="pref_key_experimental_delete_title">Delete posts</string>
+    <string name="pref_key_experimental_delete_summary">Expose a delete button on the update screen, or in the posts list.</string>
 
     <string name="settings">Settings</string>
     <string name="end_date">End date</string>

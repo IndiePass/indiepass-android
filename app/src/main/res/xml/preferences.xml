@@ -57,6 +57,11 @@
             android:summary="@string/pref_key_experimental_update_summary"
             android:defaultValue="false" />
         <CheckBoxPreference
+            android:key="pref_key_experimental_delete"
+            android:title="@string/pref_key_experimental_delete_title"
+            android:summary="@string/pref_key_experimental_delete_summary"
+            android:defaultValue="false" />
+        <CheckBoxPreference
             android:key="pref_key_experimental_post_list"
             android:title="@string/pref_key_experimental_post_list_title"
             android:summary="@string/pref_key_experimental_post_list_summary"

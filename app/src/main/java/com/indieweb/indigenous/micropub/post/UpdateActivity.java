@@ -1,7 +1,8 @@
 package com.indieweb.indigenous.micropub.post;
 
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -20,9 +21,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.micropub.MicropubActionDelete;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Connection;
+import com.indieweb.indigenous.util.Preferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -69,15 +72,45 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.post_action_menu, menu);
+        getMenuInflater().inflate(R.menu.post_update_action_menu, menu);
 
-        MenuItem itemImage = menu.findItem(R.id.addImage);
-        itemImage.setVisible(false);
-
-        MenuItem itemLocation = menu.findItem(R.id.addLocation);
-        itemLocation.setVisible(false);
+        boolean deleteEnabled = Preferences.getPreference(this, "pref_key_experimental_delete", false);
+        if (!deleteEnabled) {
+            MenuItem itemDelete = menu.findItem(R.id.deletePost);
+            itemDelete.setVisible(false);
+        }
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.deletePost:
+                if (TextUtils.isEmpty(url.getText())) {
+                    url.setError(getString(R.string.required_field));
+                }
+                else {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(UpdateActivity.this);
+                    builder.setTitle("Are you sure you want to delete this post ?");
+                    builder.setPositiveButton(getString(R.string.delete_post),new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            new MicropubActionDelete(UpdateActivity.this, user, url.getText().toString()).deletePost();
+                            finish();
+                        }
+                    });
+                    builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.show();
+                }
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

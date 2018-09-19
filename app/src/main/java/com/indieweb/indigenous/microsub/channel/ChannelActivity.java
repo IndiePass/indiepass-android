@@ -36,7 +36,7 @@ import com.indieweb.indigenous.micropub.source.PostListActivity;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
-import com.indieweb.indigenous.util.MicropubConfig;
+import com.indieweb.indigenous.micropub.MicropubConfig;
 import com.indieweb.indigenous.util.Preferences;
 import com.kennyc.bottomsheet.BottomSheet;
 import com.kennyc.bottomsheet.BottomSheetListener;

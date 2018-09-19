@@ -1,7 +1,10 @@
 package com.indieweb.indigenous.micropub.source;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.micropub.MicropubActionDelete;
 import com.indieweb.indigenous.micropub.post.UpdateActivity;
 import com.indieweb.indigenous.model.PostListItem;
+import com.indieweb.indigenous.model.User;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,10 +36,14 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
     private final Context context;
     private final List<PostListItem> items;
     private LayoutInflater mInflater;
+    private final boolean showDeleteButton;
+    private final User user;
 
-    PostListAdapter(Context context, List<PostListItem> items) {
+    PostListAdapter(Context context, List<PostListItem> items, User user, boolean showDeleteButton) {
         this.context = context;
         this.items = items;
+        this.user = user;
+        this.showDeleteButton = showDeleteButton;
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -59,6 +68,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
         public ExpandableTextView content;
         public LinearLayout row;
         public Button update;
+        public Button delete;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -72,6 +82,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             holder.content = convertView.findViewById(R.id.source_post_list_content);
             holder.expand = convertView.findViewById(R.id.source_post_list_content_more);
             holder.update = convertView.findViewById(R.id.itemUpdate);
+            holder.delete = convertView.findViewById(R.id.itemDelete);
             holder.row = convertView.findViewById(R.id.source_post_list_item_row);
             convertView.setTag(holder);
         }
@@ -154,6 +165,13 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             // Button listeners.
             if (item.getUrl().length() > 0) {
                 holder.update.setOnClickListener(new OnUpdateClickListener(position));
+
+                if (showDeleteButton) {
+                    holder.delete.setVisibility(View.VISIBLE);
+                    holder.delete.setOnClickListener(new OnDeleteClickListener(position));
+                }
+                else {
+                }
             }
             else {
                 holder.update.setVisibility(View.GONE);
@@ -181,4 +199,35 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
         }
     }
 
+    // Delete listener.
+    class OnDeleteClickListener implements OnClickListener {
+
+        int position;
+
+        OnDeleteClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            final PostListItem item = items.get(this.position);
+
+            final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Are you sure you want to delete this post ?");
+            builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog,int id) {
+                    new MicropubActionDelete(context, user, item.getUrl()).deletePost();
+                    items.remove(position);
+                    notifyDataSetChanged();
+                }
+            });
+            builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.show();
+        }
+    }
 }

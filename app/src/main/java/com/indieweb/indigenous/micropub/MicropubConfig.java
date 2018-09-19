@@ -1,4 +1,4 @@
-package com.indieweb.indigenous.util;
+package com.indieweb.indigenous.micropub;
 
 import android.accounts.AccountManager;
 import android.content.Context;

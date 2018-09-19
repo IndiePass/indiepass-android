@@ -31,7 +31,6 @@ import com.indieweb.indigenous.micropub.source.PostListActivity;
 import com.indieweb.indigenous.microsub.channel.ChannelActivity;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
-import com.indieweb.indigenous.util.MicropubConfig;
 import com.indieweb.indigenous.util.Preferences;
 
 public class MicropubActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

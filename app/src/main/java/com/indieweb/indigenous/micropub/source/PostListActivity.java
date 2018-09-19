@@ -19,6 +19,7 @@ import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.PostListItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
+import com.indieweb.indigenous.util.Preferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,7 +68,6 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public void onRefresh() {
         startPostList();
@@ -87,8 +87,9 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
      * Start with post list.
      */
     public void startPostList() {
+        boolean deleteEnabled = Preferences.getPreference(this, "pref_key_experimental_delete", false);
         PostListItems = new ArrayList<>();
-        adapter = new PostListAdapter(this, PostListItems);
+        adapter = new PostListAdapter(this, PostListItems, user, deleteEnabled);
         listView.setAdapter(adapter);
         getSourcePostListItems();
     }
