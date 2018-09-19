@@ -91,9 +91,9 @@
     <string name="pref_key_image_size_title">Image size</string>
     <string name="pref_key_image_size_summary">Maximum image size in width</string>
 
-    <!-- Preferences: extra -->
-    <string name="pref_category_extra_title">Extra</string>
-    <string name="pref_category_extra_summary">Enable basic or experimental features.</string>
+    <!-- Preferences: experimental -->
+    <string name="pref_category_experimental_title">Experimental</string>
+    <string name="pref_category_experimental_summary">Experimental features. Some depend on functionality that needs to be supported on the server. Leave disabled if unknown.</string>
     <string name="pref_key_experimental_update_title">Update posts</string>
     <string name="pref_key_experimental_update_summary">Expose an "Update" screen which allows you to update basic properties of a post.</string>
     <string name="pref_key_experimental_post_list_title">Posts list</string>

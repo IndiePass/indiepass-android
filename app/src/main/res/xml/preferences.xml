@@ -48,8 +48,8 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:title="@string/pref_category_extra_title"
-        android:summary="@string/pref_category_extra_summary"
+        android:title="@string/pref_category_experimental_title"
+        android:summary="@string/pref_category_experimental_summary"
         android:persistent="false">
         <CheckBoxPreference
             android:key="pref_key_experimental_update"
