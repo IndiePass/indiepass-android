@@ -4,7 +4,7 @@ Development happens on <a href="https://github.com/swentel/indigenous–android"
 <br /><br />
 Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://openclipart.org">Openclipart</a>.
 <h2>Changelog</h2>
-<h4>23/09/2018 - 0.16</h4>
+<h4>20/09/2018 - 0.16</h4>
 <ul>
     <li>Fix RSVP crash</li>
     <li>Allow filtering on post types on the list</li>
