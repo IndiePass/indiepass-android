@@ -218,6 +218,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
                 public void onClick(DialogInterface dialog,int id) {
                     new MicropubActionDelete(context, user, item.getUrl()).deletePost();
                     items.remove(position);
+                    // TODO what happens if this is on page 2 for instance
                     notifyDataSetChanged();
                 }
             });
