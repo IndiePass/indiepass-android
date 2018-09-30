@@ -28,6 +28,7 @@ public class PostListFilterActivity extends AppCompatActivity {
     String selectedPostType;
     PostType defaultPostTypeItem;
     Spinner postTypesSpinner;
+    Spinner postLimitSpinner;
     Button filterSourcePostListButton;
 
     @Override
@@ -38,7 +39,13 @@ public class PostListFilterActivity extends AppCompatActivity {
         // Get current user.
         User user = new Accounts(this).getCurrentUser();
 
-        // Set spinner values.
+        // Get post limit spinner.
+        postLimitSpinner = findViewById(R.id.postLimit);
+        String limit = Preferences.getPreference(getApplicationContext(), "source_post_list_filter_post_limit", "10");
+        Integer selectedItem = (Integer.parseInt(limit) / 10) - 1;
+        postLimitSpinner.setSelection(selectedItem);
+
+        // Set post type spinner values.
         defaultPostType = Preferences.getPreference(getApplicationContext(), "source_post_list_filter_post_type", "all_source_post_types");
         ArrayList<PostType> postTypeList = new ArrayList<>();
         postTypeList.add(new PostType("all_source_post_types", "All post types"));
@@ -94,6 +101,7 @@ public class PostListFilterActivity extends AppCompatActivity {
         public void onClick(View v) {
             Toast.makeText(getApplicationContext(), "Applying filter", Toast.LENGTH_SHORT).show();
             Preferences.setPreference(PostListFilterActivity.this, "source_post_list_filter_post_type", selectedPostType);
+            Preferences.setPreference(PostListFilterActivity.this, "source_post_list_filter_post_limit", postLimitSpinner.getSelectedItem().toString());
             Intent returnIntent = new Intent();
             returnIntent.putExtra("refresh", true);
             setResult(RESULT_OK, returnIntent);

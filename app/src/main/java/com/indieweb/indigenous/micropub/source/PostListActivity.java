@@ -143,6 +143,10 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
             MicropubEndpoint += "&post-type=" + postType;
         }
 
+        // Limit.
+        String limit = Preferences.getPreference(getApplicationContext(), "source_post_list_filter_post_limit", "10");
+        MicropubEndpoint += "&limit=" + limit;
+
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         StringRequest getRequest = new StringRequest(Request.Method.GET, MicropubEndpoint,
                 new Response.Listener<String>() {

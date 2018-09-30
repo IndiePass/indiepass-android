@@ -62,6 +62,7 @@
     <string name="title_activity_indieauth">Sign in</string>
     <string name="title_activity_micropub">Post</string>
     <string name="select_post_type">Select a post type</string>
+    <string name="select_post_limit">Select post limit</string>
     <string name="go_to_reader">Go to reader</string>
     <string name="channels_not_found">Channels not found, check your internet connection</string>
     <string name="no_posts_found">Posts not found, check your internet connection</string>
@@ -114,6 +115,19 @@
         <item>no</item>
         <item>maybe</item>
         <item>interested</item>
+    </string-array>
+
+    <string-array name="filter_post_limit">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
     </string-array>
 
 </resources>
