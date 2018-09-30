@@ -549,14 +549,17 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     }
 
     /**
-     * Sets the incoming text as URL and puts focus on body field.
+     * Sets the incoming text as URL and puts focus on either title, or body field.
      *
      * @param incomingUrl
      *   The incoming URL.
      */
     public void setUrlAndFocusOnMessage(String incomingUrl) {
         url.setText(incomingUrl);
-        if (body != null) {
+        if (title != null) {
+            title.requestFocus();
+        }
+        else if (body != null) {
             body.requestFocus();
         }
     }

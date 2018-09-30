@@ -42,6 +42,11 @@
         android:title="@string/add_rsvp" />
 
     <item
+        android:id="@+id/createIssue"
+        android:icon="@drawable/button_issue_idle"
+        android:title="@string/add_issue" />
+
+    <item
         android:id="@+id/createMedia"
         android:icon="@drawable/button_media_idle"
         android:title="@string/media" />

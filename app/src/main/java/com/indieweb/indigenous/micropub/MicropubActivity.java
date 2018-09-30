@@ -20,6 +20,7 @@ import com.indieweb.indigenous.SettingsActivity;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.EventActivity;
+import com.indieweb.indigenous.micropub.post.IssueActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
 import com.indieweb.indigenous.micropub.post.MediaActivity;
 import com.indieweb.indigenous.micropub.post.NoteActivity;
@@ -100,7 +101,7 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
         String micropubMediaEndpoint = u.getMicropubMediaEndpoint();
         if (micropubMediaEndpoint == null || micropubMediaEndpoint.length() == 0) {
             Menu menu = navigationView.getMenu();
-            MenuItem item = menu.getItem(8);
+            MenuItem item = menu.getItem(9);
             if (item != null) {
                 item.setVisible(false);
             }
@@ -110,7 +111,7 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
         boolean updateEnabled = Preferences.getPreference(this, "pref_key_experimental_update", false);
         if (!updateEnabled) {
             Menu menu = navigationView.getMenu();
-            MenuItem item = menu.getItem(9);
+            MenuItem item = menu.getItem(10);
             if (item != null) {
                 item.setVisible(false);
             }
@@ -120,7 +121,7 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
         boolean postListEnabled = Preferences.getPreference(this, "pref_key_experimental_post_list", false);
         if (!postListEnabled) {
             Menu menu = navigationView.getMenu();
-            MenuItem item = menu.getItem(10);
+            MenuItem item = menu.getItem(11);
             if (item != null) {
                 item.setVisible(false);
             }
@@ -202,6 +203,13 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
                     CreateRSVP.putExtra("incomingText", incomingText);
                 }
                 startActivity(CreateRSVP);
+                break;
+            case R.id.createIssue:
+                Intent CreateIssue = new Intent(getBaseContext(), IssueActivity.class);
+                if (incomingText.length() > 0) {
+                    CreateIssue.putExtra("incomingText", incomingText);
+                }
+                startActivity(CreateIssue);
                 break;
             case R.id.createMedia:
                 Intent CreateMedia = new Intent(getBaseContext(), MediaActivity.class);

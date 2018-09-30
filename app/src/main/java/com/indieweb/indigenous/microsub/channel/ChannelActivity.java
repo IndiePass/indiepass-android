@@ -25,6 +25,7 @@ import com.indieweb.indigenous.SettingsActivity;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.EventActivity;
+import com.indieweb.indigenous.micropub.post.IssueActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
 import com.indieweb.indigenous.micropub.post.MediaActivity;
 import com.indieweb.indigenous.micropub.post.NoteActivity;
@@ -311,6 +312,13 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                     CreateRSVP.putExtra("incomingText", incomingText);
                 }
                 startActivity(CreateRSVP);
+                break;
+            case R.id.createIssue:
+                Intent CreateIssue = new Intent(getBaseContext(), IssueActivity.class);
+                if (incomingText.length() > 0) {
+                    CreateIssue.putExtra("incomingText", incomingText);
+                }
+                startActivity(CreateIssue);
                 break;
             case R.id.createMedia:
                 Intent CreateMedia = new Intent(getBaseContext(), MediaActivity.class);

@@ -9,6 +9,7 @@
     <string name="set_account">Set account</string>
     <string name="set_account_info">No default account was set, you can select one by pressing the "Set account" button.</string>
     <string name="url_hint">http://example.com</string>
+    <string name="url_repository_hint">http://example.com/repository</string>
     <string name="sign_in_with_domain">Sign in</string>
     <string name="sign_in_info">This login uses IndieAuth and requires you to have a website on your domain that supports IndieAuth.</string>
 
@@ -29,11 +30,13 @@
 
     <string name="add_note">Note</string>
     <string name="add_article">Article</string>
+    <!-- TODO cleanup strings -->
     <string name="add_reply">Reply</string>
     <string name="add_repost">Repost</string>
     <string name="add_like">Like</string>
     <string name="add_bookmark">Bookmark</string>
     <string name="add_event">Event</string>
+    <string name="add_issue">Issue</string>
     <string name="add_rsvp">RSVP</string>
     <string name="update_post">Update</string>
     <string name="delete_post">Delete</string>
