@@ -456,7 +456,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
                             // Remove draft if needed.
                             // TODO notify draft adapter
-                            if (draftId > 0) {
+                            if (draftId != null && draftId > 0) {
                                 db = new DatabaseHelper(getApplicationContext());
                                 db.deleteDraft(draftId);
                             }
