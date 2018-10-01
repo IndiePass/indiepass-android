@@ -1,8 +1,6 @@
 package com.indieweb.indigenous.model;
 
-import java.io.Serializable;
-
-public class Draft implements Serializable {
+public class Draft {
 
     public static final String TABLE_NAME = "drafts";
 

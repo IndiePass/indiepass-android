@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -17,16 +16,10 @@ import android.widget.Toast;
 
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
-import com.indieweb.indigenous.micropub.MicropubActionDelete;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.micropub.post.NoteActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
-import com.indieweb.indigenous.micropub.post.UpdateActivity;
-import com.indieweb.indigenous.micropub.source.PostListAdapter;
-import com.indieweb.indigenous.microsub.timeline.TimelineActivity;
-import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.Draft;
-import com.indieweb.indigenous.model.PostListItem;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
