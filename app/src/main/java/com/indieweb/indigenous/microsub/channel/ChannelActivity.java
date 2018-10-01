@@ -22,6 +22,7 @@ import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.AboutActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.SettingsActivity;
+import com.indieweb.indigenous.micropub.draft.DraftActivity;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.EventActivity;
@@ -217,6 +218,11 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
     public boolean onOptionsItemSelected(MenuItem item) {
         // TODO create helper method as we have the same in MicropubActivity
         switch (item.getItemId()) {
+            case R.id.drafts:
+                Intent goDraft = new Intent(getBaseContext(), DraftActivity.class);
+                startActivity(goDraft);
+                return true;
+
             case R.id.refreshConfiguration:
                 new MicropubConfig(getApplicationContext(), user).refresh();
                 return true;

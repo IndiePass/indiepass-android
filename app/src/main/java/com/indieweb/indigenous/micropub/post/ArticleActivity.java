@@ -3,8 +3,11 @@ package com.indieweb.indigenous.micropub.post;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.db.DatabaseHelper;
+import com.indieweb.indigenous.model.Draft;
 
 public class ArticleActivity extends BaseCreateActivity {
 
@@ -21,6 +24,11 @@ public class ArticleActivity extends BaseCreateActivity {
     @Override
     public void onPostButtonClick(MenuItem item) {
         boolean hasErrors = false;
+
+        if (saveAsDraft != null && saveAsDraft.isChecked()) {
+            saveDraft("article");
+            return;
+        }
 
         if (TextUtils.isEmpty(title.getText())) {
             hasErrors = true;

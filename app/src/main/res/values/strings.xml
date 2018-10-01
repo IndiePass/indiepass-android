@@ -13,6 +13,11 @@
     <string name="sign_in_with_domain">Sign in</string>
     <string name="sign_in_info">This login uses IndieAuth and requires you to have a website on your domain that supports IndieAuth.</string>
 
+    <string name="drafts">Drafts</string>
+    <string name="save_as_draft">Save as draft</string>
+    <string name="draft_saved">Draft saved</string>
+    <string name="draft_deleted">Draft deleted</string>
+    <string name="no_drafts">You have no drafts for this account</string>
     <string name="channels_refreshed">Channels refreshed</string>
     <string name="timeline_items_refreshed">Items refreshed</string>
     <string name="timeline_list_refresh">Refresh items</string>
@@ -102,7 +107,7 @@
     <string name="pref_key_experimental_update_title">Update posts</string>
     <string name="pref_key_experimental_update_summary">Expose an "Update" screen which allows you to update basic properties of a post.</string>
     <string name="pref_key_experimental_post_list_title">Posts list</string>
-    <string name="pref_key_experimental_post_list_summary">Expose an "Posts list" screen which queries your micropub endpoint on q=source. Experimental as not many servers support this.</string>
+    <string name="pref_key_experimental_post_list_summary">Expose a "Posts list" screen which queries your micropub endpoint on q=source. Experimental as not many servers support this.</string>
     <string name="pref_key_experimental_delete_title">Delete posts</string>
     <string name="pref_key_experimental_delete_summary">Expose a delete button on the update screen, or in the posts list.</string>
 

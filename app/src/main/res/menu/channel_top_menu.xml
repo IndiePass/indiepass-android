@@ -8,6 +8,10 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/drafts"
+        android:title="@string/drafts" />
+
+    <item
         android:id="@+id/refreshConfiguration"
         android:title="@string/refresh_configuration" />
 

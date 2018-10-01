@@ -12,6 +12,13 @@
         android:orientation="vertical"
         android:padding="10dp">
 
+        <CheckBox
+            android:id="@+id/saveAsDraft"
+            android:checked="false"
+            android:text="@string/save_as_draft"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <EditText
             android:id="@+id/title"
             android:layout_width="match_parent"

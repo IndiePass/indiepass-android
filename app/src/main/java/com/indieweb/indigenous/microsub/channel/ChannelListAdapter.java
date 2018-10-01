@@ -79,9 +79,6 @@ public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
             int color = context.getResources().getColor(R.color.listRowBackgroundColor);
             holder.row.setBackgroundColor(color);
 
-            // Get row id.
-            holder.row = convertView.findViewById(R.id.channel_row);
-
             // Name.
             holder.name.setText(channel.getName());
 

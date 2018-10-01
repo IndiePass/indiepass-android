@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.support.customtabs.CustomTabsIntent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -18,7 +21,9 @@ import android.widget.TextView;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.MicropubActionDelete;
 import com.indieweb.indigenous.micropub.post.UpdateActivity;
+import com.indieweb.indigenous.microsub.timeline.TimelineListAdapter;
 import com.indieweb.indigenous.model.PostListItem;
+import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
 
 import java.text.ParseException;
@@ -69,6 +74,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
         public LinearLayout row;
         public Button update;
         public Button delete;
+        public Button external;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -83,6 +89,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             holder.expand = convertView.findViewById(R.id.source_post_list_content_more);
             holder.update = convertView.findViewById(R.id.itemUpdate);
             holder.delete = convertView.findViewById(R.id.itemDelete);
+            holder.external = convertView.findViewById(R.id.itemExternal);
             holder.row = convertView.findViewById(R.id.source_post_list_item_row);
             convertView.setTag(holder);
         }
@@ -165,6 +172,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             // Button listeners.
             if (item.getUrl().length() > 0) {
                 holder.update.setOnClickListener(new OnUpdateClickListener(position));
+                holder.external.setOnClickListener(new OnExternalClickListener(position));
 
                 if (showDeleteButton) {
                     holder.delete.setVisibility(View.VISIBLE);
@@ -175,6 +183,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             }
             else {
                 holder.update.setVisibility(View.GONE);
+                holder.external.setVisibility(View.GONE);
             }
         }
 
@@ -196,6 +205,33 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             PostListItem item = items.get(this.position);
             i.putExtra("incomingText", item.getUrl());
             context.startActivity(i);
+        }
+    }
+
+    // External listener.
+    class OnExternalClickListener implements OnClickListener {
+
+        int position;
+
+        OnExternalClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            PostListItem item = items.get(this.position);
+
+            try {
+                CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
+                intentBuilder.setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                intentBuilder.setSecondaryToolbarColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
+                CustomTabsIntent customTabsIntent = intentBuilder.build();
+                customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                customTabsIntent.launchUrl(context, Uri.parse(item.getUrl()));
+            }
+            catch (Exception ignored) { }
+
         }
     }
 

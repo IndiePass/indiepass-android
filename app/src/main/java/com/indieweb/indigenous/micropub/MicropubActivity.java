@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.indieweb.indigenous.AboutActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.SettingsActivity;
+import com.indieweb.indigenous.micropub.draft.DraftActivity;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.EventActivity;
@@ -244,6 +245,11 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             // TODO create helper method as we have the same in ChannelsActivity
+            case R.id.drafts:
+                Intent goDraft = new Intent(getBaseContext(), DraftActivity.class);
+                startActivity(goDraft);
+                return true;
+
             case R.id.refreshConfiguration:
                 new MicropubConfig(getApplicationContext(), new Accounts(this).getCurrentUser()).refresh();
                 return true;

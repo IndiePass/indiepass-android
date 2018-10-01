@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,6 +52,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.indieweb.indigenous.BuildConfig;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.db.DatabaseHelper;
+import com.indieweb.indigenous.model.Draft;
 import com.indieweb.indigenous.model.Syndication;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
@@ -82,14 +85,16 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     EditText body;
     EditText title;
     Bitmap bitmap;
-    private User user;
+    CheckBox saveAsDraft;
+    DatabaseHelper db;
+    User user;
+    Uri imageUri;
+    EditText tags;
     private List<Syndication> syndicationTargets = new ArrayList<>();
     private MenuItem sendItem;
     private CardView imageCard;
     private ImageView imagePreview;
-    private EditText tags;
     private CheckBox postStatus;
-    private Uri imageUri;
     private String mime = "image/jpg";
     private int PICK_IMAGE_REQUEST = 1;
 
@@ -104,6 +109,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     boolean addCounter = false;
     Map<String, String> bodyParams = new HashMap<>();
 
+    Integer draftId;
     String fileUrl;
     TextView mediaUrl;
     boolean isMediaRequest = false;
@@ -167,6 +173,8 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         imagePreview = findViewById(R.id.imagePreview);
         imageCard = findViewById(R.id.imageCard);
         url = findViewById(R.id.url);
+        tags = findViewById(R.id.tags);
+        saveAsDraft = findViewById(R.id.saveAsDraft);
 
         if (isMediaRequest) {
             mediaUrl = findViewById(R.id.mediaUrl);
@@ -197,7 +205,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                         }
                     }
                 }
-                catch (NullPointerException ignored) {}
+                catch (NullPointerException ignored) { }
             }
             else {
                 String incomingText = extras.getString("incomingText");
@@ -217,6 +225,12 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                     imageUri = Uri.parse(incomingImage);
                     prepareImagePreviewAndBitmap();
                 }
+            }
+
+            // Draft support.
+            draftId = extras.getInt("draftId");
+            if (draftId > 0) {
+                prepareDraft(draftId);
             }
         }
     }
@@ -368,6 +382,47 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     }
 
     /**
+     * Prepares the activity with the draft.
+     *
+     * @param draftId
+     *   The draft id.
+     */
+    public void prepareDraft(Integer draftId) {
+        db = new DatabaseHelper(this);
+
+        Draft draft = db.getDraft(draftId);
+        if (draft.getId() > 0) {
+
+            // Name.
+            if (title != null && draft.getName().length() > 0) {
+                title.setText(draft.getName());
+            }
+
+            // Body.
+            if (body != null && draft.getBody().length() > 0) {
+                body.setText(draft.getBody());
+            }
+
+            // Tags.
+            if (tags != null && draft.getTags().length() > 0) {
+                tags.setText(draft.getTags());
+            }
+
+            // Url.
+            if (url != null && draft.getUrl().length() > 0) {
+                url.setText(draft.getUrl());
+            }
+
+            // Image
+            if (canAddImage && draft.getImage().length() > 0) {
+                imageUri = Uri.parse(draft.getImage());
+                prepareImagePreviewAndBitmap();
+            }
+
+        }
+    }
+
+    /**
      * Send post.
      */
     public void sendBasePost(MenuItem item) {
@@ -398,6 +453,14 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
                         if (finishActivity) {
                             Toast.makeText(getApplicationContext(), "Post success", Toast.LENGTH_SHORT).show();
+
+                            // Remove draft if needed.
+                            // TODO notify draft adapter
+                            if (draftId > 0) {
+                                db = new DatabaseHelper(getApplicationContext());
+                                db.deleteDraft(draftId);
+                            }
+
                             finish();
                         }
 
@@ -470,7 +533,6 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 }
 
                 // Tags
-                tags = findViewById(R.id.tags);
                 if (tags != null) {
                     List<String> tagsList = new ArrayList<>(Arrays.asList(tags.getText().toString().split(",")));
                     int i = 0;
@@ -562,6 +624,47 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         else if (body != null) {
             body.requestFocus();
         }
+    }
+
+    /**
+     * Save draft.
+     */
+    public void saveDraft(String type) {
+
+        Draft draft = new Draft();
+
+        if (draftId != null && draftId > 0) {
+            draft.setId(draftId);
+        }
+
+        draft.setType(type);
+        draft.setAccount(user.getMeWithoutProtocol());
+
+        if (title != null && !TextUtils.isEmpty(title.getText())) {
+            draft.setName(title.getText().toString());
+        }
+
+        if (body != null && !TextUtils.isEmpty(body.getText())) {
+            draft.setBody(body.getText().toString());
+        }
+
+        if (tags != null && !TextUtils.isEmpty(tags.getText())) {
+            draft.setTags(tags.getText().toString());
+        }
+
+        if (url != null && !TextUtils.isEmpty(url.getText())) {
+            draft.setUrl(url.getText().toString());
+        }
+
+        if (imageUri != null) {
+            draft.setImage(imageUri.toString());
+        }
+
+        db = new DatabaseHelper(this);
+        db.saveDraft(draft);
+
+        Toast.makeText(this, getString(R.string.draft_saved), Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     /**
