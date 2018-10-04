@@ -393,6 +393,9 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         Draft draft = db.getDraft(draftId);
         if (draft.getId() > 0) {
 
+            // Set as checked again to avoid confusion.
+            saveAsDraft.setChecked(true);
+
             // Name.
             if (title != null && draft.getName().length() > 0) {
                 title.setText(draft.getName());
