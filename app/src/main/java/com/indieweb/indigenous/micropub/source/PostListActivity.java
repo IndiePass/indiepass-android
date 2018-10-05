@@ -64,21 +64,14 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.source_post_list_top_menu, menu);
-
-        String postTypes = user.getPostTypes();
-        if (postTypes == null || postTypes.length() == 0) {
-            // TODO make button names consistent (everywhere)
-            // TODO check names of all id's and check the 'standards' and document that.
-            MenuItem itemDelete = menu.findItem(R.id.source_post_list_filter);
-            itemDelete.setVisible(false);
-        }
-
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            // TODO make button names consistent (everywhere)
+            // TODO check names of all id's and check the 'standards' and document that.
             case R.id.source_post_list_refresh:
                 refreshLayout.setRefreshing(true);
                 startPostList();
