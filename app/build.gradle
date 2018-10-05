@@ -7,8 +7,8 @@ android {
         applicationId "com.indieweb.indigenous"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 19
-        versionName "0.19"
+        versionCode 20
+        versionName "0.20"
     }
     buildTypes {
         release {
@@ -36,5 +36,5 @@ dependencies {
     implementation 'com.github.HugoMatilla:AudioPlayerView:v1.0.1'
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
     implementation 'com.karumi:dexter:4.2.0'
-    implementation 'com.google.android.gms:play-services-location:15.0.1'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
 }
