@@ -6,7 +6,7 @@ Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a
 <h2>Changelog</h2>
 <h4>??/??/???? - 0.20</h4>
 <ul>
-    <li>Allow load more on posts screen</li>
+    <li>Add paging on posts screen</li>
 </ul>
 <h4>05/10/2018 - 0.19</h4>
 <ul>
