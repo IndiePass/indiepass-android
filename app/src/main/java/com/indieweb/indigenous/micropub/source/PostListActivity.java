@@ -6,6 +6,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -17,7 +20,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.model.PostListItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
@@ -39,6 +41,9 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
     SwipeRefreshLayout refreshLayout;
     ListView listView;
     User user;
+    Button loadMoreButton;
+    boolean loadMoreButtonAdded = false;
+    String[] olderItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,10 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
         listView = findViewById(R.id.source_post_list);
         refreshLayout = findViewById(R.id.refreshSourcePostList);
         refreshLayout.setOnRefreshListener(this);
+        loadMoreButton = new Button(this);
+        loadMoreButton.setText(R.string.load_more);
+        loadMoreButton.setTextColor(getResources().getColor(R.color.textColor));
+        loadMoreButton.setBackgroundColor(getResources().getColor(R.color.loadMoreButtonBackgroundColor));
         user = new Accounts(this).getCurrentUser();
         startPostList();
     }
@@ -119,13 +128,13 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
         PostListItems = new ArrayList<>();
         adapter = new PostListAdapter(this, PostListItems, user, deleteEnabled);
         listView.setAdapter(adapter);
-        getSourcePostListItems();
+        getSourcePostListItems("");
     }
 
     /**
      * Get items in channel.
      */
-    public void getSourcePostListItems() {
+    public void getSourcePostListItems(String pagerAfter) {
 
         String MicropubEndpoint = user.getMicropubEndpoint();
         // Some endpoints already contain GET params. Instead of overriding the getParams method, we
@@ -136,6 +145,11 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
         else {
             MicropubEndpoint += "?q=source";
         }
+
+        if (pagerAfter.length() > 0) {
+            MicropubEndpoint += "&after=" + pagerAfter;
+        }
+        olderItems = new String[1];
 
         // Filter on post type.
         String postType = Preferences.getPreference(getApplicationContext(), "source_post_list_filter_post_type", "all_source_post_types");
@@ -155,8 +169,18 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
 
                         try {
                             JSONObject object;
-                            JSONObject microsubResponse = new JSONObject(response);
-                            JSONArray itemList = microsubResponse.getJSONArray("items");
+                            JSONObject micropubResponse = new JSONObject(response);
+                            JSONArray itemList = micropubResponse.getJSONArray("items");
+
+                            // Paging. Can be empty.
+                            if (micropubResponse.has("paging")) {
+                                try {
+                                    if (micropubResponse.getJSONObject("paging").has("after")) {
+                                        olderItems[0] = micropubResponse.getJSONObject("paging").getString("after");
+                                    }
+                                }
+                                catch (JSONException ignored) {}
+                            }
 
                             for (int i = 0; i < itemList.length(); i++) {
                                 object = itemList.getJSONObject(i).getJSONObject("properties");
@@ -195,6 +219,23 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
                             }
 
                             adapter.notifyDataSetChanged();
+
+                            if (olderItems[0] != null && olderItems[0].length() > 0) {
+
+                                if (!loadMoreButtonAdded) {
+                                    loadMoreButtonAdded = true;
+                                    listView.addFooterView(loadMoreButton);
+                                }
+
+                                // TODO check this warning
+                                loadMoreButton.setOnTouchListener(loadMoreTouch);
+                            }
+                            else {
+                                if (loadMoreButtonAdded) {
+                                    listView.removeFooterView(loadMoreButton);
+                                }
+                            }
+
                         }
                         catch (JSONException e) {
                             Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -225,5 +266,30 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
         getRequest.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(getRequest);
     }
+
+    /**
+     * Load more touch button.
+     */
+    private View.OnTouchListener loadMoreTouch = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent motionEvent) {
+            switch(motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    int downColorTouch = getResources().getColor(R.color.loadMoreButtonBackgroundColorTouched);
+                    loadMoreButton.setBackgroundColor(downColorTouch);
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    loadMoreButton.setBackgroundColor(getResources().getColor(R.color.loadMoreButtonBackgroundColor));
+                    break;
+                case MotionEvent.ACTION_UP:
+                    int downColor = getResources().getColor(R.color.loadMoreButtonBackgroundColor);
+                    loadMoreButton.setBackgroundColor(downColor);
+                    getSourcePostListItems(olderItems[0]);
+                    break;
+
+            }
+            return true;
+        }
+    };
 
 }
