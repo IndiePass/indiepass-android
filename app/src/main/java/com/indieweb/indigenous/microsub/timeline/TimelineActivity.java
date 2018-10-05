@@ -229,10 +229,15 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                     continue;
                                 }
 
-                                item.setId(object.getString("_id"));
-                                if (i == 0) {
-                                    entryId = item.getId();
+                                // It's possible that _id is empty. Don't let readers choke on it.
+                                // If no value is found, the notify all call will also be ignored.
+                                try {
+                                    item.setId(object.getString("_id"));
+                                    if (i == 0) {
+                                        entryId = item.getId();
+                                    }
                                 }
+                                catch (Exception ignored) {}
 
                                 if (object.has("_is_read")) {
                                     isRead = object.getBoolean("_is_read");
@@ -374,7 +379,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
                             adapter.notifyDataSetChanged();
 
-                            if (unread > 0) {
+                            if (unread > 0 && entryId != null) {
                                 notifyAllRead();
                             }
 
