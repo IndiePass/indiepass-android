@@ -3,7 +3,6 @@ package com.indieweb.indigenous.microsub.timeline;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -214,7 +213,6 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 String name = "";
                                 String textContent = "";
                                 String htmlContent = "";
-                                String photo = "";
                                 String audio = "";
                                 String authorName = "";
                                 String authorPhoto = "";
@@ -337,7 +335,10 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                             Document doc = Jsoup.parse(htmlContent);
                                             Elements imgs = doc.select("img");
                                             for (Element img : imgs) {
-                                                photo = img.absUrl("src");
+                                                String photoUrl = img.absUrl("src");
+                                                if (!photoUrl.contains("spacer.gif") && !photoUrl.contains("spacer.png")) {
+                                                    item.addPhoto(photoUrl);
+                                                }
                                             }
                                             htmlContent = Jsoup.clean(htmlContent, Whitelist.basic());
                                         }
@@ -357,13 +358,15 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                     name = object.getString("summary").replace("\n", "").replace("\r", "");
                                 }
 
-                                // Photo.
+                                // Photos.
                                 if (object.has("photo")) {
-                                    photo = object.getJSONArray("photo").getString(0);
+                                    JSONArray photos = object.getJSONArray("photo");
+                                    for (int p = 0; p < photos.length(); p++) {
+                                        item.addPhoto(photos.getString(p));
+                                    }
                                 }
-                                item.setPhoto(photo);
 
-                                // audio.
+                                // Audio.
                                 if (object.has("audio")) {
                                     audio = object.getJSONArray("audio").getString(0);
                                 }

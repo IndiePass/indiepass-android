@@ -78,6 +78,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public Button expand;
         public ExpandableTextView content;
         public ImageView image;
+        public TextView imageCount;
         public CardView card;
         public LinearLayout row;
         public Button reply;
@@ -104,6 +105,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.content = convertView.findViewById(R.id.timeline_content);
             holder.expand = convertView.findViewById(R.id.timeline_content_more);
             holder.image = convertView.findViewById(R.id.timeline_image);
+            holder.imageCount = convertView.findViewById(R.id.timeline_image_count);
             holder.card = convertView.findViewById(R.id.timeline_card);
             holder.row = convertView.findViewById(R.id.timeline_item_row);
             holder.reply = convertView.findViewById(R.id.itemReply);
@@ -284,17 +286,26 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
 
             // Image.
-            if (item.getPhoto().length() > 0) {
+            if (item.getPhotos().size() > 0) {
                 Glide.with(context)
-                        .load(item.getPhoto())
+                        .load(item.getPhotos().get(0))
                         .into(holder.image);
                 holder.image.setVisibility(View.VISIBLE);
                 holder.card.setVisibility(View.VISIBLE);
                 holder.image.setOnClickListener(new OnImageClickListener(position));
+
+                if (item.getPhotos().size() > 1) {
+                    holder.imageCount.setVisibility(View.VISIBLE);
+                    holder.imageCount.setText(String.format("%d images", item.getPhotos().size()));
+                }
+                else {
+                    holder.imageCount.setVisibility(View.GONE);
+                }
             }
             else {
                 holder.image.setVisibility(View.GONE);
                 holder.card.setVisibility(View.GONE);
+                holder.imageCount.setVisibility(View.GONE);
             }
 
             // Audio.
@@ -456,7 +467,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public void onClick(View v) {
             Intent i = new Intent(context, TimelineImageActivity.class);
             TimelineItem item = items.get(this.position);
-            i.putExtra("imageUrl", item.getPhoto());
+            i.putStringArrayListExtra("photos", item.getPhotos());
             context.startActivity(i);
         }
     }

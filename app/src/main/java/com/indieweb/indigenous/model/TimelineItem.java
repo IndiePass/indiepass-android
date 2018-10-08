@@ -1,5 +1,6 @@
 package com.indieweb.indigenous.model;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -15,8 +16,7 @@ public class TimelineItem {
     private String url;
     private String authorName;
     private String authorPhoto = "";
-    // TODO allow multiple photos
-    private String photo;
+    private ArrayList<String> photos = new ArrayList<>();
     // TODO allow multiple audio
     private String audio;
     // TODO there can actually be multiple of say reply
@@ -110,12 +110,12 @@ public class TimelineItem {
         this.authorPhoto = authorPhoto;
     }
 
-    public String getPhoto() {
-        return photo;
+    public ArrayList<String> getPhotos() {
+        return photos;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void addPhoto(String photo) {
+        this.photos.add(photo);
     }
 
     public String getAudio() {
