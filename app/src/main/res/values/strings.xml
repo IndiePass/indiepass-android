@@ -80,6 +80,7 @@
     <string name="rsvp_select">Select RSVP</string>
     <string name="media">Media</string>
     <string name="media_description">Upload images to your media endpoint. On success, the file URL will be added to the clipboard automatically.</string>
+    <string name="one_image">1 image</string>
 
     <!-- Preferences: share -->
     <string name="pref_category_sharing_title">Share</string>
@@ -95,7 +96,9 @@
 
     <!-- Preferences: Media handling -->
     <string name="pref_category_media_title">Media</string>
-    <string name="pref_category_media_summary">Control image settings for uploading or viewing.</string>
+    <string name="pref_category_media_summary">Control image settings for uploading or in the reader.</string>
+    <string name="pref_key_image_preview_title">Image preview</string>
+    <string name="pref_key_image_preview_summary">Show the first image per post in the reader. If you choose to hide, you can still view the images attached to the post by clicking on the images information at the bottom of the post.</string>
     <string name="pref_key_image_quality_title">Image upload quality</string>
     <string name="pref_key_image_quality_summary">Define the quality for image manipulations. Ranges from 0 to 100. Higher values mean better image quality but bigger files.</string>
     <string name="pref_key_image_size_title">Image upload size</string>

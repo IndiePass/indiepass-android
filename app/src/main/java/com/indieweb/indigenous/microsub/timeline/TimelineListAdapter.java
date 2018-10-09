@@ -30,6 +30,7 @@ import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.model.TimelineItem;
+import com.indieweb.indigenous.util.Preferences;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,10 +47,12 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     private final Context context;
     private final List<TimelineItem> items;
     private LayoutInflater mInflater;
+    boolean imagePreview;
 
     TimelineListAdapter(Context context, List<TimelineItem> items) {
         this.context = context;
         this.items = items;
+        this.imagePreview = Preferences.getPreference(context, "pref_key_image_preview", true);
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -287,16 +290,30 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
             // Image.
             if (item.getPhotos().size() > 0) {
-                Glide.with(context)
-                        .load(item.getPhotos().get(0))
-                        .into(holder.image);
-                holder.image.setVisibility(View.VISIBLE);
-                holder.card.setVisibility(View.VISIBLE);
-                holder.image.setOnClickListener(new OnImageClickListener(position));
 
-                if (item.getPhotos().size() > 1) {
+                if (imagePreview) {
+                    Glide.with(context)
+                            .load(item.getPhotos().get(0))
+                            .into(holder.image);
+                    holder.image.setVisibility(View.VISIBLE);
+                    holder.card.setVisibility(View.VISIBLE);
+                    holder.image.setOnClickListener(new OnImageClickListener(position));
+                }
+                else {
+                    holder.image.setVisibility(View.GONE);
+                    holder.card.setVisibility(View.GONE);
+                    holder.imageCount.setTextSize(16);
+                    holder.imageCount.setOnClickListener(new OnImageClickListener(position));
+                }
+
+                if (item.getPhotos().size() > 1 || !imagePreview) {
                     holder.imageCount.setVisibility(View.VISIBLE);
-                    holder.imageCount.setText(String.format("%d images", item.getPhotos().size()));
+                    if (item.getPhotos().size() > 1) {
+                        holder.imageCount.setText(String.format("%d images", item.getPhotos().size()));
+                    }
+                    else {
+                        holder.imageCount.setText(R.string.one_image);
+                    }
                 }
                 else {
                     holder.imageCount.setVisibility(View.GONE);

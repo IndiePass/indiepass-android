@@ -33,6 +33,11 @@
         android:title="@string/pref_category_media_title"
         android:summary="@string/pref_category_media_summary"
         android:persistent="false">
+        <CheckBoxPreference
+            android:key="pref_key_image_preview"
+            android:title="@string/pref_key_image_preview_title"
+            android:summary="@string/pref_key_image_preview_summary"
+            android:defaultValue="true" />
         <EditTextPreference
             android:inputType="number"
             android:key="pref_key_image_quality"
