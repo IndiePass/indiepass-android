@@ -114,6 +114,7 @@
 
         <TextView
             android:id="@+id/timeline_image_count"
+            android:textColor="@color/textColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
