@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.indieweb.indigenous.AboutActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.SettingsActivity;
+import com.indieweb.indigenous.indieauth.Endpoints;
 import com.indieweb.indigenous.micropub.draft.DraftActivity;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
@@ -39,14 +40,15 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
 
     String incomingText = "";
     String incomingImage = "";
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_micropub);
 
-        User u = new Accounts(this).getCurrentUser();
-        this.setTitle(u.getMeWithoutProtocol());
+        user = new Accounts(this).getCurrentUser();
+        this.setTitle(user.getMeWithoutProtocol());
 
         // Listen to incoming data.
         Intent intent = getIntent();
@@ -88,7 +90,7 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
             }
         }
 
-        String microsubEndpoint = u.getMicrosubEndpoint();
+        String microsubEndpoint = user.getMicrosubEndpoint();
         if (microsubEndpoint != null && microsubEndpoint.length() > 0) {
             Button goToReader = findViewById(R.id.goToReader);
             goToReader.setVisibility(View.VISIBLE);
@@ -99,7 +101,7 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
         navigationView.setNavigationItemSelectedListener(this);
 
         // Hide Media if micropub media endpoint is empty.
-        String micropubMediaEndpoint = u.getMicropubMediaEndpoint();
+        String micropubMediaEndpoint = user.getMicropubMediaEndpoint();
         if (micropubMediaEndpoint == null || micropubMediaEndpoint.length() == 0) {
             Menu menu = navigationView.getMenu();
             MenuItem item = menu.getItem(9);
@@ -252,6 +254,7 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
 
             case R.id.refreshConfiguration:
                 new MicropubConfig(getApplicationContext(), new Accounts(this).getCurrentUser()).refresh();
+                new Endpoints(getApplicationContext(), user).refresh();
                 return true;
 
             case R.id.settings:

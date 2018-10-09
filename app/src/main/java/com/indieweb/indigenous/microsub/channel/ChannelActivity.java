@@ -22,6 +22,7 @@ import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.AboutActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.SettingsActivity;
+import com.indieweb.indigenous.indieauth.Endpoints;
 import com.indieweb.indigenous.micropub.draft.DraftActivity;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
@@ -225,6 +226,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
 
             case R.id.refreshConfiguration:
                 new MicropubConfig(getApplicationContext(), user).refresh();
+                new Endpoints(getApplicationContext(), user).refresh();
                 return true;
 
             case R.id.channel_list_refresh:
