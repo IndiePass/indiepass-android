@@ -180,6 +180,19 @@
                 android:layout_width="@dimen/timeline_list_item_icon_size"
                 android:layout_height="@dimen/timeline_list_item_icon_size" />
 
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:layout_marginLeft="@dimen/timeline_list_item_icon_margin_left"
+                android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
+                android:background="@drawable/button_delete"
+                android:id="@+id/itemDelete"
+                android:layout_width="@dimen/timeline_list_item_icon_size"
+                android:layout_height="@dimen/timeline_list_item_icon_size" />
+
         </LinearLayout>
 
     </LinearLayout>

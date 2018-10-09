@@ -6,6 +6,8 @@ Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a
 <h2>Changelog</h2>
 <h4>??/??/???? - 0.20</h4>
 <ul>
+    <li>Allow deleting an entry from the reader</li>
+    <li>Optimize name/content/summary handling</li>
     <li>Allow hiding preview image in reader</li>
     <li>Allow viewing multiple images</li>
     <li>Add paging on posts screen</li>

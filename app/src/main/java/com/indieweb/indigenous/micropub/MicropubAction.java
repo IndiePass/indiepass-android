@@ -17,21 +17,20 @@ import com.indieweb.indigenous.util.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MicropubActionDelete {
+public class MicropubAction {
 
     private final Context context;
     private final User user;
     private final String url;
-    private Map<String, String> bodyParams = new HashMap<>();
 
-    public MicropubActionDelete(Context context, User user, String url) {
+    public MicropubAction(Context context, User user, String url) {
         this.context = context;
         this.user = user;
         this.url = url;
     }
 
     /**
-     * Do delete.
+     * Delete a post.
      */
     public void deletePost() {
 
@@ -41,7 +40,6 @@ public class MicropubActionDelete {
         }
 
         Toast.makeText(context, "Sending, please wait", Toast.LENGTH_SHORT).show();
-
         String MicropubEndpoint = user.getMicropubEndpoint();
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicropubEndpoint,
                 new Response.Listener<String>() {
@@ -73,15 +71,16 @@ public class MicropubActionDelete {
         {
             @Override
             protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
 
                 // Send along access token too, Wordpress scans for the token in the body.
-                bodyParams.put("access_token", user.getAccessToken());
+                params.put("access_token", user.getAccessToken());
 
                 // Put url and action.
-                bodyParams.put("url", url);
-                bodyParams.put("action", "delete");
+                params.put("url", url);
+                params.put("action", "delete");
 
-                return bodyParams;
+                return params;
             }
 
             @Override

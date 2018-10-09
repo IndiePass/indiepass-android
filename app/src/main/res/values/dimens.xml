@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <dimen tools:override="true" name="design_navigation_icon_padding">14dp</dimen>
-    <dimen name="channel_list_item_padding">17sp</dimen>
+    <dimen name="channel_list_item_padding">15sp</dimen>
     <dimen name="channel_list_item_text_size">16sp</dimen>
     <dimen name="channel_list_divider_height">2px</dimen>
-    <dimen name="timeline_list_item_padding">15dp</dimen>
+    <dimen name="timeline_list_item_padding">10dp</dimen>
     <dimen name="timeline_list_item_text_margin_left">15dp</dimen>
     <dimen name="timeline_list_item_text_size">15sp</dimen>
     <dimen name="timeline_list_item_author_size">16sp</dimen>
     <dimen name="timeline_list_item_global">14sp</dimen>
     <dimen name="timeline_list_divider_height">2px</dimen>
     <dimen name="timeline_list_item_icon_size">25dp</dimen>
-    <dimen name="timeline_list_item_icon_margin_left">20dp</dimen>
-    <dimen name="source_post_list_item_padding">15dp</dimen>
+    <dimen name="timeline_list_item_icon_margin_left">10dp</dimen>
+    <dimen name="source_post_list_item_padding">10dp</dimen>
     <dimen name="source_post_list_item_icon_size">25dp</dimen>
     <dimen name="source_post_list_divider_height">2px</dimen>
     <dimen name="source_post_list_item_global">14sp</dimen>
-    <dimen name="source_post_list_item_icon_margin_left">20dp</dimen>
+    <dimen name="source_post_list_item_icon_margin_left">10dp</dimen>
     <dimen name="draft_list_divider_height">2px</dimen>
 </resources>

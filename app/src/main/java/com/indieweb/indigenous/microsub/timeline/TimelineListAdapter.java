@@ -1,10 +1,12 @@
 package com.indieweb.indigenous.microsub.timeline;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
@@ -29,7 +31,9 @@ import com.indieweb.indigenous.micropub.post.LikeActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
+import com.indieweb.indigenous.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.TimelineItem;
+import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Preferences;
 
 import java.text.ParseException;
@@ -47,11 +51,15 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     private final Context context;
     private final List<TimelineItem> items;
     private LayoutInflater mInflater;
-    boolean imagePreview;
+    private boolean imagePreview;
+    private final User user;
+    private final String channelId;
 
-    TimelineListAdapter(Context context, List<TimelineItem> items) {
+    TimelineListAdapter(Context context, List<TimelineItem> items, User user, String channelId) {
         this.context = context;
         this.items = items;
+        this.user = user;
+        this.channelId = channelId;
         this.imagePreview = Preferences.getPreference(context, "pref_key_image_preview", true);
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -91,6 +99,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public Button audio;
         public Button external;
         public Button rsvp;
+        public Button delete;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -118,6 +127,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.audio = convertView.findViewById(R.id.itemAudio);
             holder.external = convertView.findViewById(R.id.itemExternal);
             holder.rsvp = convertView.findViewById(R.id.itemRSVP);
+            holder.delete = convertView.findViewById(R.id.itemDelete);
             convertView.setTag(holder);
         }
         else {
@@ -364,6 +374,9 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.external.setVisibility(View.GONE);
                 holder.rsvp.setVisibility(View.GONE);
             }
+
+            holder.delete.setOnClickListener(new OnDeleteClickListener(position));
+
         }
 
         return convertView;
@@ -552,6 +565,38 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             i.putExtra("authorPhoto", item.getAuthorPhoto());
             i.putExtra("authorName", item.getAuthorName());
             context.startActivity(i);
+        }
+    }
+
+    // Delete listener.
+    class OnDeleteClickListener implements OnClickListener {
+
+        int position;
+
+        OnDeleteClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            final TimelineItem item = items.get(this.position);
+
+            final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Are you sure you want to delete this post ?");
+            builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog,int id) {
+                    new MicrosubAction(context, user).deletePost(channelId, item.getId());
+                    items.remove(position);
+                    notifyDataSetChanged();
+                }
+            });
+            builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.show();
         }
     }
 

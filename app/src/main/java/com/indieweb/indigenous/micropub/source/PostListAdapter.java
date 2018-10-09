@@ -1,6 +1,5 @@
 package com.indieweb.indigenous.micropub.source;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,11 +18,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.micropub.MicropubActionDelete;
+import com.indieweb.indigenous.micropub.MicropubAction;
 import com.indieweb.indigenous.micropub.post.UpdateActivity;
-import com.indieweb.indigenous.microsub.timeline.TimelineListAdapter;
 import com.indieweb.indigenous.model.PostListItem;
-import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
 
 import java.text.ParseException;
@@ -252,7 +249,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             builder.setTitle("Are you sure you want to delete this post ?");
             builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,int id) {
-                    new MicropubActionDelete(context, user, item.getUrl()).deletePost();
+                    new MicropubAction(context, user, item.getUrl()).deletePost();
                     items.remove(position);
                     // TODO what happens if this is on page 2 for instance
                     notifyDataSetChanged();

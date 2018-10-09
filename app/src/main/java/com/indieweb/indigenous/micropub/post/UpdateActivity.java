@@ -21,7 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.micropub.MicropubActionDelete;
+import com.indieweb.indigenous.micropub.MicropubAction;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Connection;
@@ -96,7 +96,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
                     builder.setPositiveButton(getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog,int id) {
                             // TODO see if we can use an activity for result here
-                            new MicropubActionDelete(UpdateActivity.this, user, url.getText().toString()).deletePost();
+                            new MicropubAction(UpdateActivity.this, user, url.getText().toString()).deletePost();
                             finish();
                         }
                     });

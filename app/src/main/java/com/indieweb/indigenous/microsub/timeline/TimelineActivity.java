@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
@@ -120,52 +121,9 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
      */
     public void startTimeline() {
         TimelineItems = new ArrayList<>();
-        adapter = new TimelineListAdapter(this, TimelineItems);
+        adapter = new TimelineListAdapter(this, TimelineItems, user, channelId);
         listView.setAdapter(adapter);
         getTimeLineItems("");
-    }
-
-    /**
-     * Notify the server that all is read.
-     */
-    public void notifyAllRead() {
-        String MicrosubEndpoint = user.getMicrosubEndpoint();
-
-        StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {}
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {}
-                }
-        )
-        {
-
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-
-                params.put("action", "timeline");
-                params.put("method", "mark_read");
-                params.put("channel", channelId);
-                params.put("last_read_entry", entryId);
-
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Accept", "application/json");
-                headers.put("Authorization", "Bearer " + user.getAccessToken());
-                return headers;
-            }
-        };
-
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        queue.add(getRequest);
     }
 
     /**
@@ -387,8 +345,9 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
                             adapter.notifyDataSetChanged();
 
+                            // Notify
                             if (unread > 0 && entryId != null) {
-                                notifyAllRead();
+                                new MicrosubAction(TimelineActivity.this, user).notifyAllRead(channelId, entryId);
                             }
 
                             if (olderItems[0] != null && olderItems[0].length() > 0) {
