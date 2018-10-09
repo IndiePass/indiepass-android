@@ -8,12 +8,14 @@ import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.PopupMenu;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -22,9 +24,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
@@ -99,7 +103,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public Button audio;
         public Button external;
         public Button rsvp;
-        public Button delete;
+        public Button menu;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -127,7 +131,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.audio = convertView.findViewById(R.id.itemAudio);
             holder.external = convertView.findViewById(R.id.itemExternal);
             holder.rsvp = convertView.findViewById(R.id.itemRSVP);
-            holder.delete = convertView.findViewById(R.id.itemDelete);
+            holder.menu = convertView.findViewById(R.id.itemMenu);
             convertView.setTag(holder);
         }
         else {
@@ -375,7 +379,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.rsvp.setVisibility(View.GONE);
             }
 
-            holder.delete.setOnClickListener(new OnDeleteClickListener(position));
+            holder.menu.setOnClickListener(new OnMenuClickListener(position));
 
         }
 
@@ -568,35 +572,46 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         }
     }
 
-    // Delete listener.
-    class OnDeleteClickListener implements OnClickListener {
+    // Menu listener.
+    class OnMenuClickListener implements OnClickListener {
 
         int position;
 
-        OnDeleteClickListener(int position) {
+        OnMenuClickListener(int position) {
             this.position = position;
         }
 
         @Override
         public void onClick(View v) {
-            final TimelineItem item = items.get(this.position);
 
-            final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Are you sure you want to delete this post ?");
-            builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog,int id) {
-                    new MicrosubAction(context, user).deletePost(channelId, item.getId());
-                    items.remove(position);
-                    notifyDataSetChanged();
+            PopupMenu popup = new PopupMenu(context, v);
+            popup.getMenuInflater().inflate(R.menu.timeline_list_item_menu, popup.getMenu());
+            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(final MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.timeline_entry_delete:
+                            final TimelineItem entry = items.get(position);
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setTitle("Are you sure you want to delete this post ?");
+                            builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    new MicrosubAction(context, user).deletePost(channelId, entry.getId());
+                                    items.remove(position);
+                                    notifyDataSetChanged();
+                                }
+                            });
+                            builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            builder.show();
+                    }
+                    return true;
                 }
             });
-            builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            builder.show();
+            popup.show();
         }
     }
 
