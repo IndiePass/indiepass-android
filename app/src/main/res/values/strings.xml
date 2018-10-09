@@ -95,10 +95,10 @@
 
     <!-- Preferences: Media handling -->
     <string name="pref_category_media_title">Media</string>
-    <string name="pref_category_media_summary">Control image settings.</string>
-    <string name="pref_key_image_quality_title">Image quality</string>
+    <string name="pref_category_media_summary">Control image settings for uploading or viewing.</string>
+    <string name="pref_key_image_quality_title">Image upload quality</string>
     <string name="pref_key_image_quality_summary">Define the quality for image manipulations. Ranges from 0 to 100. Higher values mean better image quality but bigger files.</string>
-    <string name="pref_key_image_size_title">Image size</string>
+    <string name="pref_key_image_size_title">Image upload size</string>
     <string name="pref_key_image_size_summary">Maximum image size in width</string>
 
     <!-- Preferences: experimental -->

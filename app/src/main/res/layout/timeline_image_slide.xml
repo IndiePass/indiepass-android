@@ -4,6 +4,7 @@
     android:layout_height="fill_parent">
 
     <ImageView
+        android:id="@+id/loading"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:src="@drawable/progress_loading"
