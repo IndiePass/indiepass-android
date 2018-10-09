@@ -207,6 +207,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 object = itemList.getJSONObject(i);
                                 TimelineItem item = new TimelineItem();
 
+                                Boolean addContent = true;
                                 Boolean isRead = false;
                                 String type = "entry";
                                 String url = "";
@@ -257,12 +258,14 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 // Like.
                                 if (object.has("like-of")) {
                                     type = "like-of";
+                                    addContent = false;
                                     item.addToSubType(type, object.getJSONArray("like-of").get(0).toString());
                                 }
 
                                 // Bookmark.
                                 if (object.has("bookmark-of")) {
                                     type = "bookmark-of";
+                                    addContent = false;
                                     item.addToSubType(type, object.getJSONArray("bookmark-of").get(0).toString());
                                 }
 
@@ -319,18 +322,19 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 item.setAuthorName(authorName);
 
                                 // Content.
-                                if (object.has("content")) {
+                                if (object.has("content") && addContent) {
                                     JSONObject content = object.getJSONObject("content");
 
                                     if (content.has("text")) {
+                                        addContent = false;
                                         textContent = content.getString("text");
                                     }
 
                                     if (content.has("html")) {
+                                        addContent = false;
                                         htmlContent = content.getString("html");
 
                                         // Clean html, remove images and put them in photo.
-                                        // No fully ideal, but it's a good start.
                                         try {
                                             Document doc = Jsoup.parse(htmlContent);
                                             Elements imgs = doc.select("img");
@@ -346,7 +350,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                     }
 
                                 }
-                                else if(object.has("summary")) {
+                                else if(object.has("summary") && addContent) {
+                                    addContent = false;
                                     textContent = object.getString("summary");
                                 }
 
@@ -354,7 +359,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 if (object.has("name")) {
                                     name = object.getString("name").replace("\n", "").replace("\r", "");
                                 }
-                                else if (object.has("summary")) {
+                                else if (object.has("summary") && addContent) {
                                     name = object.getString("summary").replace("\n", "").replace("\r", "");
                                 }
 
