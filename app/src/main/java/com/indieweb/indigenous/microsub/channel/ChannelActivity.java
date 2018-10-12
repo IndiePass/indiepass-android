@@ -121,7 +121,14 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                                 Channel channel = new Channel();
                                 channel.setUid(object.getString("uid"));
                                 channel.setName(object.getString("name"));
-                                channel.setUnread(object.getInt("unread"));
+                                Integer unread = 0;
+                                if (object.has("unread")) {
+                                    Object unreadCheck = object.get("unread");
+                                    if (unreadCheck instanceof Integer) {
+                                        unread = (Integer) unreadCheck;
+                                    }
+                                }
+                                channel.setUnread(unread);
                                 Channels.add(channel);
                             }
 
