@@ -6,7 +6,7 @@ about: Use this if you want to see a new post type
 
 Hi, I'd like to see following post type:
 
-I found a a good icon on https://material.io/tools/icons/?style=outline :
+I found a good icon on https://material.io/tools/icons/?style=outline :
 
 The properties for the post type are:
 - property one
