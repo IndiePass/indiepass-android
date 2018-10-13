@@ -1,6 +1,6 @@
 ---
 name: New post type
-about: Use this if you want to see a new post type
+about: Use this if you want to see a new post type in the app
 
 ---
 
