@@ -210,6 +210,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 // Repost.
                                 if (object.has("repost-of")) {
                                     type = "repost-of";
+                                    addContent = false;
                                     item.addToSubType(type, object.getJSONArray("repost-of").get(0).toString());
                                 }
 
