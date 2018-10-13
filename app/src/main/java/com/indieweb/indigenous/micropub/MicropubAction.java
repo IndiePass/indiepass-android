@@ -1,6 +1,9 @@
 package com.indieweb.indigenous.micropub;
 
+import android.accounts.AccountManager;
 import android.content.Context;
+import android.widget.ArrayAdapter;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -11,9 +14,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.micropub.post.BaseCreateActivity;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Connection;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,18 +29,19 @@ public class MicropubAction {
 
     private final Context context;
     private final User user;
-    private final String url;
 
-    public MicropubAction(Context context, User user, String url) {
+    public MicropubAction(Context context, User user) {
         this.context = context;
         this.user = user;
-        this.url = url;
     }
 
     /**
      * Delete a post.
+     *
+     * @param url
+     *   The url to delete.
      */
-    public void deletePost() {
+    public void deletePost(final String url) {
 
         if (!new Connection(context).hasConnection()) {
             Toast.makeText(context, context.getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
@@ -96,4 +105,92 @@ public class MicropubAction {
         queue.add(getRequest);
 
     }
+
+    /**
+     * Get tags list.
+     *
+     * @param tags
+     *   The tags widget.
+     */
+    public void getTagsList(final MultiAutoCompleteTextView tags) {
+        final ArrayList<String> items = new ArrayList<>();
+
+        // If there's no connection, get it from local.
+        if (!new Connection(context).hasConnection()) {
+            AccountManager am = AccountManager.get(context);
+            String response = am.getUserData(user.getAccount(), "tags_list");
+            try {
+                JSONArray tagsList = new JSONArray(response);
+                if (tagsList.length() > 0) {
+                    for (int i = 0; i < tagsList.length(); i++) {
+                        items.add(tagsList.getString(i));
+                    }
+                }
+            }
+            catch (JSONException ignored) {}
+
+            if (items.size() > 0) {
+                setTagsList(tags, items);
+            }
+            return;
+        }
+
+        // Get tags from the endpoint.
+        String MicropubEndpoint = user.getMicropubEndpoint();
+        if (MicropubEndpoint.contains("?")) {
+            MicropubEndpoint += "&q=category";
+        }
+        else {
+            MicropubEndpoint += "?q=category";
+        }
+
+        StringRequest getRequest = new StringRequest(Request.Method.GET, MicropubEndpoint,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray tagsList = new JSONArray(response);
+                            if (tagsList.length() > 0) {
+                                for (int i = 0; i < tagsList.length(); i++) {
+                                    items.add(tagsList.getString(i));
+                                }
+                            }
+                        }
+                        catch (JSONException ignored) {}
+
+                        if (items.size() > 0) {
+                            setTagsList(tags, items);
+                            AccountManager am = AccountManager.get(context);
+                            am.setUserData(user.getAccount(), "tags_list", response);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {}
+                }
+        )
+        {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json");
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
+                return headers;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(getRequest);
+    }
+
+    /**
+     * Sets tags list.
+     */
+    private void setTagsList(MultiAutoCompleteTextView tags, ArrayList<String> items) {
+        tags.setThreshold(1);
+        tags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+        tags.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, items));
+    }
+
 }

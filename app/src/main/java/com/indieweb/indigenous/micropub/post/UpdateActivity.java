@@ -96,7 +96,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
                     builder.setPositiveButton(getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog,int id) {
                             // TODO see if we can use an activity for result here
-                            new MicropubAction(UpdateActivity.this, user, url.getText().toString()).deletePost();
+                            new MicropubAction(UpdateActivity.this, user).deletePost(url.getText().toString());
                             finish();
                         }
                     });

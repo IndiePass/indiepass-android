@@ -249,7 +249,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             builder.setTitle("Are you sure you want to delete this post ?");
             builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,int id) {
-                    new MicropubAction(context, user, item.getUrl()).deletePost();
+                    new MicropubAction(context, user).deletePost(item.getUrl());
                     items.remove(position);
                     // TODO what happens if this is on page 2 for instance
                     notifyDataSetChanged();

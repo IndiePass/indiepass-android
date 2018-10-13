@@ -1,7 +1,6 @@
 package com.indieweb.indigenous.micropub.post;
 
 import android.Manifest;
-import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -23,7 +22,6 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,7 +37,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -60,6 +57,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.indieweb.indigenous.BuildConfig;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
+import com.indieweb.indigenous.micropub.MicropubAction;
 import com.indieweb.indigenous.model.Draft;
 import com.indieweb.indigenous.model.Syndication;
 import com.indieweb.indigenous.model.User;
@@ -187,7 +185,8 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
         // Autocomplete of tags.
         if (tags != null && Preferences.getPreference(this, "pref_key_tags_list", false)) {
-            getTagsList();
+            tags.addTextChangedListener(BaseCreateActivity.this);
+            new MicropubAction(getApplicationContext(), user).getTagsList(tags);
         }
 
         if (isMediaRequest) {
@@ -807,89 +806,4 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
     @Override
     public void afterTextChanged(Editable s) { }
-
-    /**
-     * Get tags list.
-     */
-    public void getTagsList() {
-        final ArrayList<String> items = new ArrayList<>();
-
-        // If there's no connection, get it from local.
-        if (!new Connection(this).hasConnection()) {
-            AccountManager am = AccountManager.get(getApplicationContext());
-            String response = am.getUserData(user.getAccount(), "tags_list");
-            try {
-                JSONArray tagsList = new JSONArray(response);
-                if (tagsList.length() > 0) {
-                    for (int i = 0; i < tagsList.length(); i++) {
-                        items.add(tagsList.getString(i));
-                    }
-                }
-            }
-            catch (JSONException ignored) {}
-
-            if (items.size() > 0) {
-                setTagsList(items);
-            }
-            return;
-        }
-
-        // Get tags from the endpoint.
-        String MicropubEndpoint = user.getMicropubEndpoint();
-        if (MicropubEndpoint.contains("?")) {
-            MicropubEndpoint += "&q=category";
-        }
-        else {
-            MicropubEndpoint += "?q=category";
-        }
-
-        StringRequest getRequest = new StringRequest(Request.Method.GET, MicropubEndpoint,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray tagsList = new JSONArray(response);
-                            if (tagsList.length() > 0) {
-                                for (int i = 0; i < tagsList.length(); i++) {
-                                    items.add(tagsList.getString(i));
-                                }
-                            }
-                        }
-                        catch (JSONException ignored) {}
-
-                        if (items.size() > 0) {
-                            setTagsList(items);
-                            AccountManager am = AccountManager.get(getApplicationContext());
-                            am.setUserData(user.getAccount(), "tags_list", response);
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {}
-                }
-        )
-        {
-            @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Accept", "application/json");
-                headers.put("Authorization", "Bearer " + user.getAccessToken());
-                return headers;
-            }
-        };
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(getRequest);
-    }
-
-    /**
-     * Sets tags list.
-     */
-    public void setTagsList(ArrayList<String> items) {
-        tags.addTextChangedListener(BaseCreateActivity.this);
-        tags.setThreshold(1);
-        tags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-        tags.setAdapter(new ArrayAdapter<>(BaseCreateActivity.this, android.R.layout.simple_dropdown_item_1line, items));
-    }
 }
