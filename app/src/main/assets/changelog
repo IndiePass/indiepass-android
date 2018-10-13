@@ -6,6 +6,7 @@ Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a
 <h2>Changelog</h2>
 <h4>??/??/???? - 0.22</h4>
 <ul>
+    <li>Allow autocomplete of tags</li>
     <li>Support location visibility</li>
 </ul>
 <h4>12/10/2018 - 0.21</h4>

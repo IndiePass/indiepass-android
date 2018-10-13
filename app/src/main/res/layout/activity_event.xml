@@ -65,14 +65,12 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <EditText
+        <MultiAutoCompleteTextView
             android:id="@+id/tags"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:ems="10"
             android:hint="@string/tags"
-            android:inputType="text" />
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <CheckBox
             android:id="@+id/postStatus"

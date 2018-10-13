@@ -37,8 +37,7 @@ public class MicropubConfig {
 
         String MicropubEndpoint = user.getMicropubEndpoint();
 
-        // Some endpoints already contain GET params. Instead of overriding the getParams method, we
-        // just check it here.
+        // Some endpoints already contain GET params.
         if (MicropubEndpoint.contains("?")) {
             MicropubEndpoint += "&q=config";
         }

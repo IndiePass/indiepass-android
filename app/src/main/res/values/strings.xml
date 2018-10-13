@@ -99,6 +99,8 @@
     <string name="pref_category_posts_summary">Configure posts settings</string>
     <string name="pref_key_location_visibility_title">Location visibility</string>
     <string name="pref_key_location_visibility_summary">When location is found, show a select widget that allows you to send the location visibility. Only supported right now by the Wordpress endpoint.</string>
+    <string name="pref_key_tags_list_title">Category list</string>
+    <string name="pref_key_tags_list_summary">Get a list of categories from your endpoint for autocompletion. They will be saved so they can be used offline as well. Leave disabled if your endpoint does not support the ?q=category query.</string>
 
     <!-- Preferences: Media handling -->
     <string name="pref_category_media_title">Media</string>

@@ -1,6 +1,7 @@
 package com.indieweb.indigenous.micropub.post;
 
 import android.Manifest;
+import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -16,14 +17,18 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +39,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -81,7 +87,7 @@ import java.util.Map;
 import static java.lang.Integer.parseInt;
 
 @SuppressLint("Registered")
-abstract public class BaseCreateActivity extends AppCompatActivity implements SendPostInterface {
+abstract public class BaseCreateActivity extends AppCompatActivity implements SendPostInterface, TextWatcher {
 
     EditText body;
     EditText title;
@@ -90,7 +96,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     DatabaseHelper db;
     User user;
     Uri imageUri;
-    EditText tags;
+    MultiAutoCompleteTextView tags;
     private List<Syndication> syndicationTargets = new ArrayList<>();
     private MenuItem sendItem;
     private CardView imageCard;
@@ -178,6 +184,11 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         tags = findViewById(R.id.tags);
         saveAsDraft = findViewById(R.id.saveAsDraft);
         locationVisibility = findViewById(R.id.locationVisibility);
+
+        // Autocomplete of tags.
+        if (tags != null && Preferences.getPreference(this, "pref_key_tags_list", false)) {
+            getTagsList();
+        }
 
         if (isMediaRequest) {
             mediaUrl = findViewById(R.id.mediaUrl);
@@ -786,5 +797,99 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         intent.setData(uri);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+    @Override
+    public void afterTextChanged(Editable s) { }
+
+    /**
+     * Get tags list.
+     */
+    public void getTagsList() {
+        final ArrayList<String> items = new ArrayList<>();
+
+        // If there's no connection, get it from local.
+        if (!new Connection(this).hasConnection()) {
+            AccountManager am = AccountManager.get(getApplicationContext());
+            String response = am.getUserData(user.getAccount(), "tags_list");
+            try {
+                JSONArray tagsList = new JSONArray(response);
+                if (tagsList.length() > 0) {
+                    for (int i = 0; i < tagsList.length(); i++) {
+                        items.add(tagsList.getString(i));
+                    }
+                }
+            }
+            catch (JSONException ignored) {}
+
+            if (items.size() > 0) {
+                setTagsList(items);
+            }
+            return;
+        }
+
+        // Get tags from the endpoint.
+        String MicropubEndpoint = user.getMicropubEndpoint();
+        if (MicropubEndpoint.contains("?")) {
+            MicropubEndpoint += "&q=category";
+        }
+        else {
+            MicropubEndpoint += "?q=category";
+        }
+
+        StringRequest getRequest = new StringRequest(Request.Method.GET, MicropubEndpoint,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray tagsList = new JSONArray(response);
+                            if (tagsList.length() > 0) {
+                                for (int i = 0; i < tagsList.length(); i++) {
+                                    items.add(tagsList.getString(i));
+                                }
+                            }
+                        }
+                        catch (JSONException ignored) {}
+
+                        if (items.size() > 0) {
+                            setTagsList(items);
+                            AccountManager am = AccountManager.get(getApplicationContext());
+                            am.setUserData(user.getAccount(), "tags_list", response);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {}
+                }
+        )
+        {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json");
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
+                return headers;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(getRequest);
+    }
+
+    /**
+     * Sets tags list.
+     */
+    public void setTagsList(ArrayList<String> items) {
+        tags.addTextChangedListener(BaseCreateActivity.this);
+        tags.setThreshold(1);
+        tags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+        tags.setAdapter(new ArrayAdapter<>(BaseCreateActivity.this, android.R.layout.simple_dropdown_item_1line, items));
     }
 }
