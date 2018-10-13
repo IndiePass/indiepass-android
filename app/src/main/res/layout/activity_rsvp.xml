@@ -14,7 +14,7 @@
             android:id="@+id/rsvp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/rsvp_arrays"
+            android:entries="@array/rsvp_array"
             android:prompt="@string/rsvp_select"
             android:layout_margin="5dp" />
 

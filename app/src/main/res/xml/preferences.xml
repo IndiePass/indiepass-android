@@ -30,6 +30,17 @@
     </PreferenceScreen>
 
     <PreferenceScreen
+        android:title="@string/pref_category_posts_title"
+        android:summary="@string/pref_category_posts_summary"
+        android:persistent="false">
+        <CheckBoxPreference
+            android:key="pref_key_location_visibility"
+            android:title="@string/pref_key_location_visibility_title"
+            android:summary="@string/pref_key_location_visibility_summary"
+            android:defaultValue="false" />
+    </PreferenceScreen>
+
+    <PreferenceScreen
         android:title="@string/pref_category_media_title"
         android:summary="@string/pref_category_media_summary"
         android:persistent="false">

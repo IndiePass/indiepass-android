@@ -94,6 +94,12 @@
     <string name="pref_summary_expose_reply">Expose reply in share intents. This will not immediately post to your micropub endpoint as you still need to add a message.</string>
     <string name="pref_share_reply_enabled">Enable reply sharing</string>
 
+    <!-- Preferences: posts -->
+    <string name="pref_category_posts_title">Posts</string>
+    <string name="pref_category_posts_summary">Configure posts settings</string>
+    <string name="pref_key_location_visibility_title">Location visibility</string>
+    <string name="pref_key_location_visibility_summary">When location is found, show a select widget that allows you to send the location visibility. Only supported right now by the Wordpress endpoint.</string>
+
     <!-- Preferences: Media handling -->
     <string name="pref_category_media_title">Media</string>
     <string name="pref_category_media_summary">Control image settings for uploading or in the reader.</string>
@@ -119,13 +125,20 @@
     <string name="start_date">Start date</string>
     <string name="add_location">Add location</string>
     <string name="getting_location">Getting location</string>
+    <string name="location_visibility_select">Location visibility</string>
     <string name="apply_filter">Apply</string>
 
-    <string-array name="rsvp_arrays">
+    <string-array name="rsvp_array">
         <item>yes</item>
         <item>no</item>
         <item>maybe</item>
         <item>interested</item>
+    </string-array>
+
+    <string-array name="location_visibility_array">
+        <item>public</item>
+        <item>private</item>
+        <item>protected</item>
     </string-array>
 
     <string-array name="filter_post_limit">

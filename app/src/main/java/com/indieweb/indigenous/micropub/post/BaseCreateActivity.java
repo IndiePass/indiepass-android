@@ -24,6 +24,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -114,6 +115,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     TextView mediaUrl;
     boolean isMediaRequest = false;
 
+    Spinner locationVisibility;
     private FusedLocationProviderClient mFusedLocationClient;
     private Boolean mRequestingLocationUpdates = false;
     private SettingsClient mSettingsClient;
@@ -175,6 +177,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         url = findViewById(R.id.url);
         tags = findViewById(R.id.tags);
         saveAsDraft = findViewById(R.id.saveAsDraft);
+        locationVisibility = findViewById(R.id.locationVisibility);
 
         if (isMediaRequest) {
             mediaUrl = findViewById(R.id.mediaUrl);
@@ -573,6 +576,9 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 // Location.
                 if (canAddLocation && mCurrentLocation != null) {
                     bodyParams.put("location[0]", "geo:" + mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude());
+                    if (locationVisibility != null && locationVisibility.getVisibility() == View.VISIBLE) {
+                        bodyParams.put("location-visibility[0]", locationVisibility.getSelectedItem().toString());
+                    }
                 }
 
                 return bodyParams;
@@ -722,11 +728,14 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     }
 
     /**
-     * Update the UI displaying the location data
+     * Update the UI displaying the location data.
      */
     private void updateLocationUI() {
         if (mCurrentLocation != null) {
             Toast.makeText(getApplicationContext(), "Location found: latitude: " + mCurrentLocation.getLatitude() + " - longitude: " + mCurrentLocation.getLongitude(), Toast.LENGTH_LONG).show();
+            if (Preferences.getPreference(getApplicationContext(), "pref_key_location_visibility", false)) {
+                locationVisibility.setVisibility(View.VISIBLE);
+            }
             stopLocationUpdates();
         }
     }

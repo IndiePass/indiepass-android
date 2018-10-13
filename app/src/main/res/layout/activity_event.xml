@@ -11,6 +11,15 @@
         android:orientation="vertical"
         android:padding="10dp">
 
+        <Spinner
+            android:visibility="gone"
+            android:id="@+id/locationVisibility"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/location_visibility_array"
+            android:prompt="@string/location_visibility_select"
+            android:layout_marginBottom="10dp" />
+
         <EditText
             android:id="@+id/title"
             android:layout_width="match_parent"
