@@ -347,7 +347,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                             adapter.notifyDataSetChanged();
 
                             // Notify
-                            if (unread > 0 && entryId != null) {
+                            if ((unread > 0 || unread == -1) && entryId != null) {
                                 new MicrosubAction(TimelineActivity.this, user).notifyAllRead(channelId, entryId);
                             }
 

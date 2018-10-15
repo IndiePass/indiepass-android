@@ -127,6 +127,11 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                                     if (unreadCheck instanceof Integer) {
                                         unread = (Integer) unreadCheck;
                                     }
+                                    if (unreadCheck instanceof Boolean) {
+                                        if ((Boolean) unreadCheck) {
+                                            unread = -1;
+                                        }
+                                    }
                                 }
                                 channel.setUnread(unread);
                                 Channels.add(channel);
