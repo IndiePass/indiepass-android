@@ -6,7 +6,21 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/source_post_list_url"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/source_post_list_item_global"
+        android:textColor="@color/textColor"
+        android:layout_width="fill_parent" />
+
+    <TextView
         android:id="@+id/source_post_list_published"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/source_post_list_item_global"
+        android:textColor="@color/textColor"
+        android:layout_width="fill_parent" />
+
+    <TextView
+        android:id="@+id/source_post_list_post_status"
         android:layout_height="wrap_content"
         android:textSize="@dimen/source_post_list_item_global"
         android:textColor="@color/textColor"

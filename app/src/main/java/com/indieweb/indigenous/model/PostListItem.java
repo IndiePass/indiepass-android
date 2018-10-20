@@ -6,6 +6,7 @@ public class PostListItem {
     public String content;
     public String url;
     public String published;
+    public String postStatus;
 
     public String getName() {
         return name;
@@ -37,5 +38,13 @@ public class PostListItem {
 
     public void setPublished(String published) {
         this.published = published;
+    }
+
+    public String getPostStatus() {
+        return postStatus;
+    }
+
+    public void setPostStatus(String postStatus) {
+        this.postStatus = postStatus;
     }
 }

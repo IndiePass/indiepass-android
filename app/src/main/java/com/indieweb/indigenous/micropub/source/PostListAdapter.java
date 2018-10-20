@@ -65,7 +65,9 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
 
     public static class ViewHolder {
         public TextView name;
+        public TextView url;
         public TextView published;
+        public TextView postStatus;
         public Button expand;
         public ExpandableTextView content;
         public LinearLayout row;
@@ -81,7 +83,9 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             convertView = mInflater.inflate(R.layout.list_item_source_post, null);
             holder = new ViewHolder();
             holder.published = convertView.findViewById(R.id.source_post_list_published);
+            holder.postStatus = convertView.findViewById(R.id.source_post_list_post_status);
             holder.name = convertView.findViewById(R.id.source_post_list_name);
+            holder.url = convertView.findViewById(R.id.source_post_list_url);
             holder.content = convertView.findViewById(R.id.source_post_list_content);
             holder.expand = convertView.findViewById(R.id.source_post_list_content_more);
             holder.update = convertView.findViewById(R.id.itemUpdate);
@@ -111,6 +115,24 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
                 holder.published.setText(formatOut.format(result));
             } catch (ParseException ignored) {
                 holder.published.setVisibility(View.GONE);
+            }
+
+            // Post status.
+            if (item.getPostStatus().length() > 0) {
+                holder.postStatus.setVisibility(View.VISIBLE);
+                holder.postStatus.setText("Status: " + item.getPostStatus());
+            }
+            else {
+                holder.postStatus.setVisibility(View.GONE);
+            }
+
+            // Url.
+            if (item.getUrl().length() > 0) {
+                holder.url.setVisibility(View.VISIBLE);
+                holder.url.setText(item.getUrl());
+            }
+            else {
+                holder.url.setVisibility(View.GONE);
             }
 
             // Name.

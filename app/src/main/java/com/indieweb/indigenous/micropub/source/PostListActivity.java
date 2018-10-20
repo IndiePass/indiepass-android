@@ -183,12 +183,19 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
                                 String name = "";
                                 String content = "";
                                 String published = "";
+                                String postStatus = "";
 
                                 // url.
                                 if (object.has("url")) {
                                     url = object.getJSONArray("url").get(0).toString();
                                 }
                                 item.setUrl(url);
+
+                                // post status.
+                                if (object.has("post-status")) {
+                                    postStatus = object.getJSONArray("post-status").get(0).toString();
+                                }
+                                item.setPostStatus(postStatus);
 
                                 // published.
                                 if (object.has("published")) {
