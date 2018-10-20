@@ -34,15 +34,6 @@ public class TimelineImageActivity extends AppCompatActivity {
         // Get info text view.
         info = findViewById(R.id.timeline_image_info);
 
-        // Close button.
-        Button close = findViewById(R.id.close);
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
         photos = getIntent().getStringArrayListExtra("photos");
         if (photos != null && photos.size() > 0) {
             ViewPager viewPager = findViewById(R.id.view_pager);
