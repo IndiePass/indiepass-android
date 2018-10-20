@@ -119,6 +119,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     TextView mediaUrl;
     boolean isMediaRequest = false;
 
+    LinearLayout locationWrapper;
     Spinner locationVisibility;
     private FusedLocationProviderClient mFusedLocationClient;
     private Boolean mRequestingLocationUpdates = false;
@@ -181,6 +182,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         url = findViewById(R.id.url);
         tags = findViewById(R.id.tags);
         saveAsDraft = findViewById(R.id.saveAsDraft);
+        locationWrapper = findViewById(R.id.locationWrapper);
         locationVisibility = findViewById(R.id.locationVisibility);
 
         // Autocomplete of tags.
@@ -586,7 +588,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 // Location.
                 if (canAddLocation && mCurrentLocation != null) {
                     bodyParams.put("location[0]", "geo:" + mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude());
-                    if (locationVisibility != null && locationVisibility.getVisibility() == View.VISIBLE) {
+                    if (locationVisibility != null && locationWrapper.getVisibility() == View.VISIBLE) {
                         bodyParams.put("location-visibility[0]", locationVisibility.getSelectedItem().toString());
                     }
                 }
@@ -744,7 +746,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         if (mCurrentLocation != null) {
             Toast.makeText(getApplicationContext(), "Location found: latitude: " + mCurrentLocation.getLatitude() + " - longitude: " + mCurrentLocation.getLongitude(), Toast.LENGTH_LONG).show();
             if (Preferences.getPreference(getApplicationContext(), "pref_key_location_visibility", false)) {
-                locationVisibility.setVisibility(View.VISIBLE);
+                locationWrapper.setVisibility(View.VISIBLE);
             }
             stopLocationUpdates();
         }

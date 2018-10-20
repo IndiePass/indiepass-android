@@ -11,14 +11,30 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <Spinner
+        <LinearLayout
             android:visibility="gone"
-            android:id="@+id/locationVisibility"
+            android:orientation="vertical"
+            android:id="@+id/locationWrapper"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/location_visibility_array"
-            android:prompt="@string/location_visibility_select"
-            android:layout_marginBottom="10dp" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="@color/textColor"
+                android:textSize="16sp"
+                android:layout_margin="5dp"
+                android:text="@string/location_visibility"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/locationVisibility"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/location_visibility_array"
+                android:prompt="@string/location_visibility_select"
+                android:layout_marginBottom="10dp" />
+
+        </LinearLayout>
 
         <EditText
             android:id="@+id/title"

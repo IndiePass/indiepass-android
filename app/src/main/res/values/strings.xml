@@ -130,6 +130,7 @@
     <string name="getting_location">Getting location</string>
     <string name="location_visibility_select">Location visibility</string>
     <string name="apply_filter">Apply</string>
+    <string name="location_visibility">Location visibility</string>
 
     <string-array name="rsvp_array">
         <item>yes</item>
