@@ -78,7 +78,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
         final ViewHolder holder;
 
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.source_post_list_item, null);
+            convertView = mInflater.inflate(R.layout.list_item_source_post, null);
             holder = new ViewHolder();
             holder.published = convertView.findViewById(R.id.source_post_list_published);
             holder.name = convertView.findViewById(R.id.source_post_list_name);

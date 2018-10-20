@@ -24,11 +24,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
@@ -110,7 +108,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         final ViewHolder holder;
 
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.timeline_list_item, null);
+            convertView = mInflater.inflate(R.layout.list_item_timeline, null);
             holder = new ViewHolder();
             holder.unread = convertView.findViewById(R.id.timeline_new);
             holder.published = convertView.findViewById(R.id.timeline_published);

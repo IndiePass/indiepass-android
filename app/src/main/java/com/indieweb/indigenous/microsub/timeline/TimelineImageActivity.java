@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,7 +81,7 @@ public class TimelineImageActivity extends AppCompatActivity {
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            View imageSlide = inflater.inflate(R.layout.timeline_image_slide, null);
+            View imageSlide = inflater.inflate(R.layout.widget_image_slide, null);
             final ImageView imageView = imageSlide.findViewById(R.id.timeline_image_fullscreen);
             final ImageView loading = imageSlide.findViewById(R.id.loading);
 

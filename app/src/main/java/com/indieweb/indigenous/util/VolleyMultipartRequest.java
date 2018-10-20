@@ -76,9 +76,8 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
      * Custom method handle data payload.
      *
      * @return Map data part label with data byte
-     * @throws AuthFailureError
      */
-    protected Map<String, DataPart> getByteData() throws AuthFailureError {
+    protected Map<String, DataPart> getByteData() {
         return null;
     }
 
@@ -189,9 +188,6 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
         private String fileName;
         private byte[] content;
         private String type;
-
-        public DataPart() {
-        }
 
         public DataPart(String name, byte[] data) {
             fileName = name;

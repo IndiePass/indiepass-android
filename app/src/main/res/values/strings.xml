@@ -28,6 +28,7 @@
     <string name="tags">Tags - separate with comma</string>
     <string name="note">Note</string>
     <string name="image_preview">Image preview</string>
+    <string name="send_original_picture">Send original picture</string>
     <string name="title">Title</string>
     <string name="published">Published</string>
     <string name="syndicate_to">Syndicate to</string>

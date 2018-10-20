@@ -59,7 +59,7 @@ public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
         final ViewHolder holder;
 
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.channel_list_item, null);
+            convertView = mInflater.inflate(R.layout.list_item_channel, null);
             holder = new ViewHolder();
             holder.row = convertView.findViewById(R.id.channel_row);
             holder.name = convertView.findViewById(R.id.channel_name);

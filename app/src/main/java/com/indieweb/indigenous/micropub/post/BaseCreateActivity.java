@@ -15,7 +15,6 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -97,7 +96,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     MultiAutoCompleteTextView tags;
     private List<Syndication> syndicationTargets = new ArrayList<>();
     private MenuItem sendItem;
-    private CardView imageCard;
+    private LinearLayout imageWidget;
     private ImageView imagePreview;
     private CheckBox postStatus;
     private String mime = "image/jpg";
@@ -178,7 +177,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         title = findViewById(R.id.title);
         body = findViewById(R.id.body);
         imagePreview = findViewById(R.id.imagePreview);
-        imageCard = findViewById(R.id.imageCard);
+        imageWidget = findViewById(R.id.imageWidget);
         url = findViewById(R.id.url);
         tags = findViewById(R.id.tags);
         saveAsDraft = findViewById(R.id.saveAsDraft);
@@ -236,7 +235,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
             if (canAddImage) {
                 String incomingImage = extras.getString("incomingImage");
-                if (incomingImage != null && incomingImage.length() > 0 && imagePreview != null && imageCard != null) {
+                if (incomingImage != null && incomingImage.length() > 0 && imagePreview != null && imageWidget != null) {
                     imageUri = Uri.parse(incomingImage);
                     prepareImagePreviewAndBitmap();
                 }
@@ -327,7 +326,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
      * Prepare image preview and bitmap.
      */
     public void prepareImagePreviewAndBitmap() {
-        imageCard.setVisibility(View.VISIBLE);
+        imageWidget.setVisibility(View.VISIBLE);
         ContentResolver cR = this.getContentResolver();
         mime = cR.getType(imageUri);
 
@@ -341,7 +340,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
             .with(getApplicationContext())
             .asBitmap()
             .load(imageUri)
-            .into(new SimpleTarget<Bitmap>(ImageSize,ImageSize) {
+            .into(new SimpleTarget<Bitmap>(ImageSize, ImageSize) {
                 @Override
                 public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
                     imagePreview.setImageBitmap(resource);
@@ -610,18 +609,18 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
                 if (bitmap != null) {
                     long imagename = System.currentTimeMillis();
+
                     String extension = "jpg";
                     if (mime.equals("image/png")) {
                         extension = "png";
                     }
-                    if (bitmap != null) {
-                        if (isMediaRequest) {
-                            params.put("file", new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap)));
-                        }
-                        else {
-                            params.put("photo[0]", new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap)));
-                        }
+
+                    String imagePostParam = "photo[0]";
+                    if (isMediaRequest) {
+                        imagePostParam = "file";
                     }
+
+                    params.put(imagePostParam, new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap)));
                 }
                 return params;
             }

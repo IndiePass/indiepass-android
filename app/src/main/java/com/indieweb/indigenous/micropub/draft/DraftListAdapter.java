@@ -68,7 +68,7 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
         final ViewHolder holder;
 
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.draft_list_item, null);
+            convertView = mInflater.inflate(R.layout.list_item_draft, null);
             holder = new ViewHolder();
             holder.row = convertView.findViewById(R.id.draft_list_item_row);
             holder.label = convertView.findViewById(R.id.draft_list_label);
