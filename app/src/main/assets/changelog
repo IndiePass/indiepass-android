@@ -7,6 +7,7 @@ Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a
 <h4>12/10/2018 - 0.23</h4>
 <ul>
     <li>Show 'new' indicator</li>
+    <li>Add all needed scopes when authenticating</li>
 </ul>
 <h4>12/10/2018 - 0.22</h4>
 <ul>

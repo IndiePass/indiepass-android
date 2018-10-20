@@ -138,7 +138,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
 
             if (validDomain(domainInput)) {
 
-                String url = authorizationEndpoint + "?response_type=code&redirect_uri=" + RedirectUri + "&client_id=" + ClientId + "&me=" + domainInput + "&scope=create+update+read+follow+channels&state=" + state;
+                String url = authorizationEndpoint + "?response_type=code&redirect_uri=" + RedirectUri + "&client_id=" + ClientId + "&me=" + domainInput + "&scope=create+update+delete+media+read+follow+channels+mute+block&state=" + state;
                 Uri uri = Uri.parse(url);
 
                 CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
