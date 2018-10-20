@@ -12,12 +12,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.indieweb.indigenous.AboutActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.SettingsActivity;
 import com.indieweb.indigenous.indieauth.Endpoints;
+import com.indieweb.indigenous.indieauth.IndieAuthActivity;
 import com.indieweb.indigenous.micropub.draft.DraftActivity;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
@@ -48,6 +50,14 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
         setContentView(R.layout.activity_micropub);
 
         user = new Accounts(this).getCurrentUser();
+        if (!user.isValid()) {
+            Toast.makeText(MicropubActivity.this, getString(R.string.no_user), Toast.LENGTH_SHORT).show();
+            Intent a = new Intent(getBaseContext(), IndieAuthActivity.class);
+            startActivity(a);
+            finish();
+            return;
+        }
+
         this.setTitle(user.getMeWithoutProtocol());
 
         // Listen to incoming data.

@@ -6,8 +6,9 @@
     <string name="account_type">IndieAuth</string>
     <string name="accounts">Accounts</string>
     <string name="add_new_account">Add new account</string>
-    <string name="set_account">Set account</string>
-    <string name="set_account_info">No default account was set, you can select one by pressing the "Set account" button.</string>
+    <string name="no_user">No user found</string>
+    <string name="select_account">Select account</string>
+    <string name="select_account_info">Switch to an existing account by pressing the "Select account" button.</string>
     <string name="url_hint">http://example.com</string>
     <string name="url_repository_hint">http://example.com/repository</string>
     <string name="sign_in_with_domain">Sign in</string>

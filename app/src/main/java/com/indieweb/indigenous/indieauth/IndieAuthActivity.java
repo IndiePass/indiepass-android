@@ -75,17 +75,15 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
         signIn = findViewById(R.id.signInButton);
         signIn.setOnClickListener(doSignIn);
 
-        // Show 'set account' button.
-        SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-        String accountName = preferences.getString("account", "");
+        // Show 'select account' button.
         AccountManager accountManager = AccountManager.get(this);
         Account[] accounts = accountManager.getAccounts();
-        if (accountName.length() == 0 && accounts.length > 0) {
-            TextView setAccountInfo = findViewById(R.id.setAccountButtonInfo);
+        if (accounts.length > 0) {
+            TextView setAccountInfo = findViewById(R.id.selectAccountButtonInfo);
             setAccountInfo.setVisibility(View.VISIBLE);
-            Button setAccount = findViewById(R.id.setAccountButton);
-            setAccount.setOnClickListener(doSetAccount);
-            setAccount.setVisibility(View.VISIBLE);
+            Button selectAccount = findViewById(R.id.selectAccountButton);
+            selectAccount.setOnClickListener(this.selectAccount);
+            selectAccount.setVisibility(View.VISIBLE);
         }
     }
 
@@ -112,9 +110,9 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
     /**
      * OnClickListener for the 'Set account' button.
      */
-    private final View.OnClickListener doSetAccount = new View.OnClickListener() {
+    private final View.OnClickListener selectAccount = new View.OnClickListener() {
         public void onClick(View v) {
-            new Accounts(IndieAuthActivity.this).setAccount(IndieAuthActivity.this);
+            new Accounts(IndieAuthActivity.this).selectAccount(IndieAuthActivity.this);
         }
     };
 

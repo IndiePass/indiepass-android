@@ -44,18 +44,18 @@
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
             android:layout_marginTop="50dp"
-            android:id="@+id/setAccountButtonInfo"
-            android:text="@string/set_account_info"
+            android:id="@+id/selectAccountButtonInfo"
+            android:text="@string/select_account_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <Button
             android:visibility="gone"
             android:layout_marginTop="10dp"
-            android:id="@+id/setAccountButton"
+            android:id="@+id/selectAccountButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/set_account" />
+            android:text="@string/select_account" />
 
     </LinearLayout>
 

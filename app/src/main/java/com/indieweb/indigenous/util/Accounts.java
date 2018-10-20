@@ -113,12 +113,12 @@ public class Accounts {
     }
 
     /**
-     * Set account dialog.
+     * Select account dialog.
      *
      * @param activity
      *   The current activity
      */
-    public void setAccount(final Activity activity) {
+    public void selectAccount(final Activity activity) {
         final List<String> accounts = new ArrayList<>();
 
         final Account[] AllAccounts = this.getAllAccounts();
@@ -128,7 +128,7 @@ public class Accounts {
 
         final CharSequence[] accountItems = accounts.toArray(new CharSequence[accounts.size()]);
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Set account");
+        builder.setTitle("Select account");
 
         builder.setCancelable(true);
         builder.setItems(accountItems, new DialogInterface.OnClickListener() {

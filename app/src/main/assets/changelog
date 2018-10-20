@@ -8,6 +8,8 @@ Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a
 <ul>
     <li>Show 'new' indicator</li>
     <li>Add all needed scopes when authenticating</li>
+    <li>Go to sign-in screen when no account is found</li>
+    <li>On the sign-in screen, existing accounts are shown as well</li>
 </ul>
 <h4>12/10/2018 - 0.22</h4>
 <ul>

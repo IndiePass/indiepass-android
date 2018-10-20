@@ -32,18 +32,17 @@ More information at https://indieweb.org/Indigenous and https://indigenous.abode
 
 #### Authentication loop
 
-When authenticating for the first time, you might see a message "Authentication successul" but then returning to the Sign in screen. While the account has been created, the default was not set. In this case, the sign in screen will show a message:
+When authenticating for the first time, you might see a message "Authentication successul" but then
+returning to the Sign in screen. While the account has been created, the default was not set. In
+this case, the sign in screen will show a message:
 
-*No default account was set, you can select one by pressing the "Set account" button.*
+*Switch to an existing account by pressing the "Select account" button.*
 
-Underneath there will be a button which allows to set the default account. After that, you will go to the channel list (if a microsub endpoint is detected), or see the post types screen.
+Underneath there will be a button which allows to set the default account. After that, you will go
+to the channel list (if a microsub endpoint is detected), or see the post types screen.
 
 See https://github.com/swentel/indigenous-android/issues/84  
 This happens sometimes, but not always.
-
-## Sneak preview video
-
-https://realize.be/notes/1333
 
 ## Screenshot
 
