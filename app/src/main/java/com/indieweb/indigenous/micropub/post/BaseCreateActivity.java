@@ -745,7 +745,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
      */
     private void updateLocationUI() {
         if (mCurrentLocation != null) {
-            Toast.makeText(getApplicationContext(), "Location found: latitude: " + mCurrentLocation.getLatitude() + " - longitude: " + mCurrentLocation.getLongitude() + " Altitude: " + mCurrentLocation.getAltitude(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Location found: latitude: " + mCurrentLocation.getLatitude() + " - longitude: " + mCurrentLocation.getLongitude() + " - altitude: " + mCurrentLocation.getAltitude(), Toast.LENGTH_LONG).show();
             if (Preferences.getPreference(getApplicationContext(), "pref_key_location_visibility", false)) {
                 locationWrapper.setVisibility(View.VISIBLE);
             }
