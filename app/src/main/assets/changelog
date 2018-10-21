@@ -10,6 +10,7 @@ Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a
     <li>Add all needed scopes when authenticating</li>
     <li>Go to sign-in screen when no account is found</li>
     <li>Better back navigation for images and audio</li>
+    <li>Pass along altitude in geo location</li>
     <li>On the sign-in screen, existing accounts are shown as well</li>
 </ul>
 <h4>12/10/2018 - 0.22</h4>
