@@ -586,7 +586,9 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
                 // Location.
                 if (canAddLocation && mCurrentLocation != null) {
-                    bodyParams.put("location[0]", "geo:" + mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude());
+                    String coordinates = mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude();
+                    coordinates += "," + mCurrentLocation.getAltitude();
+                    bodyParams.put("location[0]", "geo:" + coordinates);
                     if (locationVisibility != null && locationWrapper.getVisibility() == View.VISIBLE) {
                         bodyParams.put("location-visibility[0]", locationVisibility.getSelectedItem().toString());
                     }
@@ -743,7 +745,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
      */
     private void updateLocationUI() {
         if (mCurrentLocation != null) {
-            Toast.makeText(getApplicationContext(), "Location found: latitude: " + mCurrentLocation.getLatitude() + " - longitude: " + mCurrentLocation.getLongitude(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Location found: latitude: " + mCurrentLocation.getLatitude() + " - longitude: " + mCurrentLocation.getLongitude() + " Altitude: " + mCurrentLocation.getAltitude(), Toast.LENGTH_LONG).show();
             if (Preferences.getPreference(getApplicationContext(), "pref_key_location_visibility", false)) {
                 locationWrapper.setVisibility(View.VISIBLE);
             }
