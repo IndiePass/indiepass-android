@@ -575,11 +575,12 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 // Syndication targets.
                 if (syndicationTargets.size() > 0) {
                     CheckBox checkbox;
-                    for (int j = 0; j < syndicationTargets.size(); j++) {
+                    for (int j = 0, k = 0; j < syndicationTargets.size(); j++) {
 
                         checkbox = findViewById(j);
                         if (checkbox != null && checkbox.isChecked()) {
-                            bodyParams.put("mp-syndicate-to[" + j + "]", syndicationTargets.get(j).getUid());
+                            bodyParams.put("mp-syndicate-to[" + k + "]", syndicationTargets.get(j).getUid());
+                            k++;
                         }
                     }
                 }
