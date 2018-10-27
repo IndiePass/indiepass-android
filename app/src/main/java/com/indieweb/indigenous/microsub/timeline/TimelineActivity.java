@@ -190,7 +190,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 // If no value is found, the notify all call will also be ignored.
                                 try {
                                     item.setId(object.getString("_id"));
-                                    if (i == 0) {
+                                    if (entryId == null) {
                                         entryId = item.getId();
                                     }
                                 }
