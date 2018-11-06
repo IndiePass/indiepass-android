@@ -59,6 +59,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
     String tokenEndpoint;
     String micropubEndpoint;
     String microsubEndpoint;
+    String micropubMediaEndpoint;
     String ClientId = "https://indigenous.abode.pub/android/";
     String RedirectUri = "https://indigenous.abode.pub/android/login/";
 
@@ -196,7 +197,12 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                     found++;
                 }
 
-                // Microsub is optional, so we don't increment the counter here.
+                // Micropub media is optional, so we don't increment the counter.
+                if (link.attr("rel").equals("micropub_media")) {
+                    micropubMediaEndpoint = link.attr("abs:href");
+                }
+
+                // Microsub is optional, so we don't increment the counter.
                 if (link.attr("rel").equals("microsub")) {
                     microsubEndpoint = link.attr("abs:href");
                 }
@@ -282,6 +288,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                         am.setUserData(account, "microsub_endpoint", microsubEndpoint);
                         am.setUserData(account, "authorization_endpoint", authorizationEndpoint);
                         am.setUserData(account, "token_endpoint", tokenEndpoint);
+                        am.setUserData(account, "micropub_media_endpoint", micropubMediaEndpoint);
 
                         // Set first account.
                         if (numberOfAccounts == 0) {
@@ -290,7 +297,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                             editor.apply();
                         }
 
-                        // Refresh syndication targets and media endpoint.
+                        // Get micropub configuration.
                         User user = new User();
                         user.setMicropubEndpoint(micropubEndpoint);
                         user.setAccessToken(accessToken);
