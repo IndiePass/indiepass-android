@@ -19,6 +19,8 @@ public class TimelineItem {
     private ArrayList<String> photos = new ArrayList<>();
     // TODO allow multiple audio
     private String audio;
+    // TODO allow multiple video
+    private String video;
     // TODO there can actually be multiple of say reply
     private Map<String, String> subType = new LinkedHashMap<>();
 
@@ -124,5 +126,13 @@ public class TimelineItem {
 
     public void setAudio(String audio) {
         this.audio = audio;
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
     }
 }

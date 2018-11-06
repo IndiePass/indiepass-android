@@ -68,6 +68,7 @@
     <string name="reply_to">Reply to</string>
     <string name="repost">Repost</string>
     <string name="title_activity_timeline_audio">Audio</string>
+    <string name="title_activity_timeline_video">Video</string>
     <string name="title_activity_timeline_image">Image</string>
     <string name="title_activity_indieauth">Sign in</string>
     <string name="title_activity_micropub">Post</string>
@@ -106,7 +107,8 @@
 
     <!-- Preferences: Media handling -->
     <string name="pref_category_media_title">Media</string>
-    <string name="pref_category_media_summary">Control image settings for uploading or in the reader.</string>
+    <string name="pref_category_media_summary">Control image and video settings for uploading or in the reader.</string>
+    <string name="pref_key_video_autoplay_title">Video autoplay</string>
     <string name="pref_key_image_preview_title">Image preview</string>
     <string name="pref_key_image_preview_summary">Show the first image per post in the reader. If you choose to hide, you can still view the images attached to the post by clicking on the images information at the bottom of the post.</string>
     <string name="pref_key_image_quality_title">Image upload quality</string>

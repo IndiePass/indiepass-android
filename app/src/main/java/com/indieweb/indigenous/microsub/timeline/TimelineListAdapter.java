@@ -99,6 +99,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public Button repost;
         public Button bookmark;
         public Button audio;
+        public Button video;
         public Button external;
         public Button rsvp;
         public Button menu;
@@ -127,6 +128,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.like = convertView.findViewById(R.id.itemLike);
             holder.repost = convertView.findViewById(R.id.itemRepost);
             holder.audio = convertView.findViewById(R.id.itemAudio);
+            holder.video = convertView.findViewById(R.id.itemVideo);
             holder.external = convertView.findViewById(R.id.itemExternal);
             holder.rsvp = convertView.findViewById(R.id.itemRSVP);
             holder.menu = convertView.findViewById(R.id.itemMenu);
@@ -344,6 +346,15 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
             else {
                 holder.audio.setVisibility(View.GONE);
+            }
+
+            // Audio.
+            if (item.getVideo().length() > 0) {
+                holder.video.setVisibility(View.VISIBLE);
+                holder.video.setOnClickListener(new OnVideoClickListener(position));
+            }
+            else {
+                holder.video.setVisibility(View.GONE);
             }
 
             // Button listeners.
@@ -566,6 +577,24 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             i.putExtra("title", item.getName());
             i.putExtra("authorPhoto", item.getAuthorPhoto());
             i.putExtra("authorName", item.getAuthorName());
+            context.startActivity(i);
+        }
+    }
+
+    // Video listener.
+    class OnVideoClickListener implements OnClickListener {
+
+        int position;
+
+        OnVideoClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent i = new Intent(context, TimelineVideoActivity.class);
+            TimelineItem item = items.get(this.position);
+            i.putExtra("video", item.getVideo());
             context.startActivity(i);
         }
     }

@@ -173,6 +173,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 String textContent = "";
                                 String htmlContent = "";
                                 String audio = "";
+                                String video = "";
                                 String authorName = "";
                                 String authorPhoto = "";
 
@@ -335,6 +336,12 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                     audio = object.getJSONArray("audio").getString(0);
                                 }
                                 item.setAudio(audio);
+
+                                // Video.
+                                if (object.has("video")) {
+                                    video = object.getJSONArray("video").getString(0);
+                                }
+                                item.setVideo(video);
 
                                 // Set values of name, text and html content.
                                 item.setName(name);

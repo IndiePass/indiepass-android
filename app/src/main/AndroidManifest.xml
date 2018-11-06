@@ -83,8 +83,19 @@
         </activity>
 
         <activity
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:name=".microsub.timeline.TimelineAudioActivity"
             android:label="@string/title_activity_timeline_audio"
+            android:parentActivityName=".micropub.MicropubActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.micropub.MicropubActivity" />
+        </activity>
+
+        <activity
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:name=".microsub.timeline.TimelineVideoActivity"
+            android:label="@string/title_activity_timeline_video"
             android:parentActivityName=".micropub.MicropubActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
