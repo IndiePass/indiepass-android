@@ -25,6 +25,7 @@ More information at https://indieweb.org/Indigenous and https://indigenous.abode
   - reply, like, repost, rsvp or bookmark directly
   - go to external URL
   - listen to audio if available
+  - watch videos
   - view fullscreen images, zoom and pinch
 - Share intents: receive text or images from other apps to directly share
 
