@@ -6,6 +6,7 @@ Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a
 <h2>Changelog</h2>
 <h4>xx/xx/xxxx - 0.24</h4>
 <ul>
+    <li>Adjust categories parsing</li>
     <li>Allow to watch videos in reader</li>
     <li>Allow finding media endpoint from link tag</li>
 </ul>

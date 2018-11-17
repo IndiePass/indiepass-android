@@ -20,6 +20,7 @@ import com.indieweb.indigenous.util.Connection;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -149,10 +150,13 @@ public class MicropubAction {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONArray tagsList = new JSONArray(response);
-                            if (tagsList.length() > 0) {
-                                for (int i = 0; i < tagsList.length(); i++) {
-                                    items.add(tagsList.getString(i));
+                            JSONObject categoryResponse = new JSONObject(response);
+                            if (categoryResponse.has("categories")) {
+                                JSONArray tagsList = categoryResponse.getJSONArray("categories");
+                                if (tagsList.length() > 0) {
+                                    for (int i = 0; i < tagsList.length(); i++) {
+                                        items.add(tagsList.getString(i));
+                                    }
                                 }
                             }
                         }
