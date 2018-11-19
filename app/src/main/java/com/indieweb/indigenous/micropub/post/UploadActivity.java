@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import com.indieweb.indigenous.R;
 
-public class MediaActivity extends BaseCreateActivity {
+public class UploadActivity extends BaseCreateActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

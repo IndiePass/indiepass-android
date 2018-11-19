@@ -29,7 +29,7 @@ import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.EventActivity;
 import com.indieweb.indigenous.micropub.post.IssueActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
-import com.indieweb.indigenous.micropub.post.MediaActivity;
+import com.indieweb.indigenous.micropub.post.UploadActivity;
 import com.indieweb.indigenous.micropub.post.NoteActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
@@ -341,7 +341,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(CreateIssue);
                 break;
             case R.id.createMedia:
-                Intent CreateMedia = new Intent(getBaseContext(), MediaActivity.class);
+                Intent CreateMedia = new Intent(getBaseContext(), UploadActivity.class);
                 if (incomingImage != null && incomingImage.length() > 0) {
                     CreateMedia.putExtra("incomingImage", incomingImage);
                 }

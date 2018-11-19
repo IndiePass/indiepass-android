@@ -81,8 +81,8 @@
     <string name="event">Event</string>
     <string name="rsvp">RSVP</string>
     <string name="rsvp_select">Select RSVP</string>
-    <string name="media">Media</string>
-    <string name="media_description">Upload images to your media endpoint. On success, the file URL will be added to the clipboard automatically.</string>
+    <string name="upload">Upload</string>
+    <string name="upload_description">Upload images to your media endpoint. On success, the file URL will be added to the clipboard automatically.</string>
     <string name="one_image">1 image</string>
 
     <!-- Preferences: share -->
