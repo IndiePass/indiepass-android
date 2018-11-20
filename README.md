@@ -45,6 +45,10 @@ to the channel list (if a microsub endpoint is detected), or see the post types 
 See https://github.com/swentel/indigenous-android/issues/84  
 This happens sometimes, but not always.
 
+#### Known syndication targets not parsed
+
+See https://github.com/swentel/indigenous-android/issues/152
+
 ## Screenshot
 
 <img src="https://realize.be/sites/default/files/Screenshot_20180905-153456_Indigenous.jpg" width="400" />
