@@ -145,7 +145,8 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
         dataOutputStream.writeBytes(twoHyphens + boundary + lineEnd);
         dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"" + parameterName + "\"" + lineEnd);
         dataOutputStream.writeBytes(lineEnd);
-        dataOutputStream.writeBytes(parameterValue + lineEnd);
+        dataOutputStream.write(parameterValue.getBytes(getParamsEncoding()));
+        dataOutputStream.writeBytes(lineEnd);
     }
 
     /**
