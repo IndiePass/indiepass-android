@@ -7,6 +7,7 @@ Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a
 <h4>xx/xx/2018 - 0.25</h4>
 <ul>
     <li>Send posts in UTF-8 (emoji and other special characters will now work)</li>
+    <li>Do not send numerical indexes for multi-valued properties</li>
 </ul>
 <h4>25/10/2018 - 0.24</h4>
 <ul>

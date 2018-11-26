@@ -143,7 +143,12 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
      */
     private void buildTextPart(DataOutputStream dataOutputStream, String parameterName, String parameterValue) throws IOException {
         dataOutputStream.writeBytes(twoHyphens + boundary + lineEnd);
-        dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"" + parameterName + "\"" + lineEnd);
+        String param = parameterName;
+        if (param.contains("_multiple_")) {
+            String[] split = param.split("_multiple_");
+            param = split[0] + "[]";
+        }
+        dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"" + param + "\"" + lineEnd);
         dataOutputStream.writeBytes(lineEnd);
         dataOutputStream.write(parameterValue.getBytes(getParamsEncoding()));
         dataOutputStream.writeBytes(lineEnd);

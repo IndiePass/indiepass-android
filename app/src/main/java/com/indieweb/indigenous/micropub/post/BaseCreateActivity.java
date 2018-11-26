@@ -556,7 +556,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                     for (String tag: tagsList) {
                         tag = tag.trim();
                         if (tag.length() > 0) {
-                            bodyParams.put("category["+ i +"]", tag);
+                            bodyParams.put("category_multiple_["+ i +"]", tag);
                             i++;
                         }
                     }
@@ -569,7 +569,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                     if (postStatus.isChecked()) {
                         postStatusValue = "published";
                     }
-                    bodyParams.put("post-status[0]", postStatusValue);
+                    bodyParams.put("post-status", postStatusValue);
                 }
 
                 // Syndication targets.
@@ -579,7 +579,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
                         checkbox = findViewById(j);
                         if (checkbox != null && checkbox.isChecked()) {
-                            bodyParams.put("mp-syndicate-to[" + k + "]", syndicationTargets.get(j).getUid());
+                            bodyParams.put("mp-syndicate-to_multiple_[" + k + "]", syndicationTargets.get(j).getUid());
                             k++;
                         }
                     }
@@ -589,9 +589,9 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 if (canAddLocation && mCurrentLocation != null) {
                     String coordinates = mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude();
                     coordinates += "," + mCurrentLocation.getAltitude();
-                    bodyParams.put("location[0]", "geo:" + coordinates);
+                    bodyParams.put("location", "geo:" + coordinates);
                     if (locationVisibility != null && locationWrapper.getVisibility() == View.VISIBLE) {
-                        bodyParams.put("location-visibility[0]", locationVisibility.getSelectedItem().toString());
+                        bodyParams.put("location-visibility", locationVisibility.getSelectedItem().toString());
                     }
                 }
 
@@ -618,7 +618,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                         extension = "png";
                     }
 
-                    String imagePostParam = "photo[0]";
+                    String imagePostParam = "photo";
                     if (isMediaRequest) {
                         imagePostParam = "file";
                     }
