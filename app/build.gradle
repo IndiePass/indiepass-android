@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "com.indieweb.indigenous"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 25
-        versionName "0.25"
+        versionCode 26
+        versionName "0.26"
     }
     buildTypes {
         release {
