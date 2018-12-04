@@ -14,7 +14,6 @@ import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +28,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.common.util.JsonUtils;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
@@ -621,7 +619,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         @Override
         public void onClick(View v) {
 
-            Log.d("indigenous_debug", "debug: " + debugJson);
             PopupMenu popup = new PopupMenu(context, v);
             Menu menu = popup.getMenu();
             popup.getMenuInflater().inflate(R.menu.timeline_list_item_menu, menu);
