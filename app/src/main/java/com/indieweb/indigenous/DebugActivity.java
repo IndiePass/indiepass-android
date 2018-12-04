@@ -7,9 +7,11 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 public class DebugActivity extends AppCompatActivity {
 
-    String debug = "No debugging info found";
+    String debugString = "No debugging info found";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,11 +20,19 @@ public class DebugActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            debug = extras.getString("debug");
+            String debug = extras.getString("debug");
+
+            // Try parsing with JSON, in case it fails, we'll fallback to the default string.
+            try {
+                debugString = new JSONObject(debug).toString(4);
+            }
+            catch (Exception ignored) {
+                debugString = debug;
+            }
         }
 
         TextView t = findViewById(R.id.debug);
-        t.setText(debug);
+        t.setText(debugString);
     }
 
     @Override
@@ -39,12 +49,13 @@ public class DebugActivity extends AppCompatActivity {
                 try {
                     int sdk = android.os.Build.VERSION.SDK_INT;
                     if (sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
-                        android.text.ClipboardManager clipboard = (android.text.ClipboardManager) this.getSystemService(CLIPBOARD_SERVICE);                        clipboard.setText(debug);
-                        clipboard.setText(debug);
+                        android.text.ClipboardManager clipboard = (android.text.ClipboardManager) this.getSystemService(CLIPBOARD_SERVICE);
+                        assert clipboard != null;
+                        clipboard.setText(debugString);
                     }
                     else {
                         android.content.ClipboardManager clipboard = (android.content.ClipboardManager) this.getSystemService(CLIPBOARD_SERVICE);
-                        android.content.ClipData clip = android.content.ClipData.newPlainText("Debug", debug);
+                        android.content.ClipData clip = android.content.ClipData.newPlainText("Debug", debugString);
                         assert clipboard != null;
                         clipboard.setPrimaryClip(clip);
                     }
