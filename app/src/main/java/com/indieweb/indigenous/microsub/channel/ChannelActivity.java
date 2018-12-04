@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.AboutActivity;
+import com.indieweb.indigenous.DebugActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.SettingsActivity;
 import com.indieweb.indigenous.indieauth.Endpoints;
@@ -63,6 +64,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
     private ChannelListAdapter adapter;
     private List<Channel> Channels = new ArrayList<>();
     User user;
+    String debugResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +115,7 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
 
                         try {
                             JSONObject object;
+                            debugResponse = response;
                             JSONObject microsubResponse = new JSONObject(response);
                             JSONArray channelList = microsubResponse.getJSONArray("channels");
 
@@ -224,6 +227,15 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.channel_top_menu, menu);
+
+        boolean debugJson = Preferences.getPreference(this, "pref_key_debug_microsub_channels", false);
+        if (debugJson) {
+            MenuItem item = menu.findItem(R.id.channels_debug);
+            if (item != null) {
+                item.setVisible(true);
+            }
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -259,6 +271,13 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.accounts:
                 new Accounts(this).switchAccount(this);
                 return true;
+
+            case R.id.channels_debug:
+                Intent i = new Intent(this, DebugActivity.class);
+                i.putExtra("debug", debugResponse);
+                startActivity(i);
+                return true;
+
         }
 
         return super.onOptionsItemSelected(item);

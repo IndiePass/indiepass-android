@@ -99,6 +99,16 @@
         android:summary="@string/pref_category_debug_summary"
         android:persistent="false">
         <CheckBoxPreference
+            android:key="pref_key_debug_microsub_channels"
+            android:title="@string/pref_key_debug_microsub_channels_json_title"
+            android:summary="@string/pref_key_debug_microsub_channels_json_summary"
+            android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="pref_key_debug_microsub_timeline"
+            android:title="@string/pref_key_debug_microsub_timeline_json_title"
+            android:summary="@string/pref_key_debug_microsub_timeline_json_summary"
+            android:defaultValue="false" />
+        <CheckBoxPreference
             android:key="pref_key_debug_microsub_item_json"
             android:title="@string/pref_key_debug_microsub_item_json_title"
             android:summary="@string/pref_key_debug_microsub_item_json_summary"

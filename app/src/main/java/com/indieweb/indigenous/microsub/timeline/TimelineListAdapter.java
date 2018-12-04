@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Debug;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -40,9 +39,6 @@ import com.indieweb.indigenous.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Preferences;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -28,4 +28,10 @@
         android:id="@+id/about"
         android:title="@string/about" />
 
+    <item
+        android:id="@+id/channels_debug"
+        android:title="@string/debug"
+        android:visible="false"
+        app:showAsAction="never" />
+
 </menu>

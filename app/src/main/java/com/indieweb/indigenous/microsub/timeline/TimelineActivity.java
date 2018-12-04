@@ -1,5 +1,6 @@
 package com.indieweb.indigenous.microsub.timeline;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -18,11 +19,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.indieweb.indigenous.DebugActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
+import com.indieweb.indigenous.util.Preferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,6 +54,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     Button loadMoreButton;
     boolean loadMoreButtonAdded = false;
     String[] olderItems;
+    String debugResponse;
     User user;
 
     @Override
@@ -84,6 +88,15 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.timeline_top_menu, menu);
+
+        boolean debugJson = Preferences.getPreference(this, "pref_key_debug_microsub_timeline", false);
+        if (debugJson) {
+            MenuItem item = menu.findItem(R.id.timeline_debug);
+            if (item != null) {
+                item.setVisible(true);
+            }
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -95,6 +108,11 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 startTimeline();
                 return true;
 
+            case R.id.timeline_debug:
+                Intent i = new Intent(this, DebugActivity.class);
+                i.putExtra("debug", debugResponse);
+                startActivity(i);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -148,6 +166,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
                         try {
                             JSONObject object;
+                            debugResponse = response;
                             JSONObject microsubResponse = new JSONObject(response);
                             JSONArray itemList = microsubResponse.getJSONArray("items");
 
