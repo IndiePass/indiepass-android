@@ -14,7 +14,9 @@ import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,6 +29,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.common.util.JsonUtils;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
@@ -37,6 +40,9 @@ import com.indieweb.indigenous.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Preferences;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,6 +60,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     private final List<TimelineItem> items;
     private LayoutInflater mInflater;
     private boolean imagePreview;
+    private boolean debugItemJSON;
     private final User user;
     private final String channelId;
 
@@ -63,6 +70,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         this.user = user;
         this.channelId = channelId;
         this.imagePreview = Preferences.getPreference(context, "pref_key_image_preview", true);
+        this.debugItemJSON = Preferences.getPreference(context, "pref_key_debug_microsub_item_json", false);
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -388,7 +396,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.rsvp.setVisibility(View.GONE);
             }
 
-            holder.menu.setOnClickListener(new OnMenuClickListener(position));
+            holder.menu.setOnClickListener(new OnMenuClickListener(position, this.debugItemJSON));
 
         }
 
@@ -603,22 +611,34 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     class OnMenuClickListener implements OnClickListener {
 
         int position;
+        boolean debugJson;
 
-        OnMenuClickListener(int position) {
+        OnMenuClickListener(int position, boolean debugJson) {
             this.position = position;
+            this.debugJson = debugJson;
         }
 
         @Override
         public void onClick(View v) {
 
+            Log.d("indigenous_debug", "debug: " + debugJson);
             PopupMenu popup = new PopupMenu(context, v);
-            popup.getMenuInflater().inflate(R.menu.timeline_list_item_menu, popup.getMenu());
+            Menu menu = popup.getMenu();
+            popup.getMenuInflater().inflate(R.menu.timeline_list_item_menu, menu);
+
+            if (this.debugJson) {
+                MenuItem item = menu.findItem(R.id.timeline_entry_json);
+                if (item != null) {
+                    item.setVisible(true);
+                }
+            }
+
+            final TimelineItem entry = items.get(position);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(context);
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(final MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.timeline_entry_delete:
-                            final TimelineItem entry = items.get(position);
-                            final AlertDialog.Builder builder = new AlertDialog.Builder(context);
                             builder.setTitle("Are you sure you want to delete this post ?");
                             builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,int id) {
@@ -634,6 +654,24 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                                 }
                             });
                             builder.show();
+                            break;
+
+                        case R.id.timeline_entry_json:
+                            try {
+                                JSONObject json = new JSONObject(entry.getJson());
+                                builder.setTitle("Debug");
+                                builder.setMessage(json.toString(4));
+                                builder.setNegativeButton(context.getString(R.string.close), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                AlertDialog alert = builder.create();
+                                alert.show();
+                            }
+                            catch (JSONException ignored) { }
+                            break;
                     }
                     return true;
                 }

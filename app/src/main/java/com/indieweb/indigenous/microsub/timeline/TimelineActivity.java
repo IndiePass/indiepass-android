@@ -164,6 +164,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                             for (int i = 0; i < itemList.length(); i++) {
                                 object = itemList.getJSONObject(i);
                                 TimelineItem item = new TimelineItem();
+                                item.setJson(itemList.getString(i));
 
                                 Boolean addContent = true;
                                 Boolean isRead = false;
@@ -175,7 +176,6 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 String audio = "";
                                 String video = "";
                                 String authorName = "";
-                                String authorPhoto = "";
 
                                 // Type.
                                 if (object.has("type")) {
@@ -273,7 +273,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                     }
 
                                     if (author.has("photo")) {
-                                        authorPhoto = author.getString("photo");
+                                        String authorPhoto = author.getString("photo");
                                         if (!authorPhoto.equals("null") && authorPhoto.length() > 0) {
                                             item.setAuthorPhoto(authorPhoto);
                                         }

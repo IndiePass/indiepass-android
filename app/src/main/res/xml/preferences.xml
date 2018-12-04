@@ -94,5 +94,16 @@
             android:defaultValue="false" />
     </PreferenceScreen>
 
+    <PreferenceScreen
+        android:title="@string/pref_category_debug_title"
+        android:summary="@string/pref_category_debug_summary"
+        android:persistent="false">
+        <CheckBoxPreference
+            android:key="pref_key_debug_microsub_item_json"
+            android:title="@string/pref_key_debug_microsub_item_json_title"
+            android:summary="@string/pref_key_debug_microsub_item_json_summary"
+            android:defaultValue="false" />
+    </PreferenceScreen>
+
 </PreferenceScreen>
 

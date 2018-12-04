@@ -16,6 +16,7 @@ public class TimelineItem {
     private String url;
     private String authorName;
     private String authorPhoto = "";
+    private String json;
     private ArrayList<String> photos = new ArrayList<>();
     // TODO allow multiple audio
     private String audio;
@@ -134,5 +135,13 @@ public class TimelineItem {
 
     public void setVideo(String video) {
         this.video = video;
+    }
+
+    public String getJson() {
+        return json;
+    }
+
+    public void setJson(String json) {
+        this.json = json;
     }
 }

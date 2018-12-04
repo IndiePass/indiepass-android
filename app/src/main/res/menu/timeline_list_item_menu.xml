@@ -7,4 +7,10 @@
         android:title="@string/delete_post"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/timeline_entry_json"
+        android:title="@string/view_json"
+        android:visible="false"
+        app:showAsAction="never" />
+
 </menu>
