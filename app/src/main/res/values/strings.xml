@@ -84,7 +84,8 @@
     <string name="upload">Upload</string>
     <string name="upload_description">Upload images to your media endpoint. On success, the file URL will be added to the clipboard automatically.</string>
     <string name="one_image">1 image</string>
-    <string name="view_json">Debug</string>
+    <string name="debug">Debug</string>
+    <string name="copy_to_clipboard">Copy to clipboard</string>
 
     <!-- Preferences: share -->
     <string name="pref_category_sharing_title">Share</string>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Debug;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -28,6 +29,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.indieweb.indigenous.DebugActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
@@ -624,7 +626,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             popup.getMenuInflater().inflate(R.menu.timeline_list_item_menu, menu);
 
             if (this.debugJson) {
-                MenuItem item = menu.findItem(R.id.timeline_entry_json);
+                MenuItem item = menu.findItem(R.id.timeline_entry_debug);
                 if (item != null) {
                     item.setVisible(true);
                 }
@@ -653,21 +655,10 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             builder.show();
                             break;
 
-                        case R.id.timeline_entry_json:
-                            try {
-                                JSONObject json = new JSONObject(entry.getJson());
-                                builder.setTitle("Debug");
-                                builder.setMessage(json.toString(4));
-                                builder.setNegativeButton(context.getString(R.string.close), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                                AlertDialog alert = builder.create();
-                                alert.show();
-                            }
-                            catch (JSONException ignored) { }
+                        case R.id.timeline_entry_debug:
+                            Intent i = new Intent(context, DebugActivity.class);
+                            i.putExtra("debug", entry.getJson());
+                            context.startActivity(i);
                             break;
                     }
                     return true;

@@ -8,8 +8,8 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/timeline_entry_json"
-        android:title="@string/view_json"
+        android:id="@+id/timeline_entry_debug"
+        android:title="@string/debug"
         android:visible="false"
         app:showAsAction="never" />
 
