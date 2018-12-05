@@ -18,16 +18,16 @@ public class DebugActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debug);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            String debug = extras.getString("debug");
+        Indigenous app = Indigenous.getInstance();
+        String appDebug = app.getDebug();
+        if (appDebug != null) {
 
             // Try parsing with JSON, in case it fails, we'll fallback to the default string.
             try {
-                debugString = new JSONObject(debug).toString(4);
+                debugString = new JSONObject(appDebug).toString(4);
             }
             catch (Exception ignored) {
-                debugString = debug;
+                debugString = appDebug;
             }
         }
 

@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.DebugActivity;
+import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.TimelineItem;
@@ -110,7 +111,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
             case R.id.timeline_debug:
                 Intent i = new Intent(this, DebugActivity.class);
-                i.putExtra("debug", debugResponse);
+                Indigenous app = Indigenous.getInstance();
+                app.setDebug(debugResponse);
                 startActivity(i);
                 return true;
         }

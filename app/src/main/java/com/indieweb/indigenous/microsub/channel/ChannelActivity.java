@@ -21,6 +21,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.AboutActivity;
 import com.indieweb.indigenous.DebugActivity;
+import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.SettingsActivity;
 import com.indieweb.indigenous.indieauth.Endpoints;
@@ -274,7 +275,8 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
 
             case R.id.channels_debug:
                 Intent i = new Intent(this, DebugActivity.class);
-                i.putExtra("debug", debugResponse);
+                Indigenous app = Indigenous.getInstance();
+                app.setDebug(debugResponse);
                 startActivity(i);
                 return true;
 

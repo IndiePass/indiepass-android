@@ -29,6 +29,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.indieweb.indigenous.DebugActivity;
+import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
@@ -653,7 +654,8 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
                         case R.id.timeline_entry_debug:
                             Intent i = new Intent(context, DebugActivity.class);
-                            i.putExtra("debug", entry.getJson());
+                            Indigenous app = Indigenous.getInstance();
+                            app.setDebug(entry.getJson());
                             context.startActivity(i);
                             break;
                     }
