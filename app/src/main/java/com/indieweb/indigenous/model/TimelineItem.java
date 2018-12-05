@@ -118,7 +118,9 @@ public class TimelineItem {
     }
 
     public void addPhoto(String photo) {
-        this.photos.add(photo);
+        if (!this.photos.contains(photo)) {
+            this.photos.add(photo);
+        }
     }
 
     public String getAudio() {
