@@ -54,6 +54,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     ListView listView;
     Button loadMoreButton;
     boolean loadMoreButtonAdded = false;
+    boolean loadMoreClicked = false;
     String[] olderItems;
     String debugResponse;
     User user;
@@ -387,12 +388,14 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
                             if (olderItems[0] != null && olderItems[0].length() > 0) {
 
+                                loadMoreClicked = false;
+
                                 if (!loadMoreButtonAdded) {
                                     loadMoreButtonAdded = true;
                                     listView.addFooterView(loadMoreButton);
+                                    loadMoreButton.setOnTouchListener(loadMoreTouch);
                                 }
 
-                                loadMoreButton.setOnTouchListener(loadMoreTouch);
                             }
                             else {
                                 if (loadMoreButtonAdded) {
@@ -450,9 +453,12 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     loadMoreButton.setBackgroundColor(getResources().getColor(R.color.loadMoreButtonBackgroundColor));
                     break;
                 case MotionEvent.ACTION_UP:
-                    int downColor = getResources().getColor(R.color.loadMoreButtonBackgroundColor);
-                    loadMoreButton.setBackgroundColor(downColor);
-                    getTimeLineItems(olderItems[0]);
+                    if (!loadMoreClicked) {
+                        loadMoreClicked = true;
+                        int downColor = getResources().getColor(R.color.loadMoreButtonBackgroundColor);
+                        loadMoreButton.setBackgroundColor(downColor);
+                        getTimeLineItems(olderItems[0]);
+                    }
                     break;
 
             }
