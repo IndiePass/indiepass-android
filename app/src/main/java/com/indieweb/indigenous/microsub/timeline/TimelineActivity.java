@@ -227,6 +227,12 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                     item.addToSubType(type, object.getJSONArray("in-reply-to").get(0).toString());
                                 }
 
+                                // Follow-of.
+                                if (object.has("follow-of")) {
+                                    type = "follow-of";
+                                    textContent = "Started following you!";
+                                }
+
                                 // Repost.
                                 if (object.has("repost-of")) {
                                     type = "repost-of";
