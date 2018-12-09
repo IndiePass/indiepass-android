@@ -54,14 +54,21 @@
             android:title="@string/pref_key_image_preview_title"
             android:summary="@string/pref_key_image_preview_summary"
             android:defaultValue="true" />
+        <CheckBoxPreference
+            android:key="pref_key_image_scale"
+            android:title="@string/pref_key_image_scale_title"
+            android:summary="@string/pref_key_image_scale_summary"
+            android:defaultValue="true" />
         <EditTextPreference
             android:inputType="number"
+            android:dependency="pref_key_image_scale"
             android:key="pref_key_image_quality"
             android:title="@string/pref_key_image_quality_title"
             android:summary="@string/pref_key_image_quality_summary"
             android:defaultValue="80" />
         <EditTextPreference
             android:inputType="number"
+            android:dependency="pref_key_image_scale"
             android:key="pref_key_image_size"
             android:title="@string/pref_key_image_size_title"
             android:summary="@string/pref_key_image_size_summary"

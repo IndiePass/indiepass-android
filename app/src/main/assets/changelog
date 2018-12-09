@@ -9,6 +9,7 @@ Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a
     <li>Do not show duplicate images</li>
     <li>Timeline: show 'follow-of' types</li>
     <li>Do not crash the timeline when clicking 'Load more' twice </li>
+    <li>Scaling images is now an optional setting so original images can be uploaded if wanted</li>
     <li>Developer: settings to view the JSON response of channels, timeline or a single item in the reader</li>
 </ul>
 <h4>27/11/2018 - 0.25</h4>

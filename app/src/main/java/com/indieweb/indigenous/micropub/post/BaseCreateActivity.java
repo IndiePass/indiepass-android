@@ -3,7 +3,6 @@ package com.indieweb.indigenous.micropub.post;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
@@ -76,6 +75,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -353,24 +353,38 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     /**
      * Convert bitmap to byte[] array.
      */
-    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
-
-        // Default quality. The preference is stored as a string, but cast it to an integer.
-        Integer ImageQuality = 80;
-        String qualityPreference = Preferences.getPreference(this, "pref_key_image_quality", ImageQuality.toString());
-        if (parseInt(qualityPreference) <= 100 && parseInt(qualityPreference) > 0) {
-            ImageQuality = parseInt(qualityPreference);
-        }
+    public byte[] getFileDataFromDrawable(Bitmap bitmap, Boolean scale) {
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        switch (mime) {
-            case "image/png":
-                bitmap.compress(Bitmap.CompressFormat.PNG, ImageQuality, byteArrayOutputStream);
-                break;
-            case "image/jpg":
-            default:
-                bitmap.compress(Bitmap.CompressFormat.JPEG, ImageQuality, byteArrayOutputStream);
-                break;
+
+        if (scale) {
+            Integer ImageQuality = 80;
+            // Default quality. The preference is stored as a string, but cast it to an integer.
+            String qualityPreference = Preferences.getPreference(this, "pref_key_image_quality", ImageQuality.toString());
+            if (parseInt(qualityPreference) <= 100 && parseInt(qualityPreference) > 0) {
+                ImageQuality = parseInt(qualityPreference);
+            }
+
+            switch (mime) {
+                case "image/png":
+                    bitmap.compress(Bitmap.CompressFormat.PNG, ImageQuality, byteArrayOutputStream);
+                    break;
+                case "image/jpg":
+                default:
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, ImageQuality, byteArrayOutputStream);
+                    break;
+            }
+        }
+        else {
+            ContentResolver cR = this.getContentResolver();
+            try {
+                InputStream is = cR.openInputStream(imageUri);
+                final byte[] b = new byte[8192];
+                for (int r; (r = is.read(b)) != -1;) {
+                    byteArrayOutputStream.write(b, 0, r);
+                }
+            }
+            catch (Exception ignored) { }
         }
 
         return byteArrayOutputStream.toByteArray();
@@ -604,7 +618,9 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                         imagePostParam = "file";
                     }
 
-                    params.put(imagePostParam, new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap)));
+                    // Scale image.
+                    Boolean scale = Preferences.getPreference(getApplicationContext(), "pref_key_image_scale", true);
+                    params.put(imagePostParam, new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap, scale)));
                 }
                 return params;
             }
