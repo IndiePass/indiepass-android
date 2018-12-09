@@ -7,6 +7,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.indieweb.indigenous.util.Utility;
+
 import org.json.JSONObject;
 
 public class DebugActivity extends AppCompatActivity {
@@ -47,18 +49,7 @@ public class DebugActivity extends AppCompatActivity {
             case R.id.clipboard:
 
                 try {
-                    int sdk = android.os.Build.VERSION.SDK_INT;
-                    if (sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
-                        android.text.ClipboardManager clipboard = (android.text.ClipboardManager) this.getSystemService(CLIPBOARD_SERVICE);
-                        assert clipboard != null;
-                        clipboard.setText(debugString);
-                    }
-                    else {
-                        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) this.getSystemService(CLIPBOARD_SERVICE);
-                        android.content.ClipData clip = android.content.ClipData.newPlainText("Debug", debugString);
-                        assert clipboard != null;
-                        clipboard.setPrimaryClip(clip);
-                    }
+                    new Utility(getApplicationContext()).copyToClipboard(debugString, "Media url");
                     Toast.makeText(getApplicationContext(), "Copied to clipboard", Toast.LENGTH_SHORT).show();
                 }
                 catch (Exception ignored) {

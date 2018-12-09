@@ -63,6 +63,7 @@ import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Preferences;
+import com.indieweb.indigenous.util.Utility;
 import com.indieweb.indigenous.util.VolleyMultipartRequest;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -350,26 +351,6 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     }
 
     /**
-     * Copy text to clipboard.
-     *
-     * @param copyText
-     *   The text to copy to clipboard.
-     */
-    @SuppressWarnings({"deprecation", "ConstantConditions"})
-    public void copyToClipboard(String copyText) {
-        int sdk = android.os.Build.VERSION.SDK_INT;
-        if (sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
-            android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            clipboard.setText(copyText);
-        }
-        else {
-            android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            android.content.ClipData clip = android.content.ClipData.newPlainText("Media url", copyText);
-            clipboard.setPrimaryClip(clip);
-        }
-    }
-
-    /**
      * Convert bitmap to byte[] array.
      */
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
@@ -487,7 +468,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                                 Toast.makeText(getApplicationContext(), "Media upload success", Toast.LENGTH_SHORT).show();
                                 mediaUrl.setText(fileUrl);
                                 mediaUrl.setVisibility(View.VISIBLE);
-                                copyToClipboard(fileUrl);
+                                new Utility(getApplicationContext()).copyToClipboard(fileUrl, "Media url");
                             }
                             else {
                                 Toast.makeText(getApplicationContext(), "No file url found", Toast.LENGTH_SHORT).show();
