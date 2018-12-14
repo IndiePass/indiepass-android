@@ -281,8 +281,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
                 if (item.getTextContent().length() > 400) {
                     holder.expand.setVisibility(View.VISIBLE);
-                    holder.expand.setOnClickListener(new View.OnClickListener()
-                    {
+                    holder.expand.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(final View v) {
                             if (holder.content.isExpanded()) {

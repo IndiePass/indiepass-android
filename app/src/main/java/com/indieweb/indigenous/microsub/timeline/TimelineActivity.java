@@ -338,7 +338,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                     }
 
                                 }
-                                else if(object.has("summary") && addContent) {
+                                else if (object.has("summary") && addContent) {
                                     addContent = false;
                                     textContent = object.getString("summary");
                                 }
@@ -346,6 +346,9 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 // Name.
                                 if (object.has("name")) {
                                     name = object.getString("name").replace("\n", "").replace("\r", "");
+                                    if (name.equals(textContent)) {
+                                        name = "";
+                                    }
                                 }
                                 else if (object.has("summary") && addContent) {
                                     name = object.getString("summary").replace("\n", "").replace("\r", "");
