@@ -118,7 +118,7 @@
     <string name="pref_key_image_quality_title">Image upload quality</string>
     <string name="pref_key_image_quality_summary">Define the quality for image manipulations. Ranges from 0 to 100. Higher values mean better image quality but bigger files.</string>
     <string name="pref_key_image_size_title">Image upload size</string>
-    <string name="pref_key_image_size_summary">Maximum image size in width</string>
+    <string name="pref_key_image_size_summary">Maximum image size in width. In case the preview keeps blank, set the default size lower as this indicates the phone has ran out of memory.</string>
 
     <!-- Preferences: debugging -->
     <string name="pref_category_debug_title">Developer</string>

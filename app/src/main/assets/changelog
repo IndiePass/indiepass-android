@@ -7,6 +7,7 @@ Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a
 <h4>xx/xx/xxxx - 0.27</h4>
 <ul>
     <li>Optimize name and text content</li>
+    <li>If scaling is disabled, use the default preview size of 1000 so the phone does not run out of memory</li>
 </ul>
 <h4>9/12/2018 - 0.26</h4>
 <ul>

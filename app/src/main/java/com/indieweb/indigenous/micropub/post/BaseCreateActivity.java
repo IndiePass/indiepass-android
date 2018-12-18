@@ -332,9 +332,11 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         mime = cR.getType(imageUri);
 
         Integer ImageSize = 1000;
-        String sizePreference = Preferences.getPreference(this, "pref_key_image_size", ImageSize.toString());
-        if (parseInt(sizePreference) > 0) {
-            ImageSize = parseInt(sizePreference);
+        if (Preferences.getPreference(getApplicationContext(), "pref_key_image_scale", true)) {
+            String sizePreference = Preferences.getPreference(this, "pref_key_image_size", ImageSize.toString());
+            if (parseInt(sizePreference) > 0) {
+                ImageSize = parseInt(sizePreference);
+            }
         }
 
         Glide
@@ -618,7 +620,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                         imagePostParam = "file";
                     }
 
-                    // Scale image.
+                    // Put image in body. Send along whether to scale or not.
                     Boolean scale = Preferences.getPreference(getApplicationContext(), "pref_key_image_scale", true);
                     params.put(imagePostParam, new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap, scale)));
                 }
