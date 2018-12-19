@@ -1,6 +1,5 @@
 package com.indieweb.indigenous.microsub.timeline;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
@@ -14,8 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
+import com.bumptech.glide.request.RequestOptions;
 import com.indieweb.indigenous.R;
 
 import java.util.ArrayList;
@@ -82,19 +80,12 @@ public class TimelineImageActivity extends AppCompatActivity {
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             View imageSlide = inflater.inflate(R.layout.widget_image_slide, null);
-            final ImageView imageView = imageSlide.findViewById(R.id.timeline_image_fullscreen);
-            final ImageView loading = imageSlide.findViewById(R.id.loading);
+            ImageView imageView = imageSlide.findViewById(R.id.timeline_image_fullscreen);
 
             Glide.with(TimelineImageActivity.this)
-                .asBitmap()
                 .load(photos.get(position))
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
-                        imageView.setImageBitmap(resource);
-                        loading.setVisibility(View.GONE);
-                    }
-                });
+                .apply(new RequestOptions().placeholder(R.drawable.progress_loading))
+                .into(imageView);
             container.addView(imageSlide, 0);
 
             return imageSlide;

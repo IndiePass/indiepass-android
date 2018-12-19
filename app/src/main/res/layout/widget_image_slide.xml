@@ -3,15 +3,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <ImageView
-        android:id="@+id/loading"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/progress_loading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/loadingIcon" />
-
     <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/timeline_image_fullscreen"
         android:layout_width="fill_parent"
