@@ -78,6 +78,11 @@
             android:title="@string/pref_key_video_autoplay_title"
             android:defaultValue="false" />
             />
+        <CheckBoxPreference
+            android:key="pref_key_media_name"
+            android:title="@string/pref_key_media_name_title"
+            android:summary="@string/pref_key_media_name_summary"
+            android:defaultValue="false" />
     </PreferenceScreen>
 
     <PreferenceScreen

@@ -529,10 +529,12 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 bodyParams.put("access_token", user.getAccessToken());
 
                 // h type.
-                bodyParams.put("h", hType);
+                if (!isMediaRequest) {
+                    bodyParams.put("h", hType);
+                }
 
                 // Title
-                if (title != null) {
+                if (title != null && !TextUtils.isEmpty(title.getText())) {
                   bodyParams.put("name", title.getText().toString());
                 }
 
