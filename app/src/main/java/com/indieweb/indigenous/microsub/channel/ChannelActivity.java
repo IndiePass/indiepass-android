@@ -192,6 +192,8 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
         Menu menu = new BottomSheetMenu(this);
         new MenuInflater(this).inflate(R.menu.micropub_post_menu, menu);
 
+
+
         // Hide Media if micropub media endpoint is empty.
         String micropubMediaEndpoint = user.getMicropubMediaEndpoint();
         if (micropubMediaEndpoint == null || micropubMediaEndpoint.length() == 0) {
@@ -199,15 +201,81 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         // Hide Update if setting is not enabled.
-        boolean updateEnabled = Preferences.getPreference(this, "pref_key_experimental_update", false);
-        if (!updateEnabled) {
+        if (!Preferences.getPreference(this, "pref_key_experimental_update", false)) {
             menu.removeItem(R.id.updatePost);
         }
 
         // Hide Posts if setting is not enabled.
-        boolean postListEnabled = Preferences.getPreference(this, "pref_key_experimental_post_list", false);
-        if (!postListEnabled) {
+        if (!Preferences.getPreference(this, "pref_key_experimental_post_list", false)) {
             menu.removeItem(R.id.sourcePostList);
+        }
+
+        // Hide post types if configured.
+        if (Preferences.getPreference(this, "pref_key_post_type_hide", false)) {
+
+            ArrayList<Integer> protectedTypes = new ArrayList<>();
+            protectedTypes.add(R.id.createMedia);
+            protectedTypes.add(R.id.updatePost);
+            protectedTypes.add(R.id.sourcePostList);
+
+            String postTypes = user.getPostTypes();
+
+            ArrayList<String> postTypeList = new ArrayList<>();
+            if (postTypes != null && postTypes.length() > 0) {
+                try {
+                    JSONObject object;
+                    JSONArray itemList = new JSONArray(postTypes);
+
+                    for (int i = 0; i < itemList.length(); i++) {
+                        object = itemList.getJSONObject(i);
+                        String type = object.getString("type");
+                        postTypeList.add(type);
+                    }
+
+                }
+                catch (JSONException ignored) { }
+            }
+
+            // Loop over menu items.
+            for (int i = 0; i < menu.size(); i++){
+                String menuType = "";
+                Integer id = menu.getItem(i).getItemId();
+                if (!protectedTypes.contains(id)) {
+                    switch (id) {
+                        case R.id.createNote:
+                            menuType = "note";
+                            break;
+                        case R.id.createArticle:
+                            menuType = "article";
+                            break;
+                        case R.id.createLike:
+                            menuType = "like";
+                            break;
+                        case R.id.createBookmark:
+                            menuType = "bookmark";
+                            break;
+                        case R.id.createReply:
+                            menuType = "reply";
+                            break;
+                        case R.id.createRepost:
+                            menuType = "repost";
+                            break;
+                        case R.id.createEvent:
+                            menuType = "event";
+                            break;
+                        case R.id.createRSVP:
+                            menuType = "rsvp";
+                            break;
+                        case R.id.createIssue:
+                            menuType = "issue";
+                            break;
+                    }
+
+                    if (!postTypeList.contains(menuType)) {
+                        menu.removeItem(id);
+                    }
+                }
+            }
         }
 
         new BottomSheet.Builder(this, R.style.BottomSheet_StyleDialog)

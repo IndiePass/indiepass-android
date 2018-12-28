@@ -43,6 +43,11 @@
             android:title="@string/pref_key_tags_list_title"
             android:summary="@string/pref_key_tags_list_summary"
             android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="pref_key_post_type_hide"
+            android:title="@string/pref_key_post_type_hide_title"
+            android:summary="@string/pref_key_post_type_hide_summary"
+            android:defaultValue="false" />
     </PreferenceScreen>
 
     <PreferenceScreen

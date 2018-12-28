@@ -38,6 +38,12 @@ import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Preferences;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 public class MicropubActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     String incomingText = "";
@@ -121,8 +127,7 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
         }
 
         // Hide Update if setting is not enabled.
-        boolean updateEnabled = Preferences.getPreference(this, "pref_key_experimental_update", false);
-        if (!updateEnabled) {
+        if (!Preferences.getPreference(this, "pref_key_experimental_update", false)) {
             Menu menu = navigationView.getMenu();
             MenuItem item = menu.getItem(10);
             if (item != null) {
@@ -131,14 +136,83 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
         }
 
         // Hide Posts if setting is not enabled.
-        boolean postListEnabled = Preferences.getPreference(this, "pref_key_experimental_post_list", false);
-        if (!postListEnabled) {
+        if (!Preferences.getPreference(this, "pref_key_experimental_post_list", false)) {
             Menu menu = navigationView.getMenu();
             MenuItem item = menu.getItem(11);
             if (item != null) {
                 item.setVisible(false);
             }
         }
+
+        // Hide post types if configured.
+        if (Preferences.getPreference(this, "pref_key_post_type_hide", false)) {
+
+            ArrayList<Integer> protectedTypes = new ArrayList<>();
+            protectedTypes.add(R.id.createMedia);
+            protectedTypes.add(R.id.updatePost);
+            protectedTypes.add(R.id.sourcePostList);
+
+            String postTypes = user.getPostTypes();
+
+            ArrayList<String> postTypeList = new ArrayList<>();
+            if (postTypes != null && postTypes.length() > 0) {
+                try {
+                    JSONObject object;
+                    JSONArray itemList = new JSONArray(postTypes);
+
+                    for (int i = 0; i < itemList.length(); i++) {
+                        object = itemList.getJSONObject(i);
+                        String type = object.getString("type");
+                        postTypeList.add(type);
+                    }
+
+                }
+                catch (JSONException ignored) { }
+            }
+
+            // Loop over menu items.
+            Menu menu = navigationView.getMenu();
+            for (int i = 0; i < menu.size(); i++){
+                String menuType = "";
+                Integer id = menu.getItem(i).getItemId();
+                if (!protectedTypes.contains(id)) {
+                    switch (id) {
+                        case R.id.createNote:
+                            menuType = "note";
+                            break;
+                        case R.id.createArticle:
+                            menuType = "article";
+                            break;
+                        case R.id.createLike:
+                            menuType = "like";
+                            break;
+                        case R.id.createBookmark:
+                            menuType = "bookmark";
+                            break;
+                        case R.id.createReply:
+                            menuType = "reply";
+                            break;
+                        case R.id.createRepost:
+                            menuType = "repost";
+                            break;
+                        case R.id.createEvent:
+                            menuType = "event";
+                            break;
+                        case R.id.createRSVP:
+                            menuType = "rsvp";
+                            break;
+                        case R.id.createIssue:
+                            menuType = "issue";
+                            break;
+                    }
+
+                    if (!postTypeList.contains(menuType)) {
+                        menu.getItem(i).setVisible(false);
+                    }
+                }
+            }
+        }
+
     }
 
     // Go to reader.
