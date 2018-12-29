@@ -128,11 +128,11 @@
     <string name="pref_category_debug_title">Developer</string>
     <string name="pref_category_debug_summary">Add helper functionality to help debugging Indigenous or your application.</string>
     <string name="pref_key_debug_microsub_channels_json_title">Channels JSON</string>
-    <string name="pref_key_debug_microsub_channels_json_summary">Adds a "Debug" option to the channels list in the Reader to view the JSON representation.</string>
-    <string name="pref_key_debug_microsub_timeline_json_title">Timeline item JSON</string>
-    <string name="pref_key_debug_microsub_timeline_json_summary">Adds a "Debug" option to every timeline in the Reader to view the JSON representation.</string>
+    <string name="pref_key_debug_microsub_channels_json_summary">Adds a "Debug" option to the channels list in the reader to view the JSON representation.</string>
+    <string name="pref_key_debug_microsub_timeline_json_title">Timeline JSON</string>
+    <string name="pref_key_debug_microsub_timeline_json_summary">Adds a "Debug" option to every timeline in the reader to view the JSON representation.</string>
     <string name="pref_key_debug_microsub_item_json_title">Reader item JSON</string>
-    <string name="pref_key_debug_microsub_item_json_summary">Adds a "Debug" option to every item in the Reader to view the JSON representation.</string>
+    <string name="pref_key_debug_microsub_item_json_summary">Adds a "Debug" option to every item in the reader to view the JSON representation.</string>
 
     <!-- Preferences: experimental -->
     <string name="pref_category_experimental_title">Experimental</string>
