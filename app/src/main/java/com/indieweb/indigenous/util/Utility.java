@@ -4,12 +4,6 @@ import android.content.Context;
 
 public class Utility {
 
-    private final Context context;
-
-    public Utility(Context context) {
-        this.context = context;
-    }
-
     /**
      * Copy to clipboard.
      *
@@ -19,7 +13,7 @@ public class Utility {
      *   The clipboard label
      */
     @SuppressWarnings("deprecation")
-    public void copyToClipboard(String copyText, String label) {
+    public static void copyToClipboard(String copyText, String label, Context context) {
         int sdk = android.os.Build.VERSION.SDK_INT;
         if (sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
             android.text.ClipboardManager clipboard = (android.text.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
@@ -36,4 +30,20 @@ public class Utility {
         }
     }
 
+    /**
+     * Trim a char sequence.
+     *
+     * @param text
+     *   The text to trim.
+     *
+     * @return text
+     */
+    public static CharSequence trim(CharSequence text) {
+        if (text.length() > 0) {
+            while (text.charAt(text.length() - 1) == '\n') {
+                text = text.subSequence(0, text.length() - 1);
+            }
+        }
+        return text;
+    }
 }

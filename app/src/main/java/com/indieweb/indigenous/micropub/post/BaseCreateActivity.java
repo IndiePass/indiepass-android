@@ -484,7 +484,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                                 Toast.makeText(getApplicationContext(), "Media upload success", Toast.LENGTH_SHORT).show();
                                 mediaUrl.setText(fileUrl);
                                 mediaUrl.setVisibility(View.VISIBLE);
-                                new Utility(getApplicationContext()).copyToClipboard(fileUrl, "Media url");
+                                Utility.copyToClipboard(fileUrl, "Media url", getApplicationContext());
                             }
                             else {
                                 Toast.makeText(getApplicationContext(), "No file url found", Toast.LENGTH_SHORT).show();

@@ -49,7 +49,7 @@ public class DebugActivity extends AppCompatActivity {
             case R.id.clipboard:
 
                 try {
-                    new Utility(getApplicationContext()).copyToClipboard(debugString, "Media url");
+                    Utility.copyToClipboard(debugString, "Media url", getApplicationContext());
                     Toast.makeText(getApplicationContext(), "Copied to clipboard", Toast.LENGTH_SHORT).show();
                 }
                 catch (Exception ignored) {

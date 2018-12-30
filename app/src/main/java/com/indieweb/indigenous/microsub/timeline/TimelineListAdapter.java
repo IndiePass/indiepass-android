@@ -40,6 +40,7 @@ import com.indieweb.indigenous.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Preferences;
+import com.indieweb.indigenous.util.Utility;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -266,6 +267,9 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                         sequence = Html.fromHtml(html);
                     }
 
+                    // Trim end.
+                    sequence = Utility.trim(sequence);
+
                     SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
                     URLSpan[] urls = strBuilder.getSpans(0, sequence.length(), URLSpan.class);
                     for (URLSpan span : urls) {
@@ -276,7 +280,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 }
                 else {
                     holder.content.setMovementMethod(null);
-                    holder.content.setText(item.getTextContent());
+                    holder.content.setText(item.getTextContent().trim());
                 }
 
                 if (item.getTextContent().length() > 400) {
