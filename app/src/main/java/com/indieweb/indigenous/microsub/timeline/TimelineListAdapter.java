@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -24,6 +25,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -41,13 +43,12 @@ import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
+import com.indieweb.indigenous.widget.ExpandableTextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import at.blogc.android.views.ExpandableTextView;
 
 /**
  * Timeline items list adapter.
@@ -61,12 +62,14 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     private boolean debugItemJSON;
     private final User user;
     private final String channelId;
+    private final ListView listView;
 
-    TimelineListAdapter(Context context, List<TimelineItem> items, User user, String channelId) {
+    TimelineListAdapter(Context context, List<TimelineItem> items, User user, String channelId, ListView listView) {
         this.context = context;
         this.items = items;
         this.user = user;
         this.channelId = channelId;
+        this.listView = listView;
         this.imagePreview = Preferences.getPreference(context, "pref_key_image_preview", true);
         this.debugItemJSON = Preferences.getPreference(context, "pref_key_debug_microsub_item_json", false);
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -111,7 +114,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public Button menu;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
 
         if (convertView == null) {
@@ -285,6 +288,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
                 if (item.getTextContent().length() > 400) {
                     holder.expand.setVisibility(View.VISIBLE);
+
                     holder.expand.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(final View v) {
@@ -296,6 +300,14 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                                 holder.content.expand();
                                 holder.expand.setText(R.string.close);
                             }
+                        }
+                    });
+
+                    // Set listener on end collapse.
+                    holder.content.addOnExpandListener(new ExpandableTextView.OnExpandListener() {
+                        @Override
+                        public void onEndCollapse(@NonNull ExpandableTextView view) {
+                            listView.setSelection(position);
                         }
                     });
 

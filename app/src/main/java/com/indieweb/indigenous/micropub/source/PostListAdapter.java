@@ -22,13 +22,13 @@ import com.indieweb.indigenous.micropub.MicropubAction;
 import com.indieweb.indigenous.micropub.post.UpdateActivity;
 import com.indieweb.indigenous.model.PostListItem;
 import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.util.Utility;
+import com.indieweb.indigenous.widget.ExpandableTextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import at.blogc.android.views.ExpandableTextView;
 
 /**
  * Source post list items list adapter.
@@ -156,6 +156,8 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
                     sequence = Html.fromHtml(html);
                 }
 
+                // Trim end.
+                sequence = Utility.trim(sequence);
                 holder.content.setVisibility(View.VISIBLE);
                 holder.content.setText(sequence);
 

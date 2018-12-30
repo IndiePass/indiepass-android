@@ -9,6 +9,7 @@ Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a
     <li>Optimize name and text content</li>
     <li>Animated gifs now work in the gallery view too</li>
     <li>Trim content so less space is used for a single reader item</li>
+    <li>Scroll back to item row in reader when 'close' button is toggled</li>
     <li>Allow sending a title for a file uploaded to the media endpoint</li>
     <li>Hide post types if not supported or enabled on the micropub server</li>
     <li>If scaling is disabled, use the default preview size of 1000 so the phone does not run out of memory</li>
