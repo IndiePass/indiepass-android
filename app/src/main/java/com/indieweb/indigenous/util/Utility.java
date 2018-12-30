@@ -11,6 +11,8 @@ public class Utility {
      *   The text to copy to clipboard.
      * @param label
      *   The clipboard label
+     * @param context
+     *   The current context.
      */
     @SuppressWarnings("deprecation")
     public static void copyToClipboard(String copyText, String label, Context context) {
