@@ -8,7 +8,7 @@ Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a
 <ul>
     <li>Optimize name and text content</li>
     <li>Animated gifs now work in the gallery view too</li>
-    <li>Render context for replies, likes and reposts if available</li>
+    <li>Render reference content for replies, likes and reposts if available</li>
     <li>Trim content so less space is used for a single reader item</li>
     <li>Scroll back to item row in reader when 'close' button is toggled</li>
     <li>Allow sending a title for a file uploaded to the media endpoint</li>
