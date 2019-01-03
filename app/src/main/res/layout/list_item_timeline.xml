@@ -52,7 +52,7 @@
             android:layout_width="fill_parent" />
 
         <TextView
-            android:id="@+id/timeline_context"
+            android:id="@+id/timeline_response"
             android:textColor="@color/textColor"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -85,6 +85,19 @@
             android:textSize="@dimen/timeline_list_item_text_size"
             android:lineSpacingExtra="5dp"
             android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/timeline_reference"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:padding="@dimen/box_padding"
+            android:textIsSelectable="true"
+            android:lineSpacingExtra="5dp"
+            android:background="@drawable/border_box"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/timeline_list_item_text_size"
+            android:layout_width="fill_parent" />
 
         <Button
             android:id="@+id/timeline_content_more"

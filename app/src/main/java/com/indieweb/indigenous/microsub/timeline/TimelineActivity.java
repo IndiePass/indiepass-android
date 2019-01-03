@@ -227,7 +227,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 // In reply to.
                                 if (object.has("in-reply-to")) {
                                     type = "in-reply-to";
-                                    item.addToSubType(type, object.getJSONArray("in-reply-to").get(0).toString());
+                                    item.addToResponseType(type, object.getJSONArray("in-reply-to").get(0).toString());
+                                    checkReference(object, object.getJSONArray("in-reply-to").get(0).toString(), item);
                                 }
 
                                 // Follow-of.
@@ -240,33 +241,36 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 if (object.has("repost-of")) {
                                     type = "repost-of";
                                     addContent = false;
-                                    item.addToSubType(type, object.getJSONArray("repost-of").get(0).toString());
+                                    item.addToResponseType(type, object.getJSONArray("repost-of").get(0).toString());
+                                    checkReference(object, object.getJSONArray("repost-of").get(0).toString(), item);
                                 }
 
                                 // Like.
                                 if (object.has("like-of")) {
                                     type = "like-of";
                                     addContent = false;
-                                    item.addToSubType(type, object.getJSONArray("like-of").get(0).toString());
+                                    item.addToResponseType(type, object.getJSONArray("like-of").get(0).toString());
+                                    checkReference(object, object.getJSONArray("like-of").get(0).toString(), item);
                                 }
 
                                 // Bookmark.
                                 if (object.has("bookmark-of")) {
                                     type = "bookmark-of";
                                     addContent = false;
-                                    item.addToSubType(type, object.getJSONArray("bookmark-of").get(0).toString());
+                                    item.addToResponseType(type, object.getJSONArray("bookmark-of").get(0).toString());
+                                    checkReference(object, object.getJSONArray("bookmark-of").get(0).toString(), item);
                                 }
 
                                 // A checkin.
                                 if (object.has("checkin")) {
                                     type = "checkin";
-                                    item.addToSubType(type, object.getJSONObject("checkin").getString("name"));
+                                    item.addToResponseType(type, object.getJSONObject("checkin").getString("name"));
                                     String checkinUrl = "";
                                     try {
                                         checkinUrl = object.getJSONObject("checkin").getString("url");
                                     }
                                     catch (Exception ignored) {}
-                                    item.addToSubType("checkin-url", checkinUrl);
+                                    item.addToResponseType("checkin-url", checkinUrl);
                                 }
 
                                 // Set type.
@@ -469,4 +473,52 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         }
     };
 
+    /**
+     * Returns the reference content.
+     *
+     * @param object
+     *   A JSON object.
+     * @param url
+     *   The url to find in references
+     * @param item
+     *   The current timeline item.
+     */
+    private void checkReference(JSONObject object, String url, TimelineItem item) {
+
+        if (object.has("refs")) {
+            try {
+                JSONObject references = object.getJSONObject("refs");
+                if (references.has(url)) {
+                    JSONObject ref = references.getJSONObject(url);
+
+                    // Content.
+                    if (ref.has("content")) {
+                        JSONObject content = ref.getJSONObject("content");
+                        if (content.has("text")) {
+                            item.setReference(content.getString("text"));
+                        }
+                    }
+                    else if (ref.has("summary")) {
+                        item.setReference(ref.getString("summary"));
+                    }
+
+                    // Photo.
+                    if (ref.has("photo")) {
+                        JSONArray photos = ref.getJSONArray("photo");
+                        for (int p = 0; p < photos.length(); p++) {
+                            item.addPhoto(photos.getString(p));
+                        }
+                    }
+
+                    // Video.
+                    if (ref.has("video")) {
+                        String video = ref.getJSONArray("video").getString(0);
+                        item.setVideo(video);
+                    }
+
+                }
+            }
+            catch (JSONException ignored) { }
+        }
+    }
 }

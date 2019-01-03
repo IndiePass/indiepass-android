@@ -16,14 +16,14 @@ public class TimelineItem {
     private String url;
     private String authorName;
     private String authorPhoto = "";
+    private String reference = "";
     private String json;
     private ArrayList<String> photos = new ArrayList<>();
     // TODO allow multiple audio
     private String audio;
     // TODO allow multiple video
     private String video;
-    // TODO there can actually be multiple of say reply
-    private Map<String, String> subType = new LinkedHashMap<>();
+    private Map<String, String> responseType = new LinkedHashMap<>();
 
     public boolean isRead() {
         return isRead;
@@ -49,12 +49,12 @@ public class TimelineItem {
         this.type = type;
     }
 
-    public String getSubType(String key) {
-        return subType.get(key);
+    public String getResponseType(String key) {
+        return responseType.get(key);
     }
 
-    public void addToSubType(String key, String value) {
-        this.subType.put(key, value);
+    public void addToResponseType(String key, String value) {
+        this.responseType.put(key, value);
     }
 
     public String getPublished() {
@@ -137,6 +137,14 @@ public class TimelineItem {
 
     public void setVideo(String video) {
         this.video = video;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     public String getJson() {

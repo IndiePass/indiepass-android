@@ -94,8 +94,8 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public TextView author;
         public ImageView authorPhoto;
         public TextView name;
-        // TODO might need a better name
-        public TextView context;
+        public TextView reference;
+        public TextView response;
         public TextView published;
         public Button expand;
         public ExpandableTextView content;
@@ -125,7 +125,8 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.author = convertView.findViewById(R.id.timeline_author);
             holder.authorPhoto = convertView.findViewById(R.id.timeline_author_photo);
             holder.name = convertView.findViewById(R.id.timeline_name);
-            holder.context = convertView.findViewById(R.id.timeline_context);
+            holder.reference = convertView.findViewById(R.id.timeline_reference);
+            holder.response = convertView.findViewById(R.id.timeline_response);
             holder.content = convertView.findViewById(R.id.timeline_content);
             holder.expand = convertView.findViewById(R.id.timeline_content_more);
             holder.image = convertView.findViewById(R.id.timeline_image);
@@ -199,60 +200,60 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.name.setVisibility(View.GONE);
             }
 
-            String ContextData = "";
+            String ResponseData = "";
             if (item.getType().equals("bookmark-of") || item.getType().equals("repost-of") || item.getType().equals("in-reply-to") || item.getType().equals("like-of") || item.getType().equals("checkin")) {
-                String ContextText = "";
-                String ContextUrl = "";
-                String ContextLinkText = "";
+                String ResponseText = "";
+                String ResponseUrl = "";
+                String ResponseLinkText = "";
                 switch (item.getType()) {
                     case "in-reply-to":
-                        ContextText = "In reply to";
-                        ContextUrl = item.getSubType("in-reply-to");
-                        ContextLinkText = ContextUrl;
+                        ResponseText = "In reply to";
+                        ResponseUrl = item.getResponseType("in-reply-to");
+                        ResponseLinkText = ResponseUrl;
                         break;
                     case "like-of":
-                        ContextText = "Like of";
-                        ContextUrl = item.getSubType("like-of");
-                        ContextLinkText = ContextUrl;
+                        ResponseText = "Like of";
+                        ResponseUrl = item.getResponseType("like-of");
+                        ResponseLinkText = ResponseUrl;
                         break;
                     case "repost-of":
-                        ContextText = "Repost of";
-                        ContextUrl = item.getSubType("repost-of");
-                        ContextLinkText = ContextUrl;
+                        ResponseText = "Repost of";
+                        ResponseUrl = item.getResponseType("repost-of");
+                        ResponseLinkText = ResponseUrl;
                         break;
                     case "bookmark-of":
-                        ContextText = "Bookmark of";
-                        ContextUrl = item.getSubType("bookmark-of");
-                        ContextLinkText = ContextUrl;
+                        ResponseText = "Bookmark of";
+                        ResponseUrl = item.getResponseType("bookmark-of");
+                        ResponseLinkText = ResponseUrl;
                         break;
                     case "checkin":
-                        ContextText = "Checked in at ";
-                        ContextUrl = item.getSubType("checkin-url");
-                        ContextLinkText = item.getSubType("checkin");
+                        ResponseText = "Checked in at ";
+                        ResponseUrl = item.getResponseType("checkin-url");
+                        ResponseLinkText = item.getResponseType("checkin");
                         break;
                 }
 
-                if (ContextText.length() > 0 && ContextUrl.length() > 0) {
-                    ContextData = ContextText + " <a href=\"" + ContextUrl + "\">" + ContextLinkText + "</a>";
+                if (ResponseText.length() > 0 && ResponseUrl.length() > 0) {
+                    ResponseData = ResponseText + " <a href=\"" + ResponseUrl + "\">" + ResponseLinkText + "</a>";
                 }
             }
 
-            if (ContextData.length() > 0) {
-                holder.context.setVisibility(View.VISIBLE);
+            if (ResponseData.length() > 0) {
+                holder.response.setVisibility(View.VISIBLE);
                 //holder.context.setClickable(true);
 
-                CharSequence sequence = Html.fromHtml(ContextData);
+                CharSequence sequence = Html.fromHtml(ResponseData);
                 SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
                 URLSpan[] urls = strBuilder.getSpans(0, sequence.length(), URLSpan.class);
                 for (URLSpan span : urls) {
                     makeLinkClickable(strBuilder, span);
                 }
 
-                holder.context.setText(strBuilder);
-                holder.context.setMovementMethod(LinkMovementMethod.getInstance());
+                holder.response.setText(strBuilder);
+                holder.response.setMovementMethod(LinkMovementMethod.getInstance());
             }
             else {
-                holder.context.setVisibility(View.GONE);
+                holder.response.setVisibility(View.GONE);
             }
 
             // Content.
@@ -320,6 +321,15 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.content.setMovementMethod(null);
                 holder.content.setVisibility(View.GONE);
                 holder.expand.setVisibility(View.GONE);
+            }
+
+            // Reference.
+            if (item.getReference().length() > 0) {
+                holder.reference.setVisibility(View.VISIBLE);
+                holder.reference.setText(item.getReference());
+            }
+            else {
+                holder.reference.setVisibility(View.GONE);
             }
 
             // Image.
