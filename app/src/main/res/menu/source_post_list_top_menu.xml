@@ -13,4 +13,10 @@
         android:title="@string/source_post_list_refresh"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/source_list_debug"
+        android:title="@string/debug"
+        android:visible="false"
+        app:showAsAction="never" />
+
 </menu>

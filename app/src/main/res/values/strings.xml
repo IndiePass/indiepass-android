@@ -133,6 +133,8 @@
     <string name="pref_key_debug_microsub_timeline_json_summary">Adds a "Debug" option to every timeline in the reader to view the JSON representation.</string>
     <string name="pref_key_debug_microsub_item_json_title">Reader item JSON</string>
     <string name="pref_key_debug_microsub_item_json_summary">Adds a "Debug" option to every item in the reader to view the JSON representation.</string>
+    <string name="pref_key_debug_source_list_title">Posts lists JSON</string>
+    <string name="pref_key_debug_source_list_summary">Adds a "Debug" option to the posts lists to view the JSON representation.</string>
 
     <!-- Preferences: experimental -->
     <string name="pref_category_experimental_title">Experimental</string>

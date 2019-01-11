@@ -19,6 +19,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.indieweb.indigenous.DebugActivity;
+import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.PostListItem;
 import com.indieweb.indigenous.model.User;
@@ -44,6 +46,7 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
     Button loadMoreButton;
     boolean loadMoreButtonAdded = false;
     String[] olderItems;
+    String debugResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +67,21 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.source_post_list_top_menu, menu);
+
+        boolean debugJson = Preferences.getPreference(this, "pref_key_debug_source_list", false);
+        if (debugJson) {
+            MenuItem item = menu.findItem(R.id.source_list_debug);
+            if (item != null) {
+                item.setVisible(true);
+            }
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // TODO make button names consistent (everywhere)
-            // TODO check names of all id's and check the 'standards' and document that.
             case R.id.source_post_list_refresh:
                 refreshLayout.setRefreshing(true);
                 startPostList();
@@ -79,6 +89,12 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
             case R.id.source_post_list_filter:
                 Intent PostListFilter = new Intent(getBaseContext(), PostListFilterActivity.class);
                 startActivityForResult(PostListFilter, 1);
+                return true;
+            case R.id.source_list_debug:
+                Intent i = new Intent(this, DebugActivity.class);
+                Indigenous app = Indigenous.getInstance();
+                app.setDebug(debugResponse);
+                startActivity(i);
                 return true;
         }
 
@@ -162,6 +178,7 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
 
                         try {
                             JSONObject object;
+                            debugResponse = response;
                             JSONObject micropubResponse = new JSONObject(response);
                             JSONArray itemList = micropubResponse.getJSONArray("items");
 

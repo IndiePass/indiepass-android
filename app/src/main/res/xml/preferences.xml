@@ -130,6 +130,11 @@
             android:title="@string/pref_key_debug_microsub_item_json_title"
             android:summary="@string/pref_key_debug_microsub_item_json_summary"
             android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="pref_key_debug_source_list"
+            android:title="@string/pref_key_debug_source_list_title"
+            android:summary="@string/pref_key_debug_source_list_summary"
+            android:defaultValue="false" />
     </PreferenceScreen>
 
 </PreferenceScreen>
