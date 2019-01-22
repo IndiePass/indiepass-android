@@ -233,9 +233,12 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                         break;
                 }
 
-                if (ResponseText.length() > 0 && ResponseUrl.length() > 0) {
-                    ResponseData = ResponseText + " <a href=\"" + ResponseUrl + "\">" + ResponseLinkText + "</a>";
+                try {
+                    if (ResponseText.length() > 0 && ResponseUrl.length() > 0) {
+                        ResponseData = ResponseText + " <a href=\"" + ResponseUrl + "\">" + ResponseLinkText + "</a>";
+                    }
                 }
+                catch (Exception ignored) { }
             }
 
             if (ResponseData.length() > 0) {

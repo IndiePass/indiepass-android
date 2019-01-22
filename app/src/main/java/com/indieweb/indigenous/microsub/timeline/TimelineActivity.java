@@ -227,8 +227,11 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 // In reply to.
                                 if (object.has("in-reply-to")) {
                                     type = "in-reply-to";
-                                    item.addToResponseType(type, object.getJSONArray("in-reply-to").get(0).toString());
-                                    checkReference(object, object.getJSONArray("in-reply-to").get(0).toString(), item);
+                                    String value = getSingleJsonValueFromArrayOrString(type, object);
+                                    if (value.length() > 0) {
+                                        item.addToResponseType(type, value);
+                                        checkReference(object, value, item);
+                                    }
                                 }
 
                                 // Follow-of.
@@ -241,24 +244,33 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 if (object.has("repost-of")) {
                                     type = "repost-of";
                                     addContent = false;
-                                    item.addToResponseType(type, object.getJSONArray("repost-of").get(0).toString());
-                                    checkReference(object, object.getJSONArray("repost-of").get(0).toString(), item);
+                                    String value = getSingleJsonValueFromArrayOrString(type, object);
+                                    if (value.length() > 0) {
+                                        item.addToResponseType(type, value);
+                                        checkReference(object, value, item);
+                                    }
                                 }
 
                                 // Like.
                                 if (object.has("like-of")) {
                                     type = "like-of";
                                     addContent = false;
-                                    item.addToResponseType(type, object.getJSONArray("like-of").get(0).toString());
-                                    checkReference(object, object.getJSONArray("like-of").get(0).toString(), item);
+                                    String value = getSingleJsonValueFromArrayOrString(type, object);
+                                    if (value.length() > 0) {
+                                        item.addToResponseType(type, value);
+                                        checkReference(object, value, item);
+                                    }
                                 }
 
                                 // Bookmark.
                                 if (object.has("bookmark-of")) {
                                     type = "bookmark-of";
                                     addContent = false;
-                                    item.addToResponseType(type, object.getJSONArray("bookmark-of").get(0).toString());
-                                    checkReference(object, object.getJSONArray("bookmark-of").get(0).toString(), item);
+                                    String value = getSingleJsonValueFromArrayOrString(type, object);
+                                    if (value.length() > 0) {
+                                        item.addToResponseType(type, value);
+                                        checkReference(object, value, item);
+                                    }
                                 }
 
                                 // A checkin.
@@ -360,21 +372,30 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
                                 // Photos.
                                 if (object.has("photo")) {
-                                    JSONArray photos = object.getJSONArray("photo");
-                                    for (int p = 0; p < photos.length(); p++) {
-                                        item.addPhoto(photos.getString(p));
+                                    try {
+                                        Object photoObject = object.get("photo");
+                                        if (photoObject instanceof JSONArray) {
+                                            JSONArray photos = object.getJSONArray("photo");
+                                            for (int p = 0; p < photos.length(); p++) {
+                                                item.addPhoto(photos.getString(p));
+                                            }
+                                        }
+                                        else {
+                                            item.addPhoto(object.getString("photo"));
+                                        }
                                     }
+                                    catch (JSONException ignored) {}
                                 }
 
                                 // Audio.
                                 if (object.has("audio")) {
-                                    audio = object.getJSONArray("audio").getString(0);
+                                    audio = getSingleJsonValueFromArrayOrString("audio", object);
                                 }
                                 item.setAudio(audio);
 
                                 // Video.
                                 if (object.has("video")) {
-                                    video = object.getJSONArray("video").getString(0);
+                                    video = getSingleJsonValueFromArrayOrString("video", object);
                                 }
                                 item.setVideo(video);
 
@@ -443,6 +464,33 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(getRequest);
 
+    }
+
+    /**
+     * Returns a string from either an array or string property.
+     *
+     * @param property
+     *   The property on the object to get a value from.
+     * @param object
+     *   The json object.
+     *
+     * @return value
+     */
+    protected String getSingleJsonValueFromArrayOrString(String property, JSONObject object) {
+        String value = "";
+
+        try {
+            Object temp = object.get(property);
+            if (temp instanceof JSONArray) {
+                value = object.getJSONArray(property).get(0).toString();
+            }
+            else {
+                value = object.getString(property);
+            }
+        }
+        catch (JSONException ignored) { }
+
+        return value;
     }
 
     /**
