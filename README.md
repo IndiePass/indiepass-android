@@ -49,6 +49,11 @@ This happens sometimes, but not always.
 
 See https://github.com/swentel/indigenous-android/issues/152
 
+### Authenticating
+
+Some browsers (e.g. the default browser LineageOS), won't allow Indigenous to listen to the callback
+to verify the authorization code. Install a browser like Firefox (any flavor) so you can login.
+
 ## Screenshot
 
 <img src="https://realize.be/sites/default/files/Screenshot_20180905-153456_Indigenous.jpg" width="400" />
