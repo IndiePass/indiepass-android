@@ -23,7 +23,6 @@ android {
         }
         fdroid {
             dimension "target"
-            applicationIdSuffix ".fdroid"
         }
     }
 
