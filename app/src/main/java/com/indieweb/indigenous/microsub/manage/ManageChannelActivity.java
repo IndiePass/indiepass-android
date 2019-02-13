@@ -1,0 +1,224 @@
+package com.indieweb.indigenous.microsub.manage;
+
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.microsub.MicrosubAction;
+import com.indieweb.indigenous.model.Channel;
+import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.util.Accounts;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class ManageChannelActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+
+    ListView listChannel;
+    private ManageChannelListAdapter adapter;
+    private List<Channel> Channels = new ArrayList<>();
+    SwipeRefreshLayout refreshLayout;
+    User user;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_channels);
+        listChannel = findViewById(R.id.channel_list);
+        findViewById(R.id.actionButton).setOnClickListener(new OnCreateClickListener());
+        user = new Accounts(this).getCurrentUser();
+
+        refreshLayout = findViewById(R.id.refreshChannels);
+        refreshLayout.setOnRefreshListener(this);
+
+        startChannels();
+    }
+
+    @Override
+    public void onRefresh() {
+        startChannels();
+    }
+
+    /**
+     * Checks the state of the pull to refresh.
+     */
+    public void checkRefreshingStatus() {
+        if (refreshLayout.isRefreshing()) {
+            Toast.makeText(getApplicationContext(), getString(R.string.channels_refreshed), Toast.LENGTH_SHORT).show();
+            refreshLayout.setRefreshing(false);
+        }
+    }
+
+    /**
+     * Start channels.
+     */
+    public void startChannels() {
+        Channels = new ArrayList<>();
+        listChannel.setVisibility(View.VISIBLE);
+        adapter = new ManageChannelListAdapter(this, Channels, user);
+        listChannel.setAdapter(adapter);
+        getChannels();
+    }
+
+    /**
+     * Get channels.
+     */
+    public void getChannels() {
+
+        String microsubEndpoint = user.getMicrosubEndpoint();
+
+        // TODO abstract this all in one helper request class.
+        // probably use jsonArrayRequest too, will be faster, but we'll see once we get all
+        // kind of calls more or less ready.
+        microsubEndpoint += "?action=channels";
+        StringRequest getRequest = new StringRequest(Request.Method.GET, microsubEndpoint,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONObject object;
+                            JSONObject microsubResponse = new JSONObject(response);
+                            JSONArray channelList = microsubResponse.getJSONArray("channels");
+
+                            for (int i = 0; i < channelList.length(); i++) {
+                                object = channelList.getJSONObject(i);
+
+                                // Skip notifications channel.
+                                String uid = object.getString("uid");
+                                if (uid.equals("notifications")) {
+                                    continue;
+                                }
+
+                                Channel channel = new Channel();
+                                channel.setUid(uid);
+                                channel.setName(object.getString("name"));
+                                channel.setUnread(0);
+                                Channels.add(channel);
+                            }
+
+                            adapter.notifyDataSetChanged();
+                            checkRefreshingStatus();
+                        }
+                        catch (JSONException e) {
+                            Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            checkRefreshingStatus();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.channels_not_found), Toast.LENGTH_SHORT).show();
+                        checkRefreshingStatus();
+                    }
+                }
+        )
+        {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json");
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
+                return headers;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        queue.add(getRequest);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.channel_manage_top_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.channel_list_refresh:
+                refreshLayout.setRefreshing(true);
+                startChannels();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    // Create listener.
+    class OnCreateClickListener implements View.OnClickListener {
+
+        OnCreateClickListener() { }
+
+        @Override
+        public void onClick(View v) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(ManageChannelActivity.this);
+            builder.setTitle("Create channel");
+
+            View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.dialog_single_input, null);
+            final EditText input = view.findViewById(R.id.editText);
+            input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    input.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            InputMethodManager inputMethodManager = (InputMethodManager) ManageChannelActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                            inputMethodManager.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
+                        }
+                    });
+                }
+            });
+            builder.setView(view);
+
+            builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (!TextUtils.isEmpty(input.getText())) {
+                        String channelName = input.getText().toString();
+                        new MicrosubAction(getApplicationContext(), user).createChannel(channelName);
+                    }
+                    dialog.dismiss();
+                }
+            });
+            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
+            input.requestFocus();
+        }
+    }
+
+}

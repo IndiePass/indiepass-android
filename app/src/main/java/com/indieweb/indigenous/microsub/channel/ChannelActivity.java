@@ -38,6 +38,7 @@ import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.micropub.post.UpdateActivity;
 import com.indieweb.indigenous.micropub.source.PostListActivity;
+import com.indieweb.indigenous.microsub.manage.ManageChannelActivity;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
@@ -192,8 +193,6 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
         Menu menu = new BottomSheetMenu(this);
         new MenuInflater(this).inflate(R.menu.micropub_post_menu, menu);
 
-
-
         // Hide Media if micropub media endpoint is empty.
         String micropubMediaEndpoint = user.getMicropubMediaEndpoint();
         if (micropubMediaEndpoint == null || micropubMediaEndpoint.length() == 0) {
@@ -315,6 +314,11 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.drafts:
                 Intent goDraft = new Intent(getBaseContext(), DraftActivity.class);
                 startActivity(goDraft);
+                return true;
+
+            case R.id.channel_manage:
+                Intent manageChannels = new Intent(getBaseContext(), ManageChannelActivity.class);
+                startActivity(manageChannels);
                 return true;
 
             case R.id.refreshConfiguration:

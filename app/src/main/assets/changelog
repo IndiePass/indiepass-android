@@ -4,6 +4,10 @@ Development happens on <a href="https://github.com/swentel/indigenous–android"
 <br /><br />
 Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://openclipart.org">Openclipart</a>.
 <h2>Changelog</h2>
+<h4>xx/xx/2019 - 0.30</h4>
+<ul>
+    <li>Manage channels: add, update delete and order</li>
+</ul>
 <h4>02/02/2019 - 0.29</h4>
 <ul>
     <li>Add support for F-Droid</li>

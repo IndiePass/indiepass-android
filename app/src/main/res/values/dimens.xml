@@ -17,6 +17,8 @@
     <dimen name="source_post_list_divider_height">2px</dimen>
     <dimen name="source_post_list_item_global">14sp</dimen>
     <dimen name="source_post_list_item_icon_margin_left">10dp</dimen>
+    <dimen name="manage_channel_list_item_icon_size">25dp</dimen>
+    <dimen name="manage_channel_list_item_icon_margin_left">10dp</dimen>
     <dimen name="draft_list_divider_height">2px</dimen>
     <dimen name="box_padding">10dp</dimen>
 </resources>

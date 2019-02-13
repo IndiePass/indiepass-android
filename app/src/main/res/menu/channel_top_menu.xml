@@ -12,6 +12,11 @@
         android:title="@string/drafts" />
 
     <item
+        android:id="@+id/channel_manage"
+        android:title="@string/channel_manage"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/refreshConfiguration"
         android:title="@string/refresh_configuration" />
 

@@ -34,6 +34,7 @@
     <string name="syndicate_to">Syndicate to</string>
     <string name="required_field">This field is required</string>
     <string name="required_select_image">Please select an image</string>
+    <string name="channel_manage">Manage channels</string>
 
     <string name="add_note">Note</string>
     <string name="add_article">Article</string>

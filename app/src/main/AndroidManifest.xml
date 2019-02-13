@@ -65,6 +65,15 @@
             android:label="@string/channels" />
 
         <activity
+            android:name=".microsub.manage.ManageChannelActivity"
+            android:label="@string/channel_manage"
+            android:parentActivityName=".micropub.MicropubActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.micropub.MicropubActivity" />
+        </activity>
+
+        <activity
             android:name=".microsub.timeline.TimelineActivity"
             android:label="@string/timeline"
             android:parentActivityName=".micropub.MicropubActivity">
