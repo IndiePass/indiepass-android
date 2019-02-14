@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -37,21 +38,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ManageChannelActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class ManageChannelActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, StartDragListener {
 
-    ListView listChannel;
+    RecyclerView listChannel;
     private ManageChannelListAdapter adapter;
     private List<Channel> Channels = new ArrayList<>();
     SwipeRefreshLayout refreshLayout;
+    ItemTouchHelper touchHelper;
     User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_channels);
+        setContentView(R.layout.activity_channels_manage);
         listChannel = findViewById(R.id.channel_list);
         findViewById(R.id.actionButton).setOnClickListener(new OnCreateClickListener());
         user = new Accounts(this).getCurrentUser();
+        ItemTouchHelper touchHelper;
 
         refreshLayout = findViewById(R.id.refreshChannels);
         refreshLayout.setOnRefreshListener(this);
@@ -79,8 +82,12 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
      */
     public void startChannels() {
         Channels = new ArrayList<>();
-        listChannel.setVisibility(View.VISIBLE);
-        adapter = new ManageChannelListAdapter(this, Channels, user);
+        adapter = new ManageChannelListAdapter(this, Channels, user, this);
+
+        ItemTouchHelper.Callback callback = new ItemMoveCallback(adapter);
+        touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(listChannel);
+
         listChannel.setAdapter(adapter);
         getChannels();
     }
@@ -221,4 +228,8 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
         }
     }
 
+    @Override
+    public void requestDrag(RecyclerView.ViewHolder viewHolder) {
+        touchHelper.startDrag(viewHolder);
+    }
 }

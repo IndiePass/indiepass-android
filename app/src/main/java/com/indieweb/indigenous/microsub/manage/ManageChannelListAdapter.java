@@ -2,16 +2,17 @@ package com.indieweb.indigenous.microsub.manage;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.indieweb.indigenous.R;
@@ -19,30 +20,67 @@ import com.indieweb.indigenous.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
- * Channels list adapter.
+ * Manage channels list adapter.
  */
-public class ManageChannelListAdapter extends BaseAdapter implements OnClickListener {
+public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannelListAdapter.ViewHolder> implements ItemMoveCallback.ItemTouchHelperContract {
 
+    private boolean moved = false;
     private final Context context;
     private final List<Channel> channels;
-    private LayoutInflater mInflater;
     private final User user;
+    private final StartDragListener mStartDragListener;
 
-    public ManageChannelListAdapter(Context context, List<Channel> channels, User user) {
+    @Override
+    public void onRowMoved(int fromPosition, int toPosition) {
+
+        moved = true;
+
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(channels, i, i + 1);
+            }
+        }
+        else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(channels, i, i - 1);
+            }
+        }
+
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+    @Override
+    public void onRowSelected(ManageChannelListAdapter.ViewHolder myViewHolder) {
+        int color = context.getResources().getColor(R.color.listRowBackgroundColorTouched);
+        myViewHolder.rowView.setBackgroundColor(color);
+    }
+
+    @Override
+    public void onRowClear(ManageChannelListAdapter.ViewHolder myViewHolder) {
+        int color = context.getResources().getColor(R.color.listRowBackgroundColor);
+        myViewHolder.rowView.setBackgroundColor(color);
+
+        // Only send request when an item has moved.
+        if (moved) {
+            new MicrosubAction(context, user).orderChannels(channels);
+        }
+
+        moved = false;
+
+    }
+
+    ManageChannelListAdapter(Context context, List<Channel> channels, User user, StartDragListener startDragListener) {
         this.context = context;
         this.channels = channels;
         this.user = user;
-        this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.mStartDragListener = startDragListener;
     }
 
-    public int getCount() {
-        return channels.size();
-    }
-
-    public Channel getItem(int position) {
+    private Channel getItem(int position) {
         return channels.get(position);
     }
 
@@ -50,54 +88,53 @@ public class ManageChannelListAdapter extends BaseAdapter implements OnClickList
         return position;
     }
 
-    public void onClick(View view) {
-
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_manage_channel, parent, false);
+        return new ViewHolder(itemView);
     }
 
-    public static class ViewHolder {
-        public int position;
+    @Override
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+
+        holder.name.setText(channels.get(position).getName());
+        holder.update.setOnClickListener(new ManageChannelListAdapter.OnUpdateClickListener(position));
+        holder.delete.setOnClickListener(new ManageChannelListAdapter.OnDeleteClickListener(position));
+
+        holder.drag.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    mStartDragListener.requestDrag(holder);
+                }
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return channels.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        View rowView;
         public TextView name;
-        public LinearLayout row;
         public Button update;
         public Button delete;
-    }
+        public Button drag;
 
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        final ViewHolder holder;
+        ViewHolder(View itemView) {
+            super(itemView);
 
-        if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.list_item_manage_channel, null);
-            holder = new ViewHolder();
-            holder.row = convertView.findViewById(R.id.channel_row);
-            holder.name = convertView.findViewById(R.id.channel_name);
-            holder.update = convertView.findViewById(R.id.channelUpdate);
-            holder.delete = convertView.findViewById(R.id.channelDelete);
-            convertView.setTag(holder);
+            rowView = itemView;
+            name = itemView.findViewById(R.id.channel_name);
+            drag = itemView.findViewById(R.id.channelDrag);
+            update = itemView.findViewById(R.id.channelUpdate);
+            delete = itemView.findViewById(R.id.channelDelete);
         }
-        else {
-            holder = (ViewHolder) convertView.getTag();
-        }
-
-        final Channel channel = channels.get(position);
-        if (channel != null) {
-
-            holder.position = position;
-
-            // Color of row.
-            int color = context.getResources().getColor(R.color.listRowBackgroundColor);
-            holder.row.setBackgroundColor(color);
-
-            // Name.
-            holder.name.setText(channel.getName());
-
-            // Buttons
-            holder.update.setOnClickListener(new ManageChannelListAdapter.OnUpdateClickListener(position));
-            holder.delete.setOnClickListener(new ManageChannelListAdapter.OnDeleteClickListener(position));
-
-
-        }
-
-        return convertView;
     }
 
     // Update listener.
@@ -111,7 +148,7 @@ public class ManageChannelListAdapter extends BaseAdapter implements OnClickList
 
         @Override
         public void onClick(View v) {
-            final Channel channel = channels.get(this.position);
+            final Channel channel = getItem(this.position);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle("Update channel");

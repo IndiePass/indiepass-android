@@ -10,10 +10,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Connection;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MicrosubAction {
@@ -265,4 +267,60 @@ public class MicrosubAction {
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(getRequest);
     }
+
+    /**
+     * Order channels channel.
+     */
+    public void orderChannels(final List<Channel> Channels) {
+
+        if (!new Connection(context).hasConnection()) {
+            Toast.makeText(context, context.getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Toast.makeText(context, "Channels order changed", Toast.LENGTH_SHORT).show();
+
+        String MicrosubEndpoint = user.getMicrosubEndpoint();
+        StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {}
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {}
+                }
+        )
+        {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+
+                params.put("action", "channels");
+                params.put("method", "order");
+
+                int i = 0;
+                // TODO these shouldn't be indexed (but works for now).
+                for (Channel c : Channels) {
+                    params.put("channels[" + i + "]", c.getUid());
+                    i++;
+                }
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json");
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
+                return headers;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(getRequest);
+    }
+
 }
