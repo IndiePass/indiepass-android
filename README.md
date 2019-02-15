@@ -27,6 +27,7 @@ More information at https://indieweb.org/Indigenous and https://indigenous.abode
   - listen to audio if available
   - watch videos
   - view fullscreen images, zoom and pinch
+  - Manage channels and feeds
 - Share intents: receive text or images from other apps to directly share
 
 ## Known issues
