@@ -3,6 +3,8 @@ package com.indieweb.indigenous.microsub.manage;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -28,6 +31,9 @@ import com.indieweb.indigenous.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
+import com.kennyc.bottomsheet.BottomSheet;
+import com.kennyc.bottomsheet.BottomSheetListener;
+import com.kennyc.bottomsheet.menu.BottomSheetMenu;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,7 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ManageChannelActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, StartDragListener {
+public class ManageChannelActivity extends AppCompatActivity implements View.OnClickListener, BottomSheetListener, SwipeRefreshLayout.OnRefreshListener, StartDragListener {
 
     RecyclerView listChannel;
     private ManageChannelListAdapter adapter;
@@ -50,16 +56,24 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_channels_manage);
+        setContentView(R.layout.activity_manage_channels);
         listChannel = findViewById(R.id.channel_list);
-        findViewById(R.id.actionButton).setOnClickListener(new OnCreateClickListener());
+        findViewById(R.id.actionButton).setOnClickListener(this);
         user = new Accounts(this).getCurrentUser();
-        ItemTouchHelper touchHelper;
 
         refreshLayout = findViewById(R.id.refreshChannels);
         refreshLayout.setOnRefreshListener(this);
 
         startChannels();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.actionButton:
+                openBottomSheet();
+                break;
+        }
     }
 
     @Override
@@ -163,7 +177,7 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.channel_manage_top_menu, menu);
+        getMenuInflater().inflate(R.menu.manage_channel_top_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -179,57 +193,80 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
         return super.onOptionsItemSelected(item);
     }
 
-    // Create listener.
-    class OnCreateClickListener implements View.OnClickListener {
-
-        OnCreateClickListener() { }
-
-        @Override
-        public void onClick(View v) {
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(ManageChannelActivity.this);
-            builder.setTitle("Create channel");
-
-            View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.dialog_single_input, null);
-            final EditText input = view.findViewById(R.id.editText);
-            input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    input.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            InputMethodManager inputMethodManager = (InputMethodManager) ManageChannelActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
-                            inputMethodManager.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
-                        }
-                    });
-                }
-            });
-            builder.setView(view);
-
-            builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (!TextUtils.isEmpty(input.getText())) {
-                        String channelName = input.getText().toString();
-                        new MicrosubAction(getApplicationContext(), user).createChannel(channelName);
-                    }
-                    dialog.dismiss();
-                }
-            });
-            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-
-            builder.show();
-            input.requestFocus();
-        }
-    }
-
     @Override
     public void requestDrag(RecyclerView.ViewHolder viewHolder) {
         touchHelper.startDrag(viewHolder);
+    }
+
+    /**
+     * Opens the bottom sheet.
+     */
+    public void openBottomSheet() {
+        Menu menu = new BottomSheetMenu(this);
+        new MenuInflater(this).inflate(R.menu.manage_channel_menu, menu);
+        new BottomSheet.Builder(this, R.style.BottomSheet_StyleDialog)
+                .setMenu(menu)
+                .setListener(this)
+                .show();
+    }
+
+    @Override
+    public void onSheetItemSelected(@NonNull BottomSheet bottomSheet, MenuItem menuItem, @Nullable Object o) {
+        switch (menuItem.getItemId()) {
+            case R.id.createChannel:
+                createChannel();
+                break;
+        }
+
+    }
+
+    @Override
+    public void onSheetShown(@NonNull BottomSheet bottomSheet, @Nullable Object o) { }
+
+    @Override
+    public void onSheetDismissed(@NonNull BottomSheet bottomSheet, @Nullable Object o, int i) { }
+
+    /**
+     * Create channel dialog.
+     */
+    public void createChannel() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ManageChannelActivity.this);
+        builder.setTitle("Add channel");
+
+        View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.dialog_single_input, null);
+        final EditText input = view.findViewById(R.id.editText);
+        input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                input.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        InputMethodManager inputMethodManager = (InputMethodManager) ManageChannelActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        inputMethodManager.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
+                    }
+                });
+            }
+        });
+        builder.setView(view);
+
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (!TextUtils.isEmpty(input.getText())) {
+                    String channelName = input.getText().toString();
+                    new MicrosubAction(getApplicationContext(), user).createChannel(channelName);
+                }
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+        input.requestFocus();
     }
 }

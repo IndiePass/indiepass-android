@@ -1,0 +1,41 @@
+<LinearLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:id="@+id/feed_row"
+    android:layout_height="wrap_content"
+    android:background="@color/listRowBackgroundColor"
+    android:orientation="vertical">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1.0"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/url"
+            android:textColor="@color/textColor"
+            android:padding="@dimen/channel_list_item_padding"
+            android:textSize="@dimen/channel_list_item_text_size"
+            android:layout_weight="0.98"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp" />
+
+        <Button
+            android:background="@drawable/button_delete"
+            android:id="@+id/feedDelete"
+            android:layout_width="@dimen/manage_channel_list_item_icon_size"
+            android:layout_height="@dimen/manage_channel_list_item_icon_size"
+            android:layout_marginLeft="@dimen/manage_channel_list_item_icon_margin_left"
+            android:layout_marginStart="@dimen/manage_channel_list_item_icon_margin_left" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/listDividerColor" />
+
+</LinearLayout>

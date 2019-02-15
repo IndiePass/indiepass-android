@@ -20,6 +20,7 @@
     <string name="draft_deleted">Draft deleted</string>
     <string name="no_drafts">You have no drafts for this account</string>
     <string name="channels_refreshed">Channels refreshed</string>
+    <string name="feed_items_refreshed">Feeds refreshed</string>
     <string name="timeline_items_refreshed">Items refreshed</string>
     <string name="timeline_list_refresh">Refresh items</string>
     <string name="source_post_list_refresh">Refresh items</string>
@@ -35,6 +36,10 @@
     <string name="required_field">This field is required</string>
     <string name="required_select_image">Please select an image</string>
     <string name="channel_manage">Manage channels</string>
+    <string name="timeline_manage">Manage timeline</string>
+    <string name="add_channel">Add channel</string>
+    <string name="add_feed">Add feed</string>
+    <string name="no_feeds_found">No feeds found</string>
 
     <string name="add_note">Note</string>
     <string name="add_article">Article</string>

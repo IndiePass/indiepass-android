@@ -138,7 +138,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     }
 
     /**
-     * Start with the timline.
+     * Start with the timeline.
      */
     public void startTimeline() {
         TimelineItems = new ArrayList<>();

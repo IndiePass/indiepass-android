@@ -2,6 +2,7 @@ package com.indieweb.indigenous.microsub.manage;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -14,9 +15,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.microsub.MicrosubAction;
+import com.indieweb.indigenous.microsub.channel.ChannelListAdapter;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
 
@@ -96,11 +99,37 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         holder.name.setText(channels.get(position).getName());
         holder.update.setOnClickListener(new ManageChannelListAdapter.OnUpdateClickListener(position));
         holder.delete.setOnClickListener(new ManageChannelListAdapter.OnDeleteClickListener(position));
+
+        holder.rowView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        int downColor = context.getResources().getColor(R.color.listRowBackgroundColorTouched);
+                        holder.rowView.setBackgroundColor(downColor);
+                        break;
+                    case MotionEvent.ACTION_CANCEL:
+                        int cancelColor = context.getResources().getColor(R.color.listRowBackgroundColor);
+                        holder.rowView.setBackgroundColor(cancelColor);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        int color = context.getResources().getColor(R.color.listRowBackgroundColor);
+                        Channel channel = channels.get(position);
+                        holder.rowView.setBackgroundColor(color);
+                        Intent intent = new Intent(context, ManageFeedsActivity.class);
+                        intent.putExtra("channelId", channel.getUid());
+                        intent.putExtra("channelName", channel.getName());
+                        context.startActivity(intent);
+                        break;
+                }
+                return true;
+            }
+        });
 
         holder.drag.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -224,4 +253,5 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
             builder.show();
         }
     }
+
 }

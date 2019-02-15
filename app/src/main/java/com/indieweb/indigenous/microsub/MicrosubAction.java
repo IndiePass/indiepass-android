@@ -269,7 +269,7 @@ public class MicrosubAction {
     }
 
     /**
-     * Order channels channel.
+     * Order channels.
      */
     public void orderChannels(final List<Channel> Channels) {
 
@@ -306,6 +306,55 @@ public class MicrosubAction {
                     params.put("channels[" + i + "]", c.getUid());
                     i++;
                 }
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json");
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
+                return headers;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(getRequest);
+    }
+
+    /**
+     * Delete channel.
+     */
+    public void deleteFeed(final String url, final String channelId) {
+
+        if (!new Connection(context).hasConnection()) {
+            Toast.makeText(context, context.getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Toast.makeText(context, "Feed deleted", Toast.LENGTH_SHORT).show();
+
+        String MicrosubEndpoint = user.getMicrosubEndpoint();
+        StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {}
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {}
+                }
+        )
+        {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+
+                params.put("action", "unfollow");
+                params.put("url", url);
+                params.put("channel", channelId);
 
                 return params;
             }
