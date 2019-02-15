@@ -3,8 +3,6 @@ package com.indieweb.indigenous.microsub.manage;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +11,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -31,9 +28,6 @@ import com.indieweb.indigenous.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
-import com.kennyc.bottomsheet.BottomSheet;
-import com.kennyc.bottomsheet.BottomSheetListener;
-import com.kennyc.bottomsheet.menu.BottomSheetMenu;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,7 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ManageChannelActivity extends AppCompatActivity implements View.OnClickListener, BottomSheetListener, SwipeRefreshLayout.OnRefreshListener, StartDragListener {
+public class ManageChannelActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, StartDragListener {
 
     RecyclerView listChannel;
     private ManageChannelListAdapter adapter;
@@ -71,7 +65,7 @@ public class ManageChannelActivity extends AppCompatActivity implements View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.actionButton:
-                openBottomSheet();
+                createChannel();
                 break;
         }
     }
@@ -197,34 +191,6 @@ public class ManageChannelActivity extends AppCompatActivity implements View.OnC
     public void requestDrag(RecyclerView.ViewHolder viewHolder) {
         touchHelper.startDrag(viewHolder);
     }
-
-    /**
-     * Opens the bottom sheet.
-     */
-    public void openBottomSheet() {
-        Menu menu = new BottomSheetMenu(this);
-        new MenuInflater(this).inflate(R.menu.manage_channel_menu, menu);
-        new BottomSheet.Builder(this, R.style.BottomSheet_StyleDialog)
-                .setMenu(menu)
-                .setListener(this)
-                .show();
-    }
-
-    @Override
-    public void onSheetItemSelected(@NonNull BottomSheet bottomSheet, MenuItem menuItem, @Nullable Object o) {
-        switch (menuItem.getItemId()) {
-            case R.id.createChannel:
-                createChannel();
-                break;
-        }
-
-    }
-
-    @Override
-    public void onSheetShown(@NonNull BottomSheet bottomSheet, @Nullable Object o) { }
-
-    @Override
-    public void onSheetDismissed(@NonNull BottomSheet bottomSheet, @Nullable Object o, int i) { }
 
     /**
      * Create channel dialog.

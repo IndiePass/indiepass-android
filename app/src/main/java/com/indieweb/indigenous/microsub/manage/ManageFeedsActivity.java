@@ -1,10 +1,12 @@
 package com.indieweb.indigenous.microsub.manage;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -29,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class ManageFeedsActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     String channelId;
     String channelName;
@@ -48,6 +50,7 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            findViewById(R.id.actionButton).setOnClickListener(this);
             channelId = extras.getString("channelId");
             channelName = extras.getString("channelName");
             this.setTitle("Feeds in " + channelName);
@@ -84,6 +87,18 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
         startFeed();
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.actionButton:
+                Intent intent = new Intent(getApplicationContext(), FeedActivity.class);
+                intent.putExtra("channelId", channelId);
+                intent.putExtra("channelName", channelName);
+                startActivity(intent);
+                break;
+        }
+    }
+
     /**
      * Checks the state of the pull to refresh.
      */
@@ -99,7 +114,7 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
      */
     public void startFeed() {
         FeedItems = new ArrayList<>();
-        adapter = new ManageFeedsListAdapter(this, FeedItems, user, channelId);
+        adapter = new ManageFeedsListAdapter(this, FeedItems, user);
         listView.setAdapter(adapter);
         getFeeds();
     }

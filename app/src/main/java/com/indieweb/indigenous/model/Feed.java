@@ -4,6 +4,7 @@ public class Feed {
 
     public String url;
     public String channel;
+    public String type;
 
     public String getUrl() {
         return url;
@@ -21,4 +22,11 @@ public class Feed {
         this.channel = channel;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

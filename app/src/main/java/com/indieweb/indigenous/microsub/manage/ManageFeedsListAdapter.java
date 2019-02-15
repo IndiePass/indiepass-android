@@ -64,13 +64,11 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
     private final List<Feed> items;
     private LayoutInflater mInflater;
     private final User user;
-    private final String channelId;
 
-    ManageFeedsListAdapter(Context context, List<Feed> items, User user, String channelId) {
+    ManageFeedsListAdapter(Context context, List<Feed> items, User user) {
         this.context = context;
         this.items = items;
         this.user = user;
-        this.channelId = channelId;
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
