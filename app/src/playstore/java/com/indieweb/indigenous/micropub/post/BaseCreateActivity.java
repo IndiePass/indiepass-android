@@ -20,6 +20,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,6 +36,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -121,6 +123,8 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
     LinearLayout locationWrapper;
     Spinner locationVisibility;
+    EditText locationLabel;
+    Button locationQuery;
     private FusedLocationProviderClient mFusedLocationClient;
     private Boolean mRequestingLocationUpdates = false;
     private SettingsClient mSettingsClient;
@@ -173,7 +177,6 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
             }
         }
 
-
         // Get a couple elements for requirement checks or pre-population.
         title = findViewById(R.id.title);
         body = findViewById(R.id.body);
@@ -184,6 +187,8 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         saveAsDraft = findViewById(R.id.saveAsDraft);
         locationWrapper = findViewById(R.id.locationWrapper);
         locationVisibility = findViewById(R.id.locationVisibility);
+        locationLabel = findViewById(R.id.locationLabel);
+        locationQuery = findViewById(R.id.locationQuery);
 
         // Autocomplete of tags.
         if (tags != null && Preferences.getPreference(this, "pref_key_tags_list", false)) {
@@ -586,9 +591,15 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
                 // Location.
                 if (canAddLocation && mCurrentLocation != null) {
-                    String coordinates = mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude();
-                    coordinates += "," + mCurrentLocation.getAltitude();
-                    bodyParams.put("location", "geo:" + coordinates);
+                    String geo = mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude();
+                    geo += "," + mCurrentLocation.getAltitude();
+
+                    // Send along location label.
+                    if (!TextUtils.isEmpty(locationLabel.getText())) {
+                        geo += ";name=" + locationLabel.getText().toString();
+                    }
+                    bodyParams.put("location", "geo:" + geo);
+
                     if (locationVisibility != null && locationWrapper.getVisibility() == View.VISIBLE) {
                         bodyParams.put("location-visibility", locationVisibility.getSelectedItem().toString());
                     }
@@ -748,8 +759,22 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     private void updateLocationUI() {
         if (mCurrentLocation != null) {
             Toast.makeText(getApplicationContext(), "Location found: latitude: " + mCurrentLocation.getLatitude() + " - longitude: " + mCurrentLocation.getLongitude() + " - altitude: " + mCurrentLocation.getAltitude(), Toast.LENGTH_LONG).show();
-            if (Preferences.getPreference(getApplicationContext(), "pref_key_location_visibility", false)) {
+            boolean showLocationVisibility = Preferences.getPreference(getApplicationContext(), "pref_key_location_visibility", false);
+            boolean showLocationLabel = Preferences.getPreference(getApplicationContext(), "pref_key_location_label", false);
+            boolean showLocationQueryButton = Preferences.getPreference(getApplicationContext(), "pref_key_location_label_query", false);
+            if (showLocationVisibility || showLocationLabel || showLocationQueryButton) {
                 locationWrapper.setVisibility(View.VISIBLE);
+                if (showLocationVisibility) {
+                    locationVisibility.setVisibility(View.VISIBLE);
+                }
+                if (showLocationLabel) {
+                    locationLabel.setVisibility(View.VISIBLE);
+                }
+                if (showLocationQueryButton) {
+                    locationQuery.setVisibility(View.VISIBLE);
+                    locationQuery.setOnClickListener(new OnLocationLabelQueryListener());
+
+                }
             }
             stopLocationUpdates();
         }
@@ -811,4 +836,72 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
     @Override
     public void afterTextChanged(Editable s) { }
+
+    // Location query listener.
+    class OnLocationLabelQueryListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+
+            // Get geo from the endpoint.
+            String MicropubEndpoint = user.getMicropubEndpoint();
+            if (MicropubEndpoint.contains("?")) {
+                MicropubEndpoint += "&q=geo";
+            }
+            else {
+                MicropubEndpoint += "?q=geo";
+            }
+
+            if (mCurrentLocation != null) {
+                MicropubEndpoint += "&lat=" + mCurrentLocation.getLatitude() + "&lon=" + mCurrentLocation.getLongitude();
+            }
+
+            Toast.makeText(getApplicationContext(), "Getting location name", Toast.LENGTH_SHORT).show();
+            StringRequest getRequest = new StringRequest(Request.Method.GET, MicropubEndpoint,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            String label = "";
+                            try {
+                                JSONObject geoResponse = new JSONObject(response);
+                                if (geoResponse.has("geo")) {
+                                    JSONObject geoObject = geoResponse.getJSONObject("geo");
+                                    if (geoObject.has("label")) {
+                                        label = geoObject.getString("label");
+                                    }
+                                }
+                            }
+                            catch (JSONException e) {
+                                Toast.makeText(getApplicationContext(), "Error parsing JSON: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+
+                            if (label.length() > 0) {
+                                locationLabel.setText(label);
+                            }
+                            else {
+                                Toast.makeText(getApplicationContext(), "No location name found", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {}
+                    }
+            )
+            {
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put("Accept", "application/json");
+                    headers.put("Authorization", "Bearer " + user.getAccessToken());
+                    return headers;
+                }
+            };
+
+            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+            queue.add(getRequest);
+        }
+    }
+
 }

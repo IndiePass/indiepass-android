@@ -39,6 +39,16 @@
             android:summary="@string/pref_key_location_visibility_summary"
             android:defaultValue="false" />
         <CheckBoxPreference
+            android:key="pref_key_location_label"
+            android:title="@string/pref_key_location_label_title"
+            android:summary="@string/pref_key_location_label_summary"
+            android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="pref_key_location_label_query"
+            android:title="@string/pref_key_location_label_query_title"
+            android:summary="@string/pref_key_location_label_query_summary"
+            android:defaultValue="false" />
+        <CheckBoxPreference
             android:key="pref_key_tags_list"
             android:title="@string/pref_key_tags_list_title"
             android:summary="@string/pref_key_tags_list_summary"

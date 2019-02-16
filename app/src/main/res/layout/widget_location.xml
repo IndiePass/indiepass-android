@@ -3,24 +3,43 @@
     android:visibility="gone"
     android:orientation="vertical"
     android:id="@+id/locationWrapper"
+    android:padding="@dimen/box_padding"
+    android:background="@color/borderColor"
     android:layout_margin="5dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <TextView
-        android:textColor="@color/textColor"
         android:textSize="16sp"
-        android:text="@string/location_visibility"
+        android:text="@string/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/locationLabel"
+        android:textSize="16sp"
+        android:layout_marginTop="@dimen/box_padding"
+        android:hint="@string/location_label"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/locationQuery"
+        android:layout_marginTop="@dimen/box_padding"
+        android:visibility="gone"
+        android:hint="@string/location_label_query"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <Spinner
         android:id="@+id/locationVisibility"
+        android:layout_marginTop="@dimen/box_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:entries="@array/location_visibility_array"
-        android:prompt="@string/location_visibility_select"
-        android:layout_marginBottom="5dp" />
+        android:prompt="@string/location_visibility_select" />
 
 </LinearLayout>
 
