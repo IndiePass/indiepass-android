@@ -6,7 +6,7 @@ Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a
 <h2>Changelog</h2>
 <h4>17/02/2019 - 0.31</h4>
 <ul>
-    <li>Allow sending location name (Wordpress only for now)</li>
+    <li>Allow sending location name</li>
     <li>Move floating button on manage channel and feed screens to action bar</li>
 </ul>
 <h4>15/02/2019 - 0.30</h4>
