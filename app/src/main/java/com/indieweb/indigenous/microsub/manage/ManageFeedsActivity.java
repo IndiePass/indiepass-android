@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ManageFeedsActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     String channelId;
     String channelName;
@@ -50,7 +50,6 @@ public class ManageFeedsActivity extends AppCompatActivity implements View.OnCli
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            findViewById(R.id.actionButton).setOnClickListener(this);
             channelId = extras.getString("channelId");
             channelName = extras.getString("channelName");
             this.setTitle("Feeds in " + channelName);
@@ -77,6 +76,12 @@ public class ManageFeedsActivity extends AppCompatActivity implements View.OnCli
                 refreshLayout.setRefreshing(true);
                 startFeed();
                 return true;
+            case R.id.feed_add:
+                Intent intent = new Intent(getApplicationContext(), FeedActivity.class);
+                intent.putExtra("channelId", channelId);
+                intent.putExtra("channelName", channelName);
+                startActivity(intent);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -85,18 +90,6 @@ public class ManageFeedsActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onRefresh() {
         startFeed();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.actionButton:
-                Intent intent = new Intent(getApplicationContext(), FeedActivity.class);
-                intent.putExtra("channelId", channelId);
-                intent.putExtra("channelName", channelName);
-                startActivity(intent);
-                break;
-        }
     }
 
     /**

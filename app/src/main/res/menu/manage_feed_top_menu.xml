@@ -7,4 +7,10 @@
         android:title="@string/timeline_list_refresh"
         app:showAsAction="never" />
 
+    <item
+        android:icon="@drawable/button_add"
+        android:id="@+id/feed_add"
+        android:title="@string/add_feed"
+        app:showAsAction="ifRoom" />
+
 </menu>

@@ -5,6 +5,8 @@
 /.idea/libraries
 /.idea
 .DS_Store
+/app/playstore
+/app/fdroid
 /build
 /captures
 .externalNativeBuild

@@ -22,14 +22,4 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/actionButton"
-        android:layout_margin="10dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/button_create_white"
-        android:layout_alignParentEnd="true" />
-
 </RelativeLayout>

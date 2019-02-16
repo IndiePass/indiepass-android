@@ -38,7 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ManageChannelActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, StartDragListener {
+public class ManageChannelActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, StartDragListener {
 
     RecyclerView listChannel;
     private ManageChannelListAdapter adapter;
@@ -52,22 +52,12 @@ public class ManageChannelActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_channels);
         listChannel = findViewById(R.id.channel_list);
-        findViewById(R.id.actionButton).setOnClickListener(this);
         user = new Accounts(this).getCurrentUser();
 
         refreshLayout = findViewById(R.id.refreshChannels);
         refreshLayout.setOnRefreshListener(this);
 
         startChannels();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.actionButton:
-                createChannel();
-                break;
-        }
     }
 
     @Override
@@ -181,6 +171,9 @@ public class ManageChannelActivity extends AppCompatActivity implements View.OnC
             case R.id.channel_list_refresh:
                 refreshLayout.setRefreshing(true);
                 startChannels();
+                return true;
+            case R.id.channel_add:
+                createChannel();
                 return true;
         }
 

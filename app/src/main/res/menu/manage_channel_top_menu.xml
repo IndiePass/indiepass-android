@@ -7,4 +7,10 @@
         android:title="@string/channel_list_refresh"
         app:showAsAction="never" />
 
+    <item
+        android:icon="@drawable/button_add"
+        android:id="@+id/channel_add"
+        android:title="@string/add_channel"
+        app:showAsAction="ifRoom" />
+
 </menu>
