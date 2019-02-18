@@ -26,11 +26,11 @@ public class UploadActivity extends BaseCreateActivity {
 
     @Override
     public void onPostButtonClick(MenuItem item) {
-        if (bitmap == null) {
-            Toast.makeText(getApplicationContext(), getString(R.string.required_select_image), Toast.LENGTH_SHORT).show();
+        if (imageUris.size() == 1) {
+            sendBasePost(item);
         }
         else {
-            sendBasePost(item);
+            Toast.makeText(getApplicationContext(), getString(R.string.required_select_image), Toast.LENGTH_SHORT).show();
         }
     }
 

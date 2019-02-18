@@ -164,8 +164,14 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
      */
     private void buildDataPart(DataOutputStream dataOutputStream, DataPart dataFile, String inputName) throws IOException {
         dataOutputStream.writeBytes(twoHyphens + boundary + lineEnd);
-        dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"" +
-                inputName + "\"; filename=\"" + dataFile.getFileName() + "\"" + lineEnd);
+
+        String param = inputName;
+        if (param.contains("_multiple_")) {
+            String[] split = param.split("_multiple_");
+            param = split[0] + "[]";
+        }
+
+        dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"" + param + "\"; filename=\"" + dataFile.getFileName() + "\"" + lineEnd);
         if (dataFile.getType() != null && !dataFile.getType().trim().isEmpty()) {
             dataOutputStream.writeBytes("Content-Type: " + dataFile.getType() + lineEnd);
         }

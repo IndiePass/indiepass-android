@@ -14,6 +14,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -23,7 +24,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
@@ -39,6 +39,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.gms.common.api.ApiException;
@@ -91,18 +92,15 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
     EditText body;
     EditText title;
-    Bitmap bitmap;
     CheckBox saveAsDraft;
     DatabaseHelper db;
     User user;
-    Uri imageUri;
     MultiAutoCompleteTextView tags;
+    List<Uri> imageUris = new ArrayList<>();
     private List<Syndication> syndicationTargets = new ArrayList<>();
     private MenuItem sendItem;
-    private LinearLayout imageWidget;
-    private ImageView imagePreview;
+    private LinearLayout imagePreviewGallery;
     private CheckBox postStatus;
-    private String mime = "image/jpg";
     private int PICK_IMAGE_REQUEST = 1;
 
     EditText url;
@@ -180,11 +178,10 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         // Get a couple elements for requirement checks or pre-population.
         title = findViewById(R.id.title);
         body = findViewById(R.id.body);
-        imagePreview = findViewById(R.id.imagePreview);
-        imageWidget = findViewById(R.id.imageWidget);
         url = findViewById(R.id.url);
         tags = findViewById(R.id.tags);
         saveAsDraft = findViewById(R.id.saveAsDraft);
+        imagePreviewGallery = findViewById(R.id.imagePreviewGallery);
         locationWrapper = findViewById(R.id.locationWrapper);
         locationVisibility = findViewById(R.id.locationVisibility);
         locationLabel = findViewById(R.id.locationLabel);
@@ -241,8 +238,8 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
             if (canAddImage) {
                 String incomingImage = extras.getString("incomingImage");
-                if (incomingImage != null && incomingImage.length() > 0 && imagePreview != null && imageWidget != null) {
-                    imageUri = Uri.parse(incomingImage);
+                if (incomingImage != null && incomingImage.length() > 0 && imagePreviewGallery != null) {
+                    imageUris.add(Uri.parse(incomingImage));
                     prepareImagePreviewAndBitmap();
                 }
             }
@@ -279,6 +276,9 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
+                if (!isMediaRequest) {
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                }
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
                 return true;
 
@@ -319,7 +319,17 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
-            imageUri = data.getData();
+
+            if (data.getClipData() != null) {
+                int count = data.getClipData().getItemCount();
+                for (int i = 0; i < count; i++) {
+                    imageUris.add(data.getClipData().getItemAt(i).getUri());
+                }
+            }
+            else if (data.getData() != null) {
+                imageUris.add(data.getData());
+            }
+
             prepareImagePreviewAndBitmap();
         }
 
@@ -332,42 +342,23 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
      * Prepare image preview and bitmap.
      */
     public void prepareImagePreviewAndBitmap() {
-        imageWidget.setVisibility(View.VISIBLE);
-        ContentResolver cR = this.getContentResolver();
-        mime = cR.getType(imageUri);
-
-        Integer ImageSize = 1000;
-        if (Preferences.getPreference(getApplicationContext(), "pref_key_image_scale", true)) {
-            String sizePreference = Preferences.getPreference(this, "pref_key_image_size", ImageSize.toString());
-            if (parseInt(sizePreference) > 0) {
-                ImageSize = parseInt(sizePreference);
-            }
-        }
-
-        Glide
-            .with(getApplicationContext())
-            .asBitmap()
-            .load(imageUri)
-            .into(new SimpleTarget<Bitmap>(ImageSize, ImageSize) {
-                @Override
-                public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
-                    imagePreview.setImageBitmap(resource);
-                    bitmap = resource;
-                }
-            });
+        imagePreviewGallery.setVisibility(View.VISIBLE);
+        GalleryAdapter galleryAdapter = new GalleryAdapter(getApplicationContext(), imageUris);
+        RecyclerView imageRecyclerView = findViewById(R.id.imageRecyclerView);
+        imageRecyclerView.setAdapter(galleryAdapter);
     }
 
     /**
      * Convert bitmap to byte[] array.
      */
-    public byte[] getFileDataFromDrawable(Bitmap bitmap, Boolean scale) {
+    public byte[] getFileDataFromDrawable(Bitmap bitmap, Boolean scale, Uri uri, String mime) {
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         if (scale) {
-            Integer ImageQuality = 80;
+            int ImageQuality = 80;
             // Default quality. The preference is stored as a string, but cast it to an integer.
-            String qualityPreference = Preferences.getPreference(this, "pref_key_image_quality", ImageQuality.toString());
+            String qualityPreference = Preferences.getPreference(this, "pref_key_image_quality", Integer.toString(ImageQuality));
             if (parseInt(qualityPreference) <= 100 && parseInt(qualityPreference) > 0) {
                 ImageQuality = parseInt(qualityPreference);
             }
@@ -385,7 +376,8 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         else {
             ContentResolver cR = this.getContentResolver();
             try {
-                InputStream is = cR.openInputStream(imageUri);
+                // TODO need to get all of course.
+                InputStream is = cR.openInputStream(uri);
                 final byte[] b = new byte[8192];
                 for (int r; (r = is.read(b)) != -1;) {
                     byteArrayOutputStream.write(b, 0, r);
@@ -434,7 +426,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
             // Image
             if (canAddImage && draft.getImage().length() > 0) {
-                imageUri = Uri.parse(draft.getImage());
+                imageUris.add(Uri.parse(draft.getImage()));
                 prepareImagePreviewAndBitmap();
             }
 
@@ -508,7 +500,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                         try {
                             NetworkResponse networkResponse = error.networkResponse;
                             if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
-                                Integer code = networkResponse.statusCode;
+                                int code = networkResponse.statusCode;
                                 String result = new String(networkResponse.data);
                                 Toast.makeText(getApplicationContext(), postType + " posting failed. Status code: " + code + "; message: " + result, Toast.LENGTH_LONG).show();
                             }
@@ -620,23 +612,59 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
 
-                if (bitmap != null) {
-                    long imagename = System.currentTimeMillis();
+                if (imageUris.size() > 0) {
 
-                    String extension = "jpg";
-                    if (mime.equals("image/png")) {
-                        extension = "png";
+                    int ImageSize = 1000;
+                    if (Preferences.getPreference(getApplicationContext(), "pref_key_image_scale", true)) {
+                        String sizePreference = Preferences.getPreference(getApplicationContext(), "pref_key_image_size", Integer.toString(ImageSize));
+                        if (parseInt(sizePreference) > 0) {
+                            ImageSize = parseInt(sizePreference);
+                        }
                     }
 
-                    String imagePostParam = "photo";
-                    if (isMediaRequest) {
-                        imagePostParam = "file";
-                    }
+                    ContentResolver cR = getApplicationContext().getContentResolver();
 
-                    // Put image in body. Send along whether to scale or not.
-                    Boolean scale = Preferences.getPreference(getApplicationContext(), "pref_key_image_scale", true);
-                    params.put(imagePostParam, new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap, scale)));
+                    int i = 0;
+                    for (Uri u : imageUris) {
+
+                        Bitmap bitmap = null;
+                        try {
+                            bitmap = Glide
+                                    .with(getApplicationContext())
+                                    .asBitmap()
+                                    .load(u)
+                                    .apply(new RequestOptions().override(ImageSize, ImageSize))
+                                    .submit()
+                                    .get();
+                        }
+                        catch (Exception ignored) {}
+
+                        if (bitmap == null) {
+                            continue;
+                        }
+
+                        long imagename = System.currentTimeMillis();
+                        String mime = cR.getType(u);
+
+                        String extension = "jpg";
+                        if (mime != null) {
+                            if (mime.equals("image/png")) {
+                                extension = "png";
+                            }
+                        }
+
+                        String imagePostParam = "photo_multiple_[" + i + "]";
+                        if (isMediaRequest) {
+                            imagePostParam = "file_multiple_[" + i + "]";
+                        }
+                        i++;
+
+                        // Put image in body. Send along whether to scale or not.
+                        Boolean scale = Preferences.getPreference(getApplicationContext(), "pref_key_image_scale", true);
+                        params.put(imagePostParam, new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap, scale, u, mime)));
+                    }
                 }
+
                 return params;
             }
         };
@@ -691,8 +719,9 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
             draft.setUrl(url.getText().toString());
         }
 
-        if (imageUri != null) {
-            draft.setImage(imageUri.toString());
+        // TODO only saves the first now
+        if (imageUris.size() > 0) {
+            draft.setImage(imageUris.get(0).toString());
         }
 
         db = new DatabaseHelper(this);

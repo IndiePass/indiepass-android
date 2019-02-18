@@ -2,26 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/imageWidget"
-    android:visibility="gone"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:id="@+id/imagePreviewGallery"
+    android:visibility="gone"
+    android:orientation="horizontal">
 
-    <android.support.v7.widget.CardView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/imageRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:cardCornerRadius="8dp"
-        android:layout_margin="5dp"
-        xmlns:android="http://schemas.android.com/apk/res/android">
-
-        <ImageView
-            android:id="@+id/imagePreview"
-            android:scaleType="centerCrop"
-            android:contentDescription="@string/image_preview"
-            android:layout_width="fill_parent"
-            android:layout_height="230dp" />
-
-    </android.support.v7.widget.CardView>
+        android:orientation="horizontal"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        android:layout_height="wrap_content"
+        android:scrollbars="horizontal" />
 
 </LinearLayout>
 

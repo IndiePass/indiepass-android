@@ -7,6 +7,7 @@ Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a
 <h4>17/02/2019 - 0.31</h4>
 <ul>
     <li>Add preview screen for a feed</li>
+    <li>Allow selecting and uploading multiple images</li>
     <li>Rename 'experimental' keys internally. Reconfigure if needed.</li>
 </ul>
 <h4>17/02/2019 - 0.31</h4>
