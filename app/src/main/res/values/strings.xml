@@ -43,6 +43,7 @@
     <string name="channel_select">Select channel</string>
     <string name="search_feed">Search feeds</string>
     <string name="subscribe">Subscribe</string>
+    <string name="preview">Preview</string>
     <string name="results">Results</string>
 
     <string name="add_note">Note</string>

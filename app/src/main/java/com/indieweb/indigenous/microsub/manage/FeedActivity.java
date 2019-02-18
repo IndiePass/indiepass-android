@@ -2,6 +2,7 @@ package com.indieweb.indigenous.microsub.manage;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.microsub.MicrosubAction;
+import com.indieweb.indigenous.microsub.timeline.TimelineActivity;
 import com.indieweb.indigenous.model.Feed;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
@@ -113,6 +115,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
                             JSONObject microsubResponse = new JSONObject(response);
                             JSONArray itemList = microsubResponse.getJSONArray("results");
 
+                            Feeds.clear();
                             for (int i = 0; i < itemList.length(); i++) {
                                 object = itemList.getJSONObject(i);
                                 Feed item = new Feed();
@@ -199,6 +202,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
         public class ViewHolder {
             public TextView url;
             public Button subscribe;
+            public Button preview;
         }
 
         public View getView(final int position, View convertView, ViewGroup parent) {
@@ -209,6 +213,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
                 holder = new ViewHolder();
                 holder.url = convertView.findViewById(R.id.url);
                 holder.subscribe = convertView.findViewById(R.id.subscribe);
+                holder.preview = convertView.findViewById(R.id.preview);
                 convertView.setTag(holder);
             }
             else {
@@ -219,6 +224,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
             if (item != null) {
                 holder.url.setText(item.getType() + "\n" + item.getUrl());
                 holder.subscribe.setOnClickListener(new FeedsResultAdapter.OnSubscribeClickListener(position));
+                holder.preview.setOnClickListener(new FeedsResultAdapter.OnPreviewClickListener(position));
             }
 
             return convertView;
@@ -252,6 +258,25 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
                 builder.show();
+            }
+        }
+
+        // Preview listener.
+        class OnPreviewClickListener implements View.OnClickListener {
+
+            int position;
+
+            OnPreviewClickListener(int position) {
+                this.position = position;
+            }
+
+            @Override
+            public void onClick(View v) {
+                final Feed feed = items.get(this.position);
+                Intent intent = new Intent(context, TimelineActivity.class);
+                intent.putExtra("preview", true);
+                intent.putExtra("previewUrl", feed.getUrl());
+                context.startActivity(intent);
             }
         }
 

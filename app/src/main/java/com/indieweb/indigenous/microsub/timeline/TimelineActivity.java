@@ -48,6 +48,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     String channelName;
     String entryId;
     Integer unread;
+    boolean preview = false;
+    String previewUrl;
     private TimelineListAdapter adapter;
     private List<TimelineItem> TimelineItems = new ArrayList<>();
     SwipeRefreshLayout refreshLayout;
@@ -63,21 +65,29 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-
         listView = findViewById(R.id.timeline_list);
+        refreshLayout = findViewById(R.id.refreshTimeline);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+
             channelId = extras.getString("channelId");
             unread = extras.getInt("unread");
             channelName = extras.getString("channelName");
-            this.setTitle(channelName);
-            loadMoreButton = new Button(this);
-            loadMoreButton.setText(R.string.load_more);
-            loadMoreButton.setTextColor(getResources().getColor(R.color.textColor));
-            loadMoreButton.setBackgroundColor(getResources().getColor(R.color.loadMoreButtonBackgroundColor));
-            refreshLayout = findViewById(R.id.refreshTimeline);
-            refreshLayout.setOnRefreshListener(this);
+            preview = extras.getBoolean("preview");
+            previewUrl = extras.getString("previewUrl");
+
+            if (preview) {
+                this.setTitle("Preview");
+            }
+            else {
+                this.setTitle(channelName);
+                loadMoreButton = new Button(this);
+                loadMoreButton.setText(R.string.load_more);
+                loadMoreButton.setTextColor(getResources().getColor(R.color.textColor));
+                loadMoreButton.setBackgroundColor(getResources().getColor(R.color.loadMoreButtonBackgroundColor));
+                refreshLayout.setOnRefreshListener(this);
+            }
             user = new Accounts(this).getCurrentUser();
             startTimeline();
         }
@@ -92,7 +102,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         getMenuInflater().inflate(R.menu.timeline_top_menu, menu);
 
         boolean debugJson = Preferences.getPreference(this, "pref_key_debug_microsub_timeline", false);
-        if (debugJson) {
+        if (debugJson && !preview) {
             MenuItem item = menu.findItem(R.id.timeline_debug);
             if (item != null) {
                 item.setVisible(true);
@@ -152,17 +162,23 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
      */
     public void getTimeLineItems(String pagerAfter) {
 
+        int method = Request.Method.GET;
         String MicrosubEndpoint = user.getMicrosubEndpoint();
-        MicrosubEndpoint += "?action=timeline&channel=" + channelId;
-        if (pagerAfter.length() > 0) {
-            MicrosubEndpoint += "&after=" + pagerAfter;
-        }
-
         olderItems = new String[1];
 
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        if (preview) {
+            method = Request.Method.POST;
+            MicrosubEndpoint += "?action=preview";
+        }
+        else {
+            MicrosubEndpoint += "?action=timeline&channel=" + channelId;
+            if (pagerAfter.length() > 0) {
+                MicrosubEndpoint += "&after=" + pagerAfter;
+            }
+        }
 
-        StringRequest getRequest = new StringRequest(Request.Method.GET, MicrosubEndpoint,
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest getRequest = new StringRequest(method, MicrosubEndpoint,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -448,6 +464,18 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 }
         )
         {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+
+                if (preview) {
+                    params.put("url", previewUrl);
+                }
+
+                return params;
+            }
+
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<String, String>();
@@ -458,10 +486,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
         };
 
-        getRequest.setRetryPolicy(new DefaultRetryPolicy(
-                0,
-                -1,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        getRequest.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(getRequest);
 
     }

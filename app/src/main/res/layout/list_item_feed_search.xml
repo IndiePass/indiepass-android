@@ -26,7 +26,13 @@
             android:id="@+id/subscribe"
             android:text="@string/subscribe"
             android:padding="@dimen/channel_list_item_padding"
-            android:textSize="@dimen/channel_list_item_text_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/preview"
+            android:text="@string/preview"
+            android:padding="@dimen/channel_list_item_padding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
