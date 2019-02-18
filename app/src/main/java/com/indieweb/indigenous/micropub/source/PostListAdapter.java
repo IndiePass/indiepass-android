@@ -38,13 +38,15 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
     private final Context context;
     private final List<PostListItem> items;
     private LayoutInflater mInflater;
+    private final boolean showUpdateButton;
     private final boolean showDeleteButton;
     private final User user;
 
-    PostListAdapter(Context context, List<PostListItem> items, User user, boolean showDeleteButton) {
+    PostListAdapter(Context context, List<PostListItem> items, User user, boolean showUpdateButton, boolean showDeleteButton) {
         this.context = context;
         this.items = items;
         this.user = user;
+        this.showUpdateButton = showUpdateButton;
         this.showDeleteButton = showDeleteButton;
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -192,14 +194,16 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
 
             // Button listeners.
             if (item.getUrl().length() > 0) {
-                holder.update.setOnClickListener(new OnUpdateClickListener(position));
                 holder.external.setOnClickListener(new OnExternalClickListener(position));
+
+                if (showUpdateButton) {
+                    holder.update.setVisibility(View.VISIBLE);
+                    holder.update.setOnClickListener(new OnUpdateClickListener(position));
+                }
 
                 if (showDeleteButton) {
                     holder.delete.setVisibility(View.VISIBLE);
                     holder.delete.setOnClickListener(new OnDeleteClickListener(position));
-                }
-                else {
                 }
             }
             else {

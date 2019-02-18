@@ -127,7 +127,7 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
         }
 
         // Hide Update if setting is not enabled.
-        if (!Preferences.getPreference(this, "pref_key_experimental_update", false)) {
+        if (!Preferences.getPreference(this, "pref_key_source_update", false)) {
             Menu menu = navigationView.getMenu();
             MenuItem item = menu.getItem(10);
             if (item != null) {
@@ -136,7 +136,7 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
         }
 
         // Hide Posts if setting is not enabled.
-        if (!Preferences.getPreference(this, "pref_key_experimental_post_list", false)) {
+        if (!Preferences.getPreference(this, "pref_key_source_post_list", false)) {
             Menu menu = navigationView.getMenu();
             MenuItem item = menu.getItem(11);
             if (item != null) {

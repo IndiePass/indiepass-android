@@ -133,9 +133,10 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
      * Start with post list.
      */
     public void startPostList() {
-        boolean deleteEnabled = Preferences.getPreference(this, "pref_key_experimental_delete", false);
+        boolean updateEnabled = Preferences.getPreference(this, "pref_key_source_update", false);
+        boolean deleteEnabled = Preferences.getPreference(this, "pref_key_source_delete", false);
         PostListItems = new ArrayList<>();
-        adapter = new PostListAdapter(this, PostListItems, user, deleteEnabled);
+        adapter = new PostListAdapter(this, PostListItems, user, updateEnabled, deleteEnabled);
         listView.setAdapter(adapter);
         getSourcePostListItems("");
     }

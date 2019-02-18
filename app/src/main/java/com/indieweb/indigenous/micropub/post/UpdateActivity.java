@@ -74,7 +74,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.post_update_action_menu, menu);
 
-        boolean deleteEnabled = Preferences.getPreference(this, "pref_key_experimental_delete", false);
+        boolean deleteEnabled = Preferences.getPreference(this, "pref_key_source_delete", false);
         if (!deleteEnabled) {
             MenuItem itemDelete = menu.findItem(R.id.deletePost);
             itemDelete.setVisible(false);

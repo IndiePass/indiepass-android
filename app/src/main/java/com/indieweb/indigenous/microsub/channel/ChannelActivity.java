@@ -200,12 +200,12 @@ public class ChannelActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         // Hide Update if setting is not enabled.
-        if (!Preferences.getPreference(this, "pref_key_experimental_update", false)) {
+        if (!Preferences.getPreference(this, "pref_key_source_update", false)) {
             menu.removeItem(R.id.updatePost);
         }
 
         // Hide Posts if setting is not enabled.
-        if (!Preferences.getPreference(this, "pref_key_experimental_post_list", false)) {
+        if (!Preferences.getPreference(this, "pref_key_source_post_list", false)) {
             menu.removeItem(R.id.sourcePostList);
         }
 
