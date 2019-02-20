@@ -1,0 +1,228 @@
+package com.indieweb.indigenous.indieauth;
+
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.indieweb.indigenous.LaunchActivity;
+import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.micropub.MicropubConfig;
+import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.util.Accounts;
+
+import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
+
+/**
+ * Accounts list adapter.
+ */
+public class UsersListAdapter extends BaseAdapter implements OnClickListener {
+
+    private final Context context;
+    private final List<User> items;
+    private LayoutInflater mInflater;
+    private final User currentUser;
+    private final Activity activity;
+
+    UsersListAdapter(Context context, Activity activity, List<User> items, User currentUser) {
+        this.context = context;
+        this.items = items;
+        this.currentUser = currentUser;
+        this.activity = activity;
+        this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public int getCount() {
+        return items.size();
+    }
+
+    public User getItem(int position) {
+        return items.get(position);
+    }
+
+    public long getItemId(int position) {
+        return position;
+    }
+
+    public void onClick(View view) {}
+
+    public static class ViewHolder {
+        public TextView name;
+        public TextView url;
+        public TextView userCurrent;
+        public ImageView avatar;
+        public TextView endpoints;
+        public RelativeLayout row;
+        public Button sync;
+        public Button switchAccount;
+        public Button delete;
+    }
+
+    public View getView(int position, View convertView, ViewGroup parent) {
+        final ViewHolder holder;
+
+        if (convertView == null) {
+            convertView = mInflater.inflate(R.layout.list_item_user, null);
+            holder = new ViewHolder();
+            holder.userCurrent = convertView.findViewById(R.id.user_list_current);
+            holder.name = convertView.findViewById(R.id.user_list_name);
+            holder.url = convertView.findViewById(R.id.user_list_url);
+            holder.avatar = convertView.findViewById(R.id.user_list_avatar);
+            holder.endpoints = convertView.findViewById(R.id.user_list_endpoints);
+            holder.delete = convertView.findViewById(R.id.itemDelete);
+            holder.sync = convertView.findViewById(R.id.itemSync);
+            holder.switchAccount = convertView.findViewById(R.id.itemSwitch);
+            holder.row = convertView.findViewById(R.id.user_list_row);
+            convertView.setTag(holder);
+        }
+        else {
+            holder = (ViewHolder)convertView.getTag();
+        }
+
+        final User item = items.get(position);
+        if (item != null) {
+
+            if (item.getMe().equals(currentUser.getMe())) {
+                holder.userCurrent.setVisibility(View.VISIBLE);
+                holder.userCurrent.setText("Current user");
+                holder.switchAccount.setVisibility(View.GONE);
+            }
+            else {
+                holder.userCurrent.setVisibility(View.GONE);
+                holder.switchAccount.setVisibility(View.VISIBLE);
+                holder.switchAccount.setOnClickListener(new OnSwitchClickListener(position));
+            }
+
+            // Url.
+            holder.url.setText(item.getMe());
+
+            // Avatar.
+            if (item.getAvatar().length() > 0) {
+                Glide.with(context)
+                        .load(item.getAvatar())
+                        .apply(RequestOptions.circleCropTransform().placeholder(R.drawable.avatar_small))
+                        .into(holder.avatar);
+            }
+
+            // Name.
+            if (item.getName().length() > 0) {
+                holder.name.setVisibility(View.VISIBLE);
+                holder.name.setText(item.getName());
+            }
+            else {
+                holder.name.setVisibility(View.GONE);
+            }
+
+            // Endpoints.
+            String endpoints = "";
+            if (item.getMicropubEndpoint().length() > 0) {
+                endpoints += item.getMicropubEndpoint() + "\n";
+            }
+            if (item.getMicropubMediaEndpoint().length() > 0) {
+                endpoints += item.getMicropubMediaEndpoint() + "\n";
+            }
+            if (item.getMicrosubEndpoint().length() > 0) {
+                endpoints += item.getMicrosubEndpoint() + "\n";
+            }
+            if (item.getTokenEndpoint().length() > 0) {
+                endpoints += item.getTokenEndpoint() + "\n";
+            }
+            if (item.getAuthorizationEndpoint().length() > 0) {
+                endpoints += item.getAuthorizationEndpoint() + "\n";
+            }
+            holder.endpoints.setText(endpoints);
+
+            // Button listeners.
+            holder.sync.setOnClickListener(new OnSyncClickListener(position));
+            holder.delete.setOnClickListener(new OnDeleteClickListener(position));
+        }
+
+        return convertView;
+    }
+
+    // Switch listener.
+    class OnSwitchClickListener implements OnClickListener {
+
+        int position;
+
+        OnSwitchClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            final User user = items.get(this.position);
+            new Accounts(context).switchAccount(activity, user);
+        }
+    }
+
+    // Sync listener.
+    class OnSyncClickListener implements OnClickListener {
+
+        int position;
+
+        OnSyncClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            final User user = items.get(this.position);
+            Toast.makeText(context, "Syncing " + user.getMe(), Toast.LENGTH_SHORT).show();
+            new Endpoints(context, user).refresh();
+            new MicropubConfig(context, user).refresh();
+        }
+    }
+
+    // Delete listener.
+    class OnDeleteClickListener implements OnClickListener {
+
+        int position;
+
+        OnDeleteClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            final User user = items.get(this.position);
+
+            final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Are you sure you want to delete account " + user.getMe() + " ?");
+            builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog,int id) {
+                    // TODO we should relaunch the if you are deleting yourself.
+                    //AccountManager accountManager = AccountManager.get(context);
+                    //accountManager.removeAccount(user.getAccount(), activity);
+                    //items.remove(position);
+                    //notifyDataSetChanged();
+                }
+            });
+            builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.show();
+        }
+    }
+}

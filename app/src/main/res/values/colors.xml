@@ -5,6 +5,7 @@
     <color name="colorAccent">#DD645E</color>
     <color name="iconTint">#666666</color>
     <color name="menuTextcolor">#666666</color>
+    <color name="drawerTintcolor">#eeeeee</color>
     <color name="lightBlue">#b6cbdb</color>
     <color name="textColor">#666666</color>
     <color name="borderColor">#eeeeee</color>

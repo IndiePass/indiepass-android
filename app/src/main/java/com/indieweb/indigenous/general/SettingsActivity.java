@@ -1,12 +1,14 @@
-package com.indieweb.indigenous;
+package com.indieweb.indigenous.general;
 
 import android.content.ComponentName;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 
-public class SettingsActivity extends PreferenceActivity {
+import com.indieweb.indigenous.R;
+
+public class SettingsActivity extends AppCompatPreferenceActivity {
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

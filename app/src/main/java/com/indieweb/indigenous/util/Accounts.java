@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
+import com.indieweb.indigenous.LaunchActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.indieauth.IndieAuthActivity;
 import com.indieweb.indigenous.model.User;
@@ -52,11 +53,14 @@ public class Accounts {
                     catch (Exception ignored) {}
 
                     user.setAccessToken(token);
+                    user.setAvatar(accountManager.getUserData(account, "author_avatar"));
+                    user.setName(accountManager.getUserData(account, "author_name"));
                     user.setTokenEndpoint(accountManager.getUserData(account, "token_endpoint"));
                     user.setAuthorizationEndpoint(accountManager.getUserData(account, "authorization_endpoint"));
                     user.setMicrosubEndpoint(accountManager.getUserData(account, "microsub_endpoint"));
                     user.setMicropubEndpoint(accountManager.getUserData(account, "micropub_endpoint"));
                     user.setMicropubMediaEndpoint(accountManager.getUserData(account, "micropub_media_endpoint"));
+
                     // TODO we should convert this already into a map
                     user.setSyndicationTargets(accountManager.getUserData(account, "syndication_targets"));
                     // TODO we should convert this already into a map
@@ -75,38 +79,25 @@ public class Accounts {
      * @param activity
      *   The current activity
      */
-    public void switchAccount(final Activity activity) {
-        final List<String> accounts = new ArrayList<>();
-
-        final User currentUser = new Accounts(context).getCurrentUser();
-        final Account[] AllAccounts = this.getAllAccounts();
-        for (Account account: AllAccounts) {
-            accounts.add(account.name);
-        }
-
-        final CharSequence[] accountItems = accounts.toArray(new CharSequence[accounts.size()]);
+    public void switchAccount(final Activity activity, final User user) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Switch account");
-
-        builder.setPositiveButton(context.getString(R.string.add_new_account),new DialogInterface.OnClickListener() {
+        builder.setTitle("Switch to account " + user.getMe() + " ?");
+        builder.setPositiveButton(context.getString(R.string.switch_account),new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int id) {
-                Intent IndieAuth = new Intent(context, IndieAuthActivity.class);
-                context.startActivity(IndieAuth);
+                Toast.makeText(context, "Account set to " + user.getMe(), Toast.LENGTH_SHORT).show();
+                SharedPreferences.Editor editor = context.getSharedPreferences("indigenous", MODE_PRIVATE).edit();
+                editor.putString("account", user.getAccount().name);
+                editor.apply();
+                Intent Main = new Intent(context, LaunchActivity.class);
+                context.startActivity(Main);
+                activity.finish();
+
             }
         });
-        builder.setCancelable(true);
-        builder.setItems(accountItems, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int index) {
-                if (!accounts.get(index).equals(currentUser.getMe())) {
-                    SharedPreferences.Editor editor = context.getSharedPreferences("indigenous", MODE_PRIVATE).edit();
-                    editor.putString("account", accounts.get(index));
-                    editor.apply();
-                    Intent Main = new Intent(context, com.indieweb.indigenous.MainActivity.class);
-                    context.startActivity(Main);
-                    activity.finish();
-                }
-
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
         });
         builder.show();
@@ -138,7 +129,7 @@ public class Accounts {
                 SharedPreferences.Editor editor = context.getSharedPreferences("indigenous", MODE_PRIVATE).edit();
                 editor.putString("account", accounts.get(index));
                 editor.apply();
-                Intent Main = new Intent(context, com.indieweb.indigenous.MainActivity.class);
+                Intent Main = new Intent(context, LaunchActivity.class);
                 context.startActivity(Main);
                 activity.finish();
             }
@@ -154,6 +145,30 @@ public class Accounts {
     private Account[] getAllAccounts() {
         AccountManager accountManager = AccountManager.get(context);
         return accountManager.getAccounts();
+    }
+
+    /**
+     * Returns all users.
+     *
+     * @return User[]
+     */
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        AccountManager accountManager = AccountManager.get(context);
+        for (Account a : accountManager.getAccounts()) {
+            User user = new User();
+            user.setAccount(a);
+            user.setMe(a.name);
+            user.setAvatar(accountManager.getUserData(a, "author_avatar"));
+            user.setName(accountManager.getUserData(a, "author_name"));
+            user.setTokenEndpoint(accountManager.getUserData(a, "token_endpoint"));
+            user.setAuthorizationEndpoint(accountManager.getUserData(a, "authorization_endpoint"));
+            user.setMicrosubEndpoint(accountManager.getUserData(a, "microsub_endpoint"));
+            user.setMicropubEndpoint(accountManager.getUserData(a, "micropub_endpoint"));
+            user.setMicropubMediaEndpoint(accountManager.getUserData(a, "micropub_media_endpoint"));
+            users.add(user);
+        }
+        return users;
     }
 
 }

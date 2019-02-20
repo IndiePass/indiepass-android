@@ -12,6 +12,8 @@ public class User {
     private String tokenEndpoint;
     private String authorizationEndpoint;
     private String syndicationTargets;
+    private String avatar;
+    private String name;
     private String postTypes;
     private boolean valid = false;
     private Account account;
@@ -37,7 +39,7 @@ public class User {
     }
 
     public String getMicropubEndpoint() {
-        return micropubEndpoint;
+        return micropubEndpoint != null ? micropubEndpoint : "";
     }
 
     public void setMicropubEndpoint(String micropubEndpoint) {
@@ -45,7 +47,7 @@ public class User {
     }
 
     public String getMicropubMediaEndpoint() {
-        return micropubMediaEndpoint;
+        return micropubMediaEndpoint != null ? micropubMediaEndpoint : "";
     }
 
     public void setMicropubMediaEndpoint(String micropubMediaEndpoint) {
@@ -53,7 +55,7 @@ public class User {
     }
 
     public String getMicrosubEndpoint() {
-        return microsubEndpoint;
+        return microsubEndpoint != null ? microsubEndpoint : "";
     }
 
     public void setMicrosubEndpoint(String microsubEndpoint) {
@@ -61,7 +63,7 @@ public class User {
     }
 
     public String getTokenEndpoint() {
-        return tokenEndpoint;
+        return tokenEndpoint != null ? tokenEndpoint : "";
     }
 
     public void setTokenEndpoint(String tokenEndpoint) {
@@ -69,7 +71,7 @@ public class User {
     }
 
     public String getAuthorizationEndpoint() {
-        return authorizationEndpoint;
+        return authorizationEndpoint != null ? authorizationEndpoint : "";
     }
 
     public void setAuthorizationEndpoint(String authorizationEndpoint) {
@@ -106,5 +108,21 @@ public class User {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public String getAvatar() {
+        return avatar != null ? avatar : "";
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getName() {
+        return name != null ? name : "";
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

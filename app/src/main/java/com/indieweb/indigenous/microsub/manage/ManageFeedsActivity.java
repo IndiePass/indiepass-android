@@ -64,7 +64,7 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.manage_feed_top_menu, menu);
+        getMenuInflater().inflate(R.menu.manage_feed_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

@@ -2,12 +2,17 @@ package com.indieweb.indigenous.micropub.source;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -19,9 +24,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.indieweb.indigenous.DebugActivity;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.model.PostListItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
@@ -36,7 +41,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PostListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+import static android.app.Activity.RESULT_OK;
+
+public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private PostListAdapter adapter;
     private List<PostListItem> PostListItems = new ArrayList<>();
@@ -48,27 +55,36 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
     String[] olderItems;
     String debugResponse;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_source_post_list);
-
-        listView = findViewById(R.id.source_post_list);
-        refreshLayout = findViewById(R.id.refreshSourcePostList);
-        refreshLayout.setOnRefreshListener(this);
-        loadMoreButton = new Button(this);
-        loadMoreButton.setText(R.string.load_more);
-        loadMoreButton.setTextColor(getResources().getColor(R.color.textColor));
-        loadMoreButton.setBackgroundColor(getResources().getColor(R.color.loadMoreButtonBackgroundColor));
-        user = new Accounts(this).getCurrentUser();
-        startPostList();
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_source_post_list, container, false);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.source_post_list_top_menu, menu);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
 
-        boolean debugJson = Preferences.getPreference(this, "pref_key_debug_source_list", false);
+        listView = view.findViewById(R.id.source_post_list);
+        refreshLayout = view.findViewById(R.id.refreshSourcePostList);
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setRefreshing(true);
+        loadMoreButton = new Button(getContext());
+        loadMoreButton.setText(R.string.load_more);
+        loadMoreButton.setTextColor(getResources().getColor(R.color.textColor));
+        loadMoreButton.setBackgroundColor(getResources().getColor(R.color.loadMoreButtonBackgroundColor));
+        user = new Accounts(getContext()).getCurrentUser();
+        getActivity().setTitle(R.string.source_post_list);
+        startPostList();
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.source_post_list_menu, menu);
+
+        boolean debugJson = Preferences.getPreference(getActivity(), "pref_key_debug_source_list", false);
         if (debugJson) {
             MenuItem item = menu.findItem(R.id.source_list_debug);
             if (item != null) {
@@ -76,7 +92,7 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
             }
         }
 
-        return super.onCreateOptionsMenu(menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -87,11 +103,11 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
                 startPostList();
                 return true;
             case R.id.source_post_list_filter:
-                Intent PostListFilter = new Intent(getBaseContext(), PostListFilterActivity.class);
+                Intent PostListFilter = new Intent(getActivity(), PostListFilterActivity.class);
                 startActivityForResult(PostListFilter, 1);
                 return true;
             case R.id.source_list_debug:
-                Intent i = new Intent(this, DebugActivity.class);
+                Intent i = new Intent(getActivity(), DebugActivity.class);
                 Indigenous app = Indigenous.getInstance();
                 app.setDebug(debugResponse);
                 startActivity(i);
@@ -107,7 +123,7 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 boolean refresh = data.getBooleanExtra("refresh", false);
@@ -124,7 +140,7 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
      */
     public void checkRefreshingStatus() {
         if (refreshLayout.isRefreshing()) {
-            Toast.makeText(getApplicationContext(), getString(R.string.source_post_list_items_refreshed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.source_post_list_items_refreshed), Toast.LENGTH_SHORT).show();
             refreshLayout.setRefreshing(false);
         }
     }
@@ -133,10 +149,10 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
      * Start with post list.
      */
     public void startPostList() {
-        boolean updateEnabled = Preferences.getPreference(this, "pref_key_source_update", false);
-        boolean deleteEnabled = Preferences.getPreference(this, "pref_key_source_delete", false);
+        boolean updateEnabled = Preferences.getPreference(getContext(), "pref_key_source_update", false);
+        boolean deleteEnabled = Preferences.getPreference(getContext(), "pref_key_source_delete", false);
         PostListItems = new ArrayList<>();
-        adapter = new PostListAdapter(this, PostListItems, user, updateEnabled, deleteEnabled);
+        adapter = new PostListAdapter(getContext(), PostListItems, user, updateEnabled, deleteEnabled);
         listView.setAdapter(adapter);
         getSourcePostListItems("");
     }
@@ -162,16 +178,16 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
         olderItems = new String[1];
 
         // Filter on post type.
-        String postType = Preferences.getPreference(getApplicationContext(), "source_post_list_filter_post_type", "all_source_post_types");
+        String postType = Preferences.getPreference(getContext(), "source_post_list_filter_post_type", "all_source_post_types");
         if (!postType.equals("all_source_post_types")) {
             MicropubEndpoint += "&post-type=" + postType;
         }
 
         // Limit.
-        String limit = Preferences.getPreference(getApplicationContext(), "source_post_list_filter_post_limit", "10");
+        String limit = Preferences.getPreference(getContext(), "source_post_list_filter_post_limit", "10");
         MicropubEndpoint += "&limit=" + limit;
 
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        RequestQueue queue = Volley.newRequestQueue(getContext());
         StringRequest getRequest = new StringRequest(Request.Method.GET, MicropubEndpoint,
                 new Response.Listener<String>() {
                     @Override
@@ -256,7 +272,7 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
 
                         }
                         catch (JSONException e) {
-                            Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
 
                         checkRefreshingStatus();
@@ -265,7 +281,7 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.no_posts_found), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.no_posts_found), Toast.LENGTH_SHORT).show();
                         checkRefreshingStatus();
                     }
                 }

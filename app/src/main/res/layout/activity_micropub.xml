@@ -55,8 +55,7 @@
             android:layout_gravity="start"
             app:itemIconTint="@color/iconTint"
             app:itemTextColor="@color/menuTextcolor"
-            app:itemBackground="@drawable/nav_item_background"
-            app:menu="@menu/micropub_post_menu" />
+            app:itemBackground="@drawable/nav_item_background" />
 
         <Button
             android:layout_margin="10dp"

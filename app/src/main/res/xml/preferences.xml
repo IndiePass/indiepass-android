@@ -3,73 +3,78 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-    <PreferenceScreen
+    <PreferenceCategory
+        android:layout="@layout/preference_category"
         android:title="@string/pref_category_sharing_title"
-        android:summary="@string/pref_category_sharing_summary"
-        android:persistent="false">
-        <CheckBoxPreference
+        android:summary="@string/pref_category_sharing_summary">
+
+        <SwitchPreference
             android:key="pref_key_share_expose_like"
             android:summary="@string/pref_summary_expose_like"
             android:title="@string/pref_share_like_enabled"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="pref_key_share_expose_bookmark"
             android:summary="@string/pref_summary_expose_bookmark"
             android:title="@string/pref_share_bookmark_enabled"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="pref_key_share_expose_repost"
             android:summary="@string/pref_summary_expose_repost"
             android:title="@string/pref_share_repost_enabled"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="pref_key_share_expose_reply"
             android:summary="@string/pref_summary_expose_reply"
             android:title="@string/pref_share_reply_enabled"
             android:defaultValue="false" />
-    </PreferenceScreen>
 
-    <PreferenceScreen
+    </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:layout="@layout/preference_category"
         android:title="@string/pref_category_posts_title"
-        android:summary="@string/pref_category_posts_summary"
-        android:persistent="false">
-        <CheckBoxPreference
+        android:summary="@string/pref_category_posts_summary">
+
+        <SwitchPreference
             android:key="pref_key_location_label"
             android:title="@string/pref_key_location_label_title"
             android:summary="@string/pref_key_location_label_summary"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="pref_key_location_visibility"
             android:title="@string/pref_key_location_visibility_title"
             android:summary="@string/pref_key_location_visibility_summary"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="pref_key_location_label_query"
             android:title="@string/pref_key_location_label_query_title"
             android:summary="@string/pref_key_location_label_query_summary"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="pref_key_tags_list"
             android:title="@string/pref_key_tags_list_title"
             android:summary="@string/pref_key_tags_list_summary"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="pref_key_post_type_hide"
             android:title="@string/pref_key_post_type_hide_title"
             android:summary="@string/pref_key_post_type_hide_summary"
             android:defaultValue="false" />
-    </PreferenceScreen>
 
-    <PreferenceScreen
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/preference_category"
         android:title="@string/pref_category_media_title"
-        android:summary="@string/pref_category_media_summary"
-        android:persistent="false">
-        <CheckBoxPreference
+        android:summary="@string/pref_category_media_summary">
+
+        <SwitchPreference
             android:key="pref_key_image_preview"
             android:title="@string/pref_key_image_preview_title"
             android:summary="@string/pref_key_image_preview_summary"
             android:defaultValue="true" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="pref_key_image_scale"
             android:title="@string/pref_key_image_scale_title"
             android:summary="@string/pref_key_image_scale_summary"
@@ -88,64 +93,69 @@
             android:title="@string/pref_key_image_size_title"
             android:summary="@string/pref_key_image_size_summary"
             android:defaultValue="1000" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="pref_key_video_autoplay"
             android:title="@string/pref_key_video_autoplay_title"
             android:defaultValue="false" />
             />
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="pref_key_media_name"
             android:title="@string/pref_key_media_name_title"
             android:summary="@string/pref_key_media_name_summary"
             android:defaultValue="false" />
-    </PreferenceScreen>
 
-    <PreferenceScreen
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/preference_category"
         android:title="@string/pref_category_experimental_title"
-        android:summary="@string/pref_category_experimental_summary"
-        android:persistent="false">
-        <CheckBoxPreference
-            android:key="pref_key_source_update"
-            android:title="@string/pref_key_source_update_title"
-            android:summary="@string/pref_key_source_update_summary"
-            android:defaultValue="false" />
-        <CheckBoxPreference
-            android:key="pref_key_source_delete"
-            android:title="@string/pref_key_source_delete_title"
-            android:summary="@string/pref_key_source_delete_summary"
-            android:defaultValue="false" />
-        <CheckBoxPreference
+        android:summary="@string/pref_category_experimental_summary">
+
+        <SwitchPreference
             android:key="pref_key_source_post_list"
             android:title="@string/pref_key_source_post_list_title"
             android:summary="@string/pref_key_source_post_list_summary"
             android:defaultValue="false" />
-    </PreferenceScreen>
+        <SwitchPreference
+            android:key="pref_key_source_update"
+            android:title="@string/pref_key_source_update_title"
+            android:summary="@string/pref_key_source_update_summary"
+            android:defaultValue="false" />
+        <SwitchPreference
+            android:key="pref_key_source_delete"
+            android:title="@string/pref_key_source_delete_title"
+            android:summary="@string/pref_key_source_delete_summary"
+            android:defaultValue="false" />
 
-    <PreferenceScreen
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/preference_category"
         android:title="@string/pref_category_debug_title"
-        android:summary="@string/pref_category_debug_summary"
-        android:persistent="false">
-        <CheckBoxPreference
+        android:summary="@string/pref_category_debug_summary">
+
+        <SwitchPreference
             android:key="pref_key_debug_microsub_channels"
             android:title="@string/pref_key_debug_microsub_channels_json_title"
             android:summary="@string/pref_key_debug_microsub_channels_json_summary"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="pref_key_debug_microsub_timeline"
             android:title="@string/pref_key_debug_microsub_timeline_json_title"
             android:summary="@string/pref_key_debug_microsub_timeline_json_summary"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="pref_key_debug_microsub_item_json"
             android:title="@string/pref_key_debug_microsub_item_json_title"
             android:summary="@string/pref_key_debug_microsub_item_json_summary"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <SwitchPreference
             android:key="pref_key_debug_source_list"
             android:title="@string/pref_key_debug_source_list_title"
             android:summary="@string/pref_key_debug_source_list_summary"
             android:defaultValue="false" />
-    </PreferenceScreen>
+
+    </PreferenceCategory>
 
 </PreferenceScreen>
 

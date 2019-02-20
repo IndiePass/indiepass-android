@@ -2,57 +2,20 @@ package com.indieweb.indigenous.microsub.manage;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.customtabs.CustomTabsIntent;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.PopupMenu;
-import android.text.Html;
-import android.text.SpannableStringBuilder;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.text.style.URLSpan;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.indieweb.indigenous.DebugActivity;
-import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.micropub.post.BookmarkActivity;
-import com.indieweb.indigenous.micropub.post.LikeActivity;
-import com.indieweb.indigenous.micropub.post.ReplyActivity;
-import com.indieweb.indigenous.micropub.post.RepostActivity;
-import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.microsub.MicrosubAction;
-import com.indieweb.indigenous.microsub.timeline.TimelineAudioActivity;
-import com.indieweb.indigenous.microsub.timeline.TimelineImageActivity;
-import com.indieweb.indigenous.microsub.timeline.TimelineVideoActivity;
-import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.Feed;
-import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
-import com.indieweb.indigenous.util.Preferences;
-import com.indieweb.indigenous.util.Utility;
-import com.indieweb.indigenous.widget.ExpandableTextView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**

@@ -13,6 +13,7 @@
     <string name="url_repository_hint">http://example.com/repository</string>
     <string name="sign_in_with_domain">Sign in</string>
     <string name="sign_in_info">This login uses IndieAuth and requires you to have a website on your domain that supports IndieAuth.</string>
+    <string name="switch_account">Switch</string>
 
     <string name="drafts">Drafts</string>
     <string name="save_as_draft">Save as draft</string>
@@ -46,6 +47,7 @@
     <string name="preview">Preview</string>
     <string name="results">Results</string>
 
+    <string name="create_post">Write</string>
     <string name="add_note">Note</string>
     <string name="add_article">Article</string>
     <!-- TODO cleanup strings -->
@@ -61,11 +63,14 @@
     <string name="source_post_list">Posts</string>
     <string name="cancel">Cancel</string>
     <string name="source_post_list_filter">Filter posts</string>
+    <string name="main_menu">Main menu</string>
+    <string name="endpoints">Endpoints</string>
 
     <string name="unread">New</string>
     <string name="log_out">Log out</string>
     <string name="timeline">Timeline</string>
     <string name="channels">Channels</string>
+    <string name="nav_reader">Reader</string>
     <string name="read_more">Read more</string>
     <string name="refresh_configuration">Refresh configuration</string>
     <string name="send">Send</string>
@@ -197,5 +202,9 @@
         <item>90</item>
         <item>100</item>
     </string-array>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_desc">Navigation header</string>
 
 </resources>

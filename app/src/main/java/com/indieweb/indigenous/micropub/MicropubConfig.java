@@ -93,7 +93,7 @@ public class MicropubConfig {
                             Toast.makeText(context, "Error getting post-types: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
 
-                        Toast.makeText(context, "Configuration updated", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Micropub configuration updated", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {

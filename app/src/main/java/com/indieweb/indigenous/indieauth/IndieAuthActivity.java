@@ -23,7 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.indieweb.indigenous.MainActivity;
+import com.indieweb.indigenous.LaunchActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
@@ -307,7 +307,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                         Toast.makeText(getApplicationContext(), "Authentication successful", Toast.LENGTH_SHORT).show();
 
                         // Start main activity which will determine where it will go.
-                        Intent main = new Intent(getBaseContext(), MainActivity.class);
+                        Intent main = new Intent(getBaseContext(), LaunchActivity.class);
                         startActivity(main);
                         finish();
                     }

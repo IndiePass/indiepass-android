@@ -22,15 +22,9 @@
         <item name="android:scrollbarThumbVertical">@android:color/transparent</item>
     </style>
 
-    <style name="BottomSheet.StyleDialog" parent="@style/BottomSheet">
-        <item name="bottom_sheet_list_text_appearance">@style/ListAppearance</item>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorControlHighlight">@color/drawerTintcolor</item>
     </style>
-
-    <style name="ListAppearance" parent="BottomSheet.ListItem.TextAppearance">
-        <item name="android:textColor">@color/menuTextcolor</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 

@@ -161,7 +161,7 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.manage_channel_top_menu, menu);
+        getMenuInflater().inflate(R.menu.manage_channel_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

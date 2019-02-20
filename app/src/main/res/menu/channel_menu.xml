@@ -8,30 +8,10 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/drafts"
-        android:title="@string/drafts" />
-
-    <item
+        android:icon="@drawable/settings_white"
         android:id="@+id/channel_manage"
         android:title="@string/channel_manage"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/refreshConfiguration"
-        android:title="@string/refresh_configuration" />
-
-    <item
-        android:id="@+id/settings"
-        android:title="@string/settings" />
-
-    <item
-        android:id="@+id/accounts"
-        android:title="@string/accounts"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/about"
-        android:title="@string/about" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/channels_debug"

@@ -12,18 +12,18 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission
         android:name="android.permission.USE_CREDENTIALS"
         android:maxSdkVersion="22" />
 
     <application
+        android:name=".Indigenous"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name="Indigenous"
         android:theme="@style/AppTheme">
 
         <service
@@ -39,12 +39,17 @@
                 android:resource="@xml/authenticator" />
         </service>
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".indieauth.IndieAuthActivity"
@@ -52,8 +57,10 @@
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="oauthcallback"
                     android:scheme="indigenous-android" />
@@ -63,7 +70,6 @@
         <activity
             android:name=".microsub.channel.ChannelActivity"
             android:label="@string/channels" />
-
         <activity
             android:name=".microsub.manage.ManageChannelActivity"
             android:label="@string/channel_manage"
@@ -111,8 +117,8 @@
         </activity>
 
         <activity
-            android:configChanges="orientation|screenSize|keyboardHidden"
             android:name=".microsub.timeline.TimelineAudioActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_timeline_audio"
             android:parentActivityName=".micropub.MicropubActivity">
             <meta-data
@@ -121,8 +127,8 @@
         </activity>
 
         <activity
-            android:configChanges="orientation|screenSize|keyboardHidden"
             android:name=".microsub.timeline.TimelineVideoActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_timeline_video"
             android:parentActivityName=".micropub.MicropubActivity">
             <meta-data
@@ -142,6 +148,7 @@
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".micropub.post.NoteActivity"
             android:label="@string/add_note"
@@ -245,7 +252,9 @@
             android:targetActivity=".micropub.post.BookmarkActivity">
             <intent-filter android:label="@string/add_bookmark">
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity-alias>
@@ -296,15 +305,6 @@
         </activity>
 
         <activity
-            android:name=".micropub.source.PostListActivity"
-            android:label="@string/source_post_list"
-            android:parentActivityName=".micropub.MicropubActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.micropub.MicropubActivity" />
-        </activity>
-
-        <activity
             android:name=".micropub.source.PostListFilterActivity"
             android:label="@string/source_post_list_filter"
             android:parentActivityName=".micropub.MicropubActivity">
@@ -314,34 +314,16 @@
         </activity>
 
         <activity
-            android:name=".micropub.draft.DraftActivity"
-            android:label="@string/drafts"
-            android:parentActivityName=".micropub.MicropubActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.micropub.MicropubActivity" />
-        </activity>
-
-        <activity
-            android:name=".AboutActivity"
-            android:label="@string/about"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.MainActivity" />
-        </activity>
-
-        <activity
-            android:name=".SettingsActivity"
+            android:name=".general.SettingsActivity"
             android:label="@string/settings"
             android:parentActivityName=".micropub.MicropubActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.MainActivity" />
+                android:value="com.indieweb.indigenous.LaunchActivity" />
         </activity>
 
         <activity
-            android:name=".DebugActivity"
+            android:name=".general.DebugActivity"
             android:label="@string/debug"
             android:parentActivityName=".micropub.MicropubActivity">
             <meta-data

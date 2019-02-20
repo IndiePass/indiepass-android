@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single" android:id="@+id/navMainGroup">
+
+        <item
+            android:id="@+id/nav_reader"
+            android:icon="@drawable/nav_reader"
+            android:title="@string/nav_reader" />
+
+        <item
+            android:checkable="false"
+            android:id="@+id/nav_create"
+            android:icon="@drawable/nav_create"
+            android:title="@string/create_post" />
+
+        <item
+            android:id="@+id/nav_drafts"
+            android:icon="@drawable/nav_drafts"
+            android:title="@string/drafts" />
+
+        <item
+            android:id="@+id/nav_posts"
+            android:icon="@drawable/button_list_idle"
+            android:title="@string/source_post_list" />
+
+        <item
+            android:id="@+id/nav_accounts"
+            android:icon="@drawable/nav_accounts"
+            android:title="@string/accounts" />
+
+        <item
+            android:checkable="false"
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/nav_settings"
+            android:title="@string/settings" />
+
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/nav_help"
+            android:title="@string/about" />
+
+    </group>
+
+    <group android:visible="false" android:id="@+id/navPostGroup">
+
+        <item
+            android:id="@+id/nav_main_menu"
+            android:title="@string/main_menu" />
+
+        <item
+            android:checkable="false"
+            android:id="@+id/nav_upload"
+            android:icon="@drawable/button_media_idle"
+            android:title="@string/upload" />
+
+        <item
+            android:checkable="false"
+            android:id="@+id/createNote"
+            android:icon="@drawable/button_note_idle"
+            android:title="@string/add_note" />
+
+        <item
+            android:checkable="false"
+            android:id="@+id/createArticle"
+            android:icon="@drawable/button_article_idle"
+            android:title="@string/add_article" />
+
+        <item
+            android:checkable="false"
+            android:id="@+id/createLike"
+            android:icon="@drawable/button_like_idle"
+            android:title="@string/add_like" />
+
+        <item
+            android:checkable="false"
+            android:id="@+id/createBookmark"
+            android:icon="@drawable/button_bookmark_idle"
+            android:title="@string/add_bookmark" />
+
+        <item
+            android:checkable="false"
+            android:id="@+id/createReply"
+            android:icon="@drawable/button_reply_idle"
+            android:title="@string/add_reply" />
+
+        <item
+            android:checkable="false"
+            android:id="@+id/createRepost"
+            android:icon="@drawable/button_repost_idle"
+            android:title="@string/add_repost" />
+
+        <item
+            android:checkable="false"
+            android:id="@+id/createEvent"
+            android:icon="@drawable/button_event_idle"
+            android:title="@string/add_event" />
+
+        <item
+            android:checkable="false"
+            android:id="@+id/createRSVP"
+            android:icon="@drawable/button_rsvp_idle"
+            android:title="@string/add_rsvp" />
+
+        <item
+            android:checkable="false"
+            android:id="@+id/createIssue"
+            android:icon="@drawable/button_issue_idle"
+            android:title="@string/add_issue" />
+
+    </group>
+
+</menu>

@@ -1,4 +1,4 @@
-package com.indieweb.indigenous;
+package com.indieweb.indigenous.general;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.indieweb.indigenous.Indigenous;
+import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.util.Utility;
 
 import org.json.JSONObject;

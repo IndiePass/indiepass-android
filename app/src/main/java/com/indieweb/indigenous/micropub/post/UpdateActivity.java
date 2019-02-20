@@ -73,45 +73,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.post_update_action_menu, menu);
-
-        boolean deleteEnabled = Preferences.getPreference(this, "pref_key_source_delete", false);
-        if (!deleteEnabled) {
-            MenuItem itemDelete = menu.findItem(R.id.deletePost);
-            itemDelete.setVisible(false);
-        }
-
         return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.deletePost:
-                if (TextUtils.isEmpty(url.getText())) {
-                    url.setError(getString(R.string.required_field));
-                }
-                else {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(UpdateActivity.this);
-                    builder.setTitle("Are you sure you want to delete this post ?");
-                    builder.setPositiveButton(getString(R.string.delete_post),new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog,int id) {
-                            // TODO see if we can use an activity for result here
-                            new MicropubAction(UpdateActivity.this, user).deletePost(url.getText().toString());
-                            finish();
-                        }
-                    });
-                    builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    builder.show();
-                }
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

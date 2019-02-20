@@ -19,7 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.indieweb.indigenous.DebugActivity;
+import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.microsub.MicrosubAction;
@@ -99,7 +99,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.timeline_top_menu, menu);
+        getMenuInflater().inflate(R.menu.timeline_menu, menu);
 
         boolean debugJson = Preferences.getPreference(this, "pref_key_debug_microsub_timeline", false);
         if (debugJson && !preview) {

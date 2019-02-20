@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:icon="@drawable/button_delete_white"
-        app:showAsAction="ifRoom"
-        android:id="@+id/deletePost"
-        android:title="@string/delete_post" />
-
-    <item
         android:icon="@drawable/button_send_white"
         app:showAsAction="ifRoom"
         android:id="@+id/send"

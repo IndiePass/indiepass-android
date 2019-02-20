@@ -15,12 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.indieweb.indigenous.AboutActivity;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.SettingsActivity;
-import com.indieweb.indigenous.indieauth.Endpoints;
 import com.indieweb.indigenous.indieauth.IndieAuthActivity;
-import com.indieweb.indigenous.micropub.draft.DraftActivity;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.EventActivity;
@@ -32,7 +28,6 @@ import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.micropub.post.UpdateActivity;
-import com.indieweb.indigenous.micropub.source.PostListActivity;
 import com.indieweb.indigenous.microsub.channel.ChannelActivity;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
@@ -148,9 +143,6 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
         if (Preferences.getPreference(this, "pref_key_post_type_hide", false)) {
 
             ArrayList<Integer> protectedTypes = new ArrayList<>();
-            protectedTypes.add(R.id.createMedia);
-            protectedTypes.add(R.id.updatePost);
-            protectedTypes.add(R.id.sourcePostList);
 
             String postTypes = user.getPostTypes();
 
@@ -298,65 +290,8 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
                 }
                 startActivity(CreateIssue);
                 break;
-            case R.id.createMedia:
-                Intent CreateMedia = new Intent(getBaseContext(), UploadActivity.class);
-                if (incomingImage != null && incomingImage.length() > 0) {
-                    CreateMedia.putExtra("incomingImage", incomingImage);
-                }
-                startActivity(CreateMedia);
-                break;
-            case R.id.updatePost:
-                Intent UpdatePost = new Intent(getBaseContext(), UpdateActivity.class);
-                if (incomingText.length() > 0) {
-                    UpdatePost.putExtra("incomingText", incomingText);
-                }
-                startActivity(UpdatePost);
-                break;
-            case R.id.sourcePostList:
-                Intent SourcePostList = new Intent(getBaseContext(), PostListActivity.class);
-                startActivity(SourcePostList);
-                break;
         }
         return false;
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.top_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // TODO create helper method as we have the same in ChannelsActivity
-            case R.id.drafts:
-                Intent goDraft = new Intent(getBaseContext(), DraftActivity.class);
-                startActivity(goDraft);
-                return true;
-
-            case R.id.refreshConfiguration:
-                new MicropubConfig(getApplicationContext(), new Accounts(this).getCurrentUser()).refresh();
-                new Endpoints(getApplicationContext(), user).refresh();
-                return true;
-
-            case R.id.settings:
-                Intent goSettings = new Intent(getBaseContext(), SettingsActivity.class);
-                startActivity(goSettings);
-                return true;
-
-            case R.id.about:
-                Intent goAbout = new Intent(getBaseContext(), AboutActivity.class);
-                startActivity(goAbout);
-                return true;
-
-            case R.id.accounts:
-                new Accounts(this).switchAccount(this);
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
 }
