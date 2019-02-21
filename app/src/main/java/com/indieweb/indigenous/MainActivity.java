@@ -207,8 +207,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_reader:
                 close = true;
                 fragment = new ChannelFragment();
-                // TODO if the user does not have a micosub endpoint, set it to an info
-                // or set visibility to 0 in that fragment.
                 break;
 
             case R.id.nav_create:

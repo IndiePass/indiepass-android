@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -42,6 +43,7 @@ import java.util.Map;
 
 public class ChannelFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
+    TextView noMicrosubEndpoint;
     boolean showRefreshMessage = false;
     ListView listChannel;
     SwipeRefreshLayout refreshLayout;
@@ -70,7 +72,17 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
         user = new Accounts(getContext()).getCurrentUser();
         requireActivity().setTitle("Reader");
 
-        startChannels();
+        if (user.getMicrosubEndpoint().length() > 0) {
+            refreshLayout.setVisibility(View.VISIBLE);
+            listChannel.setVisibility(View.VISIBLE);
+            startChannels();
+        }
+        else {
+            refreshLayout.setVisibility(View.GONE);
+            listChannel.setVisibility(View.GONE);
+            noMicrosubEndpoint = view.findViewById(R.id.noMicrosubEndpoint);
+            noMicrosubEndpoint.setVisibility(View.VISIBLE);
+        }
     }
 
     /**

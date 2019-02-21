@@ -21,6 +21,15 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <TextView
+        android:padding="@dimen/box_padding"
+        android:id="@+id/noMicrosubEndpoint"
+        android:visibility="gone"
+        android:textColor="@color/textColor"
+        android:text="@string/no_microsub_endpoint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/actionButton"
         android:layout_margin="10dp"
