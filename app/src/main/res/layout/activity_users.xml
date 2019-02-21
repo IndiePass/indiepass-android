@@ -10,7 +10,6 @@
         android:dividerHeight="@dimen/source_post_list_divider_height"
         android:background="@color/listBackgroundColor"
         android:id="@+id/users_list"
-        android:gravity="center"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 

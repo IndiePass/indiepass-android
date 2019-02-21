@@ -16,7 +16,6 @@
             android:dividerHeight="@dimen/timeline_list_divider_height"
             android:background="@color/listBackgroundColor"
             android:id="@+id/feed_list"
-            android:gravity="center"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
 
