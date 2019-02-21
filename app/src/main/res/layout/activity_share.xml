@@ -59,6 +59,9 @@
             app:itemBackground="@drawable/nav_item_background" />
 
         <Button
+            android:background="@color/buttonWhite"
+            android:textColor="@color/colorPrimary"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_margin="10dp"
             android:padding="10dp"
             android:text="@string/go_to_main_app"

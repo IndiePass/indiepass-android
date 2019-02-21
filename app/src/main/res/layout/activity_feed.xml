@@ -7,22 +7,25 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:layout_margin="@dimen/box_padding"
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
             android:hint="@string/url_hint"
             android:inputType="textUri" />
 
         <Button
             android:id="@+id/search"
+            android:background="@color/buttonWhite"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginLeft="@dimen/button_padding"
             android:text="@string/search_feed"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/button_padding" />
 
     </LinearLayout>
 
@@ -30,11 +33,13 @@
         android:visibility="gone"
         android:id="@+id/resultsTitle"
         android:textColor="@color/textColor"
-        android:layout_margin="@dimen/box_padding"
-        android:textSize="@dimen/big_text"
+        android:layout_marginBottom="@dimen/box_padding"
+        android:layout_marginLeft="@dimen/box_padding"
+        android:textSize="@dimen/big_list_title"
         android:text="@string/results"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/box_padding" />
 
     <ListView
         android:id="@+id/feedResults"

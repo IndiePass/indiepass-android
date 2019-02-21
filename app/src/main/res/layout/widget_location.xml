@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:visibility="gone"
     android:orientation="vertical"
     android:id="@+id/locationWrapper"
     android:padding="@dimen/box_padding"
-    android:background="@color/borderColor"
+    android:background="@color/paneColor"
     android:layout_margin="5dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -18,18 +17,21 @@
     <EditText
         android:id="@+id/locationLabel"
         android:textSize="16sp"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/box_padding"
         android:hint="@string/location_label"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text" />
 
     <Button
         android:id="@+id/locationQuery"
-        android:layout_marginTop="@dimen/box_padding"
         android:visibility="gone"
-        android:hint="@string/location_label_query"
+        android:layout_marginTop="@dimen/box_padding"
+        android:background="@color/paneColor"
+        android:textColor="@color/colorPrimary"
+        style="?android:attr/borderlessButtonStyle"
+        android:text="@string/location_label_query"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

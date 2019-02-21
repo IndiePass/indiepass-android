@@ -23,6 +23,9 @@
             android:layout_width="0dp" />
 
         <Button
+            android:textColor="@color/colorPrimary"
+            style="?android:attr/borderlessButtonStyle"
+            android:background="@color/listRowBackgroundColor"
             android:id="@+id/subscribe"
             android:text="@string/subscribe"
             android:padding="@dimen/channel_list_item_padding"
@@ -30,6 +33,9 @@
             android:layout_height="wrap_content" />
 
         <Button
+            android:textColor="@color/colorPrimary"
+            style="?android:attr/borderlessButtonStyle"
+            android:background="@color/listRowBackgroundColor"
             android:id="@+id/preview"
             android:text="@string/preview"
             android:padding="@dimen/channel_list_item_padding"

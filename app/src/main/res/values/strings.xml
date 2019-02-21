@@ -8,7 +8,7 @@
     <string name="add_new_account">Add new account</string>
     <string name="no_user">No user found</string>
     <string name="select_account">Select account</string>
-    <string name="select_account_info">Switch to an existing account by pressing the "Select account" button.</string>
+    <string name="select_account_info">Switch to an existing account underneath</string>
     <string name="url_hint">http://example.com</string>
     <string name="url_repository_hint">http://example.com/repository</string>
     <string name="sign_in_with_domain">Sign in</string>
