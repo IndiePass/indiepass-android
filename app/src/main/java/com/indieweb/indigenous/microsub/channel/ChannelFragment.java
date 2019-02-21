@@ -61,7 +61,6 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setHasOptionsMenu(true);
 
         view.findViewById(R.id.actionButton).setOnClickListener(this);
         listChannel = view.findViewById(R.id.channel_list);
@@ -73,6 +72,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
         requireActivity().setTitle("Reader");
 
         if (user.getMicrosubEndpoint().length() > 0) {
+            setHasOptionsMenu(true);
             refreshLayout.setVisibility(View.VISIBLE);
             listChannel.setVisibility(View.VISIBLE);
             startChannels();
@@ -218,7 +218,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.channel_manage:
+            case R.id.channels_manage:
                 Intent manageChannels = new Intent(getContext(), ManageChannelActivity.class);
                 startActivity(manageChannels);
                 return true;

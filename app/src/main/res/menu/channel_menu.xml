@@ -9,7 +9,7 @@
 
     <item
         android:icon="@drawable/settings_white"
-        android:id="@+id/channel_manage"
+        android:id="@+id/channels_manage"
         android:title="@string/channel_manage"
         app:showAsAction="ifRoom" />
 
