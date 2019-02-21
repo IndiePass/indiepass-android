@@ -1,10 +1,14 @@
 package com.indieweb.indigenous.indieauth;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -31,16 +35,39 @@ public class UsersFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
         listView = view.findViewById(R.id.users_list);
         currentUser = new Accounts(getContext()).getCurrentUser();
-        getActivity().setTitle(R.string.accounts);
+        requireActivity().setTitle(R.string.accounts);
         startUsersList();
     }
 
+    /**
+     * Start users lists.
+     */
     public void startUsersList() {
         users = new Accounts(getContext()).getAllUsers();
-        UsersListAdapter adapter = new UsersListAdapter(getContext(), getActivity(), users, currentUser);
+        UsersListAdapter adapter = new UsersListAdapter(requireContext(), getActivity(), users, currentUser);
         listView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.accounts_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.user_add:
+                Intent addUser = new Intent(getContext(), IndieAuthActivity.class);
+                startActivity(addUser);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

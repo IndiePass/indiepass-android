@@ -44,8 +44,6 @@ import java.util.Map;
 public class ChannelFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     boolean showRefreshMessage = false;
-    String incomingText = "";
-    String incomingImage = "";
     ListView listChannel;
     SwipeRefreshLayout refreshLayout;
     private ChannelListAdapter adapter;
@@ -71,7 +69,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
         refreshLayout.setRefreshing(true);
 
         user = new Accounts(getContext()).getCurrentUser();
-        getActivity().setTitle("Reader");
+        requireActivity().setTitle("Reader");
 
         startChannels();
     }
@@ -82,7 +80,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
     public void startChannels() {
         Channels = new ArrayList<>();
         listChannel.setVisibility(View.VISIBLE);
-        adapter = new ChannelListAdapter(getContext(), Channels);
+        adapter = new ChannelListAdapter(requireContext(), Channels);
         listChannel.setAdapter(adapter);
         getChannels();
     }
@@ -178,7 +176,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
             }
         };
 
-        RequestQueue queue = Volley.newRequestQueue(getContext());
+        RequestQueue queue = Volley.newRequestQueue(requireContext());
         queue.add(getRequest);
     }
 
@@ -198,7 +196,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.actionButton:
-                ((MainActivity) getActivity()).openDrawer(R.id.nav_create);
+                ((MainActivity) requireActivity()).openDrawer(R.id.nav_create);
                 break;
         }
     }
@@ -228,6 +226,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
                 return true;
 
             case R.id.channel_list_refresh:
+                showRefreshMessage = true;
                 refreshLayout.setRefreshing(true);
                 startChannels();
                 return true;

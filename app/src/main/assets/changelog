@@ -8,10 +8,10 @@ Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a
 <ul>
     <li>Add preview screen for a feed</li>
     <li>Use navigation drawer layout for better UX</li>
-    <li>Better account management from within the app</li>
     <li>Allow selecting and uploading multiple images</li>
+    <li>Better account management from within the app (sync, add, delete)</li>
     <li>Rename 'experimental' keys internally. Reconfigure if needed</li>
-    <li>Parse account information (name and avatar to show in navigation</li>
+    <li>Show account information in header (name and avatar)</li>
 </ul>
 <h4>17/02/2019 - 0.31</h4>
 <ul>

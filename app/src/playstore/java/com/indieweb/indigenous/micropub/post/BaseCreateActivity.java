@@ -252,7 +252,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.post_action_menu, menu);
+        getMenuInflater().inflate(R.menu.post_create_menu, menu);
 
         if (!canAddImage) {
             MenuItem item = menu.findItem(R.id.addImage);

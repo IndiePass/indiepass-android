@@ -6,10 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,22 +20,12 @@ import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.EventActivity;
 import com.indieweb.indigenous.micropub.post.IssueActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
-import com.indieweb.indigenous.micropub.post.UploadActivity;
 import com.indieweb.indigenous.micropub.post.NoteActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
-import com.indieweb.indigenous.micropub.post.UpdateActivity;
-import com.indieweb.indigenous.microsub.channel.ChannelActivity;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
-import com.indieweb.indigenous.util.Preferences;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class MicropubActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -101,120 +89,10 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
             }
         }
 
-        String microsubEndpoint = user.getMicrosubEndpoint();
-        if (microsubEndpoint != null && microsubEndpoint.length() > 0) {
-            Button goToReader = findViewById(R.id.goToReader);
-            goToReader.setVisibility(View.VISIBLE);
-            goToReader.setOnClickListener(new goToReaderOnClickListener());
-        }
-
         NavigationView navigationView = findViewById(R.id.postMenu);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Hide Media if micropub media endpoint is empty.
-        String micropubMediaEndpoint = user.getMicropubMediaEndpoint();
-        if (micropubMediaEndpoint == null || micropubMediaEndpoint.length() == 0) {
-            Menu menu = navigationView.getMenu();
-            MenuItem item = menu.getItem(9);
-            if (item != null) {
-                item.setVisible(false);
-            }
-        }
 
-        // Hide Update if setting is not enabled.
-        if (!Preferences.getPreference(this, "pref_key_source_update", false)) {
-            Menu menu = navigationView.getMenu();
-            MenuItem item = menu.getItem(10);
-            if (item != null) {
-                item.setVisible(false);
-            }
-        }
-
-        // Hide Posts if setting is not enabled.
-        if (!Preferences.getPreference(this, "pref_key_source_post_list", false)) {
-            Menu menu = navigationView.getMenu();
-            MenuItem item = menu.getItem(11);
-            if (item != null) {
-                item.setVisible(false);
-            }
-        }
-
-        // Hide post types if configured.
-        if (Preferences.getPreference(this, "pref_key_post_type_hide", false)) {
-
-            ArrayList<Integer> protectedTypes = new ArrayList<>();
-
-            String postTypes = user.getPostTypes();
-
-            ArrayList<String> postTypeList = new ArrayList<>();
-            if (postTypes != null && postTypes.length() > 0) {
-                try {
-                    JSONObject object;
-                    JSONArray itemList = new JSONArray(postTypes);
-
-                    for (int i = 0; i < itemList.length(); i++) {
-                        object = itemList.getJSONObject(i);
-                        String type = object.getString("type");
-                        postTypeList.add(type);
-                    }
-
-                }
-                catch (JSONException ignored) { }
-            }
-
-            // Loop over menu items.
-            Menu menu = navigationView.getMenu();
-            for (int i = 0; i < menu.size(); i++){
-                String menuType = "";
-                Integer id = menu.getItem(i).getItemId();
-                if (!protectedTypes.contains(id)) {
-                    switch (id) {
-                        case R.id.createNote:
-                            menuType = "note";
-                            break;
-                        case R.id.createArticle:
-                            menuType = "article";
-                            break;
-                        case R.id.createLike:
-                            menuType = "like";
-                            break;
-                        case R.id.createBookmark:
-                            menuType = "bookmark";
-                            break;
-                        case R.id.createReply:
-                            menuType = "reply";
-                            break;
-                        case R.id.createRepost:
-                            menuType = "repost";
-                            break;
-                        case R.id.createEvent:
-                            menuType = "event";
-                            break;
-                        case R.id.createRSVP:
-                            menuType = "rsvp";
-                            break;
-                        case R.id.createIssue:
-                            menuType = "issue";
-                            break;
-                    }
-
-                    if (!postTypeList.contains(menuType)) {
-                        menu.getItem(i).setVisible(false);
-                    }
-                }
-            }
-        }
-
-    }
-
-    // Go to reader.
-    class goToReaderOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            Intent i = new Intent(getApplicationContext(), ChannelActivity.class);
-            startActivity(i);
-            finish();
-        }
     }
 
     @Override

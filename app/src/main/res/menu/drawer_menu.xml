@@ -17,6 +17,12 @@
             android:title="@string/create_post" />
 
         <item
+            android:checkable="false"
+            android:id="@+id/nav_upload"
+            android:icon="@drawable/button_media_idle"
+            android:title="@string/upload" />
+
+        <item
             android:id="@+id/nav_drafts"
             android:icon="@drawable/nav_drafts"
             android:title="@string/drafts" />
@@ -49,12 +55,6 @@
         <item
             android:id="@+id/nav_main_menu"
             android:title="@string/main_menu" />
-
-        <item
-            android:checkable="false"
-            android:id="@+id/nav_upload"
-            android:icon="@drawable/button_media_idle"
-            android:title="@string/upload" />
 
         <item
             android:checkable="false"

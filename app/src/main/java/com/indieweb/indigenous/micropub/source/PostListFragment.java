@@ -45,6 +45,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
+    boolean showRefreshMessage = false;
     private PostListAdapter adapter;
     private List<PostListItem> PostListItems = new ArrayList<>();
     SwipeRefreshLayout refreshLayout;
@@ -82,7 +83,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.source_post_list_menu, menu);
+        inflater.inflate(R.menu.source_list_menu, menu);
 
         boolean debugJson = Preferences.getPreference(getActivity(), "pref_key_debug_source_list", false);
         if (debugJson) {
@@ -99,6 +100,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.source_post_list_refresh:
+                showRefreshMessage = true;
                 refreshLayout.setRefreshing(true);
                 startPostList();
                 return true;
@@ -119,6 +121,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh() {
+        showRefreshMessage = true;
         startPostList();
     }
 
@@ -140,7 +143,9 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
      */
     public void checkRefreshingStatus() {
         if (refreshLayout.isRefreshing()) {
-            Toast.makeText(getContext(), getString(R.string.source_post_list_items_refreshed), Toast.LENGTH_SHORT).show();
+            if (showRefreshMessage) {
+                Toast.makeText(getContext(), getString(R.string.source_post_list_items_refreshed), Toast.LENGTH_SHORT).show();
+            }
             refreshLayout.setRefreshing(false);
         }
     }

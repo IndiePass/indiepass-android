@@ -1,8 +1,6 @@
 package com.indieweb.indigenous.micropub.post;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -21,11 +19,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.micropub.MicropubAction;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Connection;
-import com.indieweb.indigenous.util.Preferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,7 +68,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.post_update_action_menu, menu);
+        getMenuInflater().inflate(R.menu.post_update_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
