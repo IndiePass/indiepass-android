@@ -1,10 +1,4 @@
-<a href="https://indigenous.abode.pub/android/privacy/">Privacy policy</a>
-<br /><br />
-Development happens on <a href="https://github.com/swentel/indigenous–android">GitHub</a>
-<br /><br />
-Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://openclipart.org">Openclipart</a>.
-<h2>Changelog</h2>
-<h4>17/02/2019 - 0.31</h4>
+<h4>xx/xx/2019 - 0.32</h4>
 <ul>
     <li>Add preview screen for a feed</li>
     <li>Use navigation drawer layout for better UX</li>

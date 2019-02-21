@@ -1,6 +1,5 @@
 package com.indieweb.indigenous.general;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,9 +9,10 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.indieweb.indigenous.BuildConfig;
 import com.indieweb.indigenous.R;
 
 import java.io.BufferedReader;
@@ -32,44 +32,49 @@ public class AboutFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("About");
+        requireActivity().setTitle("About");
         currentView = view;
-        loadAbout();
 
-    }
+        // Html.
+        TextView about = view.findViewById(R.id.about);
+        about.setMovementMethod(LinkMovementMethod.getInstance());
+        String aboutInfo = getString(R.string.about_info);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            about.setText(Html.fromHtml(aboutInfo, Html.FROM_HTML_MODE_LEGACY));
+        }
+        else {
+            about.setText(Html.fromHtml(aboutInfo));
+        }
 
-    private class getAboutAsyncTask extends AsyncTask<Void, Void, StringBuilder> {
+        // Version number.
+        TextView version = view.findViewById(R.id.about_version);
+        version.setText("Indigenous version: " + BuildConfig.VERSION_NAME);
 
-        @Override
-        protected StringBuilder doInBackground(Void... voids) {
-
-            StringBuilder text = new StringBuilder();
-
-            try {
-                String line;
-                BufferedReader reader = new BufferedReader(new InputStreamReader(getActivity().getAssets().open("changelog")));
-                while ((line = reader.readLine()) != null) {
-                    text.append(line);
-                    text.append('\n');
-                }
-            } catch (IOException ignored) {
-                Toast.makeText(getContext(), "Exception: " + ignored.getMessage(), Toast.LENGTH_SHORT).show();
+        // Changelog.
+        Button changelog = view.findViewById(R.id.about_changelog_button);
+        changelog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadChangelog();
             }
-
-            return text;
-        }
-
-        protected void onPostExecute(StringBuilder text) {
-            displayAbout(text);
-        }
-
+        });
     }
 
-    public void loadAbout() {
-        new getAboutAsyncTask().execute();
-    }
+    /**
+     * Load changelog.
+     */
+    public void loadChangelog() {
+        StringBuilder text = new StringBuilder();
 
-    public void displayAbout(StringBuilder text) {
+        try {
+            String line;
+            BufferedReader reader = new BufferedReader(new InputStreamReader(requireActivity().getAssets().open("changelog")));
+            while ((line = reader.readLine()) != null) {
+                text.append(line);
+                text.append('\n');
+            }
+        } catch (IOException ignored) { }
+
         TextView t = currentView.findViewById(R.id.about_changelog);
         t.setMovementMethod(LinkMovementMethod.getInstance());
         t.setText(Html.fromHtml(text.toString()));

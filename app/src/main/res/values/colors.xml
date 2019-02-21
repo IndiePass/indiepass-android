@@ -11,6 +11,7 @@
     <color name="borderColor">#eeeeee</color>
     <color name="listBackgroundColor">#f5f5f5</color>
     <color name="listDividerColor">#e2e6e9</color>
+    <color name="buttonWhite">#fafafa</color>
     <color name="listRowBackgroundColor">#ffffff</color>
     <color name="listRowBackgroundColorTouched">#e2e6e9</color>
     <color name="loadMoreButtonBackgroundColor">#f5f5f5</color>

@@ -6,10 +6,42 @@
     android:layout_height="match_parent"
     tools:context="com.indieweb.indigenous.general.AboutFragment">
 
-    <TextView
-        android:padding="15dp"
-        android:id="@+id/about_changelog"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:padding="@dimen/box_padding"
+            android:id="@+id/about"
+            android:textSize="@dimen/info_text"
+            android:textColor="@color/textColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:padding="@dimen/box_padding"
+            android:id="@+id/about_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_marginLeft="@dimen/box_padding"
+            android:text="@string/view_changelog"
+            android:background="@color/buttonWhite"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/about_changelog_button"
+            android:layout_width="wrap_content"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/box_padding" />
+
+        <TextView
+            android:padding="@dimen/box_padding"
+            android:id="@+id/about_changelog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
 </ScrollView>
