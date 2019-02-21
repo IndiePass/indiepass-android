@@ -4,7 +4,7 @@
     android:id="@+id/scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.indieweb.indigenous.AboutActivity">
+    tools:context="com.indieweb.indigenous.general.AboutFragment">
 
     <TextView
         android:padding="15dp"
