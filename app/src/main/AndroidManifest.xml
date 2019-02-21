@@ -133,7 +133,7 @@
 
         <activity
             android:name=".micropub.ShareActivity"
-            android:label="@string/title_activity_micropub">
+            android:label="@string/title_activity_share">
             <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
