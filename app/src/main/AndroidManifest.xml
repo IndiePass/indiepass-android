@@ -280,6 +280,18 @@
                 android:value="com.indieweb.indigenous.LaunchActivity" />
         </activity>
 
+        <activity-alias
+            android:name=".UploadAlias"
+            android:enabled="false"
+            android:label="@string/upload"
+            android:targetActivity=".micropub.post.UploadActivity">
+            <intent-filter android:label="@string/upload">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+        </activity-alias>
+
         <activity
             android:name=".micropub.post.UpdateActivity"
             android:label="@string/update_post"

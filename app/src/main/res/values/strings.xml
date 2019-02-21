@@ -115,6 +115,8 @@
     <string name="pref_share_bookmark_enabled">Enable bookmark sharing</string>
     <string name="pref_summary_expose_reply">Expose reply in share intents. This will not immediately post to your micropub endpoint as you still need to add a message.</string>
     <string name="pref_share_reply_enabled">Enable reply sharing</string>
+    <string name="pref_share_upload_enabled">Enable upload sharing</string>
+    <string name="pref_summary_expose_upload">Expose upload in share intents. This will not immediately post to your media endpoint so you can verify</string>
 
     <!-- Preferences: posts -->
     <string name="pref_category_posts_title">Posts</string>

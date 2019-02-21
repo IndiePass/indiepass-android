@@ -28,6 +28,11 @@
             android:summary="@string/pref_summary_expose_reply"
             android:title="@string/pref_share_reply_enabled"
             android:defaultValue="false" />
+        <SwitchPreference
+            android:key="pref_key_share_expose_upload"
+            android:summary="@string/pref_summary_expose_upload"
+            android:title="@string/pref_share_upload_enabled"
+            android:defaultValue="false" />
 
     </PreferenceCategory>
     

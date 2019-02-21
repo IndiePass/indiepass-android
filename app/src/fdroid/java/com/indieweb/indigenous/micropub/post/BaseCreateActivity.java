@@ -202,7 +202,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 String incomingImage = extras.getString("incomingImage");
                 if (incomingImage != null && incomingImage.length() > 0 && imagePreviewGallery != null) {
                     imageUris.add(Uri.parse(incomingImage));
-                    prepareImagePreviewAndBitmap();
+                    prepareImagePreview();
                 }
             }
 
@@ -258,7 +258,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 imageUris.add(data.getData());
             }
 
-            prepareImagePreviewAndBitmap();
+            prepareImagePreview();
         }
     }
 
@@ -351,7 +351,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
             // Image
             if (canAddImage && draft.getImage().length() > 0) {
                 imageUris.add(Uri.parse(draft.getImage()));
-                prepareImagePreviewAndBitmap();
+                prepareImagePreview();
             }
 
         }

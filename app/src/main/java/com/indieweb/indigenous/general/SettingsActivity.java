@@ -58,6 +58,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
         });
 
+        Preference upload = findPreference("pref_key_share_expose_upload");
+        upload.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                boolean checked = Boolean.valueOf(newValue.toString());
+                if (checked) toggleAliasSetting("UploadAlias", 1);
+                else toggleAliasSetting("UploadAlias", 2);
+                return true;
+            }
+        });
+
     }
 
     /**

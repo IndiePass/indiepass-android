@@ -208,17 +208,29 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
             String action = intent.getAction();
             if (Intent.ACTION_SEND.equals(action)) {
                 try {
+
+                    // Text
                     if (extras.containsKey(Intent.EXTRA_TEXT)) {
-                        String urlIncoming = extras.get(Intent.EXTRA_TEXT).toString();
-                        if (urlIncoming != null && urlIncoming.length() > 0 && url != null) {
-                            setUrlAndFocusOnMessage(urlIncoming);
-                            if (directSend.length() > 0) {
-                                if (Preferences.getPreference(this, directSend, false)) {
-                                    sendBasePost(null);
+                        String incomingData = extras.get(Intent.EXTRA_TEXT).toString();
+                        if (incomingData != null && incomingData.length() > 0) {
+                            if (url != null) {
+                                setUrlAndFocusOnMessage(incomingData);
+                                if (directSend.length() > 0) {
+                                    if (Preferences.getPreference(this, directSend, false)) {
+                                        sendBasePost(null);
+                                    }
                                 }
                             }
                         }
                     }
+
+                    // Stream
+                    if (isMediaRequest && imagePreviewGallery != null && extras.containsKey(Intent.EXTRA_STREAM)) {
+                        String incomingData = extras.get(Intent.EXTRA_STREAM).toString();
+                        imageUris.add(Uri.parse(incomingData));
+                        prepareImagePreview();
+                    }
+
                 }
                 catch (NullPointerException ignored) { }
             }
@@ -238,7 +250,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 String incomingImage = extras.getString("incomingImage");
                 if (incomingImage != null && incomingImage.length() > 0 && imagePreviewGallery != null) {
                     imageUris.add(Uri.parse(incomingImage));
-                    prepareImagePreviewAndBitmap();
+                    prepareImagePreview();
                 }
             }
 
@@ -328,7 +340,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 imageUris.add(data.getData());
             }
 
-            prepareImagePreviewAndBitmap();
+            prepareImagePreview();
         }
 
         if (requestCode == REQUEST_CHECK_SETTINGS && resultCode == RESULT_OK) {
@@ -337,9 +349,9 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     }
 
     /**
-     * Prepare image preview and bitmap.
+     * Prepare image preview.
      */
-    public void prepareImagePreviewAndBitmap() {
+    public void prepareImagePreview() {
         imagePreviewGallery.setVisibility(View.VISIBLE);
         GalleryAdapter galleryAdapter = new GalleryAdapter(getApplicationContext(), imageUris);
         RecyclerView imageRecyclerView = findViewById(R.id.imageRecyclerView);
@@ -425,7 +437,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
             // Image
             if (canAddImage && draft.getImage().length() > 0) {
                 imageUris.add(Uri.parse(draft.getImage()));
-                prepareImagePreviewAndBitmap();
+                prepareImagePreview();
             }
 
         }
