@@ -6,13 +6,16 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.indieweb.indigenous.LaunchActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.indieauth.IndieAuthActivity;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
@@ -26,8 +29,15 @@ import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
+import com.indieweb.indigenous.util.Preferences;
 
-public class MicropubActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+public class ShareActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     String incomingText = "";
     String incomingImage = "";
@@ -36,18 +46,16 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_micropub);
+        setContentView(R.layout.activity_share);
 
         user = new Accounts(this).getCurrentUser();
         if (!user.isValid()) {
-            Toast.makeText(MicropubActivity.this, getString(R.string.no_user), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ShareActivity.this, getString(R.string.no_user), Toast.LENGTH_SHORT).show();
             Intent a = new Intent(getBaseContext(), IndieAuthActivity.class);
             startActivity(a);
             finish();
             return;
         }
-
-        this.setTitle(user.getMeWithoutProtocol());
 
         // Listen to incoming data.
         Intent intent = getIntent();
@@ -89,15 +97,102 @@ public class MicropubActivity extends AppCompatActivity implements NavigationVie
             }
         }
 
+        Button goToMainApp = findViewById(R.id.goToMainApp);
+        goToMainApp.setOnClickListener(new goToMainAppOnClickListener());
+
         NavigationView navigationView = findViewById(R.id.postMenu);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // Hide Media if micropub media endpoint is empty.
+        String micropubMediaEndpoint = user.getMicropubMediaEndpoint();
+        if (micropubMediaEndpoint == null || micropubMediaEndpoint.length() == 0) {
+            Menu menu = navigationView.getMenu();
+            MenuItem item = menu.getItem(9);
+            if (item != null) {
+                item.setVisible(false);
+            }
+        }
 
+        // Hide post types if configured.
+        if (Preferences.getPreference(this, "pref_key_post_type_hide", false)) {
+
+            ArrayList<Integer> protectedTypes = new ArrayList<>();
+            protectedTypes.add(R.id.createMedia);
+
+            String postTypes = user.getPostTypes();
+
+            ArrayList<String> postTypeList = new ArrayList<>();
+            if (postTypes != null && postTypes.length() > 0) {
+                try {
+                    JSONObject object;
+                    JSONArray itemList = new JSONArray(postTypes);
+
+                    for (int i = 0; i < itemList.length(); i++) {
+                        object = itemList.getJSONObject(i);
+                        String type = object.getString("type");
+                        postTypeList.add(type);
+                    }
+
+                }
+                catch (JSONException ignored) { }
+            }
+
+            // Loop over menu items.
+            Menu menu = navigationView.getMenu();
+            for (int i = 0; i < menu.size(); i++){
+                String menuType = "";
+                Integer id = menu.getItem(i).getItemId();
+                if (!protectedTypes.contains(id)) {
+                    switch (id) {
+                        case R.id.createNote:
+                            menuType = "note";
+                            break;
+                        case R.id.createArticle:
+                            menuType = "article";
+                            break;
+                        case R.id.createLike:
+                            menuType = "like";
+                            break;
+                        case R.id.createBookmark:
+                            menuType = "bookmark";
+                            break;
+                        case R.id.createReply:
+                            menuType = "reply";
+                            break;
+                        case R.id.createRepost:
+                            menuType = "repost";
+                            break;
+                        case R.id.createEvent:
+                            menuType = "event";
+                            break;
+                        case R.id.createRSVP:
+                            menuType = "rsvp";
+                            break;
+                        case R.id.createIssue:
+                            menuType = "issue";
+                            break;
+                    }
+
+                    if (!postTypeList.contains(menuType)) {
+                        menu.getItem(i).setVisible(false);
+                    }
+                }
+            }
+        }
+    }
+
+    // Go to main app.
+    class goToMainAppOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Intent i = new Intent(getApplicationContext(), LaunchActivity.class);
+            startActivity(i);
+            finish();
+        }
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // TODO create helper method, we have the same in ChannelActivity
         switch (item.getItemId()) {
             case R.id.createArticle:
                 Intent CreateArticle = new Intent(getBaseContext(), ArticleActivity.class);

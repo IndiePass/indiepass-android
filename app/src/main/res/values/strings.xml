@@ -14,6 +14,7 @@
     <string name="sign_in_with_domain">Sign in</string>
     <string name="sign_in_info">This login uses IndieAuth and requires you to have a website on your domain that supports IndieAuth.</string>
     <string name="switch_account">Switch</string>
+    <string name="account_delete_error">Error deleting account</string>
 
     <string name="drafts">Drafts</string>
     <string name="save_as_draft">Save as draft</string>
@@ -87,10 +88,10 @@
     <string name="title_activity_timeline_video">Video</string>
     <string name="title_activity_timeline_image">Image</string>
     <string name="title_activity_indieauth">Sign in</string>
-    <string name="title_activity_micropub">Post</string>
+    <string name="title_activity_micropub">Share</string>
     <string name="select_post_type">Select a post type</string>
     <string name="select_post_limit">Select post limit</string>
-    <string name="go_to_reader">Go to reader</string>
+    <string name="go_to_main_app">Go to main app</string>
     <string name="channels_not_found">Channels not found, check your internet connection</string>
     <string name="no_posts_found">Posts not found, check your internet connection</string>
     <string name="load_more">Load More</string>

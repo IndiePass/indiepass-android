@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/createNote"
+        android:icon="@drawable/button_note_idle"
+        android:title="@string/add_note" />
+
+    <item
+        android:id="@+id/createArticle"
+        android:icon="@drawable/button_article_idle"
+        android:title="@string/add_article" />
+
+    <item
+        android:id="@+id/createLike"
+        android:icon="@drawable/button_like_idle"
+        android:title="@string/add_like" />
+
+    <item
+        android:id="@+id/createBookmark"
+        android:icon="@drawable/button_bookmark_idle"
+        android:title="@string/add_bookmark" />
+
+    <item
+        android:id="@+id/createReply"
+        android:icon="@drawable/button_reply_idle"
+        android:title="@string/add_reply" />
+
+    <item
+        android:id="@+id/createRepost"
+        android:icon="@drawable/button_repost_idle"
+        android:title="@string/add_repost" />
+
+    <item
+        android:id="@+id/createEvent"
+        android:icon="@drawable/button_event_idle"
+        android:title="@string/add_event" />
+
+    <item
+        android:id="@+id/createRSVP"
+        android:icon="@drawable/button_rsvp_idle"
+        android:title="@string/add_rsvp" />
+
+    <item
+        android:id="@+id/createIssue"
+        android:icon="@drawable/button_issue_idle"
+        android:title="@string/add_issue" />
+
+    <item
+        android:id="@+id/createMedia"
+        android:icon="@drawable/button_media_idle"
+        android:title="@string/upload" />
+
+</menu>

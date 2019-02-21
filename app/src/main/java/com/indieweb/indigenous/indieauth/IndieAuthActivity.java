@@ -25,10 +25,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.LaunchActivity;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.model.HCard;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.micropub.MicropubConfig;
+import com.indieweb.indigenous.util.mf2.Mf2Parser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +41,9 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -60,6 +64,8 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
     String micropubEndpoint;
     String microsubEndpoint;
     String micropubMediaEndpoint;
+    String authorAvatar;
+    String authorName;
     String ClientId = "https://indigenous.abode.pub/android/";
     String RedirectUri = "https://indigenous.abode.pub/android/login/";
 
@@ -208,6 +214,26 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                 }
             }
 
+            String noProtocolUrl = $domain.replace("https://","").replace("http://", "");
+            try {
+
+                Mf2Parser parser = new Mf2Parser();
+                ArrayList<HCard> cards = parser.parse(doc, new URI($domain));
+
+                for (HCard c : cards) {
+                    if (c.getUrl() != null && c.getName() != null) {
+                        String HCardURL = c.getUrl().replace("https://","").replace("http://", "");
+                        if (HCardURL.equals(noProtocolUrl) || HCardURL.equals(noProtocolUrl + "/")) {
+                            authorAvatar = c.getAvatar();
+                            authorName = c.getName();
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (Exception ignored) { }
+
+
         }
         catch (IllegalArgumentException ignored) {
             Toast.makeText(getApplicationContext(), "Could not connect to domain", Toast.LENGTH_SHORT).show();
@@ -289,6 +315,8 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                         am.setUserData(account, "authorization_endpoint", authorizationEndpoint);
                         am.setUserData(account, "token_endpoint", tokenEndpoint);
                         am.setUserData(account, "micropub_media_endpoint", micropubMediaEndpoint);
+                        am.setUserData(account, "author_name", authorName);
+                        am.setUserData(account, "author_avatar", authorAvatar);
 
                         // Set first account.
                         if (numberOfAccounts == 0) {
@@ -306,18 +334,15 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
 
                         Toast.makeText(getApplicationContext(), "Authentication successful", Toast.LENGTH_SHORT).show();
 
-                        // Start main activity which will determine where it will go.
-                        Intent main = new Intent(getBaseContext(), LaunchActivity.class);
-                        startActivity(main);
+                        // Start launch activity which will determine where it will go.
+                        Intent launch = new Intent(getBaseContext(), LaunchActivity.class);
+                        startActivity(launch);
                         finish();
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "Authentication failed: " + errorMessage, Toast.LENGTH_LONG).show();
 
-                        // TODO use helper method
-                        info.setVisibility(View.VISIBLE);
-                        domain.setVisibility(View.VISIBLE);
-                        signIn.setVisibility(View.VISIBLE);
+                        showForm();
                     }
                 }
             },
@@ -327,7 +352,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                     try {
                         NetworkResponse networkResponse = error.networkResponse;
                         if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
-                            Integer code = networkResponse.statusCode;
+                            int code = networkResponse.statusCode;
                             String result = new String(networkResponse.data);
                             Toast.makeText(getApplicationContext(), "Authentication failed: Status code: " + code + "; message: " + result, Toast.LENGTH_LONG).show();
                         }
@@ -339,10 +364,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                         Toast.makeText(getApplicationContext(), "Network error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
 
-                    // TODO use helper method
-                    info.setVisibility(View.VISIBLE);
-                    domain.setVisibility(View.VISIBLE);
-                    signIn.setVisibility(View.VISIBLE);
+                    showForm();
 
                 }
             }
@@ -370,6 +392,15 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
         };
 
         queue.add(postRequest);
+    }
+
+    /**
+     * Show sign in form.
+     */
+    public void showForm() {
+        info.setVisibility(View.VISIBLE);
+        domain.setVisibility(View.VISIBLE);
+        signIn.setVisibility(View.VISIBLE);
     }
 
 }

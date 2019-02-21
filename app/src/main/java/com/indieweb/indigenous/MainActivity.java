@@ -48,8 +48,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    String incomingText = "";
-    String incomingImage = "";
     NavigationView navigationView;
     User user;
 
@@ -250,88 +248,51 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.createArticle:
                 Intent CreateArticle = new Intent(getBaseContext(), ArticleActivity.class);
-                if (incomingText != null && incomingText.length() > 0) {
-                    CreateArticle.putExtra("incomingText", incomingText);
-                }
-                if (incomingImage != null && incomingImage.length() > 0) {
-                    CreateArticle.putExtra("incomingImage", incomingImage);
-                }
                 startActivity(CreateArticle);
                 break;
 
             case R.id.createNote:
                 Intent CreateNote = new Intent(getBaseContext(), NoteActivity.class);
-                if (incomingText.length() > 0) {
-                    CreateNote.putExtra("incomingText", incomingText);
-                }
-                if (incomingImage.length() > 0) {
-                    CreateNote.putExtra("incomingImage", incomingImage);
-                }
                 startActivity(CreateNote);
                 break;
 
             case R.id.createLike:
                 Intent CreateLike = new Intent(getBaseContext(), LikeActivity.class);
-                if (incomingText.length() > 0) {
-                    CreateLike.putExtra("incomingText", incomingText);
-                }
                 startActivity(CreateLike);
                 break;
 
             case R.id.createReply:
                 Intent CreateReply = new Intent(getBaseContext(), ReplyActivity.class);
-                if (incomingText.length() > 0) {
-                    CreateReply.putExtra("incomingText", incomingText);
-                }
                 startActivity(CreateReply);
                 break;
 
             case R.id.createBookmark:
                 Intent CreateBookmark = new Intent(getBaseContext(), BookmarkActivity.class);
-                if (incomingText.length() > 0) {
-                    CreateBookmark.putExtra("incomingText", incomingText);
-                }
                 startActivity(CreateBookmark);
                 break;
 
             case R.id.createRepost:
                 Intent CreateRepost = new Intent(getBaseContext(), RepostActivity.class);
-                if (incomingText.length() > 0) {
-                    CreateRepost.putExtra("incomingText", incomingText);
-                }
                 startActivity(CreateRepost);
                 break;
 
             case R.id.createEvent:
                 Intent CreateEvent = new Intent(getBaseContext(), EventActivity.class);
-                if (incomingText.length() > 0) {
-                    CreateEvent.putExtra("incomingText", incomingText);
-                }
                 startActivity(CreateEvent);
                 break;
 
             case R.id.createRSVP:
                 Intent CreateRSVP = new Intent(getBaseContext(), RsvpActivity.class);
-                if (incomingText.length() > 0) {
-                    CreateRSVP.putExtra("incomingText", incomingText);
-                }
                 startActivity(CreateRSVP);
                 break;
 
             case R.id.createIssue:
                 Intent CreateIssue = new Intent(getBaseContext(), IssueActivity.class);
-                if (incomingText.length() > 0) {
-                    CreateIssue.putExtra("incomingText", incomingText);
-                }
                 startActivity(CreateIssue);
                 break;
 
             case R.id.nav_upload:
                 Intent CreateMedia = new Intent(getBaseContext(), UploadActivity.class);
-                // TODO should upload move to post group ?
-                if (incomingImage.length() > 0) {
-                    CreateMedia.putExtra("incomingImage", incomingImage);
-                }
                 startActivity(CreateMedia);
                 break;
         }

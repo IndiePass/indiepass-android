@@ -55,14 +55,14 @@
             android:layout_gravity="start"
             app:itemIconTint="@color/iconTint"
             app:itemTextColor="@color/menuTextcolor"
+            app:menu="@menu/share_menu"
             app:itemBackground="@drawable/nav_item_background" />
 
         <Button
             android:layout_margin="10dp"
             android:padding="10dp"
-            android:visibility="gone"
-            android:text="@string/go_to_reader"
-            android:id="@+id/goToReader"
+            android:text="@string/go_to_main_app"
+            android:id="@+id/goToMainApp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

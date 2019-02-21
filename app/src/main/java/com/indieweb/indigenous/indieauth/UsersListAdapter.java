@@ -1,12 +1,15 @@
 package com.indieweb.indigenous.indieauth;
 
-import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
+import android.accounts.AccountManagerFuture;
+import android.accounts.AuthenticatorException;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,13 +30,9 @@ import com.indieweb.indigenous.micropub.MicropubConfig;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 
+import java.io.IOException;
 import java.util.List;
 
-import static android.content.Context.MODE_PRIVATE;
-
-/**
- * Accounts list adapter.
- */
 public class UsersListAdapter extends BaseAdapter implements OnClickListener {
 
     private final Context context;
@@ -209,11 +208,44 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
             builder.setTitle("Are you sure you want to delete account " + user.getMe() + " ?");
             builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,int id) {
-                    // TODO we should relaunch the if you are deleting yourself.
-                    //AccountManager accountManager = AccountManager.get(context);
-                    //accountManager.removeAccount(user.getAccount(), activity);
-                    //items.remove(position);
-                    //notifyDataSetChanged();
+
+                    final String userMe = user.getMe();
+                    AccountManager accountManager = AccountManager.get(context);
+
+                    if (Build.VERSION.SDK_INT < 23) {
+                        accountManager.removeAccount(user.getAccount(), new AccountManagerCallback<Boolean>() {
+                            @Override
+                            public void run(AccountManagerFuture<Boolean> accountManagerFuture) {
+                                try {
+                                    if (accountManagerFuture.getResult()) {
+                                        handleSuccessRemoval(userMe, position);
+                                    }
+                                }
+                                catch (android.accounts.OperationCanceledException | IOException | AuthenticatorException e) {
+                                    Toast.makeText(context, R.string.account_delete_error, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }, null);
+                    }
+                    else {
+                        accountManager.removeAccount(user.getAccount(), activity, new AccountManagerCallback<Bundle>() {
+                            @Override
+                            public void run(AccountManagerFuture<Bundle> accountManagerFuture) {
+                                try {
+                                    if (accountManagerFuture.getResult() != null) {
+                                        handleSuccessRemoval(userMe, position);
+                                    }
+                                }
+                                catch (android.accounts.OperationCanceledException | AuthenticatorException | IOException e) {
+                                    Toast.makeText(context, R.string.account_delete_error, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }, null);
+                    }
+
+
+
+
                 }
             });
             builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -223,6 +255,27 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
                 }
             });
             builder.show();
+        }
+    }
+
+    /**
+     * Handle success removal
+     *
+     * @param user
+     *   The user that was removed.
+     * @param position
+     *   The position in the adapter.
+     */
+    private void handleSuccessRemoval(String user, int position) {
+        Toast.makeText(context, "User " + user + " removed", Toast.LENGTH_SHORT).show();
+        if (user.equals(currentUser.getMe())) {
+            Intent main = new Intent(context, LaunchActivity.class);
+            context.startActivity(main);
+            activity.finish();
+        }
+        else {
+            items.remove(position);
+            notifyDataSetChanged();
         }
     }
 }
