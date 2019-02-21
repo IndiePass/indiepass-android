@@ -1,7 +1,6 @@
 package com.indieweb.indigenous.microsub.channel;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -82,26 +81,13 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
         listChannel.setVisibility(View.VISIBLE);
         adapter = new ChannelListAdapter(requireContext(), Channels);
         listChannel.setAdapter(adapter);
-        getChannels();
+        loadChannels();
     }
 
     @Override
     public void onRefresh() {
         showRefreshMessage = true;
         startChannels();
-    }
-
-    private class getChannelsAsyncTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            loadChannels();
-            return null;
-        }
-    }
-
-    public void getChannels() {
-        new getChannelsAsyncTask().execute();
     }
 
     /**

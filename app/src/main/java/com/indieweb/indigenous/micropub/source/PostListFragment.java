@@ -76,7 +76,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
         loadMoreButton.setTextColor(getResources().getColor(R.color.textColor));
         loadMoreButton.setBackgroundColor(getResources().getColor(R.color.loadMoreButtonBackgroundColor));
         user = new Accounts(getContext()).getCurrentUser();
-        getActivity().setTitle(R.string.source_post_list);
+        requireActivity().setTitle(R.string.source_post_list);
         startPostList();
 
     }
@@ -157,7 +157,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
         boolean updateEnabled = Preferences.getPreference(getContext(), "pref_key_source_update", false);
         boolean deleteEnabled = Preferences.getPreference(getContext(), "pref_key_source_delete", false);
         PostListItems = new ArrayList<>();
-        adapter = new PostListAdapter(getContext(), PostListItems, user, updateEnabled, deleteEnabled);
+        adapter = new PostListAdapter(requireContext(), PostListItems, user, updateEnabled, deleteEnabled);
         listView.setAdapter(adapter);
         getSourcePostListItems("");
     }
@@ -192,7 +192,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
         String limit = Preferences.getPreference(getContext(), "source_post_list_filter_post_limit", "10");
         MicropubEndpoint += "&limit=" + limit;
 
-        RequestQueue queue = Volley.newRequestQueue(getContext());
+        RequestQueue queue = Volley.newRequestQueue(requireContext());
         StringRequest getRequest = new StringRequest(Request.Method.GET, MicropubEndpoint,
                 new Response.Listener<String>() {
                     @Override

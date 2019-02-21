@@ -22,10 +22,10 @@
     <string name="no_drafts">You have no drafts for this account</string>
     <string name="channels_refreshed">Channels refreshed</string>
     <string name="feed_items_refreshed">Feeds refreshed</string>
-    <string name="timeline_items_refreshed">Items refreshed</string>
-    <string name="timeline_list_refresh">Refresh items</string>
-    <string name="source_post_list_refresh">Refresh items</string>
-    <string name="source_post_list_items_refreshed">Items refreshed</string>
+    <string name="timeline_items_refreshed">Timeline refreshed</string>
+    <string name="timeline_list_refresh">Refresh timeline</string>
+    <string name="source_post_list_refresh">Refresh posts</string>
+    <string name="source_post_list_items_refreshed">Posts refreshed</string>
     <string name="channel_list_refresh">Refresh channels</string>
     <string name="tags">Tags - separate with comma</string>
     <string name="note">Note</string>
