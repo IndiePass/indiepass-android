@@ -33,6 +33,10 @@ More information at https://indieweb.org/Indigenous and https://indigenous.abode
   - Manage channels and feeds
 - Share intents: receive text or images from other apps to directly share
 
+## Screenshot
+
+<img src="https://realize.be/sites/default/files/2019-02/1550590120900.jpg" width="400" />
+
 ## Known issues
 
 #### Authentication loop
@@ -57,10 +61,6 @@ See https://github.com/swentel/indigenous-android/issues/152
 
 Some browsers (e.g. the default browser LineageOS), won't allow Indigenous to listen to the callback
 to verify the authorization code. Install a browser like Firefox (any flavor) so you can login.
-
-## Screenshot
-
-<img src="https://realize.be/sites/default/files/Screenshot_20180905-153456_Indigenous.jpg" width="400" />
 
 ## iOS
 
