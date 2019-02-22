@@ -19,24 +19,7 @@
 
         <include layout="@layout/widget_location" />
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/textInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/body"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:ems="10"
-                android:gravity="top"
-                android:hint="@string/note"
-                android:inputType="textMultiLine"
-                android:lines="4"
-                android:singleLine="false" />
-
-        </android.support.design.widget.TextInputLayout>
+        <include layout="@layout/widget_body" />
 
         <MultiAutoCompleteTextView
             android:id="@+id/tags"
