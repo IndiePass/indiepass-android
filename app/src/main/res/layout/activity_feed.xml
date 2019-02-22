@@ -22,6 +22,7 @@
             android:background="@color/buttonWhite"
             android:textColor="@color/colorPrimary"
             android:layout_marginLeft="@dimen/button_padding"
+            style="?android:attr/borderlessButtonStyle"
             android:text="@string/search_feed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

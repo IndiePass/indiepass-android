@@ -75,6 +75,18 @@
                 android:value="com.indieweb.indigenous.LaunchActivity" />
         </activity>
 
+        <activity-alias
+            android:name=".FeedAlias"
+            android:enabled="false"
+            android:label="@string/add_feed"
+            android:targetActivity=".microsub.manage.ManageChannelActivity">
+            <intent-filter android:label="@string/add_feed">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity-alias>
+
         <activity
             android:name=".microsub.manage.ManageFeedsActivity"
             android:label="@string/feeds_manage"

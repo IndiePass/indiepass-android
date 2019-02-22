@@ -32,6 +32,8 @@ import java.util.List;
 public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannelListAdapter.ViewHolder> implements ItemMoveCallback.ItemTouchHelperContract {
 
     private boolean moved = false;
+    private boolean isShare = false;
+    private String url = "";
     private final Context context;
     private final List<Channel> channels;
     private final User user;
@@ -76,10 +78,12 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
 
     }
 
-    ManageChannelListAdapter(Context context, List<Channel> channels, User user, StartDragListener startDragListener) {
+    ManageChannelListAdapter(Context context, List<Channel> channels, User user, StartDragListener startDragListener, boolean isShare, String url) {
         this.context = context;
         this.channels = channels;
         this.user = user;
+        this.isShare = isShare;
+        this.url = url;
         this.mStartDragListener = startDragListener;
     }
 
@@ -102,8 +106,16 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         holder.name.setText(channels.get(position).getName());
-        holder.update.setOnClickListener(new ManageChannelListAdapter.OnUpdateClickListener(position));
-        holder.delete.setOnClickListener(new ManageChannelListAdapter.OnDeleteClickListener(position));
+
+        if (isShare) {
+            holder.drag.setVisibility(View.GONE);
+            holder.update.setVisibility(View.GONE);
+            holder.delete.setVisibility(View.GONE);
+        }
+        else {
+            holder.update.setOnClickListener(new ManageChannelListAdapter.OnUpdateClickListener(position));
+            holder.delete.setOnClickListener(new ManageChannelListAdapter.OnDeleteClickListener(position));
+        }
 
         holder.rowView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -121,10 +133,19 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
                         int color = context.getResources().getColor(R.color.listRowBackgroundColor);
                         Channel channel = channels.get(position);
                         holder.rowView.setBackgroundColor(color);
-                        Intent intent = new Intent(context, ManageFeedsActivity.class);
-                        intent.putExtra("channelId", channel.getUid());
-                        intent.putExtra("channelName", channel.getName());
-                        context.startActivity(intent);
+                        if (isShare) {
+                            Intent intent = new Intent(context, FeedActivity.class);
+                            intent.putExtra("channelId", channel.getUid());
+                            intent.putExtra("channelName", channel.getName());
+                            intent.putExtra("url", url);
+                            context.startActivity(intent);
+                        }
+                        else {
+                            Intent intent = new Intent(context, ManageFeedsActivity.class);
+                            intent.putExtra("channelId", channel.getUid());
+                            intent.putExtra("channelName", channel.getName());
+                            context.startActivity(intent);
+                        }
                         break;
                 }
                 return true;

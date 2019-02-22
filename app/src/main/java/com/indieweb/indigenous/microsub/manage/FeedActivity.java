@@ -44,7 +44,9 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
 
     String channelId;
     String channelName;
+    String shareUrl;
     EditText url;
+    Button search;
     User user;
     TextView resultTitle;
     ListView feedResults;
@@ -60,17 +62,24 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
         if (extras != null) {
             channelId = extras.getString("channelId");
             channelName = extras.getString("channelName");
+            shareUrl = extras.getString("url");
             this.setTitle("Add feed in " + channelName);
             user = new Accounts(this).getCurrentUser();
 
             feedResults = findViewById(R.id.feedResults);
             url = findViewById(R.id.url);
-            findViewById(R.id.search).setOnClickListener(this);
+            search = findViewById(R.id.search);
+            search.setOnClickListener(this);
             resultTitle = findViewById(R.id.resultsTitle);
+
+            // Click search feed if url is added.
+            if (shareUrl != null && shareUrl.length() > 0) {
+                url.setText(shareUrl);
+                search.performClick();
+            }
 
             adapter = new FeedsResultAdapter(this, Feeds);
             feedResults.setAdapter(adapter);
-
         }
         else {
             Toast.makeText(this, "Channel not found", Toast.LENGTH_SHORT).show();

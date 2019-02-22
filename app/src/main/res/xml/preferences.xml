@@ -34,6 +34,12 @@
             android:title="@string/pref_share_upload_enabled"
             android:defaultValue="false" />
 
+        <SwitchPreference
+            android:key="pref_key_share_expose_feed"
+            android:summary="@string/pref_summary_expose_feed"
+            android:title="@string/pref_share_feed_enabled"
+            android:defaultValue="false" />
+
     </PreferenceCategory>
     
     <PreferenceCategory

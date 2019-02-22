@@ -69,6 +69,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
         });
 
+        Preference feed = findPreference("pref_key_share_expose_feed");
+        feed.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                boolean checked = Boolean.valueOf(newValue.toString());
+                if (checked) toggleAliasSetting("FeedAlias", 1);
+                else toggleAliasSetting("FeedAlias", 2);
+                return true;
+            }
+        });
+
     }
 
     /**

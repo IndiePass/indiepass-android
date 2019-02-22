@@ -2,6 +2,7 @@ package com.indieweb.indigenous.microsub.manage;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -46,6 +48,8 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
     SwipeRefreshLayout refreshLayout;
     ItemTouchHelper touchHelper;
     User user;
+    String incomingText = "";
+    boolean isShare = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,32 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
 
         refreshLayout = findViewById(R.id.refreshChannels);
         refreshLayout.setOnRefreshListener(this);
+
+        // Listen to incoming data.
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        String action = intent.getAction();
+        if (extras != null) {
+            if (Intent.ACTION_SEND.equals(action)) {
+                try {
+                    if (extras.containsKey(Intent.EXTRA_TEXT)) {
+                        incomingText = extras.get(Intent.EXTRA_TEXT).toString();
+                        if (incomingText.length() > 0) {
+                            isShare = true;
+                        }
+                    }
+                }
+                catch (NullPointerException ignored) {}
+            }
+        }
+
+        if (isShare) {
+            TextView createFeedTitle = findViewById(R.id.createFeedTitle);
+            createFeedTitle.setVisibility(View.VISIBLE);
+            TextView feedPreview = findViewById(R.id.previewFeed);
+            feedPreview.setVisibility(View.VISIBLE);
+            feedPreview.setText(incomingText);
+        }
 
         startChannels();
     }
@@ -80,20 +110,20 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
      */
     public void startChannels() {
         Channels = new ArrayList<>();
-        adapter = new ManageChannelListAdapter(this, Channels, user, this);
+        adapter = new ManageChannelListAdapter(this, Channels, user, this, isShare, incomingText);
 
         ItemTouchHelper.Callback callback = new ItemMoveCallback(adapter);
         touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(listChannel);
 
         listChannel.setAdapter(adapter);
-        getChannels();
+        loadChannels();
     }
 
     /**
-     * Get channels.
+     * Load channels.
      */
-    public void getChannels() {
+    public void loadChannels() {
 
         String microsubEndpoint = user.getMicrosubEndpoint();
 
@@ -161,7 +191,9 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.manage_channel_menu, menu);
+        if (!isShare) {
+            getMenuInflater().inflate(R.menu.manage_channel_menu, menu);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 

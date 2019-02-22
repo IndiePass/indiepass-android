@@ -7,6 +7,7 @@
     <dimen name="big_list_title">18sp</dimen>
     <dimen name="info_text">16sp</dimen>
     <dimen name="big_text">20sp</dimen>
+    <dimen name="preview_text_size">15sp</dimen>
     <dimen name="channel_list_divider_height">2px</dimen>
     <dimen name="timeline_list_item_padding">15dp</dimen>
     <dimen name="timeline_list_item_text_margin_left">15dp</dimen>
