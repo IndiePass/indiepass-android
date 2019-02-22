@@ -102,7 +102,7 @@ public class MicropubConfig {
                         try {
                             NetworkResponse networkResponse = error.networkResponse;
                             if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
-                                Integer code = networkResponse.statusCode;
+                                int code = networkResponse.statusCode;
                                 String result = new String(networkResponse.data);
                                 Toast.makeText(context, "Error getting configuration. Status code: " + code + "; message: " + result, Toast.LENGTH_LONG).show();
                             }

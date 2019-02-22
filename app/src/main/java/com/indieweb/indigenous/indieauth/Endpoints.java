@@ -91,7 +91,7 @@ public class Endpoints {
                 am.setUserData(user.getAccount(), "micropub_media_endpoint", micropubMediaEndpoint);
                 am.setUserData(user.getAccount(), "author_name", authorName);
                 am.setUserData(user.getAccount(), "author_avatar", authorAvatar);
-                Toast.makeText(context, "Endpoints refreshed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Endpoints and metadata updated. You might need to restart the app for some changes to see effect.", Toast.LENGTH_SHORT).show();
             }
         }
         catch (IllegalArgumentException e) {

@@ -159,6 +159,13 @@ public class Accounts {
             User user = new User();
             user.setAccount(a);
             user.setMe(a.name);
+            String token = "";
+            try {
+                token = accountManager.peekAuthToken(a, IndieAuthActivity.TOKEN_TYPE);
+            }
+            catch (Exception ignored) {}
+
+            user.setAccessToken(token);
             user.setAvatar(accountManager.getUserData(a, "author_avatar"));
             user.setName(accountManager.getUserData(a, "author_name"));
             user.setTokenEndpoint(accountManager.getUserData(a, "token_endpoint"));
