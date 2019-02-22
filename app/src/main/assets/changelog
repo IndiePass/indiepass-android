@@ -1,5 +1,6 @@
 <h4>xx/xx/2019 - 0.32</h4>
 <ul>
+    <li>Fix date display in posts</li>
     <li>Add preview screen for a feed</li>
     <li>Use navigation drawer layout for better UX</li>
     <li>Allow selecting and uploading multiple images</li>

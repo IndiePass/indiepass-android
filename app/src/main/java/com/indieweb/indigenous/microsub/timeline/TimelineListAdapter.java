@@ -48,6 +48,7 @@ import com.indieweb.indigenous.widget.ExpandableTextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -65,6 +66,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     private final User user;
     private final String channelId;
     private final ListView listView;
+    private List<String> dateFormatStrings = Arrays.asList("yyyy-MM-dd'T'kk:mm:ssZ", "yyyy-MM-dd kk:mm:ssZ", "yyyy-MM-dd kk:mmZ");
 
     TimelineListAdapter(Context context, List<TimelineItem> items, User user, String channelId, ListView listView) {
         this.context = context;
@@ -76,6 +78,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         this.staticMap = Preferences.getPreference(context, "pref_key_static_map", true);
         this.debugItemJSON = Preferences.getPreference(context, "pref_key_debug_microsub_item_json", false);
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
     }
 
     public int getCount() {
@@ -170,14 +173,23 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
 
             // Published.
-            SimpleDateFormat formatIn = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ssZ");
             SimpleDateFormat formatOut = new SimpleDateFormat("dd MMM yyyy kk:mm");
-            Date result;
-            try {
-                result = formatIn.parse(item.getPublished());
+            Date result = null;
+            for (String formatString : dateFormatStrings) {
+                try {
+                    if (result != null) {
+                        break;
+                    }
+                    result = new SimpleDateFormat(formatString).parse(item.getPublished());
+                }
+                catch (ParseException ignored) {}
+            }
+
+            if (result != null) {
                 holder.published.setVisibility(View.VISIBLE);
                 holder.published.setText(formatOut.format(result));
-            } catch (ParseException ignored) {
+            }
+            else {
                 holder.published.setVisibility(View.GONE);
             }
 
