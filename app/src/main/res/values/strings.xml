@@ -107,6 +107,7 @@
     <string name="one_image">1 image</string>
     <string name="debug">Debug</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
+    <string name="share_post">Share</string>
 
     <!-- Preferences: share -->
     <string name="pref_category_sharing_title">Share</string>

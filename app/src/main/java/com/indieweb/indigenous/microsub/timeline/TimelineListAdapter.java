@@ -733,6 +733,14 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             app.setDebug(entry.getJson());
                             context.startActivity(i);
                             break;
+
+                        case R.id.timeline_entry_share:
+                            Intent share = new Intent(android.content.Intent.ACTION_SEND);
+                            share.setType("text/plain");
+                            share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                            share.putExtra(Intent.EXTRA_TEXT, entry.getUrl());
+                            context.startActivity(Intent.createChooser(share, "Share post"));
+                            break;
                     }
                     return true;
                 }
