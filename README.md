@@ -5,6 +5,8 @@ An app with extensions for sharing information to micropub endpoints and reading
 Install from Google Play: https://play.google.com/store/apps/details?id=com.indieweb.indigenous
 Install from F-droid: https://f-droid.org/en/packages/com.indieweb.indigenous/
 
+No builds will be uploaded anymore to GitHub, use F-Droid for that.
+
 More information at https://indieweb.org/Indigenous and https://indigenous.abode.pub/android/
 
 ## Functionality
