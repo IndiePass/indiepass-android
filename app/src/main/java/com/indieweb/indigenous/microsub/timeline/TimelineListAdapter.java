@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -60,6 +61,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     private LayoutInflater mInflater;
     private boolean imagePreview;
     private boolean debugItemJSON;
+    private boolean staticMap;
     private final User user;
     private final String channelId;
     private final ListView listView;
@@ -71,6 +73,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         this.channelId = channelId;
         this.listView = listView;
         this.imagePreview = Preferences.getPreference(context, "pref_key_image_preview", true);
+        this.staticMap = Preferences.getPreference(context, "pref_key_static_map", true);
         this.debugItemJSON = Preferences.getPreference(context, "pref_key_debug_microsub_item_json", false);
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -111,6 +114,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public Button video;
         public Button external;
         public Button rsvp;
+        public Button map;
         public Button menu;
     }
 
@@ -141,6 +145,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.video = convertView.findViewById(R.id.itemVideo);
             holder.external = convertView.findViewById(R.id.itemExternal);
             holder.rsvp = convertView.findViewById(R.id.itemRSVP);
+            holder.map = convertView.findViewById(R.id.itemMap);
             holder.menu = convertView.findViewById(R.id.itemMenu);
             convertView.setTag(holder);
         }
@@ -366,6 +371,14 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     holder.imageCount.setVisibility(View.GONE);
                 }
             }
+            else if (staticMap && item.getLongitude().length() > 0 && item.getLatitude().length() > 0) {
+                holder.image.setVisibility(View.VISIBLE);
+                holder.card.setVisibility(View.VISIBLE);
+                String mapUrl = "http://atlas.p3k.io/map/img?marker[]=lat:" + item.getLatitude() + ";lng:" + item.getLongitude() +";icon:small-blue-cutout&basemap=gray&width=460&height=460&zoom=14";
+                Glide.with(context)
+                        .load(mapUrl)
+                        .into(holder.image);
+            }
             else {
                 holder.image.setVisibility(View.GONE);
                 holder.card.setVisibility(View.GONE);
@@ -388,6 +401,15 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
             else {
                 holder.video.setVisibility(View.GONE);
+            }
+
+            // Map.
+            if (item.getLatitude().length() > 0 && item.getLongitude().length() > 0) {
+                holder.map.setVisibility(View.VISIBLE);
+                holder.map.setOnClickListener(new OnMapClickListener(position));
+            }
+            else {
+                holder.map.setVisibility(View.GONE);
             }
 
             // Button listeners.
@@ -629,6 +651,31 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             TimelineItem item = items.get(this.position);
             i.putExtra("video", item.getVideo());
             context.startActivity(i);
+        }
+    }
+
+    // Map listener.
+    class OnMapClickListener implements OnClickListener {
+
+        int position;
+
+        OnMapClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            TimelineItem item = items.get(this.position);
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            Uri geoLocation = Uri.parse("geo:" + item.getLatitude() + "," + item.getLongitude());
+            intent.setData(geoLocation);
+            if (intent.resolveActivity(context.getPackageManager()) != null) {
+                context.startActivity(intent);
+            }
+            else {
+                Toast.makeText(context, "Install a maps application to view this location", Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 

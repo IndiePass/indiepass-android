@@ -85,10 +85,9 @@
     <string name="add_image">Add image</string>
     <string name="close">Close</string>
     <string name="full_screen_image">Full screen image</string>
-    <string name="your_reply">Your message</string>
     <string name="content">Content</string>
-    <string name="reply_to">Reply to</string>
     <string name="repost">Repost</string>
+    <string name="reply_to">Reply to</string>
     <string name="title_activity_timeline_audio">Audio</string>
     <string name="title_activity_timeline_video">Video</string>
     <string name="title_activity_timeline_image">Image</string>
@@ -140,11 +139,17 @@
     <string name="pref_key_post_type_hide_summary">Hide post types in the menu which are not supported or enabled by your Micropub endpoint. If your server does not send post types in the configuration response, all post types will be shown.</string>
 
     <!-- Preferences: Media handling -->
-    <string name="pref_category_media_title">Media</string>
-    <string name="pref_category_media_summary">Control image and video settings for uploading or in the reader.</string>
+    <string name="pref_category_reader_title">Reader</string>
+    <string name="pref_category_reader_summary">Control reader settings</string>
     <string name="pref_key_video_autoplay_title">Video autoplay</string>
     <string name="pref_key_image_preview_title">Image preview</string>
-    <string name="pref_key_image_preview_summary">Show the first image per post in the reader. If you choose to hide, you can still view the images attached to the post by clicking on the images information at the bottom of the post.</string>
+    <string name="pref_key_image_preview_summary">Show the first image per post. If you choose to hide, you can still view the images attached to the post by clicking on the images information at the bottom of the post.</string>
+    <string name="pref_key_static_map_title">Static map</string>
+    <string name="pref_key_static_map_summary">Show a static map on checkin posts, as long as the checkin post does not contain pictures</string>
+
+    <!-- Preferences: Media handling -->
+    <string name="pref_category_media_title">Media</string>
+    <string name="pref_category_media_summary">Control image and video settings for uploading</string>
     <string name="pref_key_image_scale_title">Scale images on upload</string>
     <string name="pref_key_image_scale_summary">Scale images when uploading. This results in smaller and faster uploads, but removes Exif data.</string>
     <string name="pref_key_image_quality_title">Image upload quality</string>

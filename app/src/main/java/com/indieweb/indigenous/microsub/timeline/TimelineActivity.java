@@ -299,6 +299,13 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                     }
                                     catch (Exception ignored) {}
                                     item.addToResponseType("checkin-url", checkinUrl);
+
+                                    try {
+                                        item.setLatitude(object.getJSONObject("checkin").getString("latitude"));
+                                        item.setLongitude(object.getJSONObject("checkin").getString("longitude"));
+                                    }
+                                    catch (Exception ignored) {}
+
                                 }
 
                                 // Set type.

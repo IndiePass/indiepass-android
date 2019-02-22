@@ -18,6 +18,8 @@ public class TimelineItem {
     private String authorPhoto = "";
     private String reference = "";
     private String json;
+    private String latitude = "";
+    private String longitude = "";
     private ArrayList<String> photos = new ArrayList<>();
     // TODO allow multiple audio
     private String audio;
@@ -153,5 +155,21 @@ public class TimelineItem {
 
     public void setJson(String json) {
         this.json = json;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 }
