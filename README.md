@@ -43,12 +43,7 @@ More information at https://indieweb.org/Indigenous and https://indigenous.abode
 
 When authenticating for the first time, you might see a message "Authentication successul" but then
 returning to the Sign in screen. While the account has been created, the default was not set. In
-this case, the sign in screen will show a message:
-
-*Switch to an existing account by pressing the "Select account" button.*
-
-Underneath there will be a button which allows to set the default account. After that, you will go
-to the channel list (if a microsub endpoint is detected), or see the post types screen.
+this case, the sign in screen will allow you to select the account.
 
 See https://github.com/swentel/indigenous-android/issues/84  
 This happens sometimes, but not always.
@@ -57,9 +52,9 @@ This happens sometimes, but not always.
 
 See https://github.com/swentel/indigenous-android/issues/152
 
-### Authenticating
+#### Authenticating
 
-Some browsers (e.g. the default browser LineageOS), won't allow Indigenous to listen to the callback
+Some browsers (e.g. the default browser on LineageOS), won't allow Indigenous to listen to the callback
 to verify the authorization code. Install a browser like Firefox (any flavor) so you can login.
 
 ## iOS
