@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:visibility="gone"
@@ -14,17 +13,7 @@
         android:orientation="horizontal"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         android:layout_height="wrap_content"
-        android:scrollbars="horizontal" />
-
-    <TextView
-        android:paddingLeft="@dimen/box_padding"
-        android:textSize="@dimen/help_text"
-        android:textColor="@color/textColor"
-        android:text="@string/image_preview_help"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/box_padding"
-        tools:ignore="RtlSymmetry" />
+        android:scrollbars="none" />
 
 </LinearLayout>
 

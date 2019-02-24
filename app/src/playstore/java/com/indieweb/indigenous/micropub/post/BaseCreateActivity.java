@@ -330,6 +330,10 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
 
+            if (isMediaRequest) {
+                imageUris.clear();
+            }
+
             if (data.getClipData() != null) {
                 int count = data.getClipData().getItemCount();
                 for (int i = 0; i < count; i++) {
@@ -353,7 +357,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
      */
     public void prepareImagePreview() {
         imagePreviewGallery.setVisibility(View.VISIBLE);
-        GalleryAdapter galleryAdapter = new GalleryAdapter(getApplicationContext(), imageUris);
+        GalleryAdapter galleryAdapter = new GalleryAdapter(getApplicationContext(), this, imageUris, isMediaRequest);
         RecyclerView imageRecyclerView = findViewById(R.id.imageRecyclerView);
         imageRecyclerView.setAdapter(galleryAdapter);
     }

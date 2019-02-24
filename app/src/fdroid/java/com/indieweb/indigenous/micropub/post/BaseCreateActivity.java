@@ -279,7 +279,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
      */
     public void prepareImagePreview() {
         imagePreviewGallery.setVisibility(View.VISIBLE);
-        GalleryAdapter galleryAdapter = new GalleryAdapter(getApplicationContext(), imageUris);
+        GalleryAdapter galleryAdapter = new GalleryAdapter(getApplicationContext(), this, imageUris, isMediaRequest);
         RecyclerView imageRecyclerView = findViewById(R.id.imageRecyclerView);
         imageRecyclerView.setAdapter(galleryAdapter);
     }
