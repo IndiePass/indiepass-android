@@ -1,6 +1,7 @@
 <h4>22/02/2019 - 0.33</h4>
 <ul>
     <li>Allow to delete an image in preview when creating a post</li>
+    <li>Update documentation for width and height of image resize</li>
 </ul>
 <h4>22/02/2019 - 0.32</h4>
 <ul>
