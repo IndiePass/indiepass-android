@@ -14,7 +14,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.micropub.post.BaseCreateActivity;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Connection;
 
@@ -194,7 +193,7 @@ public class MicropubAction {
     private void setTagsList(MultiAutoCompleteTextView tags, ArrayList<String> items) {
         tags.setThreshold(1);
         tags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-        tags.setAdapter(new ArrayAdapter<>(context, R.layout.tags_autocomplete_item, items));
+        tags.setAdapter(new ArrayAdapter<>(context, R.layout.popup_item, items));
     }
 
 }
