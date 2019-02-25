@@ -9,6 +9,7 @@
     <dimen name="help_text">12sp</dimen>
     <dimen name="big_text">20sp</dimen>
     <dimen name="inputText">15sp</dimen>
+    <dimen name="popupItemPadding">10sp</dimen>
     <dimen name="preview_text_size">15sp</dimen>
     <dimen name="channel_list_divider_height">2px</dimen>
     <dimen name="timeline_list_item_padding">15dp</dimen>

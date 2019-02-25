@@ -194,7 +194,7 @@ public class MicropubAction {
     private void setTagsList(MultiAutoCompleteTextView tags, ArrayList<String> items) {
         tags.setThreshold(1);
         tags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-        tags.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, items));
+        tags.setAdapter(new ArrayAdapter<>(context, R.layout.tags_autocomplete_item, items));
     }
 
 }
