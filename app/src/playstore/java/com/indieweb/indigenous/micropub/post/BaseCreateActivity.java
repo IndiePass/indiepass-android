@@ -905,12 +905,16 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                         @Override
                         public void onResponse(String response) {
                             String label = "";
+                            String visibility = "";
                             try {
                                 JSONObject geoResponse = new JSONObject(response);
                                 if (geoResponse.has("geo")) {
                                     JSONObject geoObject = geoResponse.getJSONObject("geo");
                                     if (geoObject.has("label")) {
                                         label = geoObject.getString("label");
+                                    }
+                                    if (geoObject.has("visibility")) {
+                                        visibility = geoObject.getString("visibility");
                                     }
                                 }
                             }
@@ -920,6 +924,16 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
                             if (label.length() > 0) {
                                 locationLabel.setText(label);
+                                if (visibility.length() > 0) {
+                                    int selection = 0;
+                                    if (visibility.equals("private")) {
+                                        selection = 1;
+                                    }
+                                    else if (visibility.equals("protected")) {
+                                        selection = 2;
+                                    }
+                                    locationVisibility.setSelection(selection);
+                                }
                             }
                             else {
                                 Toast.makeText(getApplicationContext(), "No location name found", Toast.LENGTH_SHORT).show();
