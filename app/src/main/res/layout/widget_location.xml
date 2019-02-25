@@ -41,17 +41,14 @@
         android:layout_height="wrap_content" />
 
     <Spinner
-        android:layout_marginLeft="2sp"
-        android:layout_marginRight="5sp"
         android:visibility="gone"
         android:id="@+id/locationVisibility"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/box_padding"
         android:layout_marginBottom="@dimen/box_padding"
         android:entries="@array/location_visibility_array"
-        android:prompt="@string/location_visibility_select"
-        android:layout_marginStart="2sp"
-        android:layout_marginEnd="5sp" />
+        android:prompt="@string/location_visibility_select" />
 
 </LinearLayout>
 

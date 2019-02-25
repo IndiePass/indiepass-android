@@ -40,7 +40,7 @@
     </style>
     <style name="SpinnerDropDownItem">
         <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingLeft">@dimen/box_padding</item>
+        <item name="android:paddingLeft">15dp</item>
         <item name="android:textColor">@color/textColor</item>
     </style>
 
