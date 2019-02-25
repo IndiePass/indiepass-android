@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:visibility="gone"
     android:orientation="vertical"
     android:id="@+id/locationWrapper"
-    android:padding="@dimen/box_padding"
+    android:visibility="gone"
     android:background="@color/paneColor"
-    android:layout_margin="5dp"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_margin="@dimen/box_padding"
     android:layout_height="match_parent">
 
     <TextView
+        android:padding="@dimen/box_padding"
         android:textSize="16sp"
+        android:textColor="@color/textColor"
         android:text="@string/location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <EditText
-        android:id="@+id/locationLabel"
-        android:textSize="16sp"
+        android:layout_marginRight="@dimen/box_padding"
         android:visibility="gone"
-        android:layout_marginTop="@dimen/box_padding"
+        android:layout_marginLeft="7sp"
+        android:id="@+id/locationLabel"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/inputText"
         android:hint="@string/location_label"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="text" />
+        android:inputType="text"
+        android:layout_marginStart="7sp"
+        android:layout_marginEnd="@dimen/box_padding" />
 
     <Button
-        android:id="@+id/locationQuery"
         android:visibility="gone"
-        android:layout_marginTop="@dimen/box_padding"
-        android:background="@color/paneColor"
+        android:padding="@dimen/box_padding"
+        android:id="@+id/locationQuery"
         android:textColor="@color/colorPrimary"
         style="?android:attr/borderlessButtonStyle"
         android:text="@string/location_label_query"
@@ -37,13 +41,17 @@
         android:layout_height="wrap_content" />
 
     <Spinner
-        android:id="@+id/locationVisibility"
+        android:layout_marginLeft="2sp"
+        android:layout_marginRight="5sp"
         android:visibility="gone"
-        android:layout_marginTop="@dimen/box_padding"
+        android:id="@+id/locationVisibility"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/box_padding"
         android:entries="@array/location_visibility_array"
-        android:prompt="@string/location_visibility_select" />
+        android:prompt="@string/location_visibility_select"
+        android:layout_marginStart="2sp"
+        android:layout_marginEnd="5sp" />
 
 </LinearLayout>
 

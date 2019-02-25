@@ -10,7 +10,18 @@
         android:orientation="vertical"
         android:padding="10dp">
 
+        <Switch
+            android:padding="@dimen/box_padding"
+            android:textColor="@color/textColor"
+            android:id="@+id/postStatus"
+            android:checked="true"
+            android:text="@string/published"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <EditText
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/inputText"
             android:id="@+id/url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,6 +30,8 @@
             android:inputType="textUri" />
 
         <EditText
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/inputText"
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,13 +41,6 @@
             android:inputType="text" />
 
         <include layout="@layout/widget_body" />
-
-        <CheckBox
-            android:id="@+id/postStatus"
-            android:checked="true"
-            android:text="@string/published"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

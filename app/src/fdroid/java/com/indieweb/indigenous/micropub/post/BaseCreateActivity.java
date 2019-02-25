@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,7 +68,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
     EditText body;
     EditText title;
-    CheckBox saveAsDraft;
+    Switch saveAsDraft;
     DatabaseHelper db;
     User user;
     MultiAutoCompleteTextView tags;
@@ -75,7 +76,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     private List<Syndication> syndicationTargets = new ArrayList<>();
     private MenuItem sendItem;
     private LinearLayout imagePreviewGallery;
-    private CheckBox postStatus;
+    private Switch postStatus;
     private int PICK_IMAGE_REQUEST = 1;
 
     EditText url;
@@ -116,8 +117,10 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                     TextView syn = new TextView(this);
                     syn.setText(R.string.syndicate_to);
                     syn.setPadding(20, 10, 0, 0);
-                    syn.setTextSize(16);
+                    syn.setTextSize(15);
+                    syn.setTextColor(getResources().getColor(R.color.textColor));
                     syndicationLayout.addView(syn);
+                    syndicationLayout.setPadding(10, 0,0, 0 );
                 }
 
                 for (int i = 0; i < itemList.length(); i++) {
@@ -130,6 +133,9 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                     CheckBox ch = new CheckBox(this);
                     ch.setText(syndication.getName());
                     ch.setId(i);
+                    ch.setTextSize(15);
+                    ch.setPadding(0, 10, 0, 10);
+                    ch.setTextColor(getResources().getColor(R.color.textColor));
                     syndicationLayout.addView(ch);
                 }
 

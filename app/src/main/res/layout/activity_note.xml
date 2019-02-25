@@ -8,12 +8,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="@dimen/box_padding">
 
-        <CheckBox
+        <Switch
+            android:padding="@dimen/box_padding"
+            android:textSize="@dimen/inputText"
             android:id="@+id/saveAsDraft"
             android:checked="false"
+            android:textColor="@color/textColor"
             android:text="@string/save_as_draft"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Switch
+            android:padding="@dimen/box_padding"
+            android:textSize="@dimen/inputText"
+            android:textColor="@color/textColor"
+            android:id="@+id/postStatus"
+            android:checked="true"
+            android:text="@string/published"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -23,15 +36,12 @@
 
         <MultiAutoCompleteTextView
             android:id="@+id/tags"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/inputText"
             android:hint="@string/tags"
-            android:layout_margin="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <CheckBox
-            android:id="@+id/postStatus"
-            android:checked="true"
-            android:text="@string/published"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

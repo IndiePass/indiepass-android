@@ -10,6 +10,7 @@
     <color name="textColor">#666666</color>
     <color name="borderColor">#eeeeee</color>
     <color name="paneColor">#eeeeee</color>
+    <color name="paneColorDivider">#e2e6e9</color>
     <color name="listBackgroundColor">#f5f5f5</color>
     <color name="listDividerColor">#e2e6e9</color>
     <color name="buttonWhite">#fafafa</color>
