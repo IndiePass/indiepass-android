@@ -21,13 +21,11 @@
             android:layout_height="wrap_content" />
 
         <Spinner
-            android:layout_marginLeft="2sp"
             android:id="@+id/rsvp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:entries="@array/rsvp_array"
-            android:prompt="@string/rsvp_select"
-            android:layout_marginStart="2sp" />
+            android:prompt="@string/rsvp_select" />
 
         <EditText
             android:textColor="@color/textColor"

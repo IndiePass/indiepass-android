@@ -1,4 +1,4 @@
-<h4>22/02/2019 - 0.33</h4>
+<h4>25/02/2019 - 0.33</h4>
 <ul>
     <li>Optimize post forms (size, color, etc ..)</li>
     <li>Check for visibility property in q=geo call</li>

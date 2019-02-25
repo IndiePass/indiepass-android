@@ -28,6 +28,8 @@
         <Button
             android:padding="@dimen/box_padding"
             android:text="@string/apply_filter"
+            android:gravity="left"
+            style="?android:attr/borderlessButtonStyle"
             android:background="@color/buttonWhite"
             android:textColor="@color/colorPrimary"
             android:id="@+id/filterSourcePostListButton"
