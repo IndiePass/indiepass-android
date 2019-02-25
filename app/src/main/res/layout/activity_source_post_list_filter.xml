@@ -26,7 +26,10 @@
             android:layout_margin="5dp" />
 
         <Button
+            android:padding="@dimen/box_padding"
             android:text="@string/apply_filter"
+            android:background="@color/buttonWhite"
+            android:textColor="@color/colorPrimary"
             android:id="@+id/filterSourcePostListButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
