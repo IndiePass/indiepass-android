@@ -6,8 +6,8 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.URLUtil;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -33,7 +33,7 @@ import java.util.Map;
 public class UpdateActivity extends AppCompatActivity implements SendPostInterface {
 
     private EditText url;
-    private CheckBox postStatus;
+    private Switch postStatus;
     private EditText title;
     private EditText body;
     private MenuItem sendItem;
