@@ -1,5 +1,9 @@
 <h4>26/02/2019 - 0.34</h4>
 <ul>
+    <li>Add another date format for parsing</li>
+</ul>
+<h4>26/02/2019 - 0.34</h4>
+<ul>
     <li>Fix crash in post list on update button</li>
 </ul>
 <h4>25/02/2019 - 0.33</h4>

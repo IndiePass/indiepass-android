@@ -66,7 +66,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     private final User user;
     private final String channelId;
     private final ListView listView;
-    private List<String> dateFormatStrings = Arrays.asList("yyyy-MM-dd'T'kk:mm:ssZ", "yyyy-MM-dd kk:mm:ssZ", "yyyy-MM-dd kk:mmZ");
+    private List<String> dateFormatStrings = Arrays.asList("yyyy-MM-dd'T'kk:mm:ssZ", "yyyy-MM-dd'T'kk:mm:ss", "yyyy-MM-dd kk:mm:ssZ", "yyyy-MM-dd kk:mmZ");
 
     TimelineListAdapter(Context context, List<TimelineItem> items, User user, String channelId, ListView listView) {
         this.context = context;
