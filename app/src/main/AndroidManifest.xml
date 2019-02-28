@@ -340,6 +340,8 @@
                 android:value="com.indieweb.indigenous.LaunchActivity" />
         </activity>
 
+        <receiver android:name=".microsub.broadcast.MicrosubBroadcastReceiver" />
+
     </application>
 
 </manifest>

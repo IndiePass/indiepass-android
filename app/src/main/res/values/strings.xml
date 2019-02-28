@@ -141,9 +141,13 @@
     <string name="pref_key_post_type_hide_title">Hide post types</string>
     <string name="pref_key_post_type_hide_summary">Hide post types in the menu which are not supported or enabled by your Micropub endpoint. If your server does not send post types in the configuration response, all post types will be shown.</string>
 
-    <!-- Preferences: Media handling -->
+    <!-- Preferences: Reader -->
     <string name="pref_category_reader_title">Reader</string>
     <string name="pref_category_reader_summary">Control reader settings</string>
+    <string name="pref_key_check_new_posts_title">Check for new posts</string>
+    <string name="pref_key_check_new_posts_summary">Checks for (new) posts every hour. Sends a notification if you have unread posts.</string>
+    <string name="pref_key_check_new_posts_notifications_title">Only monitor notifications channel</string>
+    <string name="pref_key_check_new_posts_notifications_summary">Ignores all other channels but only sends a notification if you have unread posts in your notifications channel.</string>
     <string name="pref_key_video_autoplay_title">Video autoplay</string>
     <string name="pref_key_image_preview_title">Image preview</string>
     <string name="pref_key_image_preview_summary">Show the first image per post. If you choose to hide, you can still view the images attached to the post by clicking on the images information at the bottom of the post.</string>

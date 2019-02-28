@@ -62,6 +62,9 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Set notification to true.
+        Preferences.setPreference(requireContext(), "indigenous_notification_microsub", true);
+
         view.findViewById(R.id.actionButton).setOnClickListener(this);
         listChannel = view.findViewById(R.id.channel_list);
         refreshLayout = view.findViewById(R.id.refreshChannels);

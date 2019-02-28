@@ -81,6 +81,17 @@
         android:summary="@string/pref_category_reader_summary">
 
         <SwitchPreference
+            android:key="pref_key_check_new_posts"
+            android:title="@string/pref_key_check_new_posts_title"
+            android:summary="@string/pref_key_check_new_posts_summary"
+            android:defaultValue="false" />
+        <SwitchPreference
+            android:dependency="pref_key_check_new_posts"
+            android:key="pref_key_check_new_posts_notifications"
+            android:title="@string/pref_key_check_new_posts_notifications_title"
+            android:summary="@string/pref_key_check_new_posts_notifications_summary"
+            android:defaultValue="false" />
+        <SwitchPreference
             android:key="pref_key_image_preview"
             android:title="@string/pref_key_image_preview_title"
             android:summary="@string/pref_key_image_preview_summary"
