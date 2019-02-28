@@ -17,6 +17,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.general.SettingsActivity;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Connection;
@@ -35,6 +36,16 @@ public class MicrosubBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
+
+        // On boot.
+        if (intent.getAction() != null && context != null) {
+            if (intent.getAction().equalsIgnoreCase(Intent.ACTION_BOOT_COMPLETED)) {
+                if (Preferences.getPreference(context,"pref_key_check_new_posts", false)) {
+                    SettingsActivity.setAlarmForPostCheck(context, true);
+                }
+                return;
+            }
+        }
 
         final User user = new Accounts(context).getCurrentUser();
         if (user.getMicrosubEndpoint().length() == 0) {

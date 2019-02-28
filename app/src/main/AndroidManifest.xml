@@ -19,6 +19,7 @@
     <uses-permission
         android:name="android.permission.USE_CREDENTIALS"
         android:maxSdkVersion="22" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:name=".Indigenous"
@@ -340,7 +341,11 @@
                 android:value="com.indieweb.indigenous.LaunchActivity" />
         </activity>
 
-        <receiver android:name=".microsub.broadcast.MicrosubBroadcastReceiver" />
+        <receiver android:name=".microsub.broadcast.MicrosubBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

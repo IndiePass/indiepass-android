@@ -3,6 +3,7 @@ package com.indieweb.indigenous.general;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -91,8 +92,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 boolean checked = Boolean.valueOf(newValue.toString());
-                if (checked) setAlarmForPostCheck(true);
-                else setAlarmForPostCheck(false);
+                if (checked) setAlarmForPostCheck(getApplicationContext(), true);
+                else setAlarmForPostCheck(getApplicationContext(),false);
                 return true;
             }
         });
@@ -119,11 +120,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * @param setAlarm
      *   Whether to set or unset the alarm.
      */
-    public void setAlarmForPostCheck(boolean setAlarm) {
+    public static void setAlarmForPostCheck(Context context, boolean setAlarm) {
 
-        Intent intent = new Intent(this, MicrosubBroadcastReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 234, intent, 0);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(context, MicrosubBroadcastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 234, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
 
         if (setAlarm) {
             alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HOUR, AlarmManager.INTERVAL_HOUR, pendingIntent);
