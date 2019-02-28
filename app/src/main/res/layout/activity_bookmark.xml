@@ -21,6 +21,19 @@
             android:layout_height="wrap_content" />
 
         <EditText
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/inputText"
+            android:inputType="date"
+            android:focusable="false"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="5dp"
+            android:hint="@string/publish_date_hit"
+            android:id="@+id/publishDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
             android:id="@+id/url"
             android:textColor="@color/textColor"
             android:textSize="@dimen/inputText"

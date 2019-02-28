@@ -78,11 +78,16 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import static java.lang.Integer.parseInt;
 
@@ -103,6 +108,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     private int PICK_IMAGE_REQUEST = 1;
 
     EditText url;
+    TextView publishDate;
     String urlPostKey;
     String directSend = "";
     String hType = "entry";
@@ -185,11 +191,17 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         url = findViewById(R.id.url);
         tags = findViewById(R.id.tags);
         saveAsDraft = findViewById(R.id.saveAsDraft);
+        publishDate = findViewById(R.id.publishDate);
         imagePreviewGallery = findViewById(R.id.imagePreviewGallery);
         locationWrapper = findViewById(R.id.locationWrapper);
         locationVisibility = findViewById(R.id.locationVisibility);
         locationLabel = findViewById(R.id.locationLabel);
         locationQuery = findViewById(R.id.locationQuery);
+
+        // Publish date.
+        if (publishDate != null) {
+            publishDate.setOnClickListener(new publishDateOnClickListener());
+        }
 
         // Autocomplete of tags.
         if (tags != null && Preferences.getPreference(this, "pref_key_tags_list", false)) {
@@ -578,6 +590,17 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                     }
                 }
 
+                // Publish date.
+                if (publishDate != null && !TextUtils.isEmpty(publishDate.getText())) {
+                    bodyParams.put("published", publishDate.getText().toString());
+                }
+                else {
+                    Date date = Calendar.getInstance().getTime();
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:00Z");
+                    df.setTimeZone(TimeZone.getDefault());
+                    bodyParams.put("published", df.format(date));
+                }
+
                 // Post status.
                 postStatus = findViewById(R.id.postStatus);
                 if (postStatus != null) {
@@ -885,6 +908,14 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
     @Override
     public void afterTextChanged(Editable s) { }
+
+    // Publish date onclick listener.
+    class publishDateOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Utility.showDateTimePickerDialog(BaseCreateActivity.this, publishDate);
+        }
+    }
 
     // Location query listener.
     class OnLocationLabelQueryListener implements View.OnClickListener {

@@ -1,7 +1,8 @@
 <h4>xx/xx/2019 - 0.35</h4>
 <ul>
     <li>Add another date format for parsing</li>
-    <li>Allow to monitor channels and get notification for new posts</li>
+    <li>Allow to override the publish date, default to 'now'</li>
+    <li>Allow to monitor channels in background and get notification for new posts</li>
 </ul>
 <h4>26/02/2019 - 0.34</h4>
 <ul>
