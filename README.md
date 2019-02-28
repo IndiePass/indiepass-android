@@ -11,7 +11,7 @@ More information at https://indieweb.org/Indigenous and https://indigenous.abode
 
 ## Functionality
 
-- Login with multiple domains, discover indieauth, micropub and microsub endpoints.
+- Login with multiple domains, discover indieauth, micropub, microsub and media endpoints.
   The microsub endpoint is optional so you can simply use this as a micropub 
   client too.
 - Micropub
@@ -24,13 +24,12 @@ More information at https://indieweb.org/Indigenous and https://indigenous.abode
   - Query, update and delete: get a list of posts and update basic properties (experimental)
 - Microsub
   - read channels, with pull to refresh
-  - read items per channel, with pull to refresh
-  - reply, like, repost, rsvp or bookmark directly
-  - go to external URL
-  - listen to audio if available
-  - watch videos
+  - read items per channel, with pull to refresh, response actions per item
+  - reply, like, repost, rsvp, bookmark, upload or add feed directly
+  - listen to audio or watch video if available 
   - view fullscreen images, zoom and pinch
   - Manage channels and feeds
+  - Background service to check for new posts and trigger notifications
 - Share intents: receive text or images from other apps to directly share
 
 ## Screenshot
