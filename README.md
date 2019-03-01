@@ -33,7 +33,7 @@ More information at https://indieweb.org/Indigenous and https://indigenous.abode
 - Share intents: receive text or images from other apps to directly share
 
 Note: checkin is experimental and uses location to pass on all information, including h=card into
-the Geo URI.
+the Geo URI, e.g.: geo:51.5258325,-0.1359825,0.0;name=london;h=card;url=https://hwclondon.co.uk
 
 ## Screenshot
 
