@@ -110,6 +110,12 @@
             android:icon="@drawable/button_issue_idle"
             android:title="@string/add_issue" />
 
+        <item
+            android:checkable="false"
+            android:id="@+id/createCheckin"
+            android:icon="@drawable/button_map_idle"
+            android:title="@string/add_checkin" />
+
     </group>
 
 </menu>

@@ -16,6 +16,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <TextView
+        android:padding="@dimen/box_padding"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:textColor="@color/textColor"
+        android:text="@string/getting_coordinates"
+        android:id="@+id/locationCoordinates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <EditText
         android:layout_marginRight="@dimen/box_padding"
         android:visibility="gone"
@@ -27,6 +37,20 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
+        android:layout_marginStart="7sp"
+        android:layout_marginEnd="@dimen/box_padding" />
+
+    <EditText
+        android:layout_marginRight="@dimen/box_padding"
+        android:layout_marginLeft="7sp"
+        android:id="@+id/locationUrl"
+        android:visibility="gone"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/inputText"
+        android:hint="@string/url_hint"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textUri"
         android:layout_marginStart="7sp"
         android:layout_marginEnd="@dimen/box_padding" />
 

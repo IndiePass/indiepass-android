@@ -26,6 +26,7 @@ import com.indieweb.indigenous.indieauth.UsersFragment;
 import com.indieweb.indigenous.micropub.draft.DraftFragment;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
+import com.indieweb.indigenous.micropub.post.CheckinActivity;
 import com.indieweb.indigenous.micropub.post.EventActivity;
 import com.indieweb.indigenous.micropub.post.IssueActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
@@ -168,6 +169,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.createIssue:
                         menuType = "issue";
                         break;
+                    case R.id.createCheckin:
+                        menuType = "checkin";
+                        break;
                 }
 
                 if (menuType != null && !postTypeList.contains(menuType)) {
@@ -287,6 +291,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.createIssue:
                 Intent CreateIssue = new Intent(getBaseContext(), IssueActivity.class);
                 startActivity(CreateIssue);
+                break;
+
+            case R.id.createCheckin:
+                Intent CreateCheckin = new Intent(getBaseContext(), CheckinActivity.class);
+                startActivity(CreateCheckin);
                 break;
 
             case R.id.nav_upload:

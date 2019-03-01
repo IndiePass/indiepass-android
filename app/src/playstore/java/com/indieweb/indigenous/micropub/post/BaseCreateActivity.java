@@ -123,10 +123,13 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     String fileUrl;
     TextView mediaUrl;
     boolean isMediaRequest = false;
+    boolean isCheckin = false;
 
     LinearLayout locationWrapper;
     Spinner locationVisibility;
     EditText locationLabel;
+    EditText locationUrl;
+    TextView locationCoordinates;
     Button locationQuery;
     private FusedLocationProviderClient mFusedLocationClient;
     private Boolean mRequestingLocationUpdates = false;
@@ -196,7 +199,17 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         locationWrapper = findViewById(R.id.locationWrapper);
         locationVisibility = findViewById(R.id.locationVisibility);
         locationLabel = findViewById(R.id.locationLabel);
+        locationUrl = findViewById(R.id.locationUrl);
         locationQuery = findViewById(R.id.locationQuery);
+        locationCoordinates = findViewById(R.id.locationCoordinates);
+
+        // On checkin, set label and url visible already.
+        if (isCheckin) {
+            locationWrapper.setVisibility(View.VISIBLE);
+            locationCoordinates.setVisibility(View.VISIBLE);
+            locationLabel.setVisibility(View.VISIBLE);
+            locationUrl.setVisibility(View.VISIBLE);
+        }
 
         // Publish date.
         if (publishDate != null) {
@@ -633,6 +646,15 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                     if (!TextUtils.isEmpty(locationLabel.getText())) {
                         geo += ";name=" + locationLabel.getText().toString();
                     }
+
+                    // Checkin.
+                    if (isCheckin) {
+                        geo += ";h=card";
+                        if (!TextUtils.isEmpty(locationUrl.getText())) {
+                            geo += ";url=" + locationUrl.getText().toString();
+                        }
+                    }
+
                     bodyParams.put("location", "geo:" + geo);
 
                     if (locationVisibility != null && locationWrapper.getVisibility() == View.VISIBLE) {
@@ -784,14 +806,16 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
             return;
         }
 
+        // Set wrapper and coordinates visible (if it wasn't already).
+        locationWrapper.setVisibility(View.VISIBLE);
+        locationCoordinates.setVisibility(View.VISIBLE);
+
         mSettingsClient
             .checkLocationSettings(mLocationSettingsRequest)
             .addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
                 @SuppressLint("MissingPermission")
                 @Override
                 public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-
-                    Toast.makeText(getApplicationContext(), getString(R.string.getting_location), Toast.LENGTH_SHORT).show();
 
                     //noinspection MissingPermission
                     mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
@@ -819,8 +843,6 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                             String errorMessage = "Location settings are inadequate, and cannot be fixed here. Fix in Settings.";
                             Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_LONG).show();
                     }
-
-                    updateLocationUI();
                 }
             });
     }
@@ -830,12 +852,15 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
      */
     private void updateLocationUI() {
         if (mCurrentLocation != null) {
-            Toast.makeText(getApplicationContext(), "Location found: latitude: " + mCurrentLocation.getLatitude() + " - longitude: " + mCurrentLocation.getLongitude() + " - altitude: " + mCurrentLocation.getAltitude(), Toast.LENGTH_LONG).show();
+
+            String coordinates = "Coordinates (lat, lon, alt) " + mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude() + "," + mCurrentLocation.getAltitude();
+            locationCoordinates.setText(coordinates);
+
+            // Toggle some visibilities.
             boolean showLocationVisibility = Preferences.getPreference(getApplicationContext(), "pref_key_location_visibility", false);
             boolean showLocationLabel = Preferences.getPreference(getApplicationContext(), "pref_key_location_label", false);
             boolean showLocationQueryButton = Preferences.getPreference(getApplicationContext(), "pref_key_location_label_query", false);
-            if (showLocationVisibility || showLocationLabel || showLocationQueryButton) {
-                locationWrapper.setVisibility(View.VISIBLE);
+            if (isCheckin || showLocationVisibility || showLocationLabel || showLocationQueryButton) {
                 if (showLocationVisibility) {
                     locationVisibility.setVisibility(View.VISIBLE);
                 }
@@ -849,6 +874,9 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 }
             }
             stopLocationUpdates();
+        }
+        else {
+            locationCoordinates.setText(R.string.getting_coordinates);
         }
     }
 

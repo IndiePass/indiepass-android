@@ -1,5 +1,6 @@
 <h4>xx/xx/2019 - 0.35</h4>
 <ul>
+    <li>Experimental checkin post type</li>
     <li>Add another date format for parsing</li>
     <li>Allow to override the publish date, default to 'now'</li>
     <li>Allow to monitor channels in background and get notification for new posts</li>

@@ -27,6 +27,7 @@ import com.indieweb.indigenous.micropub.post.NoteActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
+import com.indieweb.indigenous.micropub.post.UploadActivity;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Preferences;
@@ -171,6 +172,9 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                         case R.id.createIssue:
                             menuType = "issue";
                             break;
+                        case R.id.createCheckin:
+                            menuType = "checkin";
+                            break;
                     }
 
                     if (!postTypeList.contains(menuType)) {
@@ -262,6 +266,16 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                     CreateIssue.putExtra("incomingText", incomingText);
                 }
                 startActivity(CreateIssue);
+                break;
+            case R.id.createMedia:
+                Intent CreateMedia = new Intent(getBaseContext(), UploadActivity.class);
+                if (incomingText.length() > 0) {
+                    CreateMedia.putExtra("incomingText", incomingText);
+                }
+                if (incomingImage != null && incomingImage.length() > 0) {
+                    CreateMedia.putExtra("incomingImage", incomingImage);
+                }
+                startActivity(CreateMedia);
                 break;
         }
         return false;

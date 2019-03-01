@@ -165,6 +165,15 @@
         </activity>
 
         <activity
+            android:name=".micropub.post.CheckinActivity"
+            android:label="@string/add_checkin"
+            android:parentActivityName=".LaunchActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.LaunchActivity" />
+        </activity>
+
+        <activity
             android:name=".micropub.post.ArticleActivity"
             android:label="@string/add_article"
             android:parentActivityName=".LaunchActivity">
