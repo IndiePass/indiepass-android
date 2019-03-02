@@ -172,9 +172,6 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                         case R.id.createIssue:
                             menuType = "issue";
                             break;
-                        case R.id.createCheckin:
-                            menuType = "checkin";
-                            break;
                     }
 
                     if (!postTypeList.contains(menuType)) {
@@ -269,9 +266,6 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                 break;
             case R.id.createMedia:
                 Intent CreateMedia = new Intent(getBaseContext(), UploadActivity.class);
-                if (incomingText.length() > 0) {
-                    CreateMedia.putExtra("incomingText", incomingText);
-                }
                 if (incomingImage != null && incomingImage.length() > 0) {
                     CreateMedia.putExtra("incomingImage", incomingImage);
                 }

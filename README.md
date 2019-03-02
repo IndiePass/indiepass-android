@@ -15,7 +15,7 @@ More information at https://indieweb.org/Indigenous and https://indigenous.abode
   The microsub endpoint is optional so you can simply use this as a micropub 
   client too.
 - Micropub
-  - post types: article, note, reply, repost, like, bookmark, event, issue, rsvp and checkin
+  - post types: article, note, reply, repost, like, bookmark, event, issue, rsvp, geocache and checkin
   - add image, tags, toggle syndication targets
   - send images to media endpoint
   - share location on note, article and event
@@ -32,8 +32,12 @@ More information at https://indieweb.org/Indigenous and https://indigenous.abode
   - Background service to check for new posts and trigger notifications
 - Share intents: receive text or images from other apps to directly share
 
-Note: checkin is experimental and uses location to pass on all information, including h=card into
-the Geo URI, e.g.: geo:51.5258325,-0.1359825,0.0;name=london;h=card;url=https://hwclondon.co.uk
+Note: Checkin and Geocache are experimental and use location to pass on all information, including 
+h=card, into the Geo URI, e.g.
+
+```
+geo:51.5258325,-0.1359825,0.0;name=london;h=card;url=https://hwclondon.co.uk
+```
 
 ## Screenshot
 
