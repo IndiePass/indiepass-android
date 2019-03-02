@@ -72,6 +72,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     Switch saveAsDraft;
     DatabaseHelper db;
     User user;
+    boolean isCheckin = false;
     MultiAutoCompleteTextView tags;
     List<Uri> imageUris = new ArrayList<>();
     private List<Syndication> syndicationTargets = new ArrayList<>();
@@ -692,4 +693,10 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         }
     }
 
+    /**
+     * Start location updates.
+     */
+    public void startLocationUpdates() {
+        // Will come back later.
+    }
 }
