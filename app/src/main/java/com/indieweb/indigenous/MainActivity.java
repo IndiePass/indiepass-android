@@ -173,6 +173,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.createCheckin:
                         menuType = "checkin";
                         break;
+                    case R.id.createGeocache:
+                        menuType = "geocache";
+                        break;
                 }
 
                 if (menuType != null && !postTypeList.contains(menuType)) {
