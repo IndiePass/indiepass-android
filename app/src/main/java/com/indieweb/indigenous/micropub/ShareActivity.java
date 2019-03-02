@@ -286,7 +286,6 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                 }
                 startActivity(CreateCheckin);
                 break;
-
             case R.id.createGeocache:
                 Intent CreateGeocache = new Intent(getBaseContext(), GeocacheActivity.class);
                 if (incomingText.length() > 0) {
