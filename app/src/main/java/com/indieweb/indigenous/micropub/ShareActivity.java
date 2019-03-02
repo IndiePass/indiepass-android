@@ -20,7 +20,9 @@ import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.indieauth.IndieAuthActivity;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
+import com.indieweb.indigenous.micropub.post.CheckinActivity;
 import com.indieweb.indigenous.micropub.post.EventActivity;
+import com.indieweb.indigenous.micropub.post.GeocacheActivity;
 import com.indieweb.indigenous.micropub.post.IssueActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
 import com.indieweb.indigenous.micropub.post.NoteActivity;
@@ -172,6 +174,12 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                         case R.id.createIssue:
                             menuType = "issue";
                             break;
+                        case R.id.createCheckin:
+                            menuType = "checkin";
+                            break;
+                        case R.id.createGeocache:
+                            menuType = "geocache";
+                            break;
                     }
 
                     if (!postTypeList.contains(menuType)) {
@@ -270,6 +278,21 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                     CreateMedia.putExtra("incomingImage", incomingImage);
                 }
                 startActivity(CreateMedia);
+                break;
+            case R.id.createCheckin:
+                Intent CreateCheckin = new Intent(getBaseContext(), CheckinActivity.class);
+                if (incomingText.length() > 0) {
+                    CreateCheckin.putExtra("incomingText", incomingText);
+                }
+                startActivity(CreateCheckin);
+                break;
+
+            case R.id.createGeocache:
+                Intent CreateGeocache = new Intent(getBaseContext(), GeocacheActivity.class);
+                if (incomingText.length() > 0) {
+                    CreateGeocache.putExtra("incomingText", incomingText);
+                }
+                startActivity(CreateGeocache);
                 break;
         }
         return false;

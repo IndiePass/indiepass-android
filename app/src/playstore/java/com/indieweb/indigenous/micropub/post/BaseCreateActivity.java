@@ -267,8 +267,11 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
             }
             else {
                 String incomingText = extras.getString("incomingText");
-                if (incomingText != null && incomingText.length() > 0 && (body != null || url != null)) {
-                    if (url != null) {
+                if (incomingText != null && incomingText.length() > 0 && (body != null || url != null || locationUrl != null)) {
+                    if (locationUrl != null) {
+                        setUrlAndFocusOnMessage(incomingText);
+                    }
+                    else if (url != null) {
                         setUrlAndFocusOnMessage(incomingText);
                     }
                     else {
@@ -745,12 +748,17 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
      *   The incoming URL.
      */
     public void setUrlAndFocusOnMessage(String incomingUrl) {
-        url.setText(incomingUrl);
-        if (title != null) {
-            title.requestFocus();
+        if (isCheckin) {
+            locationUrl.setText(incomingUrl);
         }
-        else if (body != null) {
-            body.requestFocus();
+        else {
+            url.setText(incomingUrl);
+            if (title != null) {
+                title.requestFocus();
+            }
+            else if (body != null) {
+                body.requestFocus();
+            }
         }
     }
 
