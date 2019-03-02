@@ -32,11 +32,11 @@ More information at https://indieweb.org/Indigenous and https://indigenous.abode
   - Background service to check for new posts and trigger notifications
 - Share intents: receive text or images from other apps to directly share
 
-Note: Checkin and Geocache are experimental and use location to pass on all information, including 
-h=card, into the Geo URI.
+Note: Checkin and Geocache are experimental and pass on all information into a Geo URI in the 
+checkin property, e.g.
 
 ```
-geo:51.5258325,-0.1359825,0.0;name=london;h=card;url=https://hwclondon.co.uk
+geo:51.5258325,-0.1359825,0.0;name=london;url=https://hwclondon.co.uk
 ```
 
 ## Screenshot

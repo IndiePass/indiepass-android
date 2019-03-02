@@ -642,6 +642,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
                 // Location.
                 if (canAddLocation && mCurrentLocation != null) {
+                    String payloadProperty = "location";
                     String geo = mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude();
                     geo += "," + mCurrentLocation.getAltitude();
 
@@ -652,13 +653,13 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
                     // Checkin.
                     if (isCheckin) {
-                        geo += ";h=card";
+                        payloadProperty = "checkin";
                         if (!TextUtils.isEmpty(locationUrl.getText())) {
                             geo += ";url=" + locationUrl.getText().toString();
                         }
                     }
 
-                    bodyParams.put("location", "geo:" + geo);
+                    bodyParams.put(payloadProperty, "geo:" + geo);
 
                     if (locationVisibility != null && locationWrapper.getVisibility() == View.VISIBLE) {
                         bodyParams.put("location-visibility", locationVisibility.getSelectedItem().toString());
