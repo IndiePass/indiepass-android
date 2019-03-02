@@ -16,9 +16,9 @@ More information at https://indieweb.org/Indigenous and https://indigenous.abode
   client too.
 - Micropub
   - post types: article, note, reply, repost, like, bookmark, event, issue, rsvp, geocache and checkin
-  - add image, tags, toggle syndication targets
-  - send images to media endpoint
-  - share location on note, article and event
+  - add multiple images, tags, toggle syndication targets
+  - share location on note, article, event, checkin and geocache
+  - send image to media endpoint
   - Toggle post-status (published vs draft)
   - Save articles, notes or replies as draft
   - Query, update and delete: get a list of posts and update basic properties (experimental)
@@ -33,7 +33,7 @@ More information at https://indieweb.org/Indigenous and https://indigenous.abode
 - Share intents: receive text or images from other apps to directly share
 
 Note: Checkin and Geocache are experimental and use location to pass on all information, including 
-h=card, into the Geo URI, e.g.
+h=card, into the Geo URI.
 
 ```
 geo:51.5258325,-0.1359825,0.0;name=london;h=card;url=https://hwclondon.co.uk

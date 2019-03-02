@@ -28,6 +28,7 @@ import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.CheckinActivity;
 import com.indieweb.indigenous.micropub.post.EventActivity;
+import com.indieweb.indigenous.micropub.post.GeocacheActivity;
 import com.indieweb.indigenous.micropub.post.IssueActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
 import com.indieweb.indigenous.micropub.post.NoteActivity;
@@ -296,6 +297,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.createCheckin:
                 Intent CreateCheckin = new Intent(getBaseContext(), CheckinActivity.class);
                 startActivity(CreateCheckin);
+                break;
+
+            case R.id.createGeocache:
+                Intent CreateGeocache = new Intent(getBaseContext(), GeocacheActivity.class);
+                startActivity(CreateGeocache);
                 break;
 
             case R.id.nav_upload:

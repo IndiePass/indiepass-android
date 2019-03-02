@@ -116,6 +116,12 @@
             android:icon="@drawable/button_map_idle"
             android:title="@string/add_checkin" />
 
+        <item
+            android:checkable="false"
+            android:id="@+id/createGeocache"
+            android:icon="@drawable/button_geocache_idle"
+            android:title="@string/add_geocache" />
+
     </group>
 
 </menu>

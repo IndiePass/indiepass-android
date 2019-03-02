@@ -16,7 +16,7 @@
     <string name="switch_account">Switch</string>
     <string name="account_delete_error">Error deleting account</string>
 
-    <string name="about_info"><![CDATA[Indigenous allows you to engage with the internet as you do on social media sites, but posts it all on your website. Use the built-in reader to read and respond to posts across the internet. Indigenous doesn\'t track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/swentel/indigenous–android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://openclipart.org">Openclipart</a>]]></string>
+    <string name="about_info"><![CDATA[Indigenous allows you to engage with the internet as you do on social media sites, but posts it all on your website. Use the built-in reader to read and respond to posts across the internet. Indigenous doesn\'t track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/swentel/indigenous–android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a>, <a href="https://openclipart.org">Openclipart</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
     <string name="view_changelog">View changelog</string>
 
     <string name="drafts">Drafts</string>
@@ -66,6 +66,7 @@
     <string name="add_issue">Issue</string>
     <string name="add_rsvp">RSVP</string>
     <string name="add_checkin">Checkin</string>
+    <string name="add_geocache">Geocache</string>
     <string name="update_post">Update</string>
     <string name="delete_post">Delete</string>
     <string name="delete_image">Remove image</string>
@@ -106,6 +107,7 @@
     <string name="event">Event</string>
     <string name="rsvp">RSVP</string>
     <string name="rsvp_select">Select RSVP</string>
+    <string name="geocache_select">Select log type</string>
     <string name="upload">Upload</string>
     <string name="upload_description">Upload images to your media endpoint. On success, the file URL will be added to the clipboard automatically.</string>
     <string name="one_image">1 image</string>
@@ -201,6 +203,11 @@
     <string name="location">Location</string>
     <string name="location_label">Location name</string>
     <string name="location_label_query">Find location</string>
+
+    <string-array name="geocache_array">
+        <item>found</item>
+        <item>not-found</item>
+    </string-array>
 
     <string-array name="rsvp_array">
         <item>yes</item>
