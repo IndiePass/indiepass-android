@@ -27,7 +27,7 @@ public class Draft {
     public static final String CREATE_TABLE =
         "CREATE TABLE " + TABLE_NAME + "("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COLUMN_SEND_WHEN_ONLINE + " INTEGER"
+                + COLUMN_SEND_WHEN_ONLINE + " INTEGER,"
                 + COLUMN_ACCOUNT + " TEXT,"
                 + COLUMN_TYPE + " TEXT,"
                 + COLUMN_NAME + " TEXT,"

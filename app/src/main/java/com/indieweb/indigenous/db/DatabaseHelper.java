@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 14;
     private static final String DATABASE_NAME = "indigenous";
 
     public DatabaseHelper(Context context) {
@@ -41,7 +41,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(Draft.COLUMN_TYPE, draft.getSendWhenOnline());
+        values.put(Draft.COLUMN_SEND_WHEN_ONLINE, draft.getSendWhenOnline());
         values.put(Draft.COLUMN_TYPE, draft.getType());
         values.put(Draft.COLUMN_ACCOUNT, draft.getAccount());
         values.put(Draft.COLUMN_NAME, draft.getName());

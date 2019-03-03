@@ -619,7 +619,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
                     bodyParams.put(payloadProperty, "geo:" + geo);
 
-                    if (locationVisibility != null && locationWrapper.getVisibility() == View.VISIBLE) {
+                    if (locationVisibility != null && locationVisibility.getVisibility() == View.VISIBLE) {
                         bodyParams.put("location-visibility", locationVisibility.getSelectedItem().toString());
                     }
                 }
@@ -794,25 +794,22 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 geocacheLogType.setSelection(logType);
             }
 
-            boolean toggleLocationVisibility = false;
             // Location coordinates.
             if (locationCoordinates != null && draft.getCoordinates().length() > 0) {
                 coordinates = draft.getCoordinates();
                 String coordinatesText = "Coordinates (lat, lon, alt) " + coordinates;
                 locationCoordinates.setText(coordinatesText);
-                toggleLocationVisibility = true;
+                toggleLocationVisibilities(true);
             }
 
             // Location name.
             if (locationName != null && draft.getLocationName().length() > 0) {
                 locationName.setText(draft.getLocationName());
-                toggleLocationVisibility = true;
             }
 
             // Location url.
             if (locationUrl != null && draft.getLocationUrl().length() > 0) {
                 locationUrl.setText(draft.getLocationUrl());
-                toggleLocationVisibility = true;
             }
 
             // Location visibility.
@@ -826,11 +823,6 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 }
 
                 locationVisibility.setSelection(visibility);
-                toggleLocationVisibility = true;
-            }
-
-            if (toggleLocationVisibility) {
-                toggleLocationVisibilities(true);
             }
 
             // Syndication targets.
