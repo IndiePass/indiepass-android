@@ -22,7 +22,7 @@ public class ReplyActivity extends BaseCreateActivity {
         boolean hasErrors = false;
 
         if (saveAsDraft != null && saveAsDraft.isChecked()) {
-            saveDraft("reply");
+            saveDraft("reply", null);
             return;
         }
 

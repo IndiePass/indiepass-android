@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 10;
     private static final String DATABASE_NAME = "indigenous";
 
     public DatabaseHelper(Context context) {
@@ -45,9 +45,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(Draft.COLUMN_ACCOUNT, draft.getAccount());
         values.put(Draft.COLUMN_NAME, draft.getName());
         values.put(Draft.COLUMN_BODY, draft.getBody());
-        values.put(Draft.COLUMN_IMAGE, draft.getImage());
+        values.put(Draft.COLUMN_IMAGES, draft.getImages());
         values.put(Draft.COLUMN_TAGS, draft.getTags());
         values.put(Draft.COLUMN_URL, draft.getUrl());
+        values.put(Draft.COLUMN_START_DATE, draft.getStartDate());
+        values.put(Draft.COLUMN_END_DATE, draft.getEndDate());
+        values.put(Draft.COLUMN_SYNDICATION_TARGETS, draft.getSyndicationTargets());
+        values.put(Draft.COLUMN_PUBLISH_DATE, draft.getPublishDate());
+        values.put(Draft.COLUMN_LOCATION_NAME, draft.getLocationName());
+        values.put(Draft.COLUMN_LOCATION_URL, draft.getLocationUrl());
+        values.put(Draft.COLUMN_LOCATION_VISIBILITY, draft.getLocationVisibility());
+        values.put(Draft.COLUMN_SPINNER, draft.getSpinner());
+        values.put(Draft.COLUMN_COORDINATES, draft.getCoordinates());
 
         if (draft.getId() > 0) {
             db.update(Draft.TABLE_NAME, values, Draft.COLUMN_ID + "=" + draft.getId(), null);
@@ -82,7 +91,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(Draft.TABLE_NAME,
-                new String[]{Draft.COLUMN_ID, Draft.COLUMN_ACCOUNT, Draft.COLUMN_TYPE, Draft.COLUMN_NAME, Draft.COLUMN_BODY, Draft.COLUMN_IMAGE, Draft.COLUMN_TAGS, Draft.COLUMN_URL, Draft.COLUMN_TIMESTAMP},
+                new String[]{
+                        Draft.COLUMN_ID,
+                        Draft.COLUMN_ACCOUNT,
+                        Draft.COLUMN_TYPE,
+                        Draft.COLUMN_NAME,
+                        Draft.COLUMN_BODY,
+                        Draft.COLUMN_IMAGES,
+                        Draft.COLUMN_TAGS,
+                        Draft.COLUMN_URL,
+                        Draft.COLUMN_START_DATE,
+                        Draft.COLUMN_END_DATE,
+                        Draft.COLUMN_SYNDICATION_TARGETS,
+                        Draft.COLUMN_PUBLISH_DATE,
+                        Draft.COLUMN_COORDINATES,
+                        Draft.COLUMN_LOCATION_NAME,
+                        Draft.COLUMN_LOCATION_URL,
+                        Draft.COLUMN_LOCATION_VISIBILITY,
+                        Draft.COLUMN_SPINNER,
+                        Draft.COLUMN_TIMESTAMP
+                },
                 Draft.COLUMN_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
 
@@ -90,17 +118,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         draft.setId(0);
         if (cursor != null) {
             cursor.moveToFirst();
-
-            draft.setId(cursor.getInt(cursor.getColumnIndex(Draft.COLUMN_ID)));
-            draft.setAccount(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_ACCOUNT)));
-            draft.setType(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_TYPE)));
-            draft.setName(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_NAME)));
-            draft.setBody(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_BODY)));
-            draft.setImage(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_IMAGE)));
-            draft.setTags(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_TAGS)));
-            draft.setUrl(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_URL)));
-            draft.setPublished(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_TIMESTAMP)));
-
+            setDraftProperties(draft, cursor);
             cursor.close();
         }
 
@@ -129,16 +147,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Draft draft = new Draft();
-                draft.setId(cursor.getInt(cursor.getColumnIndex(Draft.COLUMN_ID)));
-                draft.setAccount(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_ACCOUNT)));
-                draft.setType(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_TYPE)));
-                draft.setName(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_NAME)));
-                draft.setBody(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_BODY)));
-                draft.setImage(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_IMAGE)));
-                draft.setTags(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_TAGS)));
-                draft.setUrl(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_URL)));
-                draft.setPublished(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_TIMESTAMP)));
-
+                setDraftProperties(draft, cursor);
                 drafts.add(draft);
             } while (cursor.moveToNext());
         }
@@ -148,5 +157,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // return notes list
         return drafts;
+    }
+
+    /**
+     * Set draft properties.
+     *
+     * @param draft
+     *   The draft.
+     * @param cursor
+     *   The cursor
+     */
+    private void setDraftProperties(Draft draft, Cursor cursor) {
+        draft.setId(cursor.getInt(cursor.getColumnIndex(Draft.COLUMN_ID)));
+        draft.setAccount(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_ACCOUNT)));
+        draft.setType(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_TYPE)));
+        draft.setName(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_NAME)));
+        draft.setBody(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_BODY)));
+        draft.setImages(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_IMAGES)));
+        draft.setTags(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_TAGS)));
+        draft.setUrl(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_URL)));
+        draft.setStartDate(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_START_DATE)));
+        draft.setEndDate(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_END_DATE)));
+        draft.setSyndicationTargets(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_SYNDICATION_TARGETS)));
+        draft.setPublishDate(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_PUBLISH_DATE)));
+        draft.setCoordinates(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_COORDINATES)));
+        draft.setLocationName(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_LOCATION_NAME)));
+        draft.setLocationUrl(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_LOCATION_URL)));
+        draft.setLocationVisibility(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_LOCATION_VISIBILITY)));
+        draft.setSpinner(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_SPINNER)));
+        draft.setTimestamp(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_TIMESTAMP)));
     }
 }

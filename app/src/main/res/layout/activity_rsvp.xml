@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -11,28 +10,7 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <Switch
-            android:padding="@dimen/box_padding"
-            android:textColor="@color/textColor"
-            android:textSize="@dimen/inputText"
-            android:id="@+id/postStatus"
-            android:checked="true"
-            android:text="@string/published"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:textColor="@color/textColor"
-            android:textSize="@dimen/inputText"
-            android:inputType="date"
-            android:focusable="false"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginBottom="5dp"
-            android:hint="@string/publish_date_hit"
-            android:id="@+id/publishDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <include layout="@layout/widget_post_status_date" />
 
         <Spinner
             android:id="@+id/rsvp"

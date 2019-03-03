@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/draft_list_published"
+        android:id="@+id/draft_list_type_published"
         android:layout_height="wrap_content"
         android:textSize="@dimen/source_post_list_item_global"
         android:textColor="@color/textColor"

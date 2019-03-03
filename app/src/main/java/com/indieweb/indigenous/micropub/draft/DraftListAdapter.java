@@ -1,5 +1,6 @@
 package com.indieweb.indigenous.micropub.draft;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,8 +18,16 @@ import android.widget.Toast;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
+import com.indieweb.indigenous.micropub.post.BookmarkActivity;
+import com.indieweb.indigenous.micropub.post.CheckinActivity;
+import com.indieweb.indigenous.micropub.post.EventActivity;
+import com.indieweb.indigenous.micropub.post.GeocacheActivity;
+import com.indieweb.indigenous.micropub.post.IssueActivity;
+import com.indieweb.indigenous.micropub.post.LikeActivity;
 import com.indieweb.indigenous.micropub.post.NoteActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
+import com.indieweb.indigenous.micropub.post.RepostActivity;
+import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.model.Draft;
 
 import java.text.ParseException;
@@ -35,7 +44,7 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
     private final List<Draft> drafts;
     private LayoutInflater mInflater;
 
-    public DraftListAdapter(Context context, List<Draft> drafts) {
+    DraftListAdapter(Context context, List<Draft> drafts) {
         this.context = context;
         this.drafts = drafts;
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -56,12 +65,12 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
     public void onClick(View view) { }
 
     public static class ViewHolder {
-        public int position;
-        public TextView label;
-        public TextView published;
-        public Button update;
-        public Button delete;
-        public LinearLayout row;
+        int position;
+        TextView label;
+        TextView published;
+        Button update;
+        Button delete;
+        LinearLayout row;
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -72,7 +81,7 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
             holder = new ViewHolder();
             holder.row = convertView.findViewById(R.id.draft_list_item_row);
             holder.label = convertView.findViewById(R.id.draft_list_label);
-            holder.published = convertView.findViewById(R.id.draft_list_published);
+            holder.published = convertView.findViewById(R.id.draft_list_type_published);
             holder.update = convertView.findViewById(R.id.draftUpdate);
             holder.delete = convertView.findViewById(R.id.draftDelete);
             convertView.setTag(holder);
@@ -91,7 +100,7 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
             holder.row.setBackgroundColor(color);
 
             // Label
-            String label = draft.getType();
+            String label = "";
             if (draft.getName().length() > 0) {
                 label = draft.getName();
             }
@@ -104,13 +113,15 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
             holder.label.setText(label);
 
             // Published.
+            @SuppressLint("SimpleDateFormat")
             SimpleDateFormat formatIn = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+            @SuppressLint("SimpleDateFormat")
             SimpleDateFormat formatOut = new SimpleDateFormat("dd MMM yyyy kk:mm");
             Date result;
             try {
-                result = formatIn.parse(draft.getPublished());
                 holder.published.setVisibility(View.VISIBLE);
-                holder.published.setText(formatOut.format(result));
+                result = formatIn.parse(draft.getTimestamp());
+                holder.published.setText(draft.getType() + " - last edit on " + formatOut.format(result));
             }
             catch (ParseException ignored) {
                 holder.published.setVisibility(View.GONE);
@@ -136,23 +147,57 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
         @Override
         public void onClick(View v) {
             Draft draft = drafts.get(this.position);
+            Intent startActivity = null;
 
             switch (draft.getType()) {
                 case "note":
-                    Intent startNote = new Intent(context, NoteActivity.class);
-                    startNote.putExtra("draftId", draft.getId());
-                    context.startActivity(startNote);
+                    startActivity = new Intent(context, NoteActivity.class);
+                    startActivity.putExtra("draftId", draft.getId());
                     break;
                 case "article":
-                    Intent startArticle = new Intent(context, ArticleActivity.class);
-                    startArticle.putExtra("draftId", draft.getId());
-                    context.startActivity(startArticle);
+                    startActivity = new Intent(context, ArticleActivity.class);
+                    startActivity.putExtra("draftId", draft.getId());
+                    break;
+                case "like":
+                    startActivity = new Intent(context, LikeActivity.class);
+                    startActivity.putExtra("draftId", draft.getId());
+                    break;
+                case "bookmark":
+                    startActivity = new Intent(context, BookmarkActivity.class);
+                    startActivity.putExtra("draftId", draft.getId());
                     break;
                 case "reply":
-                    Intent startReply = new Intent(context, ReplyActivity.class);
-                    startReply.putExtra("draftId", draft.getId());
-                    context.startActivity(startReply);
+                    startActivity = new Intent(context, ReplyActivity.class);
+                    startActivity.putExtra("draftId", draft.getId());
                     break;
+                case "repost":
+                    startActivity = new Intent(context, RepostActivity.class);
+                    startActivity.putExtra("draftId", draft.getId());
+                    break;
+                case "event":
+                    startActivity = new Intent(context, EventActivity.class);
+                    startActivity.putExtra("draftId", draft.getId());
+                    break;
+                case "rsvp":
+                    startActivity = new Intent(context, RsvpActivity.class);
+                    startActivity.putExtra("draftId", draft.getId());
+                    break;
+                case "issue":
+                    startActivity = new Intent(context, IssueActivity.class);
+                    startActivity.putExtra("draftId", draft.getId());
+                    break;
+                case "checkin":
+                    startActivity = new Intent(context, CheckinActivity.class);
+                    startActivity.putExtra("draftId", draft.getId());
+                    break;
+                case "geocache":
+                    startActivity = new Intent(context, GeocacheActivity.class);
+                    startActivity.putExtra("draftId", draft.getId());
+                    break;
+            }
+
+            if (startActivity != null) {
+                context.startActivity(startActivity);
             }
         }
     }

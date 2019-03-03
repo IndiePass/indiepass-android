@@ -20,7 +20,7 @@ More information at https://indieweb.org/Indigenous and https://indigenous.abode
   - share location on note, article, event, checkin and geocache
   - send image to media endpoint
   - Toggle post-status (published vs draft)
-  - Save articles, notes or replies as draft
+  - Save as local draft to finish later.
   - Query, update and delete: get a list of posts and update basic properties (experimental)
 - Microsub
   - read channels, with pull to refresh

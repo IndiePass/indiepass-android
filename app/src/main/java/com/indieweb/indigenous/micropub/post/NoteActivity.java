@@ -22,7 +22,7 @@ public class NoteActivity extends BaseCreateActivity {
     public void onPostButtonClick(MenuItem item) {
 
         if (saveAsDraft != null && saveAsDraft.isChecked()) {
-            saveDraft("note");
+            saveDraft("note", null);
             return;
         }
 

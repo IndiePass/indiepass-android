@@ -30,7 +30,7 @@
         android:layout_marginRight="@dimen/box_padding"
         android:visibility="gone"
         android:layout_marginLeft="7sp"
-        android:id="@+id/locationLabel"
+        android:id="@+id/locationName"
         android:textColor="@color/textColor"
         android:textSize="@dimen/inputText"
         android:hint="@string/location_label"

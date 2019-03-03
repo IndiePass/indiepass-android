@@ -22,6 +22,11 @@ public class IssueActivity extends BaseCreateActivity {
     public void onPostButtonClick(MenuItem item) {
         boolean hasErrors = false;
 
+        if (saveAsDraft != null && saveAsDraft.isChecked()) {
+            saveDraft("issue", null);
+            return;
+        }
+
         if (TextUtils.isEmpty(url.getText())) {
             hasErrors = true;
             url.setError(getString(R.string.required_field));

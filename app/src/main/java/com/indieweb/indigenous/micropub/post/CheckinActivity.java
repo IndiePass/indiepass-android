@@ -16,11 +16,19 @@ public class CheckinActivity extends BaseCreateActivity {
         addCounter = true;
         setContentView(R.layout.activity_checkin);
         super.onCreate(savedInstanceState);
-        startLocationUpdates();
+        if (!preparedDraft) {
+            startLocationUpdates();
+        }
     }
 
     @Override
     public void onPostButtonClick(MenuItem item) {
+
+        if (saveAsDraft != null && saveAsDraft.isChecked()) {
+            saveDraft("checkin", null);
+            return;
+        }
+
         sendBasePost(item);
     }
 

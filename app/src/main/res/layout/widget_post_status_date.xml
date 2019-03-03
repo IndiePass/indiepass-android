@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/postStatusPublishDateWrapper"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent">
+
+    <Switch
+        android:padding="@dimen/box_padding"
+        android:textSize="@dimen/inputText"
+        android:id="@+id/saveAsDraft"
+        android:checked="false"
+        android:textColor="@color/textColor"
+        android:text="@string/save_as_draft"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Switch
+        android:padding="@dimen/box_padding"
+        android:textSize="@dimen/inputText"
+        android:textColor="@color/textColor"
+        android:id="@+id/postStatus"
+        android:checked="true"
+        android:text="@string/published"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/inputText"
+        android:inputType="date"
+        android:focusable="false"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        android:hint="@string/publish_date_hit"
+        android:id="@+id/publishDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
+

@@ -97,6 +97,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     EditText body;
     EditText title;
     Switch saveAsDraft;
+    boolean preparedDraft = false;
     DatabaseHelper db;
     User user;
     MultiAutoCompleteTextView tags;
@@ -108,11 +109,15 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     private int PICK_IMAGE_REQUEST = 1;
 
     EditText url;
+    Spinner rsvp;
     TextView publishDate;
     String urlPostKey;
     String directSend = "";
     String hType = "entry";
     String postType = "Post";
+    Spinner geocacheLogType;
+    TextView startDate;
+    TextView endDate;
     boolean finishActivity = true;
     boolean canAddImage = false;
     boolean canAddLocation = false;
@@ -127,9 +132,10 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
     LinearLayout locationWrapper;
     Spinner locationVisibility;
-    EditText locationLabel;
+    EditText locationName;
     EditText locationUrl;
     TextView locationCoordinates;
+    String coordinates;
     Button locationQuery;
     private FusedLocationProviderClient mFusedLocationClient;
     private Boolean mRequestingLocationUpdates = false;
@@ -198,17 +204,14 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         imagePreviewGallery = findViewById(R.id.imagePreviewGallery);
         locationWrapper = findViewById(R.id.locationWrapper);
         locationVisibility = findViewById(R.id.locationVisibility);
-        locationLabel = findViewById(R.id.locationLabel);
+        locationName = findViewById(R.id.locationName);
         locationUrl = findViewById(R.id.locationUrl);
         locationQuery = findViewById(R.id.locationQuery);
         locationCoordinates = findViewById(R.id.locationCoordinates);
 
         // On checkin, set label and url visible already.
         if (isCheckin) {
-            locationWrapper.setVisibility(View.VISIBLE);
-            locationCoordinates.setVisibility(View.VISIBLE);
-            locationLabel.setVisibility(View.VISIBLE);
-            locationUrl.setVisibility(View.VISIBLE);
+            toggleLocationVisibilities(true);
         }
 
         // Publish date.
@@ -291,6 +294,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
             // Draft support.
             draftId = extras.getInt("draftId");
             if (draftId > 0) {
+                preparedDraft = true;
                 prepareDraft(draftId);
             }
         }
@@ -424,7 +428,6 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         else {
             ContentResolver cR = this.getContentResolver();
             try {
-                // TODO need to get all of course.
                 InputStream is = cR.openInputStream(uri);
                 final byte[] b = new byte[8192];
                 for (int r; (r = is.read(b)) != -1;) {
@@ -435,50 +438,6 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         }
 
         return byteArrayOutputStream.toByteArray();
-    }
-
-    /**
-     * Prepares the activity with the draft.
-     *
-     * @param draftId
-     *   The draft id.
-     */
-    public void prepareDraft(Integer draftId) {
-        db = new DatabaseHelper(this);
-
-        Draft draft = db.getDraft(draftId);
-        if (draft.getId() > 0) {
-
-            // Set as checked again to avoid confusion.
-            saveAsDraft.setChecked(true);
-
-            // Name.
-            if (title != null && draft.getName().length() > 0) {
-                title.setText(draft.getName());
-            }
-
-            // Body.
-            if (body != null && draft.getBody().length() > 0) {
-                body.setText(draft.getBody());
-            }
-
-            // Tags.
-            if (tags != null && draft.getTags().length() > 0) {
-                tags.setText(draft.getTags());
-            }
-
-            // Url.
-            if (url != null && draft.getUrl().length() > 0) {
-                url.setText(draft.getUrl());
-            }
-
-            // Image
-            if (canAddImage && draft.getImage().length() > 0) {
-                imageUris.add(Uri.parse(draft.getImage()));
-                prepareImagePreview();
-            }
-
-        }
     }
 
     /**
@@ -631,7 +590,6 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 if (syndicationTargets.size() > 0) {
                     CheckBox checkbox;
                     for (int j = 0, k = 0; j < syndicationTargets.size(); j++) {
-
                         checkbox = findViewById(j);
                         if (checkbox != null && checkbox.isChecked()) {
                             bodyParams.put("mp-syndicate-to_multiple_[" + k + "]", syndicationTargets.get(j).getUid());
@@ -641,14 +599,13 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 }
 
                 // Location.
-                if (canAddLocation && mCurrentLocation != null) {
+                if (canAddLocation && coordinates != null && coordinates.length() > 0) {
                     String payloadProperty = "location";
-                    String geo = mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude();
-                    geo += "," + mCurrentLocation.getAltitude();
+                    String geo = coordinates;
 
                     // Send along location label.
-                    if (!TextUtils.isEmpty(locationLabel.getText())) {
-                        geo += ";name=" + locationLabel.getText().toString();
+                    if (!TextUtils.isEmpty(locationName.getText())) {
+                        geo += ";name=" + locationName.getText().toString();
                     }
 
                     // Checkin.
@@ -764,11 +721,159 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     }
 
     /**
+     * Prepares the activity with the draft.
+     *
+     * @param draftId
+     *   The draft id.
+     */
+    public void prepareDraft(Integer draftId) {
+        db = new DatabaseHelper(this);
+
+        Draft draft = db.getDraft(draftId);
+        if (draft.getId() > 0) {
+
+            // Set as checked again to avoid confusion.
+            saveAsDraft.setChecked(true);
+
+            // Name.
+            if (title != null && draft.getName().length() > 0) {
+                title.setText(draft.getName());
+            }
+
+            // Body.
+            if (body != null && draft.getBody().length() > 0) {
+                body.setText(draft.getBody());
+            }
+
+            // Tags.
+            if (tags != null && draft.getTags().length() > 0) {
+                tags.setText(draft.getTags());
+            }
+
+            // Url.
+            if (url != null && draft.getUrl().length() > 0) {
+                url.setText(draft.getUrl());
+            }
+
+            // Publish date.
+            if (publishDate != null && draft.getPublishDate().length() > 0) {
+                publishDate.setText(draft.getPublishDate());
+            }
+
+            // Start date.
+            if (startDate != null && draft.getStartDate().length() > 0) {
+                startDate.setText(draft.getStartDate());
+            }
+
+            // End date.
+            if (endDate != null && draft.getEndDate().length() > 0) {
+                endDate.setText(draft.getEndDate());
+            }
+
+            // RSVP.
+            if (rsvp != null && draft.getSpinner().length() > 0) {
+                int rsvpSelection = 1;
+                switch (draft.getSpinner()) {
+                    case "no":
+                        rsvpSelection = 1;
+                        break;
+                    case "maybe":
+                        rsvpSelection = 2;
+                        break;
+                    case "interested":
+                        rsvpSelection = 3;
+                        break;
+                }
+                rsvp.setSelection(rsvpSelection);
+            }
+
+            // Geocache log type.
+            if (geocacheLogType != null && draft.getSpinner().length() > 0) {
+                int logType = draft.getSpinner().equals("found") ? 0 : 1;
+                geocacheLogType.setSelection(logType);
+            }
+
+            boolean toggleLocationVisibility = false;
+            // Location coordinates.
+            if (locationCoordinates != null && draft.getCoordinates().length() > 0) {
+                coordinates = draft.getCoordinates();
+                String coordinatesText = "Coordinates (lat, lon, alt) " + coordinates;
+                locationCoordinates.setText(coordinatesText);
+                toggleLocationVisibility = true;
+            }
+
+            // Location name.
+            if (locationName != null && draft.getLocationName().length() > 0) {
+                locationName.setText(draft.getLocationName());
+                toggleLocationVisibility = true;
+            }
+
+            // Location url.
+            if (locationUrl != null && draft.getLocationUrl().length() > 0) {
+                locationUrl.setText(draft.getLocationUrl());
+                toggleLocationVisibility = true;
+            }
+
+            // Location visibility.
+            if (locationVisibility != null && draft.getLocationVisibility().length() > 0) {
+                int visibility = 0;
+                if (draft.getLocationVisibility().equals("private")) {
+                    visibility = 1;
+                }
+                else if (draft.getLocationVisibility().equals("protected")) {
+                    visibility = 2;
+                }
+
+                locationVisibility.setSelection(visibility);
+                toggleLocationVisibility = true;
+            }
+
+            if (toggleLocationVisibility) {
+                toggleLocationVisibilities(true);
+            }
+
+            // Syndication targets.
+            if (syndicationTargets.size() > 0) {
+                CheckBox checkbox;
+                String[] syndication = draft.getSyndicationTargets().split(";");
+                for (String s : syndication) {
+                    if (s != null && s.length() > 0) {
+                        for (int j = 0; j < syndicationTargets.size(); j++) {
+                            if (syndicationTargets.get(j).getUid().equals(s)) {
+                                checkbox = findViewById(j);
+                                if (checkbox != null) {
+                                    checkbox.setChecked(true);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Images.
+            if (canAddImage && draft.getImages().length() > 0) {
+
+                String[] uris = draft.getImages().split(";");
+                for (String uri : uris) {
+                    if (uri != null && uri.length() > 0) {
+                        imageUris.add(Uri.parse(uri));
+                    }
+                }
+
+                prepareImagePreview();
+            }
+
+        }
+    }
+
+    /**
      * Save draft.
      */
-    public void saveDraft(String type) {
+    public void saveDraft(String type, Draft draft) {
 
-        Draft draft = new Draft();
+        if (draft == null) {
+            draft = new Draft();
+        }
 
         if (draftId != null && draftId > 0) {
             draft.setId(draftId);
@@ -793,9 +898,47 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
             draft.setUrl(url.getText().toString());
         }
 
-        // TODO only saves the first now
+        if (publishDate != null && !TextUtils.isEmpty(publishDate.getText())) {
+            draft.setPublishDate(publishDate.getText().toString());
+        }
+
+        if (locationUrl != null && !TextUtils.isEmpty(locationUrl.getText())) {
+            draft.setLocationUrl(locationUrl.getText().toString());
+        }
+
+        if (locationName != null && !TextUtils.isEmpty(locationName.getText())) {
+            draft.setLocationName(locationName.getText().toString());
+        }
+
+        if (locationVisibility != null) {
+            draft.setLocationVisibility(locationVisibility.getSelectedItem().toString());
+        }
+
+        if (coordinates != null) {
+            draft.setCoordinates(coordinates);
+        }
+
+        if (syndicationTargets.size() > 0) {
+            CheckBox checkbox;
+            StringBuilder syndication = new StringBuilder();
+            for (int j = 0; j < syndicationTargets.size(); j++) {
+                checkbox = findViewById(j);
+                if (checkbox != null && checkbox.isChecked()) {
+                    syndication.append(syndicationTargets.get(j).getUid()).append(";");
+                }
+            }
+
+            if (syndication.length() > 0) {
+                draft.setSyndicationTargets(syndication.toString());
+            }
+        }
+
         if (imageUris.size() > 0) {
-            draft.setImage(imageUris.get(0).toString());
+            StringBuilder images = new StringBuilder();
+            for (Uri uri : imageUris) {
+                images.append(uri.toString()).append(";");
+            }
+            draft.setImages(images.toString());
         }
 
         db = new DatabaseHelper(this);
@@ -816,8 +959,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         }
 
         // Set wrapper and coordinates visible (if it wasn't already).
-        locationWrapper.setVisibility(View.VISIBLE);
-        locationCoordinates.setVisibility(View.VISIBLE);
+        toggleLocationVisibilities(true);
 
         mSettingsClient
             .checkLocationSettings(mLocationSettingsRequest)
@@ -862,26 +1004,14 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     private void updateLocationUI() {
         if (mCurrentLocation != null) {
 
-            String coordinates = "Coordinates (lat, lon, alt) " + mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude() + "," + mCurrentLocation.getAltitude();
-            locationCoordinates.setText(coordinates);
+            coordinates = mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude() + "," + mCurrentLocation.getAltitude();
+            String coordinatesText = "Coordinates (lat, lon, alt) " + coordinates;
+            locationCoordinates.setText(coordinatesText);
 
             // Toggle some visibilities.
-            boolean showLocationVisibility = Preferences.getPreference(getApplicationContext(), "pref_key_location_visibility", false);
-            boolean showLocationLabel = Preferences.getPreference(getApplicationContext(), "pref_key_location_label", false);
-            boolean showLocationQueryButton = Preferences.getPreference(getApplicationContext(), "pref_key_location_label_query", false);
-            if (isCheckin || showLocationVisibility || showLocationLabel || showLocationQueryButton) {
-                if (showLocationVisibility) {
-                    locationVisibility.setVisibility(View.VISIBLE);
-                }
-                if (showLocationLabel) {
-                    locationLabel.setVisibility(View.VISIBLE);
-                }
-                if (showLocationQueryButton) {
-                    locationQuery.setVisibility(View.VISIBLE);
-                    locationQuery.setOnClickListener(new OnLocationLabelQueryListener());
+            toggleLocationVisibilities(false);
 
-                }
-            }
+            // Stop updates.
             stopLocationUpdates();
         }
         else {
@@ -890,9 +1020,39 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     }
 
     /**
+     * Toggle location visibilities.
+     */
+    private void toggleLocationVisibilities(Boolean toggleWrapper) {
+
+        if (toggleWrapper) {
+            locationWrapper.setVisibility(View.VISIBLE);
+            locationCoordinates.setVisibility(View.VISIBLE);
+        }
+
+        boolean showLocationVisibility = Preferences.getPreference(getApplicationContext(), "pref_key_location_visibility", false);
+        boolean showLocationName = Preferences.getPreference(getApplicationContext(), "pref_key_location_label", false);
+        boolean showLocationQueryButton = Preferences.getPreference(getApplicationContext(), "pref_key_location_label_query", false);
+        if (isCheckin || showLocationVisibility || showLocationName || showLocationQueryButton) {
+            if (showLocationName || isCheckin) {
+                locationName.setVisibility(View.VISIBLE);
+            }
+            if (showLocationVisibility) {
+                locationVisibility.setVisibility(View.VISIBLE);
+            }
+            if (showLocationQueryButton) {
+                locationQuery.setVisibility(View.VISIBLE);
+                locationQuery.setOnClickListener(new OnLocationLabelQueryListener());
+            }
+            if (isCheckin) {
+                locationUrl.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    /**
      * Stop location updates.
      */
-    public void stopLocationUpdates() {
+    private void stopLocationUpdates() {
         mFusedLocationClient.removeLocationUpdates(mLocationCallback);
     }
 
@@ -997,7 +1157,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                             }
 
                             if (label.length() > 0) {
-                                locationLabel.setText(label);
+                                locationName.setText(label);
                                 if (visibility.length() > 0) {
                                     int selection = 0;
                                     if (visibility.equals("private")) {

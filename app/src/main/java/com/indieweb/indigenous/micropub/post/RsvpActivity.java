@@ -3,13 +3,11 @@ package com.indieweb.indigenous.micropub.post;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
-import android.widget.Spinner;
 
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.model.Draft;
 
 public class RsvpActivity extends BaseCreateActivity {
-
-    Spinner rsvp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,15 +15,21 @@ public class RsvpActivity extends BaseCreateActivity {
         urlPostKey = "in-reply-to";
         addCounter = true;
         setContentView(R.layout.activity_rsvp);
-        super.onCreate(savedInstanceState);
-
-        // Get spinner.
         // TODO make the options translatable
         rsvp = findViewById(R.id.rsvp);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     public void onPostButtonClick(MenuItem item) {
+
+        if (saveAsDraft != null && saveAsDraft.isChecked()) {
+            Draft draft = new Draft();
+            draft.setSpinner(rsvp.getSelectedItem().toString());
+            saveDraft("rsvp", draft);
+            return;
+        }
+
         if (TextUtils.isEmpty(url.getText())) {
             url.setError(getString(R.string.required_field));
         }

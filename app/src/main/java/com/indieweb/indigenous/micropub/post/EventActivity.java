@@ -4,15 +4,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.model.Draft;
 import com.indieweb.indigenous.util.Utility;
 
 public class EventActivity extends BaseCreateActivity {
-
-    TextView startDate;
-    TextView endDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,18 +19,33 @@ public class EventActivity extends BaseCreateActivity {
         canAddLocation = true;
         addCounter = true;
         setContentView(R.layout.activity_event);
+        startDate = findViewById(R.id.startDate);
+        endDate = findViewById(R.id.endDate);
         super.onCreate(savedInstanceState);
 
         // Start and end date buttons.
-        startDate = findViewById(R.id.startDate);
         startDate.setOnClickListener(new startDateOnClickListener());
-        endDate = findViewById(R.id.endDate);
         endDate.setOnClickListener(new endDateOnClickListener());
     }
 
     @Override
     public void onPostButtonClick(MenuItem item) {
         boolean hasErrors = false;
+
+        if (saveAsDraft != null && saveAsDraft.isChecked()) {
+            Draft draft = new Draft();
+
+            if (!TextUtils.isEmpty(startDate.getText())) {
+                draft.setStartDate(startDate.getText().toString());
+            }
+
+            if (!TextUtils.isEmpty(endDate.getText())) {
+                draft.setEndDate(endDate.getText().toString());
+            }
+
+            saveDraft("event", draft);
+            return;
+        }
 
         if (TextUtils.isEmpty(title.getText())) {
             hasErrors = true;

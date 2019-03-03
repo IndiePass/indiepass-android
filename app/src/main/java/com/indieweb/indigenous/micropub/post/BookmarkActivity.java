@@ -20,6 +20,12 @@ public class BookmarkActivity extends BaseCreateActivity {
 
     @Override
     public void onPostButtonClick(MenuItem item) {
+
+        if (saveAsDraft != null && saveAsDraft.isChecked()) {
+            saveDraft("bookmark", null);
+            return;
+        }
+
         if (TextUtils.isEmpty(url.getText())) {
             url.setError(getString(R.string.required_field));
         }

@@ -2,13 +2,11 @@ package com.indieweb.indigenous.micropub.post;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Spinner;
 
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.model.Draft;
 
 public class GeocacheActivity extends BaseCreateActivity {
-
-    Spinner geocacheLogType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,13 +16,23 @@ public class GeocacheActivity extends BaseCreateActivity {
         isCheckin = true;
         addCounter = true;
         setContentView(R.layout.activity_geocache);
-        super.onCreate(savedInstanceState);
         geocacheLogType = findViewById(R.id.geocacheLogType);
-        startLocationUpdates();
+        super.onCreate(savedInstanceState);
+        if (!preparedDraft) {
+            startLocationUpdates();
+        }
     }
 
     @Override
     public void onPostButtonClick(MenuItem item) {
+
+        if (saveAsDraft != null && saveAsDraft.isChecked()) {
+            Draft draft = new Draft();
+            draft.setSpinner(geocacheLogType.getSelectedItem().toString());
+            saveDraft("geocache", draft);
+            return;
+        }
+
         bodyParams.put("geocache-log-type", geocacheLogType.getSelectedItem().toString());
         sendBasePost(item);
     }

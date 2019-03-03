@@ -23,7 +23,7 @@ public class ArticleActivity extends BaseCreateActivity {
         boolean hasErrors = false;
 
         if (saveAsDraft != null && saveAsDraft.isChecked()) {
-            saveDraft("article");
+            saveDraft("article", null);
             return;
         }
 
