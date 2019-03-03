@@ -642,7 +642,8 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 if (imageUris.size() > 0) {
 
                     int ImageSize = 1000;
-                    if (Preferences.getPreference(getApplicationContext(), "pref_key_image_scale", true)) {
+                    Boolean scale = Preferences.getPreference(getApplicationContext(), "pref_key_image_scale", true);
+                    if (scale) {
                         String sizePreference = Preferences.getPreference(getApplicationContext(), "pref_key_image_size", Integer.toString(ImageSize));
                         if (parseInt(sizePreference) > 0) {
                             ImageSize = parseInt(sizePreference);
@@ -655,19 +656,21 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                     for (Uri u : imageUris) {
 
                         Bitmap bitmap = null;
-                        try {
-                            bitmap = Glide
-                                    .with(getApplicationContext())
-                                    .asBitmap()
-                                    .load(u)
-                                    .apply(new RequestOptions().override(ImageSize, ImageSize))
-                                    .submit()
-                                    .get();
-                        }
-                        catch (Exception ignored) {}
+                        if (scale) {
+                            try {
+                                bitmap = Glide
+                                        .with(getApplicationContext())
+                                        .asBitmap()
+                                        .load(u)
+                                        .apply(new RequestOptions().override(ImageSize, ImageSize))
+                                        .submit()
+                                        .get();
+                            }
+                            catch (Exception ignored) {}
 
-                        if (bitmap == null) {
-                            continue;
+                            if (bitmap == null) {
+                                continue;
+                            }
                         }
 
                         long imagename = System.currentTimeMillis();
@@ -687,7 +690,6 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                         i++;
 
                         // Put image in body. Send along whether to scale or not.
-                        Boolean scale = Preferences.getPreference(getApplicationContext(), "pref_key_image_scale", true);
                         params.put(imagePostParam, new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap, scale, u, mime)));
                     }
                 }
