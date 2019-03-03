@@ -20,7 +20,8 @@ More information at https://indieweb.org/Indigenous and https://indigenous.abode
   - share location on note, article, event, checkin and geocache
   - send image to media endpoint
   - Toggle post-status (published vs draft)
-  - Save as local draft to finish later.
+  - Save as local draft to finish later. This also includes coordinates, so you can finish later even
+    when you are on a different location then.
   - Query, update and delete: get a list of posts and update basic properties (experimental)
 - Microsub
   - read channels, with pull to refresh
