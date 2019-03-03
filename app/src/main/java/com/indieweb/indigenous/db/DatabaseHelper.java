@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 11;
     private static final String DATABASE_NAME = "indigenous";
 
     public DatabaseHelper(Context context) {
@@ -27,8 +27,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //db.execSQL("DROP TABLE IF EXISTS " + Draft.TABLE_NAME);
-        //onCreate(db);
+        db.execSQL("DROP TABLE IF EXISTS " + Draft.TABLE_NAME);
+        onCreate(db);
     }
 
     /**
@@ -41,6 +41,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(Draft.COLUMN_TYPE, draft.getSendWhenOnline());
         values.put(Draft.COLUMN_TYPE, draft.getType());
         values.put(Draft.COLUMN_ACCOUNT, draft.getAccount());
         values.put(Draft.COLUMN_NAME, draft.getName());
@@ -93,6 +94,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.query(Draft.TABLE_NAME,
                 new String[]{
                         Draft.COLUMN_ID,
+                        Draft.COLUMN_SEND_WHEN_ONLINE,
                         Draft.COLUMN_ACCOUNT,
                         Draft.COLUMN_TYPE,
                         Draft.COLUMN_NAME,
@@ -169,6 +171,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     private void setDraftProperties(Draft draft, Cursor cursor) {
         draft.setId(cursor.getInt(cursor.getColumnIndex(Draft.COLUMN_ID)));
+        draft.setSendWhenOnline(cursor.getInt(cursor.getColumnIndex(Draft.COLUMN_SEND_WHEN_ONLINE)));
         draft.setAccount(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_ACCOUNT)));
         draft.setType(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_TYPE)));
         draft.setName(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_NAME)));

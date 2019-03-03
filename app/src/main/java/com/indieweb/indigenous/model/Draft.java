@@ -5,6 +5,7 @@ public class Draft {
     public static final String TABLE_NAME = "drafts";
 
     public static final String COLUMN_ID = "id";
+    public static final String COLUMN_SEND_WHEN_ONLINE = "send_online";
     public static final String COLUMN_ACCOUNT = "account";
     public static final String COLUMN_TYPE = "type";
     public static final String COLUMN_NAME = "name";
@@ -26,6 +27,7 @@ public class Draft {
     public static final String CREATE_TABLE =
         "CREATE TABLE " + TABLE_NAME + "("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_SEND_WHEN_ONLINE + " INTEGER"
                 + COLUMN_ACCOUNT + " TEXT,"
                 + COLUMN_TYPE + " TEXT,"
                 + COLUMN_NAME + " TEXT,"
@@ -46,6 +48,7 @@ public class Draft {
                 + ")";
 
     private Integer id = 0;
+    private Integer sendWhenOnline = 0;
     private String account;
     private String type;
     private String name = "";
@@ -63,6 +66,14 @@ public class Draft {
     private String location_visibility = "";
     private String spinner = "";
     private String timestamp;
+
+    public Integer getSendWhenOnline() {
+        return sendWhenOnline;
+    }
+
+    public void setSendWhenOnline(Integer sendWhenOnline) {
+        this.sendWhenOnline = sendWhenOnline;
+    }
 
     public String getEndDate() {
         return end_date;

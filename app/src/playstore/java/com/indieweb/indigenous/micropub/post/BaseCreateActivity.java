@@ -571,6 +571,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 }
                 else {
                     Date date = Calendar.getInstance().getTime();
+                    @SuppressLint("SimpleDateFormat")
                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:00Z");
                     df.setTimeZone(TimeZone.getDefault());
                     bodyParams.put("published", df.format(date));

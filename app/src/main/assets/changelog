@@ -1,8 +1,8 @@
 <h4>xx/xx/2019 - 0.35</h4>
 <ul>
     <li>Experimental checkin and geocache post type</li>
-    <li>UX improvements: (local) draft and publish widget</li>
     <li>Allow to override the publish date, default to 'now'</li>
+    <li>UX improvements: (local) draft and publish widget, tags and syndication</li>
     <li>Allow to monitor channels in background and get notification for new posts</li>
     <li>All post types can now be saved as draft, including all properties. This also includes
     coordinates for instance, so you can finish the post later on a different location.</li>
