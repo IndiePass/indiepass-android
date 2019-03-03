@@ -5,7 +5,7 @@
     <li>Allow to override the publish date, default to 'now'</li>
     <li>Allow to monitor channels in background and get notification for new posts</li>
     <li>All post types can now be saved as draft, including all properties. This also includes
-    coordinates, so you can save and post later when you are on a different location.</li>
+    coordinates for instance, so you can finish the post later on a different location.</li>
 </ul>
 <h4>26/02/2019 - 0.34</h4>
 <ul>
