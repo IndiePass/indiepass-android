@@ -137,6 +137,8 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     TextView locationCoordinates;
     String coordinates;
     Button locationQuery;
+    Double latitude = null;
+    Double longitude = null;
     private FusedLocationProviderClient mFusedLocationClient;
     private Boolean mRequestingLocationUpdates = false;
     private SettingsClient mSettingsClient;
@@ -802,6 +804,21 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 String coordinatesText = "Coordinates (lat, lon, alt) " + coordinates;
                 locationCoordinates.setText(coordinatesText);
                 toggleLocationVisibilities(true);
+
+                int cc = 0;
+                String[] coords = draft.getCoordinates().split(",");
+                for (String c : coords) {
+                    if (c != null && c.length() > 0) {
+                        switch (cc) {
+                            case 0:
+                                latitude = Double.parseDouble(c);
+                                break;
+                            case 1:
+                                longitude = Double.parseDouble(c);
+                                break;
+                        }
+                    }
+                }
             }
 
             // Location name.
@@ -1000,8 +1017,10 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         if (mCurrentLocation != null) {
 
             coordinates = mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude() + "," + mCurrentLocation.getAltitude();
-            String coordinatesText = "Coordinates (lat, lon, alt) " + coordinates;
+            String coordinatesText = "Coeordinates (lat, lon, alt) " + coordinates;
             locationCoordinates.setText(coordinatesText);
+            latitude = mCurrentLocation.getLatitude();
+            longitude = mCurrentLocation.getLongitude();
 
             // Toggle some visibilities.
             toggleLocationVisibilities(false);
@@ -1126,6 +1145,9 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
             if (mCurrentLocation != null) {
                 MicropubEndpoint += "&lat=" + mCurrentLocation.getLatitude() + "&lon=" + mCurrentLocation.getLongitude();
+            }
+            else if (latitude != null && longitude != null) {
+                MicropubEndpoint += "&lat=" + latitude.toString() + "&lon=" + longitude.toString();
             }
 
             Toast.makeText(getApplicationContext(), "Getting location name", Toast.LENGTH_SHORT).show();
