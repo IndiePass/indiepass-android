@@ -325,7 +325,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
             case R.id.addImage:
                 Intent intent = new Intent();
                 intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
                 if (!isMediaRequest) {
                     intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 }
@@ -376,12 +376,31 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
             if (data.getClipData() != null) {
                 int count = data.getClipData().getItemCount();
-                for (int i = 0; i < count; i++) {
-                    imageUris.add(data.getClipData().getItemAt(i).getUri());
+                if (count > 0) {
+                    final int takeFlags = data.getFlags()
+                            & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+                    for (int i = 0; i < count; i++) {
+                        try {
+                            getContentResolver().takePersistableUriPermission(data.getClipData().getItemAt(i).getUri(), takeFlags);
+                        }
+                        catch (Exception ignored) {}
+                        imageUris.add(data.getClipData().getItemAt(i).getUri());
+                    }
                 }
             }
             else if (data.getData() != null) {
                 imageUris.add(data.getData());
+
+                try {
+                    final int takeFlags = data.getFlags()
+                            & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    getContentResolver().takePersistableUriPermission(data.getData(), takeFlags);
+                }
+                catch (Exception ignored) {}
+
             }
 
             prepareImagePreview();
