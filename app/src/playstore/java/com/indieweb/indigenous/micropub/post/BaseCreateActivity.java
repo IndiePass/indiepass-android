@@ -777,7 +777,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
             // RSVP.
             if (rsvp != null && draft.getSpinner().length() > 0) {
-                int rsvpSelection = 1;
+                int rsvpSelection = 0;
                 switch (draft.getSpinner()) {
                     case "no":
                         rsvpSelection = 1;
