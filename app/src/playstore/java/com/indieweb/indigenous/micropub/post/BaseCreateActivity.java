@@ -1036,7 +1036,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         if (mCurrentLocation != null) {
 
             coordinates = mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude() + "," + mCurrentLocation.getAltitude();
-            String coordinatesText = "Coeordinates (lat, lon, alt) " + coordinates;
+            String coordinatesText = "Coordinates (lat, lon, alt) " + coordinates;
             locationCoordinates.setText(coordinatesText);
             latitude = mCurrentLocation.getLatitude();
             longitude = mCurrentLocation.getLongitude();
