@@ -135,15 +135,15 @@
     <string name="pref_category_posts_title">Posts</string>
     <string name="pref_category_posts_summary">Configure posts settings</string>
     <string name="pref_key_location_visibility_title">Location visibility</string>
-    <string name="pref_key_location_visibility_summary">When location is found, show a select widget that allows you to send the location visibility. Only supported right now by the Wordpress endpoint.</string>
+    <string name="pref_key_location_visibility_summary">When location is found, show a select widget that allows you to send the location visibility.</string>
     <string name="pref_key_location_label_title">Location name</string>
-    <string name="pref_key_location_label_summary">Expose a field to enter the location name on note, article and event. This field is automatically exposed on the checkin post type.</string>
+    <string name="pref_key_location_label_summary">Expose a field to enter the location name on note, article and event. This field is always exposed on the checkin and geocache post type.</string>
     <string name="pref_key_location_label_query_title">Location name query</string>
-    <string name="pref_key_location_label_query_summary">Allow querying for a location name based on the found coordinates. Only supported right now by the Wordpress endpoint.</string>
+    <string name="pref_key_location_label_query_summary">Allow querying for a location name based on the found coordinates. Leave disabled if your endpoint does not support the ?q=geo query.</string>
     <string name="pref_key_tags_list_title">Category list</string>
     <string name="pref_key_tags_list_summary">Get a list of categories from your endpoint for autocompletion. They will be saved so they can be used offline as well. Leave disabled if your endpoint does not support the ?q=category query.</string>
     <string name="pref_key_post_type_hide_title">Hide post types</string>
-    <string name="pref_key_post_type_hide_summary">Hide post types in the menu which are not supported or enabled by your Micropub endpoint. If your server does not send post types in the configuration response, all post types will be shown.</string>
+    <string name="pref_key_post_type_hide_summary">Hide post types in the menu which are not supported or enabled by your Micropub endpoint. Leave disabled if your endpoint does not send post-types in the ?q=config query.</string>
 
     <!-- Preferences: Reader -->
     <string name="pref_category_reader_title">Reader</string>
