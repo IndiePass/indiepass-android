@@ -203,8 +203,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        // TODO close drawer for certain settings, or do not set selected.
-
         boolean close = false;
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         Menu drawerMenu = navigationView.getMenu();

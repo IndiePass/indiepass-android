@@ -69,6 +69,7 @@
     <string name="add_geocache">Geocache</string>
     <string name="update_post">Update</string>
     <string name="delete_post">Delete</string>
+    <string name="discard_post">Discard</string>
     <string name="delete_image">Remove image</string>
     <string name="image_preview_help">Click on an image to remove it</string>
     <string name="source_post_list">Posts</string>
@@ -76,6 +77,7 @@
     <string name="source_post_list_filter">Filter posts</string>
     <string name="main_menu">Main menu</string>
     <string name="endpoints">Endpoints</string>
+    <string name="keep_editing">Keep editing</string>
 
     <string name="unread">New</string>
     <string name="log_out">Log out</string>

@@ -3,6 +3,7 @@ package com.indieweb.indigenous.micropub.post;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -94,14 +96,15 @@ import static java.lang.Integer.parseInt;
 @SuppressLint("Registered")
 abstract public class BaseCreateActivity extends AppCompatActivity implements SendPostInterface, TextWatcher {
 
+    boolean hasChanges = false;
     EditText body;
     EditText title;
     Switch saveAsDraft;
-    boolean preparedDraft = false;
     DatabaseHelper db;
     User user;
     MultiAutoCompleteTextView tags;
     List<Uri> imageUris = new ArrayList<>();
+    boolean preparedDraft = false;
     private List<Syndication> syndicationTargets = new ArrayList<>();
     private MenuItem sendItem;
     private LinearLayout imagePreviewGallery;
@@ -211,6 +214,11 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         locationQuery = findViewById(R.id.locationQuery);
         locationCoordinates = findViewById(R.id.locationCoordinates);
 
+        // Add listener on body.
+        if (body != null) {
+            body.addTextChangedListener(BaseCreateActivity.this);
+        }
+
         // On checkin, set label and url visible already.
         if (isCheckin) {
             toggleLocationVisibilities(true);
@@ -223,7 +231,6 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
         // Autocomplete of tags.
         if (tags != null && Preferences.getPreference(this, "pref_key_tags_list", false)) {
-            tags.addTextChangedListener(BaseCreateActivity.this);
             new MicropubAction(getApplicationContext(), user).getTagsList(tags);
         }
 
@@ -262,6 +269,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
                     // Stream
                     if (isMediaRequest && imagePreviewGallery != null && extras.containsKey(Intent.EXTRA_STREAM)) {
+                        setChanges(true);
                         String incomingData = extras.get(Intent.EXTRA_STREAM).toString();
                         imageUris.add(Uri.parse(incomingData));
                         prepareImagePreview();
@@ -273,6 +281,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
             else {
                 String incomingText = extras.getString("incomingText");
                 if (incomingText != null && incomingText.length() > 0 && (body != null || url != null || locationUrl != null)) {
+                    setChanges(true);
                     if (locationUrl != null) {
                         setUrlAndFocusOnMessage(incomingText);
                     }
@@ -288,6 +297,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
             if (canAddImage) {
                 String incomingImage = extras.getString("incomingImage");
                 if (incomingImage != null && incomingImage.length() > 0 && imagePreviewGallery != null) {
+                    setChanges(true);
                     imageUris.add(Uri.parse(incomingImage));
                     prepareImagePreview();
                 }
@@ -296,6 +306,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
             // Draft support.
             draftId = extras.getInt("draftId");
             if (draftId > 0) {
+                setChanges(true);
                 preparedDraft = true;
                 prepareDraft(draftId);
             }
@@ -321,7 +332,13 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
+
+            case android.R.id.home:
+                confirmClose(true);
+                return true;
+
             case R.id.addImage:
                 Intent intent = new Intent();
                 intent.setType("image/*");
@@ -377,6 +394,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
             if (data.getClipData() != null) {
                 int count = data.getClipData().getItemCount();
                 if (count > 0) {
+                    setChanges(true);
                     final int takeFlags = data.getFlags()
                             & (Intent.FLAG_GRANT_READ_URI_PERMISSION
                             | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -394,6 +412,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 imageUris.add(data.getData());
 
                 try {
+                    setChanges(true);
                     final int takeFlags = data.getFlags()
                             & (Intent.FLAG_GRANT_READ_URI_PERMISSION
                             | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -409,6 +428,55 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         if (requestCode == REQUEST_CHECK_SETTINGS && resultCode == RESULT_OK) {
             startLocationUpdates();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        confirmClose(false);
+    }
+
+    /**
+     * Confirm closing post form.
+     *
+     * @param topBack
+     *   Whether the top back was used or not.
+     */
+    public void confirmClose(final boolean topBack) {
+        if (hasChanges) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("You have unsaved changes, are you sure you want to leave ?");
+            builder.setPositiveButton(getApplicationContext().getString(R.string.discard_post),new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog,int id) {
+                    setChanges(false);
+
+                    // Top back button.
+                    if (topBack) {
+                        finish();
+                    }
+                    else {
+                        onBackPressed();
+                    }
+                }
+            });
+            builder.setNegativeButton(getApplicationContext().getString(R.string.keep_editing), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.show();
+        }
+        else {
+
+            // Top back button.
+            if (topBack) {
+                finish();
+            }
+            else {
+                super.onBackPressed();
+            }
+        }
+
     }
 
     /**
@@ -1041,6 +1109,8 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
             latitude = mCurrentLocation.getLatitude();
             longitude = mCurrentLocation.getLongitude();
 
+            setChanges(true);
+
             // Toggle some visibilities.
             toggleLocationVisibilities(false);
 
@@ -1050,6 +1120,16 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         else {
             locationCoordinates.setText(R.string.getting_coordinates);
         }
+    }
+
+    /**
+     * Set changes property
+     *
+     * @param changes
+     *   Whether hasChanges is true or false.
+     */
+    public void setChanges(boolean changes) {
+        hasChanges = changes;
     }
 
     /**
@@ -1137,7 +1217,9 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
     @Override
-    public void afterTextChanged(Editable s) { }
+    public void afterTextChanged(Editable s) {
+        setChanges(true);
+    }
 
     // Publish date onclick listener.
     class publishDateOnClickListener implements View.OnClickListener {
