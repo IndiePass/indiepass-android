@@ -444,7 +444,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     public void confirmClose(final boolean topBack) {
         if (hasChanges) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("You have unsaved changes, are you sure you want to leave ?");
+            builder.setTitle(R.string.confirm_close);
             builder.setPositiveButton(getApplicationContext().getString(R.string.discard_post),new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,int id) {
                     setChanges(false);

@@ -20,11 +20,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(AndroidJUnit4.class)
-public class LaunchActivityAuthenticatedTest extends ActivityInstrumentationTestCase2<LaunchActivity> {
+public class MicrosubTest extends ActivityInstrumentationTestCase2<LaunchActivity> {
 
     private Activity launchedActivity;
 
-    public LaunchActivityAuthenticatedTest() {
+    public MicrosubTest() {
         super(LaunchActivity.class);
     }
 

@@ -78,6 +78,7 @@
     <string name="main_menu">Main menu</string>
     <string name="endpoints">Endpoints</string>
     <string name="keep_editing">Keep editing</string>
+    <string name="confirm_close">You have unsaved changes, are you sure you want to leave ?</string>
 
     <string name="unread">New</string>
     <string name="log_out">Log out</string>
