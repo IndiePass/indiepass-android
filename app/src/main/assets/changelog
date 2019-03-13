@@ -1,6 +1,6 @@
 <h4>xx/xx/2019 - 0.37</h4>
 <ul>
-    <li>Optimize refreshing indication in reader</li>
+    <li>Optimize refreshing indicationr in reader</li>
     <li>Detect quotation-of posts that and add references too</li>
     <li>Ask for confirmation to close post form when hitting back button if content changed</li>
 </ul>

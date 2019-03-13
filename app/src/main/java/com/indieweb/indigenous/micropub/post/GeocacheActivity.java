@@ -18,7 +18,7 @@ public class GeocacheActivity extends BaseCreateActivity {
         setContentView(R.layout.activity_geocache);
         geocacheLogType = findViewById(R.id.geocacheLogType);
         super.onCreate(savedInstanceState);
-        if (!preparedDraft) {
+        if (!preparedDraft && !isTesting) {
             startLocationUpdates();
         }
     }

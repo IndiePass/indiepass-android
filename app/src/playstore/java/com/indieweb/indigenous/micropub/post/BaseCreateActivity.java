@@ -96,6 +96,7 @@ import static java.lang.Integer.parseInt;
 @SuppressLint("Registered")
 abstract public class BaseCreateActivity extends AppCompatActivity implements SendPostInterface, TextWatcher {
 
+    boolean isTesting = false;
     boolean hasChanges = false;
     EditText body;
     EditText title;
@@ -291,6 +292,11 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                     else {
                         body.setText(incomingText);
                     }
+                }
+
+                boolean testIncoming = extras.getBoolean("indigenousTesting");
+                if (testIncoming) {
+                    isTesting = true;
                 }
             }
 

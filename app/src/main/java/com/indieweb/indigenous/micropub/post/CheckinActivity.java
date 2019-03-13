@@ -16,7 +16,7 @@ public class CheckinActivity extends BaseCreateActivity {
         addCounter = true;
         setContentView(R.layout.activity_checkin);
         super.onCreate(savedInstanceState);
-        if (!preparedDraft) {
+        if (!preparedDraft && !isTesting) {
             startLocationUpdates();
         }
     }

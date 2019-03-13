@@ -55,6 +55,7 @@ public class PostTypeFormsTest extends ActivityInstrumentationTestCase2<LaunchAc
         Context context = (InstrumentationRegistry.getTargetContext());
         TestUtils.createAccount(context, false);
         Intent intent = new Intent();
+        intent.putExtra("indigenousTesting", true);
         launchedActivity = rule.launchActivity(intent);
     }
 
@@ -68,10 +69,77 @@ public class PostTypeFormsTest extends ActivityInstrumentationTestCase2<LaunchAc
     @Test
     public void testAllPostTypeForms() {
         openDrawer();
+
+        // Article
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.createArticle));
+        onView(withId(R.id.body)).perform(replaceText("Hello!"));
+        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
+        onView(withText(R.string.confirm_close)).inRoot(isDialog()).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button1)).perform((click()));
+
+        // Note
         onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.createNote));
         onView(withId(R.id.body)).perform(replaceText("Hello!"));
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
         onView(withText(R.string.confirm_close)).inRoot(isDialog()).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button1)).perform((click()));
+
+        // Like
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.createLike));
+        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
+
+        // Reply
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.createReply));
+        onView(withId(R.id.body)).perform(replaceText("Hello!"));
+        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
+        onView(withText(R.string.confirm_close)).inRoot(isDialog()).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button1)).perform((click()));
+
+        // Bookmark
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.createBookmark));
+        onView(withId(R.id.body)).perform(replaceText("Hello!"));
+        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
+        onView(withText(R.string.confirm_close)).inRoot(isDialog()).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button1)).perform((click()));
+
+        // Repost
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.createRepost));
+        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
+
+        // Event
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.createEvent));
+        onView(withId(R.id.body)).perform(replaceText("Hello!"));
+        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
+        onView(withText(R.string.confirm_close)).inRoot(isDialog()).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button1)).perform((click()));
+
+        // RSVP
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.createRSVP));
+        onView(withId(R.id.body)).perform(replaceText("Hello!"));
+        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
+        onView(withText(R.string.confirm_close)).inRoot(isDialog()).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button1)).perform((click()));
+
+        // Issue
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.createIssue));
+        onView(withId(R.id.body)).perform(replaceText("Hello!"));
+        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
+        onView(withText(R.string.confirm_close)).inRoot(isDialog()).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button1)).perform((click()));
+
+        // Checkin
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.createCheckin));
+        onView(withId(R.id.body)).perform(replaceText("Hello!"));
+        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
+        onView(withText(R.string.confirm_close)).inRoot(isDialog()).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button1)).perform((click()));
+
+        // Geocache
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.createGeocache));
+        onView(withId(R.id.body)).perform(replaceText("Hello!"));
+        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
+        onView(withText(R.string.confirm_close)).inRoot(isDialog()).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button1)).perform((click()));
     }
 
     /**
