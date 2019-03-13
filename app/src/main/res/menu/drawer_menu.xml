@@ -122,6 +122,12 @@
             android:icon="@drawable/button_geocache_idle"
             android:title="@string/add_geocache" />
 
+        <item
+            android:checkable="false"
+            android:id="@+id/nav_upload2"
+            android:icon="@drawable/button_media_idle"
+            android:title="@string/upload" />
+
     </group>
 
 </menu>

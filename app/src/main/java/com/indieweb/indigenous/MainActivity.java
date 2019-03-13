@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String micropubMediaEndpoint = user.getMicropubMediaEndpoint();
         if (micropubMediaEndpoint == null || micropubMediaEndpoint.length() == 0) {
             menu.removeItem(R.id.nav_upload);
+            menu.removeItem(R.id.nav_upload2);
         }
 
         // Hide Posts if setting is not enabled.
@@ -306,6 +307,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_upload:
+            case R.id.nav_upload2:
                 Intent CreateMedia = new Intent(getBaseContext(), UploadActivity.class);
                 startActivity(CreateMedia);
                 break;
