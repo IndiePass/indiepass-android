@@ -128,6 +128,10 @@ public class PostTypeFormsTest extends ActivityInstrumentationTestCase2<LaunchAc
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
         onView(withText(R.string.confirm_close)).inRoot(isDialog()).check(matches(isDisplayed()));
         onView(withId(android.R.id.button1)).perform((click()));
+
+        // Upload
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_upload));
+        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
     }
 
     /**

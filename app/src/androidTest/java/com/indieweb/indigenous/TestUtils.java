@@ -25,6 +25,7 @@ class TestUtils {
         am.setAuthToken(account, TOKEN_TYPE, accessToken);
         am.setUserData(account, "micropub_endpoint", domain + "/micropub");
         am.setUserData(account, "authorization_endpoint", domain + "/auth");
+        am.setUserData(account, "micropub_media_endpoint", domain + "/media");
         am.setUserData(account, "token_endpoint", domain + "/token");
         am.setUserData(account, "author_name", "Indigenous");
 
