@@ -204,8 +204,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 TimelineItem item = new TimelineItem();
                                 item.setJson(itemList.getString(i));
 
-                                Boolean addContent = true;
-                                Boolean isRead = false;
+                                boolean addContent = true;
+                                boolean isRead = false;
                                 String type = "entry";
                                 String url = "";
                                 String name = "";
@@ -260,6 +260,16 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 if (object.has("repost-of")) {
                                     type = "repost-of";
                                     addContent = false;
+                                    String value = getSingleJsonValueFromArrayOrString(type, object);
+                                    if (value.length() > 0) {
+                                        item.addToResponseType(type, value);
+                                        checkReference(object, value, item);
+                                    }
+                                }
+
+                                // Quotation of.
+                                if (object.has("quotation-of")) {
+                                    type = "quotation-of";
                                     String value = getSingleJsonValueFromArrayOrString(type, object);
                                     if (value.length() > 0) {
                                         item.addToResponseType(type, value);
@@ -413,14 +423,14 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 // Audio.
                                 if (object.has("audio")) {
                                     audio = getSingleJsonValueFromArrayOrString("audio", object);
+                                    item.setAudio(audio);
                                 }
-                                item.setAudio(audio);
 
                                 // Video.
                                 if (object.has("video")) {
                                     video = getSingleJsonValueFromArrayOrString("video", object);
+                                    item.setVideo(video);
                                 }
-                                item.setVideo(video);
 
                                 // Set values of name, text and html content.
                                 item.setName(name);

@@ -21,10 +21,8 @@ public class TimelineItem {
     private String latitude = "";
     private String longitude = "";
     private ArrayList<String> photos = new ArrayList<>();
-    // TODO allow multiple audio
-    private String audio;
-    // TODO allow multiple video
-    private String video;
+    private String audio = "";
+    private String video = "";
     private Map<String, String> responseType = new LinkedHashMap<>();
 
     public boolean isRead() {
