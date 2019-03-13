@@ -50,6 +50,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     Integer unread;
     boolean preview = false;
     String previewUrl;
+    boolean showRefreshMessage = false;
     private TimelineListAdapter adapter;
     private List<TimelineItem> TimelineItems = new ArrayList<>();
     SwipeRefreshLayout refreshLayout;
@@ -67,6 +68,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         setContentView(R.layout.activity_timeline);
         listView = findViewById(R.id.timeline_list);
         refreshLayout = findViewById(R.id.refreshTimeline);
+        refreshLayout.setRefreshing(true);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -134,6 +136,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
     @Override
     public void onRefresh() {
+        showRefreshMessage = true;
         startTimeline();
     }
 
@@ -142,7 +145,9 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
      */
     public void checkRefreshingStatus() {
         if (refreshLayout.isRefreshing()) {
-            Toast.makeText(getApplicationContext(), getString(R.string.timeline_items_refreshed), Toast.LENGTH_SHORT).show();
+            if (showRefreshMessage) {
+                Toast.makeText(getApplicationContext(), getString(R.string.timeline_items_refreshed), Toast.LENGTH_SHORT).show();
+            }
             refreshLayout.setRefreshing(false);
         }
     }
