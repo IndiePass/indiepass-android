@@ -63,8 +63,11 @@ See https://github.com/swentel/indigenous-android/issues/152
 
 #### Authenticating
 
-Some browsers (e.g. the default browser on LineageOS), won't allow Indigenous to listen to the callback
+- Some browsers (e.g. the default browser on LineageOS), won't allow Indigenous to listen to the callback
 to verify the authorization code. Install a browser like Firefox (any flavor) so you can login.
+- When your account requires 2FA, put the apps in split screen mode, see
+https://github.com/swentel/indigenous-android/issues/210
+
 
 ## iOS
 
