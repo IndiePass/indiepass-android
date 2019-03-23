@@ -22,6 +22,8 @@
             android:hint="@string/url_hint"
             android:inputType="textUri" />
 
+        <include layout="@layout/widget_body" />
+
         <MultiAutoCompleteTextView
             android:id="@+id/tags"
             android:textColor="@color/textColor"

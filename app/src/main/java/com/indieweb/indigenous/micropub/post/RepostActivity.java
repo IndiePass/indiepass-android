@@ -13,6 +13,7 @@ public class RepostActivity extends BaseCreateActivity {
         postType = "Repost";
         urlPostKey = "repost-of";
         directSend = "pref_key_share_expose_repost";
+        addCounter = true;
         setContentView(R.layout.activity_repost);
         super.onCreate(savedInstanceState);
     }
