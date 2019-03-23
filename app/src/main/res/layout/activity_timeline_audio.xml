@@ -35,10 +35,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <com.hugomatilla.audioplayerview.AudioPlayerView
+        <com.keenfin.audioview.AudioView
             android:textSize="40sp"
             android:padding="5dp"
-            app:useIcons="true"
             android:layout_marginBottom="20dp"
             android:id="@+id/timeline_audio"
             android:layout_width="wrap_content"

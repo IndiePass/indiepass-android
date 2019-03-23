@@ -3,14 +3,9 @@ package com.indieweb.indigenous.microsub.timeline;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ImageView;
 import android.widget.MediaController;
-import android.widget.TextView;
 import android.widget.VideoView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.hugomatilla.audioplayerview.AudioPlayerView;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.util.Preferences;
 

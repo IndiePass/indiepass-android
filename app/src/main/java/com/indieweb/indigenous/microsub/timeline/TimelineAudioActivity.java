@@ -4,15 +4,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.hugomatilla.audioplayerview.AudioPlayerView;
 import com.indieweb.indigenous.R;
+import com.keenfin.audioview.AudioView;
 
 public class TimelineAudioActivity extends AppCompatActivity {
 
-    AudioPlayerView audioPlayer;
+    AudioView audioPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,12 @@ public class TimelineAudioActivity extends AppCompatActivity {
             }
 
             audioPlayer = findViewById(R.id.timeline_audio);
-            audioPlayer.withUrl(audioUrl);
+            try {
+                audioPlayer.setDataSource(audioUrl);
+            }
+            catch (Exception ignored) {
+                Toast.makeText(getApplicationContext(), getString(R.string.audio_not_loaded), Toast.LENGTH_SHORT).show();
+            }
 
         }
     }
@@ -55,7 +61,7 @@ public class TimelineAudioActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (audioPlayer != null) {
-            audioPlayer.destroy();
+            audioPlayer.stop();
         }
         super.onBackPressed();
     }
@@ -63,7 +69,7 @@ public class TimelineAudioActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         if (audioPlayer != null) {
-            audioPlayer.destroy();
+            audioPlayer.stop();
         }
         super.onDestroy();
     }

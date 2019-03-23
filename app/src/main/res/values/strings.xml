@@ -96,6 +96,7 @@
     <string name="content">Content</string>
     <string name="repost">Repost</string>
     <string name="reply_to">Reply to</string>
+    <string name="audio_not_loaded">Audio could not be loaded</string>
     <string name="title_activity_timeline_audio">Audio</string>
     <string name="title_activity_timeline_video">Video</string>
     <string name="title_activity_timeline_image">Image</string>
