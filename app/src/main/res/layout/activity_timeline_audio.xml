@@ -15,7 +15,7 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
@@ -38,9 +38,10 @@
         <com.keenfin.audioview.AudioView
             android:textSize="40sp"
             android:padding="5dp"
+            app:minified="true"
             android:layout_marginBottom="20dp"
             android:id="@+id/timeline_audio"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
