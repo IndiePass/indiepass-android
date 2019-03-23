@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.micropub.Base;
 import com.indieweb.indigenous.micropub.BaseCreate;
 import com.indieweb.indigenous.util.Preferences;
 
