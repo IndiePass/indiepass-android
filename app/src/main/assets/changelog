@@ -1,5 +1,6 @@
 <h4>xx/xx/2019 - 0.38</h4>
 <ul>
+    <li>Show the number of drafts in the menu</li>
     <li>Add body to repost form for Quote reposts</li>
     <li>Pass individual entries for the mark_read call</li>
 </ul>

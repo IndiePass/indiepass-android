@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.general.AboutFragment;
 import com.indieweb.indigenous.general.SettingsActivity;
 import com.indieweb.indigenous.indieauth.UsersFragment;
@@ -117,6 +118,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Hide Posts if setting is not enabled.
         if (!Preferences.getPreference(this, "pref_key_source_post_list", false)) {
             menu.removeItem(R.id.nav_posts);
+        }
+
+        // Update draft menu item.
+        DatabaseHelper db = new DatabaseHelper(getApplicationContext());
+        int draftCount = db.getDraftCount();
+        if (draftCount > 0) {
+            MenuItem draftItem = menu.findItem(R.id.nav_drafts);
+            if (draftItem != null) {
+                draftItem.setTitle(getString(R.string.drafts) + " (" + draftCount + ")");
+            }
         }
 
         // Hide post types if configured.
