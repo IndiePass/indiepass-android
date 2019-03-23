@@ -46,7 +46,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
     String channelId;
     String channelName;
-    String entryId;
+    List<String> entries = new ArrayList<>();
     Integer unread;
     boolean preview = false;
     String previewUrl;
@@ -234,9 +234,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 // If no value is found, the notify all call will also be ignored.
                                 try {
                                     item.setId(object.getString("_id"));
-                                    if (entryId == null) {
-                                        entryId = item.getId();
-                                    }
+                                    entries.add(item.getId());
                                 }
                                 catch (Exception ignored) {}
 
@@ -448,8 +446,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                             adapter.notifyDataSetChanged();
 
                             // Notify
-                            if ((unread > 0 || unread == -1) && entryId != null) {
-                                new MicrosubAction(TimelineActivity.this, user).notifyAllRead(channelId, entryId);
+                            if ((unread > 0 || unread == -1) && entries.size() > 0) {
+                                new MicrosubAction(TimelineActivity.this, user).markRead(channelId, entries);
                             }
 
                             if (olderItems[0] != null && olderItems[0].length() > 0) {

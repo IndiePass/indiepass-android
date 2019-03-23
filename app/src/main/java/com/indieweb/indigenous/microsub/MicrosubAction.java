@@ -14,6 +14,7 @@ import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Connection;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,9 +30,9 @@ public class MicrosubAction {
     }
 
     /**
-     * Notify the server that all is read.
+     * Mark entries read.
      */
-    public void notifyAllRead(final String channelId, final String entryId) {
+    public void markRead(final String channelId, final List<String> entries) {
         String MicrosubEndpoint = user.getMicrosubEndpoint();
 
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
@@ -53,7 +54,12 @@ public class MicrosubAction {
                 params.put("action", "timeline");
                 params.put("method", "mark_read");
                 params.put("channel", channelId);
-                params.put("last_read_entry", entryId);
+
+                int i = 0;
+                for (String entry: entries) {
+                    params.put("entry[" + i + "]", entry);
+                    i++;
+                }
 
                 return params;
             }
