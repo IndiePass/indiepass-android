@@ -5,9 +5,10 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.micropub.BaseCreate;
 import com.indieweb.indigenous.model.Draft;
 
-public class RsvpActivity extends BaseCreateActivity {
+public class RsvpActivity extends BaseCreate {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

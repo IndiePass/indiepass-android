@@ -5,8 +5,9 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.micropub.BaseCreate;
 
-public class ArticleActivity extends BaseCreateActivity {
+public class ArticleActivity extends BaseCreate {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

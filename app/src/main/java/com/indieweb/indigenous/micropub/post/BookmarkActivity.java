@@ -5,8 +5,9 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.micropub.BaseCreate;
 
-public class BookmarkActivity extends BaseCreateActivity {
+public class BookmarkActivity extends BaseCreate {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -6,10 +6,11 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.micropub.BaseCreate;
 import com.indieweb.indigenous.model.Draft;
 import com.indieweb.indigenous.util.Utility;
 
-public class EventActivity extends BaseCreateActivity {
+public class EventActivity extends BaseCreate {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

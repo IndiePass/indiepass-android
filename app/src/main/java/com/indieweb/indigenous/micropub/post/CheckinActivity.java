@@ -4,8 +4,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.micropub.BaseCreate;
 
-public class CheckinActivity extends BaseCreateActivity {
+public class CheckinActivity extends BaseCreate {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

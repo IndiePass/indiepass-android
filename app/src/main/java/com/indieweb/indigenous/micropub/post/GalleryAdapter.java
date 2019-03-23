@@ -33,7 +33,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
         }
     }
 
-    GalleryAdapter(Context context, Activity activity, List<Uri> images, boolean isMediaRequest) {
+    public GalleryAdapter(Context context, Activity activity, List<Uri> images, boolean isMediaRequest) {
         this.context = context;
         this.images = images;
         this.activity = activity;

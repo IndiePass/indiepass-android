@@ -1,12 +1,12 @@
-package com.indieweb.indigenous.micropub.post;
+package com.indieweb.indigenous.micropub;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -15,6 +15,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -35,19 +36,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
-import com.indieweb.indigenous.micropub.MicropubAction;
-import com.indieweb.indigenous.model.Draft;
+import com.indieweb.indigenous.micropub.post.GalleryAdapter;
+import com.indieweb.indigenous.micropub.post.SendPostInterface;
 import com.indieweb.indigenous.model.Syndication;
 import com.indieweb.indigenous.model.User;
-import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
 import com.indieweb.indigenous.util.VolleyMultipartRequest;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -65,181 +61,56 @@ import java.util.TimeZone;
 import static java.lang.Integer.parseInt;
 
 @SuppressLint("Registered")
-abstract public class BaseCreateActivity extends AppCompatActivity implements SendPostInterface, TextWatcher {
+abstract public class Base extends AppCompatActivity implements SendPostInterface, TextWatcher {
 
-    EditText body;
-    EditText title;
-    Switch saveAsDraft;
-    DatabaseHelper db;
-    User user;
-    boolean isCheckin = false;
-    MultiAutoCompleteTextView tags;
-    List<Uri> imageUris = new ArrayList<>();
-    private List<Syndication> syndicationTargets = new ArrayList<>();
+    public boolean isTesting = false;
+    boolean hasChanges = false;
+    public EditText body;
+    public EditText title;
+    public Switch saveAsDraft;
+    public DatabaseHelper db;
+    public User user;
+    public MultiAutoCompleteTextView tags;
+    public List<Uri> imageUris = new ArrayList<>();
+    public boolean preparedDraft = false;
+    public List<Syndication> syndicationTargets = new ArrayList<>();
     private MenuItem sendItem;
-    private LinearLayout imagePreviewGallery;
+    public LinearLayout imagePreviewGallery;
     private Switch postStatus;
     private int PICK_IMAGE_REQUEST = 1;
 
-    EditText url;
-    TextView publishDate;
-    String urlPostKey;
-    String directSend = "";
-    String hType = "entry";
-    String postType = "Post";
-    boolean finishActivity = true;
-    boolean canAddImage = false;
-    boolean canAddLocation = false;
-    boolean addCounter = false;
-    Map<String, String> bodyParams = new HashMap<>();
+    public EditText url;
+    public Spinner rsvp;
+    public TextView publishDate;
+    public String urlPostKey;
+    public String directSend = "";
+    public String hType = "entry";
+    public String postType = "Post";
+    public Spinner geocacheLogType;
+    public TextView startDate;
+    public TextView endDate;
+    public boolean finishActivity = true;
+    public boolean canAddImage = false;
+    public boolean canAddLocation = false;
+    public boolean addCounter = false;
+    public Map<String, String> bodyParams = new HashMap<>();
 
-    Integer draftId;
+    public Integer draftId;
     String fileUrl;
-    TextView mediaUrl;
-    boolean isMediaRequest = false;
+    public TextView mediaUrl;
+    public boolean isMediaRequest = false;
+    public boolean isCheckin = false;
 
-    LinearLayout locationWrapper;
-    Spinner locationVisibility;
+    public LinearLayout locationWrapper;
+    public Spinner locationVisibility;
+    public EditText locationName;
+    public EditText locationUrl;
+    public TextView locationCoordinates;
+    public String coordinates;
+    public Button locationQuery;
+    public Double latitude = null;
+    public Double longitude = null;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // Get current user.
-        user = new Accounts(this).getCurrentUser();
-
-        // Syndication targets.
-        LinearLayout syndicationLayout = findViewById(R.id.syndicationTargets);
-        String syndicationTargetsString = user.getSyndicationTargets();
-        if (syndicationLayout != null && syndicationTargetsString.length() > 0) {
-            JSONObject object;
-            try {
-                JSONArray itemList = new JSONArray(syndicationTargetsString);
-
-                if (itemList.length() > 0) {
-                    TextView syn = new TextView(this);
-                    syn.setText(R.string.syndicate_to);
-                    syn.setPadding(20, 10, 0, 0);
-                    syn.setTextSize(15);
-                    syn.setTextColor(getResources().getColor(R.color.textColor));
-                    syndicationLayout.addView(syn);
-                    syndicationLayout.setPadding(10, 0,0, 0 );
-                }
-
-                for (int i = 0; i < itemList.length(); i++) {
-                    object = itemList.getJSONObject(i);
-                    Syndication syndication = new Syndication();
-                    syndication.setUid(object.getString("uid"));
-                    syndication.setName(object.getString("name"));
-                    syndicationTargets.add(syndication);
-
-                    CheckBox ch = new CheckBox(this);
-                    ch.setText(syndication.getName());
-                    ch.setId(i);
-                    ch.setTextSize(15);
-                    ch.setPadding(0, 10, 0, 10);
-                    ch.setTextColor(getResources().getColor(R.color.textColor));
-                    syndicationLayout.addView(ch);
-                }
-
-            } catch (JSONException e) {
-                Toast.makeText(this, "Error parsing syndication targets: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }
-
-
-        // Get a couple elements for requirement checks or pre-population.
-        title = findViewById(R.id.title);
-        body = findViewById(R.id.body);
-        imagePreviewGallery = findViewById(R.id.imagePreviewGallery);
-        url = findViewById(R.id.url);
-        tags = findViewById(R.id.tags);
-        saveAsDraft = findViewById(R.id.saveAsDraft);
-        publishDate = findViewById(R.id.publishDate);
-        locationWrapper = findViewById(R.id.locationWrapper);
-        locationVisibility = findViewById(R.id.locationVisibility);
-
-        // Publish date.
-        if (publishDate != null) {
-            publishDate.setOnClickListener(new publishDateOnClickListener());
-        }
-
-        // Autocomplete of tags.
-        if (tags != null && Preferences.getPreference(this, "pref_key_tags_list", false)) {
-            tags.addTextChangedListener(BaseCreateActivity.this);
-            new MicropubAction(getApplicationContext(), user).getTagsList(tags);
-        }
-
-        if (isMediaRequest) {
-            mediaUrl = findViewById(R.id.mediaUrl);
-        }
-
-        // Add counter.
-        if (addCounter) {
-            TextInputLayout textInputLayout = findViewById(R.id.textInputLayout);
-            textInputLayout.setCounterEnabled(true);
-        }
-
-        Intent intent = getIntent();
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-
-            String action = intent.getAction();
-            if (Intent.ACTION_SEND.equals(action)) {
-                try {
-
-                    // Text
-                    if (extras.containsKey(Intent.EXTRA_TEXT)) {
-                        String incomingData = extras.get(Intent.EXTRA_TEXT).toString();
-                        if (incomingData != null && incomingData.length() > 0) {
-                            if (url != null) {
-                                setUrlAndFocusOnMessage(incomingData);
-                                if (directSend.length() > 0) {
-                                    if (Preferences.getPreference(this, directSend, false)) {
-                                        sendBasePost(null);
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    // Stream
-                    if (isMediaRequest && imagePreviewGallery != null && extras.containsKey(Intent.EXTRA_STREAM)) {
-                        String incomingData = extras.get(Intent.EXTRA_STREAM).toString();
-                        imageUris.add(Uri.parse(incomingData));
-                        prepareImagePreview();
-                    }
-
-                }
-                catch (NullPointerException ignored) { }
-            }
-            else {
-                String incomingText = extras.getString("incomingText");
-                if (incomingText != null && incomingText.length() > 0 && (body != null || url != null)) {
-                    if (url != null) {
-                        setUrlAndFocusOnMessage(incomingText);
-                    }
-                    else {
-                        body.setText(incomingText);
-                    }
-                }
-            }
-
-            if (canAddImage) {
-                String incomingImage = extras.getString("incomingImage");
-                if (incomingImage != null && incomingImage.length() > 0 && imagePreviewGallery != null) {
-                    imageUris.add(Uri.parse(incomingImage));
-                    prepareImagePreview();
-                }
-            }
-
-            // Draft support.
-            draftId = extras.getInt("draftId");
-            if (draftId > 0) {
-                prepareDraft(draftId);
-            }
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -250,19 +121,30 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
             item.setVisible(false);
         }
 
+        if (!canAddLocation) {
+            MenuItem item = menu.findItem(R.id.addLocation);
+            item.setVisible(false);
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
+
+            case android.R.id.home:
+                confirmClose(true);
+                return true;
+
             case R.id.addImage:
                 Intent intent = new Intent();
                 intent.setType("image/*");
+                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
                 if (!isMediaRequest) {
                     intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 }
-                intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
                 return true;
         }
@@ -275,22 +157,96 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
 
+            if (isMediaRequest) {
+                imageUris.clear();
+            }
+
             if (data.getClipData() != null) {
                 int count = data.getClipData().getItemCount();
-                for (int i = 0; i < count; i++) {
-                    imageUris.add(data.getClipData().getItemAt(i).getUri());
+                if (count > 0) {
+                    setChanges(true);
+                    final int takeFlags = data.getFlags()
+                            & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+                    for (int i = 0; i < count; i++) {
+                        try {
+                            getContentResolver().takePersistableUriPermission(data.getClipData().getItemAt(i).getUri(), takeFlags);
+                        }
+                        catch (Exception ignored) {}
+                        imageUris.add(data.getClipData().getItemAt(i).getUri());
+                    }
                 }
             }
             else if (data.getData() != null) {
                 imageUris.add(data.getData());
+
+                try {
+                    setChanges(true);
+                    final int takeFlags = data.getFlags()
+                            & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    getContentResolver().takePersistableUriPermission(data.getData(), takeFlags);
+                }
+                catch (Exception ignored) {}
+
             }
 
             prepareImagePreview();
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        confirmClose(false);
+    }
+
     /**
-     * Prepare image preview and bitmap.
+     * Confirm closing post form.
+     *
+     * @param topBack
+     *   Whether the top back was used or not.
+     */
+    public void confirmClose(final boolean topBack) {
+        if (hasChanges) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.confirm_close);
+            builder.setPositiveButton(getApplicationContext().getString(R.string.discard_post),new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog,int id) {
+                    setChanges(false);
+
+                    // Top back button.
+                    if (topBack) {
+                        finish();
+                    }
+                    else {
+                        onBackPressed();
+                    }
+                }
+            });
+            builder.setNegativeButton(getApplicationContext().getString(R.string.keep_editing), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.show();
+        }
+        else {
+
+            // Top back button.
+            if (topBack) {
+                finish();
+            }
+            else {
+                super.onBackPressed();
+            }
+        }
+
+    }
+
+    /**
+     * Prepare image preview.
      */
     public void prepareImagePreview() {
         imagePreviewGallery.setVisibility(View.VISIBLE);
@@ -327,7 +283,6 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         else {
             ContentResolver cR = this.getContentResolver();
             try {
-                // TODO need to get all of course.
                 InputStream is = cR.openInputStream(uri);
                 final byte[] b = new byte[8192];
                 for (int r; (r = is.read(b)) != -1;) {
@@ -338,50 +293,6 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
         }
 
         return byteArrayOutputStream.toByteArray();
-    }
-
-    /**
-     * Prepares the activity with the draft.
-     *
-     * @param draftId
-     *   The draft id.
-     */
-    public void prepareDraft(Integer draftId) {
-        db = new DatabaseHelper(this);
-
-        Draft draft = db.getDraft(draftId);
-        if (draft.getId() > 0) {
-
-            // Set as checked again to avoid confusion.
-            saveAsDraft.setChecked(true);
-
-            // Name.
-            if (title != null && draft.getName().length() > 0) {
-                title.setText(draft.getName());
-            }
-
-            // Body.
-            if (body != null && draft.getBody().length() > 0) {
-                body.setText(draft.getBody());
-            }
-
-            // Tags.
-            if (tags != null && draft.getTags().length() > 0) {
-                tags.setText(draft.getTags());
-            }
-
-            // Url.
-            if (url != null && draft.getUrl().length() > 0) {
-                url.setText(draft.getUrl());
-            }
-
-            // Image
-            if (canAddImage && draft.getImage().length() > 0) {
-                imageUris.add(Uri.parse(draft.getImage()));
-                prepareImagePreview();
-            }
-
-        }
     }
 
     /**
@@ -451,7 +362,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                         try {
                             NetworkResponse networkResponse = error.networkResponse;
                             if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
-                                Integer code = networkResponse.statusCode;
+                                int code = networkResponse.statusCode;
                                 String result = new String(networkResponse.data);
                                 Toast.makeText(getApplicationContext(), postType + " posting failed. Status code: " + code + "; message: " + result, Toast.LENGTH_LONG).show();
                             }
@@ -515,6 +426,7 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 }
                 else {
                     Date date = Calendar.getInstance().getTime();
+                    @SuppressLint("SimpleDateFormat")
                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:00Z");
                     df.setTimeZone(TimeZone.getDefault());
                     bodyParams.put("published", df.format(date));
@@ -534,12 +446,36 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 if (syndicationTargets.size() > 0) {
                     CheckBox checkbox;
                     for (int j = 0, k = 0; j < syndicationTargets.size(); j++) {
-
                         checkbox = findViewById(j);
                         if (checkbox != null && checkbox.isChecked()) {
                             bodyParams.put("mp-syndicate-to_multiple_[" + k + "]", syndicationTargets.get(j).getUid());
                             k++;
                         }
+                    }
+                }
+
+                // Location.
+                if (canAddLocation && coordinates != null && coordinates.length() > 0) {
+                    String payloadProperty = "location";
+                    String geo = coordinates;
+
+                    // Send along location label.
+                    if (!TextUtils.isEmpty(locationName.getText())) {
+                        geo += ";name=" + locationName.getText().toString();
+                    }
+
+                    // Checkin.
+                    if (isCheckin) {
+                        payloadProperty = "checkin";
+                        if (!TextUtils.isEmpty(locationUrl.getText())) {
+                            geo += ";url=" + locationUrl.getText().toString();
+                        }
+                    }
+
+                    bodyParams.put(payloadProperty, "geo:" + geo);
+
+                    if (locationVisibility != null && locationVisibility.getVisibility() == View.VISIBLE) {
+                        bodyParams.put("location-visibility", locationVisibility.getSelectedItem().toString());
                     }
                 }
 
@@ -561,7 +497,8 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                 if (imageUris.size() > 0) {
 
                     int ImageSize = 1000;
-                    if (Preferences.getPreference(getApplicationContext(), "pref_key_image_scale", true)) {
+                    Boolean scale = Preferences.getPreference(getApplicationContext(), "pref_key_image_scale", true);
+                    if (scale) {
                         String sizePreference = Preferences.getPreference(getApplicationContext(), "pref_key_image_size", Integer.toString(ImageSize));
                         if (parseInt(sizePreference) > 0) {
                             ImageSize = parseInt(sizePreference);
@@ -574,19 +511,21 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                     for (Uri u : imageUris) {
 
                         Bitmap bitmap = null;
-                        try {
-                            bitmap = Glide
-                                    .with(getApplicationContext())
-                                    .asBitmap()
-                                    .load(u)
-                                    .apply(new RequestOptions().override(ImageSize, ImageSize))
-                                    .submit()
-                                    .get();
-                        }
-                        catch (Exception ignored) {}
+                        if (scale) {
+                            try {
+                                bitmap = Glide
+                                        .with(getApplicationContext())
+                                        .asBitmap()
+                                        .load(u)
+                                        .apply(new RequestOptions().override(ImageSize, ImageSize))
+                                        .submit()
+                                        .get();
+                            }
+                            catch (Exception ignored) {}
 
-                        if (bitmap == null) {
-                            continue;
+                            if (bitmap == null) {
+                                continue;
+                            }
                         }
 
                         long imagename = System.currentTimeMillis();
@@ -606,7 +545,6 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
                         i++;
 
                         // Put image in body. Send along whether to scale or not.
-                        Boolean scale = Preferences.getPreference(getApplicationContext(), "pref_key_image_scale", true);
                         params.put(imagePostParam, new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap, scale, u, mime)));
                     }
                 }
@@ -626,54 +564,28 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
      *   The incoming URL.
      */
     public void setUrlAndFocusOnMessage(String incomingUrl) {
-        url.setText(incomingUrl);
-        if (title != null) {
-            title.requestFocus();
+        if (isCheckin) {
+            locationUrl.setText(incomingUrl);
         }
-        else if (body != null) {
-            body.requestFocus();
+        else {
+            url.setText(incomingUrl);
+            if (title != null) {
+                title.requestFocus();
+            }
+            else if (body != null) {
+                body.requestFocus();
+            }
         }
     }
 
     /**
-     * Save draft.
+     * Set changes property
+     *
+     * @param changes
+     *   Whether hasChanges is true or false.
      */
-    public void saveDraft(String type) {
-
-        Draft draft = new Draft();
-
-        if (draftId != null && draftId > 0) {
-            draft.setId(draftId);
-        }
-
-        draft.setType(type);
-        draft.setAccount(user.getMeWithoutProtocol());
-
-        if (title != null && !TextUtils.isEmpty(title.getText())) {
-            draft.setName(title.getText().toString());
-        }
-
-        if (body != null && !TextUtils.isEmpty(body.getText())) {
-            draft.setBody(body.getText().toString());
-        }
-
-        if (tags != null && !TextUtils.isEmpty(tags.getText())) {
-            draft.setTags(tags.getText().toString());
-        }
-
-        if (url != null && !TextUtils.isEmpty(url.getText())) {
-            draft.setUrl(url.getText().toString());
-        }
-
-        if (imageUris.size() > 0) {
-            draft.setImage(imageUris.get(0).toString());
-        }
-
-        db = new DatabaseHelper(this);
-        db.saveDraft(draft);
-
-        Toast.makeText(this, getString(R.string.draft_saved), Toast.LENGTH_SHORT).show();
-        finish();
+    public void setChanges(boolean changes) {
+        hasChanges = changes;
     }
 
     @Override
@@ -683,20 +595,16 @@ abstract public class BaseCreateActivity extends AppCompatActivity implements Se
     public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
     @Override
-    public void afterTextChanged(Editable s) { }
+    public void afterTextChanged(Editable s) {
+        setChanges(true);
+    }
 
     // Publish date onclick listener.
-    class publishDateOnClickListener implements View.OnClickListener {
+    public class publishDateOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Utility.showDateTimePickerDialog(BaseCreateActivity.this, publishDate);
+            Utility.showDateTimePickerDialog(Base.this, publishDate);
         }
     }
 
-    /**
-     * Start location updates.
-     */
-    public void startLocationUpdates() {
-        // Will come back later.
-    }
 }

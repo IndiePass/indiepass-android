@@ -4,9 +4,10 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.micropub.BaseCreate;
 import com.indieweb.indigenous.model.Draft;
 
-public class GeocacheActivity extends BaseCreateActivity {
+public class GeocacheActivity extends BaseCreate {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

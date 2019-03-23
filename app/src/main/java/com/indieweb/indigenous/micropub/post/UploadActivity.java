@@ -6,9 +6,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.micropub.Base;
+import com.indieweb.indigenous.micropub.BaseCreate;
 import com.indieweb.indigenous.util.Preferences;
 
-public class UploadActivity extends BaseCreateActivity {
+public class UploadActivity extends BaseCreate {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
