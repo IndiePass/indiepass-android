@@ -167,6 +167,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
      */
     public void getTimeLineItems(String pagerAfter) {
 
+        entries.clear();
         int method = Request.Method.GET;
         String MicrosubEndpoint = user.getMicrosubEndpoint();
         olderItems = new String[1];
@@ -231,17 +232,19 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 }
 
                                 // It's possible that _id is empty. Don't let readers choke on it.
-                                // If no value is found, the notify all call will also be ignored.
                                 try {
                                     item.setId(object.getString("_id"));
-                                    entries.add(item.getId());
                                 }
                                 catch (Exception ignored) {}
 
+                                // Is read.
                                 if (object.has("_is_read")) {
                                     isRead = object.getBoolean("_is_read");
                                 }
                                 item.setRead(isRead);
+                                if (!item.isRead() && item.getId() != null) {
+                                    entries.add(item.getId());
+                                }
 
                                 // In reply to.
                                 if (object.has("in-reply-to")) {
