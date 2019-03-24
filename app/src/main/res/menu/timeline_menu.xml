@@ -3,6 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:visible="false"
+        android:id="@+id/timeline_mark_all_read"
+        android:title="@string/mark_all_read"
+        android:icon="@drawable/button_mark_all_read"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/timeline_list_refresh"
         android:title="@string/timeline_list_refresh"
         app:showAsAction="never" />

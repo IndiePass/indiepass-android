@@ -25,6 +25,24 @@ public class Preferences {
     }
 
     /**
+     * Get a string preference, casted to an integer.
+     *
+     * @param context
+     *   The current context
+     * @param pref
+     *   The preference key
+     * @param DefaultValue
+     *   The default value
+     *
+     * @return
+     *   The preference
+     */
+    public static int getPreference(Context context, String pref, int DefaultValue) {
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
+        return Integer.parseInt(preference.getString(pref, Integer.toString(DefaultValue)));
+    }
+
+    /**
      * Get a boolean preference.
      *
      * @param context

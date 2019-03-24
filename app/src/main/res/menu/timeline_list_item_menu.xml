@@ -8,6 +8,12 @@
         app:showAsAction="never" />
 
     <item
+        android:visible="false"
+        android:id="@+id/timeline_entry_mark_read"
+        android:title="@string/mark_read"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/timeline_entry_mark_unread"
         android:title="@string/mark_unread"
         app:showAsAction="never" />

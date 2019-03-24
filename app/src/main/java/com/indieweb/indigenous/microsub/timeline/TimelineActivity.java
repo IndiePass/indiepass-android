@@ -44,6 +44,7 @@ import java.util.Map;
 
 public class TimelineActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
+    public String firstEntryId;
     String channelId;
     String channelName;
     List<String> entries = new ArrayList<>();
@@ -61,6 +62,9 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     String[] olderItems;
     String debugResponse;
     User user;
+
+    public static int MARK_READ_CHANNEL_CLICK = 1;
+    public static int MARK_READ_MANUAL = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +107,13 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.timeline_menu, menu);
 
+        if (Preferences.getPreference(getApplicationContext(), "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_MANUAL) {
+            MenuItem item = menu.findItem(R.id.timeline_mark_all_read);
+            if (item != null) {
+                item.setVisible(true);
+            }
+        }
+
         boolean debugJson = Preferences.getPreference(this, "pref_key_debug_microsub_timeline", false);
         if (debugJson && !preview) {
             MenuItem item = menu.findItem(R.id.timeline_debug);
@@ -127,6 +138,13 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 Indigenous app = Indigenous.getInstance();
                 app.setDebug(debugResponse);
                 startActivity(i);
+                return true;
+
+            case R.id.timeline_mark_all_read:
+                List<String> readEntries = new ArrayList<>();
+                readEntries.add(firstEntryId);
+                new MicrosubAction(getApplicationContext(), user).markRead(channelId, readEntries, true);
+                Toast.makeText(getApplicationContext(), "Marked all as read", Toast.LENGTH_SHORT).show();
                 return true;
         }
 
@@ -234,6 +252,11 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 // It's possible that _id is empty. Don't let readers choke on it.
                                 try {
                                     item.setId(object.getString("_id"));
+
+                                    if (firstEntryId == null) {
+                                        firstEntryId = item.getId();
+                                    }
+
                                 }
                                 catch (Exception ignored) {}
 
@@ -449,8 +472,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                             adapter.notifyDataSetChanged();
 
                             // Notify
-                            if ((unread > 0 || unread == -1) && entries.size() > 0) {
-                                new MicrosubAction(TimelineActivity.this, user).markRead(channelId, entries);
+                            if ((unread > 0 || unread == -1) && entries.size() > 0 && Preferences.getPreference(getApplicationContext(), "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_CHANNEL_CLICK) {
+                                new MicrosubAction(TimelineActivity.this, user).markRead(channelId, entries, false);
                             }
 
                             if (olderItems[0] != null && olderItems[0].length() > 0) {

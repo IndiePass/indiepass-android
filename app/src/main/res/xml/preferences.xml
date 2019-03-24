@@ -91,6 +91,13 @@
             android:title="@string/pref_key_check_new_posts_notifications_title"
             android:summary="@string/pref_key_check_new_posts_notifications_summary"
             android:defaultValue="false" />
+        <ListPreference
+            android:key="pref_key_mark_read"
+            android:title="@string/pref_key_mark_read_title"
+            android:summary="@string/pref_key_mark_read_summary"
+            android:entries="@array/mark_read_array"
+            android:entryValues="@array/mark_read_array_values"
+            android:defaultValue="1" />
         <SwitchPreference
             android:key="pref_key_image_preview"
             android:title="@string/pref_key_image_preview_title"

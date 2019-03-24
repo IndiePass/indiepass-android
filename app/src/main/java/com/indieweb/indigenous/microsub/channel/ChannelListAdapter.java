@@ -14,8 +14,12 @@ import android.widget.TextView;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.microsub.timeline.TimelineActivity;
 import com.indieweb.indigenous.model.Channel;
+import com.indieweb.indigenous.util.Preferences;
 
 import java.util.List;
+
+import static com.indieweb.indigenous.microsub.timeline.TimelineActivity.MARK_READ_CHANNEL_CLICK;
+import static com.indieweb.indigenous.microsub.timeline.TimelineActivity.MARK_READ_MANUAL;
 
 /**
  * Channels list adapter.
@@ -128,8 +132,10 @@ public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
                     intent.putExtra("channelId", channel.getUid());
                     intent.putExtra("channelName", channel.getName());
                     intent.putExtra("unread", channel.getUnread());
-                    channels.get(position).setUnread(0);
-                    holder.unread.setVisibility(View.GONE);
+                    if (Preferences.getPreference(context, "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_CHANNEL_CLICK) {
+                        channels.get(position).setUnread(0);
+                        holder.unread.setVisibility(View.GONE);
+                    }
                     context.startActivity(intent);
                     break;
             }

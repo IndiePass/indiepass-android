@@ -54,7 +54,9 @@
     <string name="preview">Preview</string>
     <string name="results">Results</string>
 
+    <string name="mark_read">Mark read</string>
     <string name="mark_unread">Mark unread</string>
+    <string name="mark_all_read">Mark all read</string>
     <string name="create_post">Write</string>
     <string name="add_note">Note</string>
     <string name="add_article">Article</string>
@@ -162,6 +164,8 @@
     <string name="pref_key_image_preview_summary">Show the first image per post. If you choose to hide, you can still view the images attached to the post by clicking on the images information at the bottom of the post.</string>
     <string name="pref_key_static_map_title">Static map</string>
     <string name="pref_key_static_map_summary">Show a static map on checkin posts, as long as the checkin post does not contain pictures</string>
+    <string name="pref_key_mark_read_title">Mark items read</string>
+    <string name="pref_key_mark_read_summary">Either automatically mark all items read when viewing a channel (per page), or manually with a "Mark all read" button per channel and "Mark read" action in the item menu.</string>
 
     <!-- Preferences: Media handling -->
     <string name="pref_category_media_title">Media</string>
@@ -208,6 +212,16 @@
     <string name="location">Location</string>
     <string name="location_label">Location name</string>
     <string name="location_label_query">Find location</string>
+
+    <string-array name="mark_read_array">
+        <item>Channel per page</item>
+        <item>Mark manually</item>
+    </string-array>
+
+    <string-array name="mark_read_array_values">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
 
     <string-array name="geocache_array">
         <item>found</item>

@@ -53,6 +53,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static com.indieweb.indigenous.microsub.timeline.TimelineActivity.MARK_READ_CHANNEL_CLICK;
+import static com.indieweb.indigenous.microsub.timeline.TimelineActivity.MARK_READ_MANUAL;
+
 /**
  * Timeline items list adapter.
  */
@@ -713,16 +716,20 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             popup.getMenuInflater().inflate(R.menu.timeline_list_item_menu, menu);
 
             if (this.debugJson) {
-                MenuItem item = menu.findItem(R.id.timeline_entry_debug);
-                if (item != null) {
-                    item.setVisible(true);
+                MenuItem itemDebug = menu.findItem(R.id.timeline_entry_debug);
+                if (itemDebug != null) {
+                    itemDebug.setVisible(true);
                 }
             }
 
-            if (!entry.isRead()) {
-                MenuItem item = menu.findItem(R.id.timeline_entry_mark_unread);
-                if (item != null) {
-                    item.setVisible(false);
+            if (!entry.isRead() && Preferences.getPreference(context, "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_MANUAL) {
+                MenuItem itemMarkRead = menu.findItem(R.id.timeline_entry_mark_read);
+                if (itemMarkRead != null) {
+                    itemMarkRead.setVisible(true);
+                }
+                MenuItem itemMarkUnread = menu.findItem(R.id.timeline_entry_mark_unread);
+                if (itemMarkUnread != null) {
+                    itemMarkUnread.setVisible(false);
                 }
             }
 
@@ -753,7 +760,15 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             unreadEntries.add(entry.getId());
                             entry.setRead(false);
                             new MicrosubAction(context, user).markUnread(channelId, unreadEntries);
-                            Toast.makeText(context, "Entry marked unread", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Item marked unread", Toast.LENGTH_SHORT).show();
+                            break;
+
+                        case R.id.timeline_entry_mark_read:
+                            List<String> readEntries = new ArrayList<>();
+                            readEntries.add(entry.getId());
+                            entry.setRead(true);
+                            new MicrosubAction(context, user).markRead(channelId, readEntries, false);
+                            Toast.makeText(context, "Item marked read", Toast.LENGTH_SHORT).show();
                             break;
 
                         case R.id.timeline_entry_debug:

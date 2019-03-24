@@ -32,7 +32,7 @@ public class MicrosubAction {
     /**
      * Mark entries read.
      */
-    public void markRead(final String channelId, final List<String> entries) {
+    public void markRead(final String channelId, final List<String> entries, final boolean all) {
         String MicrosubEndpoint = user.getMicrosubEndpoint();
 
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
@@ -55,10 +55,15 @@ public class MicrosubAction {
                 params.put("method", "mark_read");
                 params.put("channel", channelId);
 
-                int i = 0;
-                for (String entry: entries) {
-                    params.put("entry[" + i + "]", entry);
-                    i++;
+                if (all) {
+                    params.put("last_read_entry", entries.get(0));
+                }
+                else {
+                    int i = 0;
+                    for (String entry: entries) {
+                        params.put("entry[" + i + "]", entry);
+                        i++;
+                    }
                 }
 
                 return params;
