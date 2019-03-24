@@ -11,6 +11,7 @@ public class Draft {
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_BODY = "body";
     public static final String COLUMN_IMAGES = "images";
+    public static final String COLUMN_CAPTIONS = "captions";
     public static final String COLUMN_TAGS = "tags";
     public static final String COLUMN_URL = "url";
     public static final String COLUMN_TIMESTAMP = "timestamp";
@@ -33,6 +34,7 @@ public class Draft {
                 + COLUMN_NAME + " TEXT,"
                 + COLUMN_BODY + " TEXT,"
                 + COLUMN_IMAGES + " TEXT,"
+                + COLUMN_CAPTIONS + " TEXT,"
                 + COLUMN_TAGS + " TEXT,"
                 + COLUMN_URL + " TEXT,"
                 + COLUMN_START_DATE + " TEXT,"
@@ -54,6 +56,7 @@ public class Draft {
     private String name = "";
     private String body = "";
     private String images = "";
+    private String captions = "";
     private String tags = "";
     private String url = "";
     private String start_date = "";
@@ -201,6 +204,14 @@ public class Draft {
 
     public void setImages(String images) {
         this.images = images;
+    }
+
+    public String getCaptions() {
+        return captions;
+    }
+
+    public void setCaptions(String captions) {
+        this.captions = captions;
     }
 
     public String getTags() {

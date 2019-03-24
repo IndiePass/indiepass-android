@@ -71,7 +71,8 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public DatabaseHelper db;
     public User user;
     public MultiAutoCompleteTextView tags;
-    public List<Uri> imageUris = new ArrayList<>();
+    public List<Uri> images = new ArrayList<>();
+    public List<String> captions = new ArrayList<>();
     public boolean preparedDraft = false;
     public List<Syndication> syndicationTargets = new ArrayList<>();
     private MenuItem sendItem;
@@ -158,7 +159,8 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
 
             if (isMediaRequest) {
-                imageUris.clear();
+                images.clear();
+                captions.clear();
             }
 
             if (data.getClipData() != null) {
@@ -174,12 +176,14 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                             getContentResolver().takePersistableUriPermission(data.getClipData().getItemAt(i).getUri(), takeFlags);
                         }
                         catch (Exception ignored) {}
-                        imageUris.add(data.getClipData().getItemAt(i).getUri());
+                        images.add(data.getClipData().getItemAt(i).getUri());
+                        captions.add("");
                     }
                 }
             }
             else if (data.getData() != null) {
-                imageUris.add(data.getData());
+                images.add(data.getData());
+                captions.add("");
 
                 try {
                     setChanges(true);
@@ -250,7 +254,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
      */
     public void prepareImagePreview() {
         imagePreviewGallery.setVisibility(View.VISIBLE);
-        GalleryAdapter galleryAdapter = new GalleryAdapter(getApplicationContext(), this, imageUris, isMediaRequest);
+        GalleryAdapter galleryAdapter = new GalleryAdapter(this, images, captions, isMediaRequest);
         RecyclerView imageRecyclerView = findViewById(R.id.imageRecyclerView);
         imageRecyclerView.setAdapter(galleryAdapter);
     }
@@ -454,6 +458,17 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                     }
                 }
 
+                // Image alt.
+                if (captions.size() > 0) {
+                    int ia = 0;
+                    for (String s: captions) {
+                        if (s.length() > 0) {
+                            bodyParams.put("photo_alt_multiple_[" + ia + "]", s);
+                        }
+                        ia++;
+                    }
+                }
+
                 // Location.
                 if (canAddLocation && coordinates != null && coordinates.length() > 0) {
                     String payloadProperty = "location";
@@ -494,7 +509,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
 
-                if (imageUris.size() > 0) {
+                if (images.size() > 0) {
 
                     int ImageSize = 1000;
                     Boolean scale = Preferences.getPreference(getApplicationContext(), "pref_key_image_scale", true);
@@ -508,7 +523,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                     ContentResolver cR = getApplicationContext().getContentResolver();
 
                     int i = 0;
-                    for (Uri u : imageUris) {
+                    for (Uri u : images) {
 
                         Bitmap bitmap = null;
                         if (scale) {

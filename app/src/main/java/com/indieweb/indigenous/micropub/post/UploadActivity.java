@@ -27,7 +27,7 @@ public class UploadActivity extends BaseCreate {
 
     @Override
     public void onPostButtonClick(MenuItem item) {
-        if (imageUris.size() == 1) {
+        if (images.size() == 1) {
             sendBasePost(item);
         }
         else {

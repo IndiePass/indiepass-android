@@ -23,6 +23,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+
 @SuppressLint("Registered")
 abstract public class BaseCreate extends BasePlatformCreate {
 
@@ -144,7 +146,8 @@ abstract public class BaseCreate extends BasePlatformCreate {
                     if (isMediaRequest && imagePreviewGallery != null && extras.containsKey(Intent.EXTRA_STREAM)) {
                         setChanges(true);
                         String incomingData = extras.get(Intent.EXTRA_STREAM).toString();
-                        imageUris.add(Uri.parse(incomingData));
+                        images.add(Uri.parse(incomingData));
+                        captions.add("");
                         prepareImagePreview();
                     }
 
@@ -176,7 +179,8 @@ abstract public class BaseCreate extends BasePlatformCreate {
                 String incomingImage = extras.getString("incomingImage");
                 if (incomingImage != null && incomingImage.length() > 0 && imagePreviewGallery != null) {
                     setChanges(true);
-                    imageUris.add(Uri.parse(incomingImage));
+                    images.add(Uri.parse(incomingImage));
+                    captions.add("");
                     prepareImagePreview();
                 }
             }
@@ -333,14 +337,14 @@ abstract public class BaseCreate extends BasePlatformCreate {
 
                 String[] uris = draft.getImages().split(";");
                 for (String uri : uris) {
-                    if (uri != null && uri.length() > 0) {
-                        imageUris.add(Uri.parse(uri));
-                    }
+                    images.add(Uri.parse(uri));
                 }
+
+                String[] captionsList = draft.getCaptions().split(";");
+                captions.addAll(Arrays.asList(captionsList));
 
                 prepareImagePreview();
             }
-
         }
     }
 
@@ -411,12 +415,19 @@ abstract public class BaseCreate extends BasePlatformCreate {
             }
         }
 
-        if (imageUris.size() > 0) {
+        if (images.size() > 0) {
+            int index = 0;
             StringBuilder images = new StringBuilder();
-            for (Uri uri : imageUris) {
-                images.append(uri.toString()).append(";");
+            StringBuilder captions = new StringBuilder();
+            for (Uri uri : this.images) {
+                if (uri != null && uri.toString().length() > 0) {
+                    images.append(uri.toString()).append(";");
+                    captions.append(this.captions.get(index)).append(";");
+                }
+                index++;
             }
             draft.setImages(images.toString());
+            draft.setCaptions(captions.toString());
         }
 
         db = new DatabaseHelper(this);

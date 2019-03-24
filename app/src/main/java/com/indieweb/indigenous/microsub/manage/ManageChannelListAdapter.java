@@ -15,11 +15,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.microsub.MicrosubAction;
-import com.indieweb.indigenous.microsub.channel.ChannelListAdapter;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
 
@@ -32,8 +30,8 @@ import java.util.List;
 public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannelListAdapter.ViewHolder> implements ItemMoveCallback.ItemTouchHelperContract {
 
     private boolean moved = false;
-    private boolean isShare = false;
-    private String url = "";
+    private boolean isShare;
+    private String url;
     private final Context context;
     private final List<Channel> channels;
     private final User user;
@@ -43,7 +41,6 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
     public void onRowMoved(int fromPosition, int toPosition) {
 
         moved = true;
-
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
                 Collections.swap(channels, i, i + 1);
