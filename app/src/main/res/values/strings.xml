@@ -54,6 +54,7 @@
     <string name="preview">Preview</string>
     <string name="results">Results</string>
 
+    <string name="mark_unread">Mark unread</string>
     <string name="create_post">Write</string>
     <string name="add_note">Note</string>
     <string name="add_article">Article</string>

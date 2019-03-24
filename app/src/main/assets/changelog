@@ -1,5 +1,6 @@
 <h4>xx/xx/2019 - 0.38</h4>
 <ul>
+    <li>Allow marking an item as unread</li>
     <li>Allow to set captions on images</li>
     <li>Show the number of drafts in the menu</li>
     <li>Add body to repost form for Quote reposts</li>

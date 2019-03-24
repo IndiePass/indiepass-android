@@ -48,6 +48,7 @@ import com.indieweb.indigenous.widget.ExpandableTextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -705,6 +706,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
         @Override
         public void onClick(View v) {
+            final TimelineItem entry = items.get(position);
 
             PopupMenu popup = new PopupMenu(context, v);
             Menu menu = popup.getMenu();
@@ -717,7 +719,13 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 }
             }
 
-            final TimelineItem entry = items.get(position);
+            if (!entry.isRead()) {
+                MenuItem item = menu.findItem(R.id.timeline_entry_mark_unread);
+                if (item != null) {
+                    item.setVisible(false);
+                }
+            }
+
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(final MenuItem item) {
@@ -738,6 +746,14 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                                 }
                             });
                             builder.show();
+                            break;
+
+                        case R.id.timeline_entry_mark_unread:
+                            List<String> unreadEntries = new ArrayList<>();
+                            unreadEntries.add(entry.getId());
+                            entry.setRead(false);
+                            new MicrosubAction(context, user).markUnread(channelId, unreadEntries);
+                            Toast.makeText(context, "Entry marked unread", Toast.LENGTH_SHORT).show();
                             break;
 
                         case R.id.timeline_entry_debug:
