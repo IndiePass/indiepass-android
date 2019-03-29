@@ -463,7 +463,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                     int ia = 0;
                     for (String s: captions) {
                         if (s.length() > 0) {
-                            bodyParams.put("photo_alt_multiple_[" + ia + "]", s);
+                            bodyParams.put("mp-photo-alt_multiple_[" + ia + "]", s);
                         }
                         ia++;
                     }
