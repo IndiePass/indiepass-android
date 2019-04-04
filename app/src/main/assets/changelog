@@ -1,3 +1,9 @@
+<h4>xx/xx/2019 - 0.39</h4>
+<ul>
+    <li>Show the 'Mark all as read' button if there's at least 20 items</li>
+    <li>Switch authentication callback to https://indigenous.realize.be</li>
+    <li>Introducing push notifications. Visit https://indigenous.realize.be to configure. The polling functionality has been removed.</li>
+</ul>
 <h4>31/03/2019 - 0.38</h4>
 <ul>
     <li>Allow to set captions on images</li>

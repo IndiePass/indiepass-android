@@ -47,8 +47,10 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     public String firstEntryId;
     String channelId;
     String channelName;
+    boolean allReadVisible = false;
     List<String> entries = new ArrayList<>();
     Integer unread;
+    Menu mainMenu;
     boolean preview = false;
     String previewUrl;
     boolean showRefreshMessage = false;
@@ -106,14 +108,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.timeline_menu, menu);
-
-        // Show the all read button if at least 20 unread entries.
-        if (firstEntryId != null && entries.size() == 20) {
-            MenuItem item = menu.findItem(R.id.timeline_mark_all_read);
-            if (item != null) {
-                item.setVisible(true);
-            }
-        }
+        mainMenu = menu;
 
         boolean debugJson = Preferences.getPreference(this, "pref_key_debug_microsub_timeline", false);
         if (debugJson && !preview) {
@@ -477,6 +472,16 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 new MicrosubAction(TimelineActivity.this, user).markRead(channelId, entries, false);
                             }
 
+                            // Add mark read.
+                            if (!allReadVisible && firstEntryId != null && entries.size() == 20) {
+                                allReadVisible = true;
+                                MenuItem item = mainMenu.findItem(R.id.timeline_mark_all_read);
+                                if (item != null) {
+                                    item.setVisible(true);
+                                }
+                            }
+
+                            // Older items.
                             if (olderItems[0] != null && olderItems[0].length() > 0) {
 
                                 loadMoreClicked = false;
