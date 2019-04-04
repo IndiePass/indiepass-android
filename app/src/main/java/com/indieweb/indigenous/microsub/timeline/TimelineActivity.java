@@ -107,7 +107,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.timeline_menu, menu);
 
-        if (Preferences.getPreference(getApplicationContext(), "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_MANUAL) {
+        // Show the all read button if at least 20 unread entries.
+        if (firstEntryId != null && entries.size() == 20) {
             MenuItem item = menu.findItem(R.id.timeline_mark_all_read);
             if (item != null) {
                 item.setVisible(true);
@@ -252,11 +253,6 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 // It's possible that _id is empty. Don't let readers choke on it.
                                 try {
                                     item.setId(object.getString("_id"));
-
-                                    if (firstEntryId == null) {
-                                        firstEntryId = item.getId();
-                                    }
-
                                 }
                                 catch (Exception ignored) {}
 
@@ -267,6 +263,11 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 item.setRead(isRead);
                                 if (!item.isRead() && item.getId() != null) {
                                     entries.add(item.getId());
+
+                                    if (firstEntryId == null) {
+                                        firstEntryId = item.getId();
+                                    }
+
                                 }
 
                                 // In reply to.
