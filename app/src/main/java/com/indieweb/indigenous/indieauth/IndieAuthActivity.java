@@ -66,8 +66,8 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
     String micropubMediaEndpoint;
     String authorAvatar;
     String authorName;
-    String ClientId = "https://indigenous.abode.pub/android/";
-    String RedirectUri = "https://indigenous.abode.pub/android/login/";
+    String ClientId = "https://indigenous.realize.be";
+    String RedirectUri = "https://indigenous.realize.be/indigenous-callback.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

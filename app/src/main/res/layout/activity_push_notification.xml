@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/box_padding"
+        android:focusableInTouchMode="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/pushNotificationsInfo"
+            android:padding="@dimen/box_padding"
+            android:textSize="@dimen/info_text"
+            android:text="@string/push_notification_no_configuration"
+            android:textColor="@color/textColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_marginTop="@dimen/box_padding"
+            android:layout_marginBottom="@dimen/box_padding"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/list_divider_height"
+            android:background="@color/listDividerColor" />
+
+        <TextView
+            android:layout_marginTop="@dimen/box_padding"
+            android:paddingStart="@dimen/box_padding"
+            android:textSize="@dimen/info_text"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/push_notifications_title_pushy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="RtlSymmetry" />
+
+        <TextView
+            android:padding="@dimen/box_padding"
+            android:textSize="@dimen/inputText"
+            android:textColor="@color/textColor"
+            android:text="@string/push_notifications_text_pushy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:textSize="@dimen/inputText"
+            android:padding="@dimen/box_padding"
+            android:id="@+id/siteApiToken"
+            android:hint="@string/push_notification_site_api_token"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:padding="@dimen/box_padding"
+            android:background="@color/buttonWhite"
+            android:textColor="@color/colorPrimary"
+            style="?android:attr/borderlessButtonStyle"
+            android:text="@string/register_device"
+            android:id="@+id/buttonPushyMe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_marginTop="@dimen/box_padding"
+            android:layout_marginBottom="@dimen/box_padding"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/list_divider_height"
+            android:background="@color/listDividerColor" />
+
+        <!--<TextView
+            android:padding="@dimen/box_padding"
+            android:textSize="@dimen/info_text"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/push_notifications_title_custom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />-->
+
+    </LinearLayout>
+
+</ScrollView>

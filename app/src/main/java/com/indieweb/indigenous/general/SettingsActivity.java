@@ -1,18 +1,13 @@
 package com.indieweb.indigenous.general;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.preference.Preference;
-import android.widget.Toast;
 
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.microsub.broadcast.MicrosubBroadcastReceiver;
+import com.indieweb.indigenous.push.PushNotificationActivity;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
@@ -87,17 +82,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
         });
 
-        Preference checkNewPosts = findPreference("pref_key_check_new_posts");
-        checkNewPosts.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        Preference pushNotifications = findPreference("pref_key_push_notifications");
+        pushNotifications.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                boolean checked = Boolean.valueOf(newValue.toString());
-                if (checked) setAlarmForPostCheck(getApplicationContext(), true);
-                else setAlarmForPostCheck(getApplicationContext(),false);
+            public boolean onPreferenceClick(Preference preference) {
+                Intent i = new Intent(getApplicationContext(), PushNotificationActivity.class);
+                startActivity(i);
                 return true;
             }
         });
-
     }
 
     /**
@@ -114,23 +107,4 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         pm.setComponentEnabledSetting(compName, state, PackageManager.DONT_KILL_APP);
     }
 
-    /**
-     * Set alarm for checking new posts in the background.
-     *
-     * @param setAlarm
-     *   Whether to set or unset the alarm.
-     */
-    public static void setAlarmForPostCheck(Context context, boolean setAlarm) {
-
-        Intent intent = new Intent(context, MicrosubBroadcastReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 234, intent, 0);
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-
-        if (setAlarm) {
-            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HOUR, AlarmManager.INTERVAL_HOUR, pendingIntent);
-        }
-        else {
-            alarmManager.cancel(pendingIntent);
-        }
-    }
 }

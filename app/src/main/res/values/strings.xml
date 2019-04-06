@@ -82,6 +82,7 @@
     <string name="endpoints">Endpoints</string>
     <string name="keep_editing">Keep editing</string>
     <string name="confirm_close">You have unsaved changes, are you sure you want to leave ?</string>
+    <string name="disable_pushy_me_title">Disable push notifications from Pushy.me ?</string>
 
     <string name="unread">New</string>
     <string name="log_out">Log out</string>
@@ -122,6 +123,22 @@
     <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="share_post">Share</string>
 
+
+    <string name="push_notifications">Push notifications</string>
+    <!--<string name="push_notifications_text">You can receive push notifications either via Pushy.me or using your own MQTT server.</string>-->
+    <string name="push_notifications_text">Receive push notifications via Pushy.me</string>
+    <string name="push_notifications_title_pushy">Pushy.me and Indigenous site</string>
+    <string name="push_notifications_text_pushy">Send push notifications with your account at https://indigenous.realize.be. The backend uses Pushy.me to send notifications. We will first check if your account exists before registering your device at Pushy.me.</string>
+    <string name="push_notifications_summary">Setup push notifications</string>
+    <string name="push_notifications_registering">Registering your device, one second</string>
+    <string name="push_notification_site_api_token">Indigenous API token</string>
+    <string name="register_device">Register device</string>
+    <string name="disable_pushy_me_button">Disable Pushy.me</string>
+    <string name="push_notifications_title_custom">Custom setup</string>
+    <string name="push_notification_no_configuration">No push notifications have been configured</string>
+    <string name="push_notification_configuration_pushy">You are using Indigenous and Pushy.me to receive notifications</string>
+    <string name="push_notification_configuration_custom">You are using a custom MQTT setup</string>
+
     <!-- Preferences: share -->
     <string name="pref_category_sharing_title">Share</string>
     <string name="pref_category_sharing_summary">You can share text, URL\'s and images from other applications to Indigenous. You can also expose several post types (like, bookmark ..) as share intents directly.</string>
@@ -155,10 +172,6 @@
     <!-- Preferences: Reader -->
     <string name="pref_category_reader_title">Reader</string>
     <string name="pref_category_reader_summary">Control reader settings</string>
-    <string name="pref_key_check_new_posts_title">Check for new posts</string>
-    <string name="pref_key_check_new_posts_summary">Checks your channels every hour. Sends a notification if you have unread posts.</string>
-    <string name="pref_key_check_new_posts_notifications_title">Only monitor notifications channel</string>
-    <string name="pref_key_check_new_posts_notifications_summary">Ignores all channels except the notification channel to send a notification.</string>
     <string name="pref_key_video_autoplay_title">Video autoplay</string>
     <string name="pref_key_image_preview_title">Image preview</string>
     <string name="pref_key_image_preview_summary">Show the first image per post. If you choose to hide, you can still view the images attached to the post by clicking on the images information at the bottom of the post.</string>

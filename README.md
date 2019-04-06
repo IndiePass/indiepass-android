@@ -32,8 +32,8 @@ More information at https://indieweb.org/Indigenous and https://indigenous.reali
   - listen to audio or watch video if available 
   - view fullscreen images, zoom and pinch
   - Manage channels and feeds
-  - Background service to check for new posts and trigger notifications
 - Share intents: receive text or images from other apps to directly share
+- Push notifications: receive push notifications if you have an account on https://indigenous.realize.be
 
 Note: Checkin and Geocache are experimental and pass on all information into a Geo URI in the 
 checkin property, e.g.

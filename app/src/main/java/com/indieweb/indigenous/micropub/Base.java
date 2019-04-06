@@ -303,7 +303,6 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
      * Send post.
      */
     public void sendBasePost(MenuItem item) {
-        // TODO move this to MicropubActionCreate
         sendItem = item;
 
         if (!new Connection(this).hasConnection()) {

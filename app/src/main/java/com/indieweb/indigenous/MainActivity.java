@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -49,6 +50,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import me.pushy.sdk.Pushy;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     NavigationView navigationView;
@@ -68,6 +71,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Let pushy listener restart if necessary, and if configured.
+        //noinspection ConstantConditions
+        if (
+            BuildConfig.SITE_DEVICE_REGISTRATION_ENDPOINT.length() > 0 &&
+            BuildConfig.SITE_ACCOUNT_CHECK_ENDPOINT.length() > 0 &&
+            Preferences.getPreference(getApplicationContext(), "push_notification_type", "none").equals("pushy")
+        ) {
+            Pushy.listen(this);
+        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

@@ -13,8 +13,14 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            buildConfigField "String", 'SITE_ACCOUNT_CHECK_ENDPOINT', '"https://indigenous.realize.be/check-account"'
+            buildConfigField "String", 'SITE_DEVICE_REGISTRATION_ENDPOINT', '"https://indigenous.realize.be/register-device"'
+        }
         release {
             minifyEnabled false
+            buildConfigField "String", 'SITE_ACCOUNT_CHECK_ENDPOINT', '"https://indigenous.realize.be/check-account"'
+            buildConfigField "String", 'SITE_DEVICE_REGISTRATION_ENDPOINT', '"https://indigenous.realize.be/register-device"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -27,8 +33,6 @@ android {
             dimension "target"
         }
     }
-
-
 }
 
 ext.supportLibVersion = '27.1.1'
@@ -48,6 +52,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
     implementation 'com.4ert:audioview:0.4.2'
+    implementation 'me.pushy:sdk:1.0.44'
 
     // Specific to Google Playstore
     playstoreImplementation 'com.karumi:dexter:4.2.0'

@@ -5,6 +5,17 @@
 
     <PreferenceCategory
         android:layout="@layout/preference_category"
+        android:title="@string/push_notifications"
+        android:summary="@string/push_notifications_text">
+
+        <Preference
+            android:key="pref_key_push_notifications"
+            android:summary="@string/push_notifications_summary" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/preference_category"
         android:title="@string/pref_category_sharing_title"
         android:summary="@string/pref_category_sharing_summary">
 
@@ -41,7 +52,7 @@
             android:defaultValue="false" />
 
     </PreferenceCategory>
-    
+
     <PreferenceCategory
         android:layout="@layout/preference_category"
         android:title="@string/pref_category_posts_title"
@@ -80,17 +91,6 @@
         android:title="@string/pref_category_reader_title"
         android:summary="@string/pref_category_reader_summary">
 
-        <SwitchPreference
-            android:key="pref_key_check_new_posts"
-            android:title="@string/pref_key_check_new_posts_title"
-            android:summary="@string/pref_key_check_new_posts_summary"
-            android:defaultValue="false" />
-        <SwitchPreference
-            android:dependency="pref_key_check_new_posts"
-            android:key="pref_key_check_new_posts_notifications"
-            android:title="@string/pref_key_check_new_posts_notifications_title"
-            android:summary="@string/pref_key_check_new_posts_notifications_summary"
-            android:defaultValue="false" />
         <ListPreference
             android:key="pref_key_mark_read"
             android:title="@string/pref_key_mark_read_title"

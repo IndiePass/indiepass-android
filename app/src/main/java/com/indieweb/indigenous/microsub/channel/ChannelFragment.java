@@ -41,6 +41,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.pushy.sdk.Pushy;
+
 public class ChannelFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     TextView noMicrosubEndpoint;
@@ -61,9 +63,6 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // Set notification to true.
-        Preferences.setPreference(requireContext(), "indigenous_notification_microsub", true);
 
         view.findViewById(R.id.actionButton).setOnClickListener(this);
         listChannel = view.findViewById(R.id.channel_list);
