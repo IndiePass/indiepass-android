@@ -1,6 +1,7 @@
 # Indigenous for Android
 
-An app with extensions for sharing information to micropub endpoints and reading from microsub endpoints.
+An app with extensions for sharing information to micropub endpoints and reading from microsub
+endpoints.
 
 Install from Google Play: https://play.google.com/store/apps/details?id=com.indieweb.indigenous  
 Install from F-Droid: https://f-droid.org/en/packages/com.indieweb.indigenous/
@@ -9,13 +10,12 @@ No builds will be uploaded anymore to GitHub, use F-Droid for that. Not that the
 currently have no support for getting the location from the device, that will be added in a next 
 release, see https://github.com/swentel/indigenous-android/issues/174
 
-More information at https://indieweb.org/Indigenous and https://indigenous.abode.pub/android/
+More information at https://indieweb.org/Indigenous and https://indigenous.realize.be
 
 ## Functionality
 
 - Login with multiple domains, discover indieauth, micropub, microsub and media endpoints.
-  The microsub endpoint is optional so you can simply use this as a micropub 
-  client too.
+  The micropub and microsub endpoints are optional, but at least one should be available.
 - Micropub
   - post types: article, note, reply, repost, like, bookmark, event, issue, rsvp, geocache and checkin
   - add multiple images, tags, toggle syndication targets

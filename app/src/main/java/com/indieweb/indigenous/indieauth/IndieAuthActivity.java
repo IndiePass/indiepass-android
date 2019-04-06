@@ -177,7 +177,8 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
      * @return boolean
      */
     private boolean validDomain(String $domain) {
-        int found = 0;
+        int numberOfAuthEndpoints = 0;
+        boolean hasMicropubOrMicrosub = false;
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -190,27 +191,26 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
             for (Element link : imports) {
                 if (link.attr("rel").equals("authorization_endpoint")) {
                     authorizationEndpoint = link.attr("abs:href");
-                    found++;
+                    numberOfAuthEndpoints++;
                 }
 
                 if (link.attr("rel").equals("token_endpoint")) {
                     tokenEndpoint = link.attr("abs:href");
-                    found++;
+                    numberOfAuthEndpoints++;
                 }
 
                 if (link.attr("rel").equals("micropub")) {
+                    hasMicropubOrMicrosub = true;
                     micropubEndpoint = link.attr("abs:href");
-                    found++;
                 }
 
-                // Micropub media is optional, so we don't increment the counter.
+                if (link.attr("rel").equals("microsub")) {
+                    hasMicropubOrMicrosub = true;
+                    microsubEndpoint = link.attr("abs:href");
+                }
+
                 if (link.attr("rel").equals("micropub_media")) {
                     micropubMediaEndpoint = link.attr("abs:href");
-                }
-
-                // Microsub is optional, so we don't increment the counter.
-                if (link.attr("rel").equals("microsub")) {
-                    microsubEndpoint = link.attr("abs:href");
                 }
             }
 
@@ -242,8 +242,8 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
             Toast.makeText(getApplicationContext(), "Could not connect to domain", Toast.LENGTH_SHORT).show();
         }
 
-        // If we have 3 endpoints, let's go.
-        return found == 3;
+        // Return true when we have the auth and token endpoint and micropub or microsub.
+        return numberOfAuthEndpoints == 2 && hasMicropubOrMicrosub;
     }
 
     /**
