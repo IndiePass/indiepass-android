@@ -1,4 +1,4 @@
-<h4>xx/xx/2019 - 0.39</h4>
+<h4>08/04/2019 - 0.39</h4>
 <ul>
     <li>Show the 'Mark all as read' button if there's at least 20 items</li>
     <li>Switch authentication callback to https://indigenous.realize.be</li>

@@ -121,7 +121,7 @@ public class PushNotificationActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(PushNotificationActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
             }
 
-            // If not registered with registry, check account first.
+            // If not registered with Pushy.me, check account first.
             if (!Pushy.isRegistered(getApplicationContext())) {
                 initiatePushyMeRegistration();
             }
