@@ -3,6 +3,7 @@ package com.indieweb.indigenous.push;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -140,25 +141,6 @@ public class PushNotificationActivity extends AppCompatActivity {
     }
 
     /**
-     * Register device at Pushy.me.
-     */
-    public void registerDeviceAtPushyMe() {
-        String deviceToken = null;
-
-        try {
-            // Assign a unique token to this device.
-            deviceToken = Pushy.register(getApplicationContext());
-        }
-        catch (Exception exc) {
-            Toast.makeText(getApplicationContext(), "Error registering with Pushy.me: " + exc.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-
-        if (deviceToken != null && deviceToken.length() > 0) {
-            storePushyMeTokenOnBackend(deviceToken);
-        }
-    }
-
-    /**
      * Enable Pushy.me
      */
     public void enablePushyMe() {
@@ -207,6 +189,7 @@ public class PushNotificationActivity extends AppCompatActivity {
                                 message = "Account is blocked";
                                 break;
                         }
+
                         Toast.makeText(getApplicationContext(), "Error checking account: " + message, Toast.LENGTH_LONG).show();
                     }
                 }
@@ -226,6 +209,47 @@ public class PushNotificationActivity extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         queue.add(getRequest);
+    }
+
+    /**
+     * Register device at Pushy.me.
+     */
+    public void registerDeviceAtPushyMe() {
+        new RegisterForPushNotificationsAsync().execute();
+    }
+
+    /**
+     * Async registration class for Pushy.me
+     */
+    private class RegisterForPushNotificationsAsync extends AsyncTask<Void, Void, Exception> {
+        protected Exception doInBackground(Void... params) {
+            try {
+                // Assign a unique token to this device.
+                String deviceToken = Pushy.register(getApplicationContext());
+
+                // Log it for debugging purposes
+                if (deviceToken.length() > 0) {
+                    storePushyMeTokenOnBackend(deviceToken);
+                }
+
+            }
+            catch (Exception exc) {
+                // Return exc to onPostExecute.
+                return exc;
+            }
+
+            // Success
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Exception exc) {
+            // Failed?
+            if (exc != null) {
+                // Show error as toast message.
+                Toast.makeText(getApplicationContext(), exc.toString(), Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     /**
