@@ -115,6 +115,13 @@
             android:name=".microsub.timeline.TimelineActivity"
             android:label="@string/timeline"
             android:parentActivityName=".LaunchActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.indieweb.indigenous.LaunchActivity" />

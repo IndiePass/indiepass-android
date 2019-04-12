@@ -1,10 +1,12 @@
 package com.indieweb.indigenous.microsub.timeline;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -49,6 +51,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     String channelName;
     String sourceId;
     String sourceName;
+    boolean isSearch = false;
+    String searchQuery;
     boolean allReadVisible = false;
     List<String> entries = new ArrayList<>();
     Integer unread;
@@ -90,6 +94,18 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             sourceId = extras.getString("sourceId");
             sourceName = extras.getString("sourceName");
 
+            if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
+                searchQuery = getIntent().getStringExtra(SearchManager.QUERY);
+                if (searchQuery != null && searchQuery.length() > 2) {
+                    isSearch = true;
+                    Bundle appData = getIntent().getBundleExtra(SearchManager.APP_DATA);
+                    if (appData != null) {
+                        channelId = appData.getString("channelId");
+                    }
+
+                }
+            }
+
             if (preview) {
                 this.setTitle("Preview");
             }
@@ -99,6 +115,10 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 if (sourceName != null && sourceName.length() > 0) {
                     isSourceView = true;
                     this.setTitle(sourceName);
+                }
+                // Initiating search
+                else if (isSearch) {
+                    this.setTitle(searchQuery);
                 }
                 else {
                     this.setTitle(channelName);
@@ -120,8 +140,25 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.timeline_menu, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.timeline_menu, menu);
         mainMenu = menu;
+
+        boolean search = Preferences.getPreference(this, "pref_key_search", false);
+        if (search && !preview && !isSearch) {
+            MenuItem item = menu.findItem(R.id.timeline_search);
+            if (item != null) {
+                item.setVisible(true);
+            }
+        }
+
+        if (search && isSearch) {
+            MenuItem item = menu.findItem(R.id.timeline_list_refresh);
+            if (item != null) {
+                item.setVisible(false);
+                refreshLayout.setEnabled(false);
+            }
+        }
 
         boolean debugJson = Preferences.getPreference(this, "pref_key_debug_microsub_timeline", false);
         if (debugJson && !preview) {
@@ -131,7 +168,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             }
         }
 
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override
@@ -155,11 +192,23 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 new MicrosubAction(getApplicationContext(), user).markRead(channelId, readEntries, true);
                 Toast.makeText(getApplicationContext(), "Marked all as read", Toast.LENGTH_SHORT).show();
                 return true;
+
+            case R.id.timeline_search:
+                onSearchRequested();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onSearchRequested() {
+        Bundle appData = new Bundle();
+        appData.putString("channelId", channelId);
+        startSearch(null, false, appData, false);
+
+        return super.onSearchRequested();
+    }
 
     @Override
     public void onRefresh() {
@@ -199,9 +248,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         String MicrosubEndpoint = user.getMicrosubEndpoint();
         olderItems = new String[1];
 
-        if (preview) {
+        if (preview || isSearch) {
             method = Request.Method.POST;
-            MicrosubEndpoint += "?action=preview";
         }
         else {
 
@@ -250,8 +298,6 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 String name = "";
                                 String textContent = "";
                                 String htmlContent = "";
-                                String audio = "";
-                                String video = "";
                                 String authorName = "";
 
                                 // Type.
@@ -472,13 +518,13 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
                                 // Audio.
                                 if (object.has("audio")) {
-                                    audio = getSingleJsonValueFromArrayOrString("audio", object);
+                                    String audio = getSingleJsonValueFromArrayOrString("audio", object);
                                     item.setAudio(audio);
                                 }
 
                                 // Video.
                                 if (object.has("video")) {
-                                    video = getSingleJsonValueFromArrayOrString("video", object);
+                                    String video = getSingleJsonValueFromArrayOrString("video", object);
                                     item.setVideo(video);
                                 }
 
@@ -547,7 +593,14 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 Map<String, String> params = new HashMap<>();
 
                 if (preview) {
+                    params.put("action", "preview");
                     params.put("url", previewUrl);
+                }
+
+                if (isSearch) {
+                    params.put("action", "search");
+                    params.put("channel", channelId);
+                    params.put("query", searchQuery);
                 }
 
                 return params;

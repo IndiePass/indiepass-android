@@ -4,6 +4,13 @@
 
     <item
         android:visible="false"
+        android:id="@+id/timeline_search"
+        android:title="@string/search"
+        android:icon="@drawable/search_white"
+        app:showAsAction="always" />
+
+    <item
+        android:visible="false"
         android:id="@+id/timeline_mark_all_read"
         android:title="@string/mark_all_read"
         android:icon="@drawable/button_mark_all_read"

@@ -113,6 +113,11 @@
             android:summary="@string/pref_key_static_map_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            android:key="pref_key_search"
+            android:title="@string/pref_key_search_title"
+            android:summary="@string/pref_key_search_summary"
+            android:defaultValue="false" />
+        <SwitchPreference
             android:key="pref_key_author_timeline"
             android:title="@string/pref_key_author_timeline_title"
             android:summary="@string/pref_key_author_timeline_summary"
