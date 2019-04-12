@@ -179,6 +179,8 @@
     <string name="pref_key_static_map_summary">Show a static map on checkin posts, as long as the checkin post does not contain pictures</string>
     <string name="pref_key_mark_read_title">Mark items read</string>
     <string name="pref_key_mark_read_summary">Either automatically mark all items read when viewing a channel (per page), or manually with a "Mark all read" button per channel and "Mark read" action in the item menu.</string>
+    <string name="pref_key_author_timeline_title">Timeline per author</string>
+    <string name="pref_key_author_timeline_summary">Makes the author avatar clickable to see all posts by this author. Only supported at the moment by the Drupal microsub server.</string>
 
     <!-- Preferences: Media handling -->
     <string name="pref_category_media_title">Media</string>

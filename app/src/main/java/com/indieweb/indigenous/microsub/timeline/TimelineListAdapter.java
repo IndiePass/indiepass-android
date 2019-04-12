@@ -67,17 +67,19 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     private boolean imagePreview;
     private boolean debugItemJSON;
     private boolean staticMap;
+    private boolean isSourceView;
     private final User user;
     private final String channelId;
     private final ListView listView;
     private List<String> dateFormatStrings = Arrays.asList("yyyy-MM-dd'T'kk:mm:ssZ", "yyyy-MM-dd'T'kk:mm:ss", "yyyy-MM-dd kk:mm:ssZ", "yyyy-MM-dd kk:mmZ");
 
-    TimelineListAdapter(Context context, List<TimelineItem> items, User user, String channelId, ListView listView) {
+    TimelineListAdapter(Context context, List<TimelineItem> items, User user, String channelId, ListView listView, boolean isSourceView) {
         this.context = context;
         this.items = items;
         this.user = user;
         this.channelId = channelId;
         this.listView = listView;
+        this.isSourceView = isSourceView;
         this.imagePreview = Preferences.getPreference(context, "pref_key_image_preview", true);
         this.staticMap = Preferences.getPreference(context, "pref_key_static_map", true);
         this.debugItemJSON = Preferences.getPreference(context, "pref_key_debug_microsub_item_json", false);
@@ -211,6 +213,11 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     .load(item.getAuthorPhoto())
                     .apply(RequestOptions.circleCropTransform().placeholder(R.drawable.avatar_small))
                     .into(holder.authorPhoto);
+
+            // Source view.
+            if (!isSourceView && Preferences.getPreference(context, "pref_key_author_timeline", false)) {
+                holder.authorPhoto.setOnClickListener(new OnAuthorClickListener(position));
+            }
 
             // Name.
             if ((item.getType().equals("entry") || item.getType().equals("event")) && item.getName().length() > 0) {
@@ -693,6 +700,25 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 Toast.makeText(context, "Install a maps application to view this location", Toast.LENGTH_SHORT).show();
             }
 
+        }
+    }
+
+    // Audio listener.
+    class OnAuthorClickListener implements OnClickListener {
+
+        int position;
+
+        OnAuthorClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            TimelineItem item = items.get(this.position);
+            Intent intent = new Intent(context, TimelineActivity.class);
+            intent.putExtra("sourceId", item.getSourceId());
+            intent.putExtra("sourceName", item.getAuthorName());
+            context.startActivity(intent);
         }
     }
 

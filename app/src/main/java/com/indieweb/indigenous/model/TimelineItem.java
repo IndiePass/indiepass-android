@@ -7,6 +7,7 @@ import java.util.Map;
 public class TimelineItem {
 
     private boolean isRead;
+    private String sourceId;
     private String id;
     private String type;
     private String published;
@@ -39,6 +40,14 @@ public class TimelineItem {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
     }
 
     public String getType() {

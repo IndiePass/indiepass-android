@@ -47,10 +47,13 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     public String firstEntryId;
     String channelId;
     String channelName;
+    String sourceId;
+    String sourceName;
     boolean allReadVisible = false;
     List<String> entries = new ArrayList<>();
     Integer unread;
     Menu mainMenu;
+    boolean isSourceView = false;
     boolean preview = false;
     String previewUrl;
     boolean showRefreshMessage = false;
@@ -80,16 +83,26 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         if (extras != null) {
 
             channelId = extras.getString("channelId");
-            unread = extras.getInt("unread");
             channelName = extras.getString("channelName");
+            unread = extras.getInt("unread");
             preview = extras.getBoolean("preview");
             previewUrl = extras.getString("previewUrl");
+            sourceId = extras.getString("sourceId");
+            sourceName = extras.getString("sourceName");
 
             if (preview) {
                 this.setTitle("Preview");
             }
             else {
-                this.setTitle(channelName);
+
+                // Looking at source.
+                if (sourceName != null && sourceName.length() > 0) {
+                    isSourceView = true;
+                    this.setTitle(sourceName);
+                }
+                else {
+                    this.setTitle(channelName);
+                }
                 loadMoreButton = new Button(this);
                 loadMoreButton.setText(R.string.load_more);
                 loadMoreButton.setTextColor(getResources().getColor(R.color.textColor));
@@ -171,13 +184,13 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
      */
     public void startTimeline() {
         TimelineItems = new ArrayList<>();
-        adapter = new TimelineListAdapter(this, TimelineItems, user, channelId, listView);
+        adapter = new TimelineListAdapter(this, TimelineItems, user, channelId, listView, isSourceView);
         listView.setAdapter(adapter);
         getTimeLineItems("");
     }
 
     /**
-     * Get items in channel.
+     * Get items.
      */
     public void getTimeLineItems(String pagerAfter) {
 
@@ -191,7 +204,13 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             MicrosubEndpoint += "?action=preview";
         }
         else {
-            MicrosubEndpoint += "?action=timeline&channel=" + channelId;
+
+            if (isSourceView) {
+                MicrosubEndpoint += "?action=timeline&source=" + sourceId;
+            }
+            else {
+                MicrosubEndpoint += "?action=timeline&channel=" + channelId;
+            }
             if (pagerAfter.length() > 0) {
                 MicrosubEndpoint += "&after=" + pagerAfter;
             }
@@ -248,8 +267,14 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 // It's possible that _id is empty. Don't let readers choke on it.
                                 try {
                                     item.setId(object.getString("_id"));
+                                } catch (Exception ignored) {}
+
+                                // Source id is experimental.
+                                if (object.has("_source")) {
+                                    try {
+                                        item.setSourceId(object.getString("_source"));
+                                    } catch (Exception ignored) {}
                                 }
-                                catch (Exception ignored) {}
 
                                 // Is read.
                                 if (object.has("_is_read")) {
