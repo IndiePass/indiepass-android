@@ -145,7 +145,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         mainMenu = menu;
 
         boolean search = Preferences.getPreference(this, "pref_key_search", false);
-        if (search && !preview && !isSearch) {
+        if (search && !preview && !isSearch && !isSourceView) {
             MenuItem item = menu.findItem(R.id.timeline_search);
             if (item != null) {
                 item.setVisible(true);
