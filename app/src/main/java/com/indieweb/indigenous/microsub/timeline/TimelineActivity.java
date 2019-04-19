@@ -253,12 +253,14 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         }
         else {
 
+            MicrosubEndpoint += "?action=timeline&channel=" + channelId;
+
+            // Individual timeline.
             if (isSourceView) {
-                MicrosubEndpoint += "?action=timeline&source=" + sourceId;
+                MicrosubEndpoint += "&source=" + sourceId;
             }
-            else {
-                MicrosubEndpoint += "?action=timeline&channel=" + channelId;
-            }
+
+            // Pager.
             if (pagerAfter.length() > 0) {
                 MicrosubEndpoint += "&after=" + pagerAfter;
             }
@@ -539,12 +541,12 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                             adapter.notifyDataSetChanged();
 
                             // Notify
-                            if ((unread > 0 || unread == -1) && entries.size() > 0 && Preferences.getPreference(getApplicationContext(), "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_CHANNEL_CLICK) {
+                            if (!isSourceView && (unread > 0 || unread == -1) && entries.size() > 0 && Preferences.getPreference(getApplicationContext(), "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_CHANNEL_CLICK) {
                                 new MicrosubAction(TimelineActivity.this, user).markRead(channelId, entries, false);
                             }
 
                             // Add mark read.
-                            if (!allReadVisible && firstEntryId != null && entries.size() == 20) {
+                            if (!isSourceView && !allReadVisible && firstEntryId != null && entries.size() == 20) {
                                 allReadVisible = true;
                                 MenuItem item = mainMenu.findItem(R.id.timeline_mark_all_read);
                                 if (item != null) {

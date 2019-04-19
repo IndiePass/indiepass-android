@@ -84,7 +84,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         this.staticMap = Preferences.getPreference(context, "pref_key_static_map", true);
         this.debugItemJSON = Preferences.getPreference(context, "pref_key_debug_microsub_item_json", false);
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
     }
 
     public int getCount() {
@@ -716,6 +715,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public void onClick(View v) {
             TimelineItem item = items.get(this.position);
             Intent intent = new Intent(context, TimelineActivity.class);
+            intent.putExtra("channelId", channelId);
             intent.putExtra("sourceId", item.getSourceId());
             intent.putExtra("sourceName", item.getAuthorName());
             context.startActivity(intent);
