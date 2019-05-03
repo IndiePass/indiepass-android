@@ -59,11 +59,11 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
     EditText domain;
     TextView info;
     String domainInput;
-    String authorizationEndpoint;
-    String tokenEndpoint;
-    String micropubEndpoint;
-    String microsubEndpoint;
-    String micropubMediaEndpoint;
+    String authorizationEndpoint = "";
+    String tokenEndpoint = "";
+    String micropubEndpoint = "";
+    String microsubEndpoint = "";
+    String micropubMediaEndpoint = "";
     String authorAvatar;
     String authorName;
     String ClientId = "https://indigenous.realize.be";
@@ -165,11 +165,12 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
     /**
      * Validates the domain.
      *
-     * We will parse the frontpage to discover following rel links:
+     * Checks the response of the URL or parse HTML to discover following rel links:
      *  - authorization_endpoint
      *  - token_endpoint
      *  - micropub
      *  - microsub
+     *  - micropub_media
      *
      * @param $domain
      *   The domain to validate.
@@ -186,30 +187,68 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
         Toast.makeText(getApplicationContext(), "Connecting to domain, one moment", Toast.LENGTH_SHORT).show();
 
         try {
-            Document doc = Jsoup.connect($domain).get();
+            org.jsoup.Connection connection = Jsoup.connect($domain);
+            org.jsoup.Connection.Response response = connection.execute();
+
+            if (response.hasHeader("Link")) {
+                String[] headers = response.header("Link").split(",");
+                if (headers.length > 0) {
+
+                    for (String link: headers) {
+                        String[] split = link.split(";");
+                        String endpoint = split[0].replace("<", "").replace(">", "").trim();
+                        String rel = split[1].trim().replace("rel=", "").replace("\"", "");
+
+                        switch (rel) {
+                            case "authorization_endpoint":
+                                authorizationEndpoint = endpoint;
+                                numberOfAuthEndpoints++;
+                                break;
+                            case "token_endpoint":
+                                tokenEndpoint = endpoint;
+                                numberOfAuthEndpoints++;
+                                break;
+                            case "micropub":
+                                micropubEndpoint = endpoint;
+                                hasMicropubOrMicrosub = true;
+                                break;
+                            case "microsub":
+                                microsubEndpoint = endpoint;
+                                hasMicropubOrMicrosub = true;
+                                break;
+                            case "micropub_media":
+                                micropubMediaEndpoint = endpoint;
+                                break;
+                        }
+                    }
+                }
+            }
+
+            // Get from link tags.
+            Document doc = connection.get();
             Elements imports = doc.select("link[href]");
             for (Element link : imports) {
-                if (link.attr("rel").equals("authorization_endpoint")) {
+                if (authorizationEndpoint.length() == 0 && link.attr("rel").equals("authorization_endpoint")) {
                     authorizationEndpoint = link.attr("abs:href");
                     numberOfAuthEndpoints++;
                 }
 
-                if (link.attr("rel").equals("token_endpoint")) {
+                if (tokenEndpoint.length() == 0 && link.attr("rel").equals("token_endpoint")) {
                     tokenEndpoint = link.attr("abs:href");
                     numberOfAuthEndpoints++;
                 }
 
-                if (link.attr("rel").equals("micropub")) {
+                if (micropubEndpoint.length() == 0 && link.attr("rel").equals("micropub")) {
                     hasMicropubOrMicrosub = true;
                     micropubEndpoint = link.attr("abs:href");
                 }
 
-                if (link.attr("rel").equals("microsub")) {
+                if (microsubEndpoint.length() == 0 && link.attr("rel").equals("microsub")) {
                     hasMicropubOrMicrosub = true;
                     microsubEndpoint = link.attr("abs:href");
                 }
 
-                if (link.attr("rel").equals("micropub_media")) {
+                if (micropubMediaEndpoint.length() == 0 && link.attr("rel").equals("micropub_media")) {
                     micropubMediaEndpoint = link.attr("abs:href");
                 }
             }
@@ -233,7 +272,6 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
             }
             catch (Exception ignored) { }
 
-
         }
         catch (IllegalArgumentException ignored) {
             Toast.makeText(getApplicationContext(), "Could not connect to domain", Toast.LENGTH_SHORT).show();
@@ -241,6 +279,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
         catch (IOException error) {
             Toast.makeText(getApplicationContext(), "Could not connect to domain", Toast.LENGTH_SHORT).show();
         }
+        catch (Exception ignored) { }
 
         // Return true when we have the auth and token endpoint and micropub or microsub.
         return numberOfAuthEndpoints == 2 && hasMicropubOrMicrosub;

@@ -43,20 +43,51 @@ public class Endpoints {
         try {
             boolean foundInfo = false;
             String url = user.getMe();
-            Document doc = Jsoup.connect(url).get();
+
+            org.jsoup.Connection connection = Jsoup.connect(url);
+            org.jsoup.Connection.Response response = connection.execute();
+
+            if (response.hasHeader("Link")) {
+                String[] headers = response.header("Link").split(",");
+                if (headers.length > 0) {
+
+                    for (String link: headers) {
+                        String[] split = link.split(";");
+                        String endpoint = split[0].replace("<", "").replace(">", "").trim();
+                        String rel = split[1].trim().replace("rel=", "").replace("\"", "");
+
+                        switch (rel) {
+                            case "micropub":
+                                foundInfo = true;
+                                micropubEndpoint = endpoint;
+                                break;
+                            case "microsub":
+                                foundInfo = true;
+                                microsubEndpoint = endpoint;
+                                break;
+                            case "micropub_media":
+                                foundInfo = true;
+                                micropubMediaEndpoint = endpoint;
+                                break;
+                        }
+                    }
+                }
+            }
+
+            Document doc = connection.get();
             Elements links = doc.select("link[href]");
             for (Element link : links) {
-                if (link.attr("rel").equals("micropub")) {
+                if (micropubEndpoint.length() == 0 && link.attr("rel").equals("micropub")) {
                     foundInfo = true;
                     micropubEndpoint = link.attr("abs:href");
                 }
 
-                if (link.attr("rel").equals("micropub_media")) {
+                if (micropubMediaEndpoint.length() == 0 && link.attr("rel").equals("micropub_media")) {
                     foundInfo = true;
                     micropubMediaEndpoint = link.attr("abs:href");
                 }
 
-                if (link.attr("rel").equals("microsub")) {
+                if (microsubEndpoint.length() == 0 && link.attr("rel").equals("microsub")) {
                     foundInfo = true;
                     microsubEndpoint = link.attr("abs:href");
                 }
