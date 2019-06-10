@@ -70,6 +70,9 @@
     <string name="add_rsvp">RSVP</string>
     <string name="add_checkin">Checkin</string>
     <string name="add_geocache">Geocache</string>
+    <string name="move_item">Move item</string>
+    <string name="delete">Delete</string>
+    <string name="external_link">Opens this post in browser</string>
     <string name="update_post">Update</string>
     <string name="delete_post">Delete</string>
     <string name="discard_post">Discard</string>
@@ -108,6 +111,10 @@
     <string name="title_activity_timeline_image">Image</string>
     <string name="title_activity_indieauth">Sign in</string>
     <string name="title_activity_share">Share</string>
+    <string name="audio">Listen to audio</string>
+    <string name="video">Watch video</string>
+    <string name="map">View map</string>
+    <string name="item_menu">More options</string>
     <string name="select_post_type">Select a post type</string>
     <string name="select_post_limit">Select post limit</string>
     <string name="go_to_main_app">Go to main app</string>

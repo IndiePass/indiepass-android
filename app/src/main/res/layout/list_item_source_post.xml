@@ -60,7 +60,7 @@
         android:background="@android:color/transparent"
         android:text="@string/read_more" />
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -71,6 +71,8 @@
             android:visibility="gone"
             android:background="@drawable/button_update"
             android:id="@+id/itemUpdate"
+            android:hint="@string/update_post"
+            android:textColorHint="@android:color/transparent"
             android:layout_width="@dimen/source_post_list_item_icon_size"
             android:layout_height="@dimen/source_post_list_item_icon_size" />
 
@@ -78,17 +80,19 @@
             android:visibility="gone"
             android:background="@drawable/button_delete"
             android:id="@+id/itemDelete"
+            android:hint="@string/delete_post"
+            android:textColorHint="@android:color/transparent"
             android:layout_width="@dimen/source_post_list_item_icon_size"
             android:layout_height="@dimen/source_post_list_item_icon_size"
-            android:layout_marginLeft="@dimen/source_post_list_item_icon_margin_left"
             android:layout_marginStart="@dimen/source_post_list_item_icon_margin_left" />
 
         <Button
             android:background="@drawable/button_external"
             android:id="@+id/itemExternal"
+            android:hint="@string/external_link"
+            android:textColorHint="@android:color/transparent"
             android:layout_width="@dimen/source_post_list_item_icon_size"
             android:layout_height="@dimen/source_post_list_item_icon_size"
-            android:layout_marginLeft="@dimen/source_post_list_item_icon_margin_left"
             android:layout_marginStart="@dimen/source_post_list_item_icon_margin_left" />
 
     </LinearLayout>

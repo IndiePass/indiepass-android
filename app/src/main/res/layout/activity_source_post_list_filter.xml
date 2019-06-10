@@ -22,14 +22,12 @@
             android:id="@+id/postLimit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
             android:prompt="@string/select_post_limit"
             android:entries="@array/filter_post_limit"
             android:paddingStart="5dp"
             tools:ignore="RtlSymmetry" />
 
         <Button
-            android:layout_marginLeft="5dp"
             android:layout_marginTop="@dimen/box_padding"
             android:padding="@dimen/box_padding"
             android:text="@string/apply_filter"

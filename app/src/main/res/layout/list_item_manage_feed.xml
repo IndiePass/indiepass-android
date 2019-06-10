@@ -8,7 +8,6 @@
     android:orientation="vertical">
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:weightSum="1.0"
@@ -26,9 +25,10 @@
         <Button
             android:background="@drawable/button_delete"
             android:id="@+id/feedDelete"
+            android:hint="@string/delete"
+            android:textColorHint="@android:color/transparent"
             android:layout_width="@dimen/manage_channel_list_item_icon_size"
             android:layout_height="@dimen/manage_channel_list_item_icon_size"
-            android:layout_marginLeft="@dimen/manage_channel_list_item_icon_margin_left"
             android:layout_marginStart="@dimen/manage_channel_list_item_icon_margin_left" />
 
     </LinearLayout>

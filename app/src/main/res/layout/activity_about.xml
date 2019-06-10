@@ -26,7 +26,6 @@
             android:layout_height="wrap_content" />
 
         <Button
-            android:layout_marginLeft="@dimen/box_padding"
             android:text="@string/view_changelog"
             android:background="@color/buttonWhite"
             android:textColor="@color/colorPrimary"
