@@ -41,8 +41,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.pushy.sdk.Pushy;
-
 public class ChannelFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     TextView noMicrosubEndpoint;
@@ -209,10 +207,8 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.actionButton:
-                ((MainActivity) requireActivity()).openDrawer(R.id.nav_create);
-                break;
+        if (v.getId() == R.id.actionButton) {
+            ((MainActivity) requireActivity()).openDrawer(R.id.nav_create);
         }
     }
 
