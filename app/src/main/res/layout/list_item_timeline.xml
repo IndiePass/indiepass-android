@@ -37,6 +37,13 @@
         android:layout_marginStart="@dimen/timeline_list_item_text_margin_left">
 
         <TextView
+            android:id="@+id/timeline_channel"
+            android:textColor="@color/textColor"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/timeline_list_item_author_size"
+            android:layout_width="fill_parent" />
+
+        <TextView
             android:id="@+id/timeline_author"
             android:textColor="@color/textColor"
             android:layout_height="wrap_content"

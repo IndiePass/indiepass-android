@@ -190,8 +190,12 @@
     <string name="pref_key_mark_read_summary">Either automatically mark all items read when viewing a channel (per page), or manually with a "Mark all read" button per channel and "Mark read" action in the item menu.</string>
     <string name="pref_key_search_title">Search</string>
     <string name="pref_key_search_summary">Allows to search in a channel for posts</string>
+    <string name="pref_key_search_global_title">Global search</string>
+    <string name="pref_key_search_global_summary">Allows to search in for posts across all channels</string>
     <string name="pref_key_author_timeline_title">Timeline per author</string>
     <string name="pref_key_author_timeline_summary">Makes the author avatar clickable to see all posts by this author</string>
+    <string name="pref_key_unread_items_channel_title">Enable unread items channel</string>
+    <string name="pref_key_unread_items_channel_summary">Adds a channel at the top of the list which allows you to view all unread items across all channels at once. Will not show up if there are not unread items or only within one channel. Marking items as read needs to happen manually.</string>
 
     <!-- Preferences: Media handling -->
     <string name="pref_category_media_title">Media</string>

@@ -126,6 +126,9 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
                             JSONObject microsubResponse = new JSONObject(response);
                             JSONArray channelList = microsubResponse.getJSONArray("channels");
 
+                            int index = 0;
+                            int unreadChannels = 0;
+                            int totalUnread = 0;
                             for (int i = 0; i < channelList.length(); i++) {
                                 object = channelList.getJSONObject(i);
                                 Channel channel = new Channel();
@@ -136,6 +139,10 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
                                     Object unreadCheck = object.get("unread");
                                     if (unreadCheck instanceof Integer) {
                                         unread = (Integer) unreadCheck;
+                                        totalUnread += unread;
+                                        if (unread > 0) {
+                                            unreadChannels++;
+                                        }
                                     }
                                     if (unreadCheck instanceof Boolean) {
                                         if ((Boolean) unreadCheck) {
@@ -144,7 +151,15 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
                                     }
                                 }
                                 channel.setUnread(unread);
-                                Channels.add(channel);
+                                Channels.add(index++, channel);
+                            }
+
+                            if (Preferences.getPreference(getContext(), "pref_key_unread_items_channel", false) && unreadChannels > 1 && totalUnread > 0) {
+                                Channel channel = new Channel();
+                                channel.setUid("global");
+                                channel.setName("Unread items");
+                                channel.setUnread(totalUnread);
+                                Channels.add(0, channel);
                             }
 
                             adapter.notifyDataSetChanged();

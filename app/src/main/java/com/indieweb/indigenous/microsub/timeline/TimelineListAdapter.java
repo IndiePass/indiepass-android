@@ -102,6 +102,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
     public static class ViewHolder {
         public TextView unread;
+        public TextView channel;
         public TextView author;
         public ImageView authorPhoto;
         public TextView name;
@@ -134,6 +135,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder = new ViewHolder();
             holder.unread = convertView.findViewById(R.id.timeline_new);
             holder.published = convertView.findViewById(R.id.timeline_published);
+            holder.channel = convertView.findViewById(R.id.timeline_channel);
             holder.author = convertView.findViewById(R.id.timeline_author);
             holder.authorPhoto = convertView.findViewById(R.id.timeline_author_photo);
             holder.name = convertView.findViewById(R.id.timeline_name);
@@ -175,6 +177,15 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
             else {
                 holder.unread.setVisibility(View.GONE);
+            }
+
+            // Channel.
+            if (item.getChannelName().length() > 0) {
+                holder.channel.setVisibility(View.VISIBLE);
+                holder.channel.setText(item.getChannelName());
+            }
+            else {
+                holder.channel.setVisibility(View.GONE);
             }
 
             // Published.
@@ -748,7 +759,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 }
             }
 
-            if (!entry.isRead() && Preferences.getPreference(context, "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_MANUAL) {
+            if (!entry.isRead() && (channelId.equals("global") || Preferences.getPreference(context, "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_MANUAL)) {
                 MenuItem itemMarkRead = menu.findItem(R.id.timeline_entry_mark_read);
                 if (itemMarkRead != null) {
                     itemMarkRead.setVisible(true);

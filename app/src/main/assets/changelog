@@ -1,3 +1,9 @@
+<h4>xx/xx/2019 - 0.43 / 0.44</h4>
+<ul>
+    <li>Allow global search</li>
+    <li>Allow to add a 'Unread items' channel</li>
+    <li>Accessibility improvements</li>
+</ul>
 <h4>03/05/2019 - 0.42</h4>
 <ul>
     <li>Discover endpoints in response header</li>

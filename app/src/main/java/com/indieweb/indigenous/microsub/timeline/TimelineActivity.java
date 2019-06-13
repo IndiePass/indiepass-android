@@ -58,6 +58,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     Integer unread;
     Menu mainMenu;
     boolean isSourceView = false;
+    boolean isGlobalUnread = false;
     boolean preview = false;
     String previewUrl;
     boolean showRefreshMessage = false;
@@ -93,6 +94,10 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             previewUrl = extras.getString("previewUrl");
             sourceId = extras.getString("sourceId");
             sourceName = extras.getString("sourceName");
+
+            if (channelId.equals("global")) {
+                isGlobalUnread = true;
+            }
 
             if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
                 searchQuery = getIntent().getStringExtra(SearchManager.QUERY);
@@ -145,7 +150,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         mainMenu = menu;
 
         boolean search = Preferences.getPreference(this, "pref_key_search", false);
-        if (search && !preview && !isSearch && !isSourceView) {
+        if (search && !preview && !isSearch && !isSourceView && !isGlobalUnread) {
             MenuItem item = menu.findItem(R.id.timeline_search);
             if (item != null) {
                 item.setVisible(true);
@@ -255,6 +260,11 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
             MicrosubEndpoint += "?action=timeline&channel=" + channelId;
 
+            // Global unread.
+            if (isGlobalUnread) {
+                MicrosubEndpoint += "&is_read=false";
+            }
+
             // Individual timeline.
             if (isSourceView) {
                 MicrosubEndpoint += "&source=" + sourceId;
@@ -336,6 +346,15 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                         firstEntryId = item.getId();
                                     }
 
+                                }
+
+                                // Channel name.
+                                if (object.has("_channel") && isGlobalUnread) {
+                                    try {
+                                        String itemChannelName = object.getJSONObject("_channel").getString("name");
+                                        item.setChannelName(itemChannelName);
+                                    }
+                                    catch (Exception ignored) {}
                                 }
 
                                 // In reply to.
@@ -541,12 +560,12 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                             adapter.notifyDataSetChanged();
 
                             // Notify
-                            if (!isSourceView && (unread > 0 || unread == -1) && entries.size() > 0 && Preferences.getPreference(getApplicationContext(), "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_CHANNEL_CLICK) {
+                            if (!isGlobalUnread && !isSourceView && (unread > 0 || unread == -1) && entries.size() > 0 && Preferences.getPreference(getApplicationContext(), "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_CHANNEL_CLICK) {
                                 new MicrosubAction(TimelineActivity.this, user).markRead(channelId, entries, false);
                             }
 
                             // Add mark read.
-                            if (!isSourceView && !allReadVisible && firstEntryId != null && entries.size() == 20) {
+                            if ((!isSourceView && !allReadVisible && firstEntryId != null && entries.size() == 20) || (!allReadVisible && isGlobalUnread && entries.size() > 0)) {
                                 allReadVisible = true;
                                 MenuItem item = mainMenu.findItem(R.id.timeline_mark_all_read);
                                 if (item != null) {

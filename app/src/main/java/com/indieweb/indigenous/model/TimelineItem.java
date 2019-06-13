@@ -16,14 +16,15 @@ public class TimelineItem {
     private String htmlContent;
     private String url;
     private String authorName;
+    private String channelName = "";
     private String authorPhoto = "";
     private String reference = "";
-    private String json;
     private String latitude = "";
     private String longitude = "";
     private ArrayList<String> photos = new ArrayList<>();
     private String audio = "";
     private String video = "";
+    private String json;
     private Map<String, String> responseType = new LinkedHashMap<>();
 
     public boolean isRead() {
@@ -48,6 +49,14 @@ public class TimelineItem {
 
     public void setSourceId(String sourceId) {
         this.sourceId = sourceId;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
     }
 
     public String getType() {
