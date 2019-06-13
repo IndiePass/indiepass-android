@@ -95,10 +95,6 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             sourceId = extras.getString("sourceId");
             sourceName = extras.getString("sourceName");
 
-            if (channelId.equals("global")) {
-                isGlobalUnread = true;
-            }
-
             if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
                 searchQuery = getIntent().getStringExtra(SearchManager.QUERY);
                 if (searchQuery != null && searchQuery.length() > 2) {
@@ -109,6 +105,10 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     }
 
                 }
+            }
+
+            if (channelId != null && channelId.equals("global")) {
+                isGlobalUnread = true;
             }
 
             if (preview) {

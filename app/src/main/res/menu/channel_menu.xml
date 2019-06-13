@@ -8,6 +8,13 @@
         app:showAsAction="never" />
 
     <item
+        android:visible="false"
+        android:id="@+id/channel_search"
+        android:title="@string/search"
+        android:icon="@drawable/search_white"
+        app:showAsAction="always" />
+
+    <item
         android:icon="@drawable/settings_white"
         android:id="@+id/channels_manage"
         android:title="@string/channel_manage"

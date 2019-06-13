@@ -228,6 +228,14 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
             }
         }
 
+        boolean search = Preferences.getPreference(getActivity(), "pref_key_search_global", false);
+        if (search) {
+            MenuItem item = menu.findItem(R.id.channel_search);
+            if (item != null) {
+                //item.setVisible(true);
+            }
+        }
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -253,9 +261,21 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
                 startActivity(i);
                 return true;
 
+            case R.id.timeline_search:
+                //onSearchRequested();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    /*@Override
+    public boolean onSearchRequested() {
+        Bundle appData = new Bundle();
+        appData.putString("channelId", "global");
+        startSearch(null, false, appData, false);
+
+        return super.onSearchRequested();
+    }*/
 
 }
