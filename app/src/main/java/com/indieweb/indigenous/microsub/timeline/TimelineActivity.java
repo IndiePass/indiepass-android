@@ -192,9 +192,13 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 return true;
 
             case R.id.timeline_mark_all_read:
-                List<String> readEntries = new ArrayList<>();
-                readEntries.add(firstEntryId);
-                new MicrosubAction(getApplicationContext(), user).markRead(channelId, readEntries, true);
+                boolean clearAll = false;
+                if (!channelId.equals("global")) {
+                    clearAll = true;
+                    entries.clear();
+                    entries.add(firstEntryId);
+                }
+                new MicrosubAction(getApplicationContext(), user).markRead(channelId, entries, clearAll);
                 Toast.makeText(getApplicationContext(), "Marked all as read", Toast.LENGTH_SHORT).show();
                 return true;
 
