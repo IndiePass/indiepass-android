@@ -1,10 +1,12 @@
 package com.indieweb.indigenous.microsub.timeline;
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -73,6 +75,9 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     String debugResponse;
     User user;
 
+    private SearchView searchView = null;
+    private SearchView.OnQueryTextListener queryTextListener;
+
     public static int MARK_READ_CHANNEL_CLICK = 1;
     public static int MARK_READ_MANUAL = 2;
 
@@ -94,17 +99,9 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             previewUrl = extras.getString("previewUrl");
             sourceId = extras.getString("sourceId");
             sourceName = extras.getString("sourceName");
-
-            if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
-                searchQuery = getIntent().getStringExtra(SearchManager.QUERY);
-                if (searchQuery != null && searchQuery.length() > 2) {
-                    isSearch = true;
-                    Bundle appData = getIntent().getBundleExtra(SearchManager.APP_DATA);
-                    if (appData != null) {
-                        channelId = appData.getString("channelId");
-                    }
-
-                }
+            searchQuery = extras.getString("search");
+            if (searchQuery != null && searchQuery.length() > 2) {
+                isSearch = true;
             }
 
             if (channelId != null && channelId.equals("global")) {
@@ -154,6 +151,31 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             MenuItem item = menu.findItem(R.id.timeline_search);
             if (item != null) {
                 item.setVisible(true);
+
+                SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+                searchView = (SearchView) item.getActionView();
+
+                if (searchView != null) {
+                    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+                    queryTextListener = new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextChange(String newText) {
+                            return true;
+                        }
+                        @Override
+                        public boolean onQueryTextSubmit(String query) {
+                            if (query.length() > 0) {
+                                Intent timelineActivity = new Intent(getApplicationContext(), TimelineActivity.class);
+                                timelineActivity.putExtra("channelId", "global");
+                                timelineActivity.putExtra("search", query);
+                                startActivity(timelineActivity);
+                            }
+                            return true;
+                        }
+                    };
+                    searchView.setOnQueryTextListener(queryTextListener);
+                }
             }
         }
 
@@ -161,7 +183,6 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             MenuItem item = menu.findItem(R.id.timeline_list_refresh);
             if (item != null) {
                 item.setVisible(false);
-                refreshLayout.setEnabled(false);
             }
         }
 
@@ -202,21 +223,13 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 Toast.makeText(getApplicationContext(), "Marked all as read", Toast.LENGTH_SHORT).show();
                 return true;
 
-            case R.id.timeline_search:
-                onSearchRequested();
-                return true;
+        }
+
+        if (searchView != null) {
+            searchView.setOnQueryTextListener(queryTextListener);
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onSearchRequested() {
-        Bundle appData = new Bundle();
-        appData.putString("channelId", channelId);
-        startSearch(null, false, appData, false);
-
-        return super.onSearchRequested();
     }
 
     @Override
@@ -234,6 +247,10 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 Toast.makeText(getApplicationContext(), getString(R.string.timeline_items_refreshed), Toast.LENGTH_SHORT).show();
             }
             refreshLayout.setRefreshing(false);
+
+            if (isSearch) {
+                refreshLayout.setEnabled(false);
+            }
         }
     }
 

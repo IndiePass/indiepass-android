@@ -12,6 +12,7 @@
         android:id="@+id/channel_search"
         android:title="@string/search"
         android:icon="@drawable/search_white"
+        app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always" />
 
     <item

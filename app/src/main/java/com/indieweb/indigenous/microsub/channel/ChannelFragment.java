@@ -1,11 +1,14 @@
 package com.indieweb.indigenous.microsub.channel;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +30,7 @@ import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.microsub.manage.ManageChannelActivity;
+import com.indieweb.indigenous.microsub.timeline.TimelineActivity;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
@@ -51,6 +55,9 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
     private List<Channel> Channels = new ArrayList<>();
     User user;
     String debugResponse;
+
+    private SearchView searchView = null;
+    private SearchView.OnQueryTextListener queryTextListener;
 
     @Nullable
     @Override
@@ -228,7 +235,33 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
         if (search) {
             MenuItem item = menu.findItem(R.id.channel_search);
             if (item != null) {
-                //item.setVisible(true);
+                item.setVisible(true);
+
+                SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+                searchView = (SearchView) item.getActionView();
+
+                if (searchView != null) {
+                    searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().getComponentName()));
+
+                    queryTextListener = new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextChange(String newText) {
+                            return true;
+                        }
+                        @Override
+                        public boolean onQueryTextSubmit(String query) {
+                            if (query.length() > 0) {
+                                Intent timelineActivity = new Intent(getContext(), TimelineActivity.class);
+                                timelineActivity.putExtra("channelId", "global");
+                                timelineActivity.putExtra("search", query);
+                                startActivity(timelineActivity);
+                            }
+                            return true;
+                        }
+                    };
+                    searchView.setOnQueryTextListener(queryTextListener);
+                }
+
             }
         }
 
@@ -256,22 +289,11 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
                 app.setDebug(debugResponse);
                 startActivity(i);
                 return true;
-
-            case R.id.timeline_search:
-                //onSearchRequested();
-                return true;
         }
+
+        searchView.setOnQueryTextListener(queryTextListener);
 
         return super.onOptionsItemSelected(item);
     }
-
-    /*@Override
-    public boolean onSearchRequested() {
-        Bundle appData = new Bundle();
-        appData.putString("channelId", "global");
-        startSearch(null, false, appData, false);
-
-        return super.onSearchRequested();
-    }*/
 
 }

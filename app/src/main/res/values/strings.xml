@@ -188,7 +188,7 @@
     <string name="pref_key_static_map_summary">Show a static map on checkin posts, as long as the checkin post does not contain pictures</string>
     <string name="pref_key_mark_read_title">Mark items read</string>
     <string name="pref_key_mark_read_summary">Either automatically mark all items read when viewing a channel (per page), or manually with a "Mark all read" button per channel and "Mark read" action in the item menu.</string>
-    <string name="pref_key_search_title">Search</string>
+    <string name="pref_key_search_title">Channel search</string>
     <string name="pref_key_search_summary">Allows to search in a channel for posts</string>
     <string name="pref_key_search_global_title">Global search</string>
     <string name="pref_key_search_global_summary">Allows to search in for posts across all channels</string>
