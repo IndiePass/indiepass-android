@@ -554,7 +554,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
                         String imagePostParam = "photo_multiple_[" + i + "]";
                         if (isMediaRequest) {
-                            imagePostParam = "file_multiple_[" + i + "]";
+                            imagePostParam = "file";
                         }
                         i++;
 
