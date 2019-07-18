@@ -52,11 +52,15 @@ public class Utility {
      * @return text
      */
     public static CharSequence trim(CharSequence text) {
-        if (text.length() > 0) {
-            while (text.charAt(text.length() - 1) == '\n') {
-                text = text.subSequence(0, text.length() - 1);
+        try {
+            if (text.length() > 0) {
+                while (text.charAt(text.length() - 1) == '\n') {
+                    text = text.subSequence(0, text.length() - 1);
+                }
             }
         }
+        catch (Exception ignored) {}
+
         return text;
     }
 
