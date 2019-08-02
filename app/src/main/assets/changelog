@@ -5,6 +5,7 @@
     <li>Allow to add a 'Unread items' channel</li>
     <li>Media request fix (array vs single)</li>
     <li>Accessibility improvements</li>
+    <li>Fix crash switching portrait and landscape</li>
 </ul>
 <h4>03/05/2019 - 0.42</h4>
 <ul>

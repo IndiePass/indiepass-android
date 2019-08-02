@@ -181,7 +181,10 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), getString(R.string.channels_not_found), Toast.LENGTH_SHORT).show();
+                        Context context = getContext();
+                        if (context != null) {
+                            Toast.makeText(requireContext(), getString(R.string.channels_not_found), Toast.LENGTH_SHORT).show();
+                        }
                         checkRefreshingStatus();
                     }
                 }
