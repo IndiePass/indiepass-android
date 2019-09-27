@@ -42,5 +42,7 @@
             android:layout_height="wrap_content">
         </LinearLayout>
 
+        <include layout="@layout/widget_image_preview" />
+
     </LinearLayout>
 </ScrollView>

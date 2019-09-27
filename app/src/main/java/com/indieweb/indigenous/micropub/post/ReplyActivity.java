@@ -14,6 +14,7 @@ public class ReplyActivity extends BaseCreate {
         postType = "Reply";
         urlPostKey = "in-reply-to";
         addCounter = true;
+        canAddImage = true;
         setContentView(R.layout.activity_reply);
         super.onCreate(savedInstanceState);
     }
