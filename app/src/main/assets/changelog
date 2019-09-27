@@ -1,6 +1,7 @@
 <h4>xx/xx/2019 - 0.43 / 0.44</h4>
 <ul>
     <li>Allow global search</li>
+    <li>Fix link to GitHub</li>
     <li>Fix crash in trimming content</li>
     <li>Allow to add a 'Unread items' channel</li>
     <li>Media request fix (array vs single)</li>
