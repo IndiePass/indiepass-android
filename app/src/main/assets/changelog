@@ -1,13 +1,14 @@
 <h4>xx/xx/2019 - 0.43 / 0.44</h4>
 <ul>
-    <li>Allow global search</li>
     <li>Fix link to GitHub</li>
+    <li>Allow global search</li>
+    <li>Accessibility improvements</li>
     <li>Fix crash in trimming content</li>
     <li>Allow image upload on reply post</li>
     <li>Allow to add a 'Unread items' channel</li>
     <li>Media request fix (array vs single)</li>
-    <li>Accessibility improvements</li>
     <li>Fix crash switching portrait and landscape</li>
+    <li>Configure auto submit of share intents (like, bookmark, repost)
 </ul>
 <h4>03/05/2019 - 0.42</h4>
 <ul>

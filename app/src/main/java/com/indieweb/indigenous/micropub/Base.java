@@ -84,7 +84,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public Spinner rsvp;
     public TextView publishDate;
     public String urlPostKey;
-    public String directSend = "";
+    public String autoSubmit = "";
     public String hType = "entry";
     public String postType = "Post";
     public Spinner geocacheLogType;

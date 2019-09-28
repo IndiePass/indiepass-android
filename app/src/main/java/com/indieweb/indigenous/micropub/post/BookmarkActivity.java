@@ -13,7 +13,7 @@ public class BookmarkActivity extends BaseCreate {
     protected void onCreate(Bundle savedInstanceState) {
         postType = "Bookmark";
         urlPostKey = "bookmark-of";
-        directSend = "pref_key_share_expose_bookmark";
+        autoSubmit = "pref_key_share_bookmark_auto_submit";
         addCounter = true;
         setContentView(R.layout.activity_bookmark);
         super.onCreate(savedInstanceState);

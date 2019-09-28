@@ -133,8 +133,8 @@ abstract public class BaseCreate extends BasePlatformCreate {
                         if (incomingData != null && incomingData.length() > 0) {
                             if (url != null) {
                                 setUrlAndFocusOnMessage(incomingData);
-                                if (directSend.length() > 0) {
-                                    if (Preferences.getPreference(this, directSend, false)) {
+                                if (autoSubmit.length() > 0) {
+                                    if (Preferences.getPreference(this, autoSubmit, false)) {
                                         sendBasePost(null);
                                     }
                                 }

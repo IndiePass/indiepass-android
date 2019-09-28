@@ -21,18 +21,30 @@
 
         <SwitchPreference
             android:key="pref_key_share_expose_like"
-            android:summary="@string/pref_summary_expose_like"
             android:title="@string/pref_share_like_enabled"
             android:defaultValue="false" />
         <SwitchPreference
+            android:key="pref_key_share_like_auto_submit"
+            android:title="@string/pref_share_like_auto_submit"
+            android:dependency="pref_key_share_expose_like"
+            android:defaultValue="false" />
+        <SwitchPreference
             android:key="pref_key_share_expose_bookmark"
-            android:summary="@string/pref_summary_expose_bookmark"
             android:title="@string/pref_share_bookmark_enabled"
             android:defaultValue="false" />
         <SwitchPreference
+            android:key="pref_key_share_bookmark_auto_submit"
+            android:title="@string/pref_share_bookmark_auto_submit"
+            android:dependency="pref_key_share_expose_bookmark"
+            android:defaultValue="false" />
+        <SwitchPreference
             android:key="pref_key_share_expose_repost"
-            android:summary="@string/pref_summary_expose_repost"
             android:title="@string/pref_share_repost_enabled"
+            android:defaultValue="false" />
+        <SwitchPreference
+            android:key="pref_key_share_repost_auto_submit"
+            android:title="@string/pref_share_repost_auto_submit"
+            android:dependency="pref_key_share_expose_repost"
             android:defaultValue="false" />
         <SwitchPreference
             android:key="pref_key_share_expose_reply"
