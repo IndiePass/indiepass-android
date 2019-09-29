@@ -4,8 +4,10 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+import androidx.viewpager.widget.ViewPager;
+
 // See https://github.com/chrisbanes/PhotoView/issues/31#issuecomment-19803926
-public class ViewPagerCatchException extends android.support.v4.view.ViewPager {
+public class ViewPagerCatchException extends ViewPager {
 
     public ViewPagerCatchException(Context context) {
         super(context);

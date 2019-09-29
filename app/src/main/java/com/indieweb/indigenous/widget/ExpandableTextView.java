@@ -5,8 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -37,7 +37,7 @@ import java.util.List;
  *
  *  remove unused listeners as well.
  */
-public class ExpandableTextView extends android.support.v7.widget.AppCompatTextView
+public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextView
 {
     private static final int DEFAULT_ANIMATION_DURATION = 750;
     private final List<OnExpandListener> onExpandListeners;
