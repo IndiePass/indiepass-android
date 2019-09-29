@@ -68,6 +68,9 @@ to verify the authorization code. Install a browser like Firefox (any flavor) so
 - When your account requires 2FA, put the apps in split screen mode, see
 https://github.com/swentel/indigenous-android/issues/210
 
+#### Notifications don't arrive after the app is closed
+
+This is due to new default settings in the latest Android versions. Try turning of battery optimization for the Indigenous app and it should work fine.
 
 ## iOS
 
