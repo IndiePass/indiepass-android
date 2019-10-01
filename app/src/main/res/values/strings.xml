@@ -152,7 +152,7 @@
     <string name="pref_category_sharing_title">Share</string>
     <string name="pref_category_sharing_summary">You can share text, URL\'s and images from other applications to Indigenous. You can also expose several post types (like, bookmark ..) as share intents directly.</string>
     <string name="pref_share_like_enabled">Enable like in share intents</string>
-    <string name="pref_share_repost_enabled">Enable bookmark in share intents</string>
+    <string name="pref_share_repost_enabled">Enable repost in share intents</string>
     <string name="pref_share_bookmark_enabled">Enable bookmark in share intents</string>
     <string name="pref_share_like_auto_submit">Automatically post the like</string>
     <string name="pref_share_repost_auto_submit">Automatically post the repost</string>
