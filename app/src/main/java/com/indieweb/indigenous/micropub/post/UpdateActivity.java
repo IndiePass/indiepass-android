@@ -185,6 +185,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json");
+                headers.put("Content-type", "application/json");
                 headers.put("Authorization", "Bearer " + user.getAccessToken());
                 return headers;
             }
