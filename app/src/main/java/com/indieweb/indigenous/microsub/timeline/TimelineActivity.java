@@ -530,6 +530,16 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                     textContent = object.getString("summary");
                                 }
 
+                                // RSVP
+                                if (object.has("rsvp")) {
+                                    try {
+                                        if (addContent) {
+                                            textContent = "RSVP: " + object.getString("rsvp");
+                                        }
+                                    }
+                                    catch (JSONException ignored) {}
+                                }
+
                                 // Name.
                                 if (object.has("name")) {
                                     name = object.getString("name").replace("\n", "").replace("\r", "");
