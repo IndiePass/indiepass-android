@@ -387,8 +387,10 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
             @Override
             protected Map<String, String> getParams() {
 
-                // Send along access token too, Wordpress scans for the token in the body.
-                bodyParams.put("access_token", user.getAccessToken());
+                // Send along access token if configured.
+                if (Preferences.getPreference(getApplicationContext(), "pref_key_access_token_body", false)) {
+                    bodyParams.put("access_token", user.getAccessToken());
+                }
 
                 // h type.
                 if (!isMediaRequest) {
@@ -500,7 +502,12 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json");
-                headers.put("Authorization", "Bearer " + user.getAccessToken());
+
+                // Send access token in header by default.
+                if (!Preferences.getPreference(getApplicationContext(), "pref_key_access_token_body", false)) {
+                    headers.put("Authorization", "Bearer " + user.getAccessToken());
+                }
+
                 return headers;
             }
 

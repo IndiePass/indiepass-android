@@ -16,6 +16,7 @@ import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Connection;
+import com.indieweb.indigenous.util.Preferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,8 +83,10 @@ public class MicropubAction {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
 
-                // Send along access token too, Wordpress scans for the token in the body.
-                params.put("access_token", user.getAccessToken());
+                // Send along access token if configured.
+                if (Preferences.getPreference(context, "pref_key_access_token_body", false)) {
+                    params.put("access_token", user.getAccessToken());
+                }
 
                 // Put url and action.
                 params.put("url", url);
@@ -96,7 +99,12 @@ public class MicropubAction {
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Accept", "application/json");
-                headers.put("Authorization", "Bearer " + user.getAccessToken());
+
+                // Send access token in header by default.
+                if (!Preferences.getPreference(context, "pref_key_access_token_body", false)) {
+                    headers.put("Authorization", "Bearer " + user.getAccessToken());
+                }
+
                 return headers;
             }
         };

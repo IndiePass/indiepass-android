@@ -1,5 +1,7 @@
 <h4>xx/xx/xxxx - 0.45</h4>
-
+<ul>
+    <li>Access token in micropub requests is send in the header by default. Can be configured to send along with the body.</li>
+</ul>
 <h4>29/09/2019 - 0.43 / 0.44</h4>
 <ul>
     <li>Fix link to GitHub</li>

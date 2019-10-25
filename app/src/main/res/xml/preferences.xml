@@ -95,6 +95,11 @@
             android:title="@string/pref_key_post_type_hide_title"
             android:summary="@string/pref_key_post_type_hide_summary"
             android:defaultValue="false" />
+        <SwitchPreference
+            android:key="pref_key_access_token_body"
+            android:title="@string/pref_key_access_token_body_title"
+            android:summary="@string/pref_key_access_token_body_summary"
+            android:defaultValue="false" />
 
     </PreferenceCategory>
 
