@@ -531,11 +531,9 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                 }
 
                                 // RSVP
-                                if (object.has("rsvp")) {
+                                if (object.has("rsvp") && addContent) {
                                     try {
-                                        if (addContent) {
-                                            textContent = "RSVP: " + object.getString("rsvp");
-                                        }
+                                        textContent = "RSVP: " + object.getString("rsvp");
                                     }
                                     catch (JSONException ignored) {}
                                 }
