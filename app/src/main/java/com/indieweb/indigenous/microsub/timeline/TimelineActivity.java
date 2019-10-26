@@ -628,7 +628,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
                             // Notify
                             if (!isGlobalUnread && !isSourceView && (unread > 0 || unread == -1) && entries.size() > 0 && Preferences.getPreference(getApplicationContext(), "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_CHANNEL_CLICK) {
-                                //new MicrosubAction(TimelineActivity.this, user).markRead(channelId, entries, false);
+                                new MicrosubAction(TimelineActivity.this, user).markRead(channelId, entries, false);
                             }
 
                             // Add mark read.
