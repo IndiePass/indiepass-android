@@ -236,7 +236,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.name.setVisibility(View.VISIBLE);
                 holder.name.setText(item.getName());
             }
-            else if (item.getTextContent().length() > 0) {
+            else if (Style == TIMELINE_STYLE_COMPACT && item.getTextContent().length() > 0) {
                 holder.name.setVisibility(View.VISIBLE);
                 int length = item.getTextContent().length();
                 String elipsis = "";
