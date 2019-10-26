@@ -47,14 +47,13 @@ import java.util.Map;
 
 public class ChannelFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    TextView noMicrosubEndpoint;
-    boolean showRefreshMessage = false;
-    ListView listChannel;
-    SwipeRefreshLayout refreshLayout;
+    private boolean showRefreshMessage = false;
+    private ListView listChannel;
+    private SwipeRefreshLayout refreshLayout;
     private ChannelListAdapter adapter;
     private List<Channel> Channels = new ArrayList<>();
-    User user;
-    String debugResponse;
+    private User user;
+    private String debugResponse;
 
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
@@ -87,7 +86,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
         else {
             refreshLayout.setVisibility(View.GONE);
             listChannel.setVisibility(View.GONE);
-            noMicrosubEndpoint = view.findViewById(R.id.noMicrosubEndpoint);
+            TextView noMicrosubEndpoint = view.findViewById(R.id.noMicrosubEndpoint);
             noMicrosubEndpoint.setVisibility(View.VISIBLE);
         }
     }
@@ -95,7 +94,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
     /**
      * Start channels.
      */
-    public void startChannels() {
+    private void startChannels() {
         Channels = new ArrayList<>();
         listChannel.setVisibility(View.VISIBLE);
         adapter = new ChannelListAdapter(requireContext(), Channels);
@@ -112,7 +111,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
     /**
      * Get channels.
      */
-    public void loadChannels() {
+    private void loadChannels() {
 
         String microsubEndpoint = user.getMicrosubEndpoint();
 
@@ -206,7 +205,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
     /**
      * Checks the state of the pull to refresh.
      */
-    public void checkRefreshingStatus() {
+    private void checkRefreshingStatus() {
         if (refreshLayout.isRefreshing()) {
             if (showRefreshMessage) {
                 Toast.makeText(getContext(), getString(R.string.channels_refreshed), Toast.LENGTH_SHORT).show();
@@ -223,7 +222,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.channel_menu, menu);
 
         boolean debugJson = Preferences.getPreference(getActivity(), "pref_key_debug_microsub_channels", false);
