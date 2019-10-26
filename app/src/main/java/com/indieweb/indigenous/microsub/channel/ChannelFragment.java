@@ -158,13 +158,16 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
                                 Channels.add(index++, channel);
                             }
 
-                            if (Preferences.getPreference(getContext(), "pref_key_unread_items_channel", false) && unreadChannels > 1 && totalUnread > 0) {
-                                Channel channel = new Channel();
-                                channel.setUid("global");
-                                channel.setName("Unread items");
-                                channel.setUnread(totalUnread);
-                                Channels.add(0, channel);
+                            try {
+                                if (Preferences.getPreference(getContext(), "pref_key_unread_items_channel", false) && unreadChannels > 1 && totalUnread > 0) {
+                                    Channel channel = new Channel();
+                                    channel.setUid("global");
+                                    channel.setName("Unread items");
+                                    channel.setUnread(totalUnread);
+                                    Channels.add(0, channel);
+                                }
                             }
+                            catch (Exception ignored) {}
 
                             adapter.notifyDataSetChanged();
                             checkRefreshingStatus();
