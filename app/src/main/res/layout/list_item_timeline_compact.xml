@@ -1,0 +1,37 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:id="@+id/timeline_item_row"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/timeline_list_item_padding"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/timeline_new"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/timeline_list_item_global" />
+
+    <TextView
+        android:id="@+id/timeline_author"
+        android:textColor="@color/textColor"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/timeline_list_item_text_size"
+        android:layout_width="fill_parent" />
+
+    <TextView
+        android:id="@+id/timeline_published"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/timeline_list_item_global"
+        android:textColor="@color/textColor"
+        android:layout_width="fill_parent" />
+
+    <TextView
+        android:id="@+id/timeline_name"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/timeline_list_item_text_size"
+        android:layout_width="fill_parent" />
+
+</LinearLayout>

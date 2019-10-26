@@ -2,8 +2,11 @@ package com.indieweb.indigenous.microsub.timeline;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -23,11 +26,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.TimelineItem;
+import com.indieweb.indigenous.model.TimelineStyle;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Preferences;
@@ -74,6 +79,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     String[] olderItems;
     String debugResponse;
     User user;
+    Integer style;
 
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
@@ -132,6 +138,11 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 refreshLayout.setOnRefreshListener(this);
             }
             user = new Accounts(this).getCurrentUser();
+
+            // Get style.
+            DatabaseHelper db = new DatabaseHelper(TimelineActivity.this);
+            style = db.getStyle(channelId);
+
             startTimeline();
         }
         else {
@@ -223,6 +234,33 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 Toast.makeText(getApplicationContext(), "Marked all as read", Toast.LENGTH_SHORT).show();
                 return true;
 
+            case R.id.timeline_style:
+                final AlertDialog.Builder builder = new AlertDialog.Builder(TimelineActivity.this);
+                final DatabaseHelper db = new DatabaseHelper(TimelineActivity.this);
+                final CharSequence[] styleOptions = {"Compact", "Extended"};
+                builder.setTitle("Select style");
+                builder.setCancelable(true);
+                builder.setNegativeButton(getApplicationContext().getString(R.string.close), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int index) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setSingleChoiceItems(styleOptions, db.getStyle(channelId), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int index) {
+                        TimelineStyle s = new TimelineStyle();
+                        s.setType(index);
+                        s.setChannelId(channelId);
+                        db.saveTimelineStyle(s);
+                        style = index;
+                        dialog.dismiss();
+                        startTimeline();
+                    }
+                });
+                builder.show();
+
+                return true;
         }
 
         if (searchView != null) {
@@ -259,7 +297,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
      */
     public void startTimeline() {
         TimelineItems = new ArrayList<>();
-        adapter = new TimelineListAdapter(this, TimelineItems, user, channelId, listView, isSourceView);
+        adapter = new TimelineListAdapter(this, TimelineItems, user, channelId, listView, isSourceView, style);
         listView.setAdapter(adapter);
         getTimeLineItems("");
     }
@@ -590,7 +628,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
                             // Notify
                             if (!isGlobalUnread && !isSourceView && (unread > 0 || unread == -1) && entries.size() > 0 && Preferences.getPreference(getApplicationContext(), "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_CHANNEL_CLICK) {
-                                new MicrosubAction(TimelineActivity.this, user).markRead(channelId, entries, false);
+                                //new MicrosubAction(TimelineActivity.this, user).markRead(channelId, entries, false);
                             }
 
                             // Add mark read.

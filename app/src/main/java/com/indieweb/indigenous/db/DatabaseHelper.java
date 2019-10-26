@@ -7,13 +7,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.indieweb.indigenous.model.Draft;
+import com.indieweb.indigenous.model.TimelineStyle;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_NORMAL;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 16;
+    private static final int DATABASE_VERSION = 18;
     private static final String DATABASE_NAME = "indigenous";
 
     public DatabaseHelper(Context context) {
@@ -23,12 +26,52 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(Draft.CREATE_TABLE);
+        db.execSQL(TimelineStyle.CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + Draft.TABLE_NAME);
-        onCreate(db);
+        db.execSQL(TimelineStyle.CREATE_TABLE);
+    }
+
+    /**
+     * Get a timeline style.
+     */
+    public int getStyle(String channelId) {
+        int style = TIMELINE_STYLE_NORMAL;
+
+        // Select query
+        String selectQuery = "SELECT " + TimelineStyle.COLUMN_TYPE + " FROM " + TimelineStyle.TABLE_NAME + " WHERE " + TimelineStyle.COLUMN_CHANNEL_ID + "='" + channelId + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // Get result
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            style = cursor.getInt(cursor.getColumnIndex(TimelineStyle.COLUMN_TYPE));
+            cursor.close();
+        }
+
+        // close db connection
+        db.close();
+
+        return style;
+    }
+
+    /**
+     * Saves a Timeline style.
+     */
+    public void saveTimelineStyle(TimelineStyle t) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(TimelineStyle.COLUMN_TYPE, t.getType());
+        values.put(TimelineStyle.COLUMN_CHANNEL_ID, t.getChannelId());
+
+        db.delete(TimelineStyle.TABLE_NAME, TimelineStyle.COLUMN_CHANNEL_ID + "=" + t.getChannelId(), null);
+        db.insert(TimelineStyle.TABLE_NAME, null, values);
+
+        db.close();
     }
 
     /**
@@ -140,14 +183,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Draft> getDrafts(String account) {
         List<Draft> drafts = new ArrayList<>();
 
-        // Select All Query
-        String selectQuery = "SELECT  * FROM " + Draft.TABLE_NAME + " WHERE " + Draft.COLUMN_ACCOUNT + "='" + account + "' " +
+        // Select query
+        String selectQuery = "SELECT * FROM " + Draft.TABLE_NAME + " WHERE " + Draft.COLUMN_ACCOUNT + "='" + account + "' " +
                 "ORDER BY " + Draft.COLUMN_TIMESTAMP + " DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        // looping through all rows and adding to list.
+        // Looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
                 Draft draft = new Draft();

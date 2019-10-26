@@ -18,6 +18,7 @@ import android.text.style.URLSpan;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -40,6 +41,8 @@ import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.microsub.MicrosubAction;
+import com.indieweb.indigenous.microsub.channel.ChannelListAdapter;
+import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Preferences;
@@ -55,6 +58,8 @@ import java.util.List;
 
 import static com.indieweb.indigenous.microsub.timeline.TimelineActivity.MARK_READ_CHANNEL_CLICK;
 import static com.indieweb.indigenous.microsub.timeline.TimelineActivity.MARK_READ_MANUAL;
+import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_COMPACT;
+import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_NORMAL;
 
 /**
  * Timeline items list adapter.
@@ -71,15 +76,17 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     private final User user;
     private final String channelId;
     private final ListView listView;
+    private final int Style;
     private List<String> dateFormatStrings = Arrays.asList("yyyy-MM-dd'T'kk:mm:ssZ", "yyyy-MM-dd'T'kk:mm:ss", "yyyy-MM-dd kk:mm:ssZ", "yyyy-MM-dd kk:mmZ");
 
-    TimelineListAdapter(Context context, List<TimelineItem> items, User user, String channelId, ListView listView, boolean isSourceView) {
+    TimelineListAdapter(Context context, List<TimelineItem> items, User user, String channelId, ListView listView, boolean isSourceView, int style) {
         this.context = context;
         this.items = items;
         this.user = user;
         this.channelId = channelId;
         this.listView = listView;
         this.isSourceView = isSourceView;
+        this.Style = style;
         this.imagePreview = Preferences.getPreference(context, "pref_key_image_preview", true);
         this.staticMap = Preferences.getPreference(context, "pref_key_static_map", true);
         this.debugItemJSON = Preferences.getPreference(context, "pref_key_debug_microsub_item_json", false);
@@ -101,6 +108,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     public void onClick(View view) {}
 
     public static class ViewHolder {
+        public int position;
         public TextView unread;
         public TextView channel;
         public TextView author;
@@ -131,40 +139,54 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         final ViewHolder holder;
 
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.list_item_timeline, null);
+
+            if (Style == TIMELINE_STYLE_COMPACT) {
+                convertView = mInflater.inflate(R.layout.list_item_timeline_compact, null);
+            }
+            else {
+                convertView = mInflater.inflate(R.layout.list_item_timeline, null);
+            }
+
             holder = new ViewHolder();
             holder.unread = convertView.findViewById(R.id.timeline_new);
             holder.published = convertView.findViewById(R.id.timeline_published);
-            holder.channel = convertView.findViewById(R.id.timeline_channel);
-            holder.author = convertView.findViewById(R.id.timeline_author);
-            holder.authorPhoto = convertView.findViewById(R.id.timeline_author_photo);
             holder.name = convertView.findViewById(R.id.timeline_name);
-            holder.reference = convertView.findViewById(R.id.timeline_reference);
-            holder.response = convertView.findViewById(R.id.timeline_response);
-            holder.content = convertView.findViewById(R.id.timeline_content);
-            holder.expand = convertView.findViewById(R.id.timeline_content_more);
-            holder.image = convertView.findViewById(R.id.timeline_image);
-            holder.imageCount = convertView.findViewById(R.id.timeline_image_count);
-            holder.card = convertView.findViewById(R.id.timeline_card);
             holder.row = convertView.findViewById(R.id.timeline_item_row);
-            holder.reply = convertView.findViewById(R.id.itemReply);
-            holder.bookmark = convertView.findViewById(R.id.itemBookmark);
-            holder.like = convertView.findViewById(R.id.itemLike);
-            holder.repost = convertView.findViewById(R.id.itemRepost);
-            holder.audio = convertView.findViewById(R.id.itemAudio);
-            holder.video = convertView.findViewById(R.id.itemVideo);
-            holder.external = convertView.findViewById(R.id.itemExternal);
-            holder.rsvp = convertView.findViewById(R.id.itemRSVP);
-            holder.map = convertView.findViewById(R.id.itemMap);
-            holder.menu = convertView.findViewById(R.id.itemMenu);
+            holder.author = convertView.findViewById(R.id.timeline_author);
+
+            // Normal version.
+            if (Style == TIMELINE_STYLE_NORMAL) {
+                holder.channel = convertView.findViewById(R.id.timeline_channel);
+                holder.authorPhoto = convertView.findViewById(R.id.timeline_author_photo);
+                holder.reference = convertView.findViewById(R.id.timeline_reference);
+                holder.response = convertView.findViewById(R.id.timeline_response);
+                holder.content = convertView.findViewById(R.id.timeline_content);
+                holder.expand = convertView.findViewById(R.id.timeline_content_more);
+                holder.image = convertView.findViewById(R.id.timeline_image);
+                holder.imageCount = convertView.findViewById(R.id.timeline_image_count);
+                holder.card = convertView.findViewById(R.id.timeline_card);
+                holder.reply = convertView.findViewById(R.id.itemReply);
+                holder.bookmark = convertView.findViewById(R.id.itemBookmark);
+                holder.like = convertView.findViewById(R.id.itemLike);
+                holder.repost = convertView.findViewById(R.id.itemRepost);
+                holder.audio = convertView.findViewById(R.id.itemAudio);
+                holder.video = convertView.findViewById(R.id.itemVideo);
+                holder.external = convertView.findViewById(R.id.itemExternal);
+                holder.rsvp = convertView.findViewById(R.id.itemRSVP);
+                holder.map = convertView.findViewById(R.id.itemMap);
+                holder.menu = convertView.findViewById(R.id.itemMenu);
+            }
+
             convertView.setTag(holder);
         }
         else {
-            holder = (ViewHolder)convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
 
         final TimelineItem item = items.get(position);
         if (item != null) {
+
+            holder.position = position;
 
             // Color of row.
             int color = context.getResources().getColor(R.color.listRowBackgroundColor);
@@ -177,15 +199,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
             else {
                 holder.unread.setVisibility(View.GONE);
-            }
-
-            // Channel.
-            if (item.getChannelName().length() > 0) {
-                holder.channel.setVisibility(View.VISIBLE);
-                holder.channel.setText(item.getChannelName());
-            }
-            else {
-                holder.channel.setVisibility(View.GONE);
             }
 
             // Published.
@@ -218,271 +231,330 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.author.setVisibility(View.GONE);
             }
 
-            // Author photo.
-            Glide.with(context)
-                    .load(item.getAuthorPhoto())
-                    .apply(RequestOptions.circleCropTransform().placeholder(R.drawable.avatar_small))
-                    .into(holder.authorPhoto);
-
-            // Source view.
-            if (!isSourceView && Preferences.getPreference(context, "pref_key_author_timeline", false)) {
-                holder.authorPhoto.setOnClickListener(new OnAuthorClickListener(position));
-            }
-
             // Name.
             if ((item.getType().equals("entry") || item.getType().equals("event")) && item.getName().length() > 0) {
                 holder.name.setVisibility(View.VISIBLE);
                 holder.name.setText(item.getName());
             }
+            else if (item.getTextContent().length() > 0) {
+                holder.name.setVisibility(View.VISIBLE);
+                int length = item.getTextContent().length();
+                String elipsis = "";
+                if (length > 100) {
+                    length = 100;
+                    elipsis = " ...";
+                }
+                // TODO remove newlines
+                holder.name.setText(item.getTextContent().substring(0, length) + elipsis);
+            }
             else {
                 holder.name.setVisibility(View.GONE);
             }
 
-            String ResponseData = "";
-            if (item.getType().equals("bookmark-of") || item.getType().equals("repost-of") || item.getType().equals("quotation-of") || item.getType().equals("in-reply-to") || item.getType().equals("like-of") || item.getType().equals("checkin")) {
-                String ResponseText = "";
-                String ResponseUrl = "";
-                String ResponseLinkText = "";
-                switch (item.getType()) {
-                    case "in-reply-to":
-                        ResponseText = "In reply to";
-                        ResponseUrl = item.getResponseType("in-reply-to");
-                        ResponseLinkText = ResponseUrl;
-                        break;
-                    case "like-of":
-                        ResponseText = "Like of";
-                        ResponseUrl = item.getResponseType("like-of");
-                        ResponseLinkText = ResponseUrl;
-                        break;
-                    case "repost-of":
-                    case "quotation-of":
-                        ResponseText = "Repost of";
-                        ResponseUrl = item.getResponseType(item.getType());
-                        ResponseLinkText = ResponseUrl;
-                        break;
-                    case "bookmark-of":
-                        ResponseText = "Bookmark of";
-                        ResponseUrl = item.getResponseType("bookmark-of");
-                        ResponseLinkText = ResponseUrl;
-                        break;
-                    case "checkin":
-                        ResponseText = "Checked in at ";
-                        ResponseUrl = item.getResponseType("checkin-url");
-                        ResponseLinkText = item.getResponseType("checkin");
-                        break;
+            // Normal version.
+            if (Style == TIMELINE_STYLE_NORMAL) {
+
+                // Channel.
+                if (item.getChannelName().length() > 0) {
+                    holder.channel.setVisibility(View.VISIBLE);
+                    holder.channel.setText(item.getChannelName());
+                }
+                else {
+                    holder.channel.setVisibility(View.GONE);
                 }
 
-                try {
-                    if (ResponseText.length() > 0 && ResponseUrl.length() > 0) {
-                        ResponseData = ResponseText + " <a href=\"" + ResponseUrl + "\">" + ResponseLinkText + "</a>";
-                    }
-                }
-                catch (Exception ignored) { }
-            }
+                // Author photo.
+                Glide.with(context)
+                        .load(item.getAuthorPhoto())
+                        .apply(RequestOptions.circleCropTransform().placeholder(R.drawable.avatar_small))
+                        .into(holder.authorPhoto);
 
-            if (ResponseData.length() > 0) {
-                holder.response.setVisibility(View.VISIBLE);
-                //holder.context.setClickable(true);
-
-                CharSequence sequence = Html.fromHtml(ResponseData);
-                SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
-                URLSpan[] urls = strBuilder.getSpans(0, sequence.length(), URLSpan.class);
-                for (URLSpan span : urls) {
-                    makeLinkClickable(strBuilder, span);
+                // Source view.
+                if (!isSourceView && Preferences.getPreference(context, "pref_key_author_timeline", false)) {
+                    holder.authorPhoto.setOnClickListener(new OnAuthorClickListener(position));
                 }
 
-                holder.response.setText(strBuilder);
-                holder.response.setMovementMethod(LinkMovementMethod.getInstance());
-            }
-            else {
-                holder.response.setVisibility(View.GONE);
-            }
-
-            // Content.
-            if (item.getHtmlContent().length() > 0 || item.getTextContent().length() > 0) {
-
-                holder.content.setVisibility(View.VISIBLE);
-
-                if (item.getHtmlContent().length() > 0) {
-                    CharSequence sequence;
-                    String html = item.getHtmlContent();
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                        sequence = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
+                String ResponseData = "";
+                if (item.getType().equals("bookmark-of") || item.getType().equals("repost-of") || item.getType().equals("quotation-of") || item.getType().equals("in-reply-to") || item.getType().equals("like-of") || item.getType().equals("checkin")) {
+                    String ResponseText = "";
+                    String ResponseUrl = "";
+                    String ResponseLinkText = "";
+                    switch (item.getType()) {
+                        case "in-reply-to":
+                            ResponseText = "In reply to";
+                            ResponseUrl = item.getResponseType("in-reply-to");
+                            ResponseLinkText = ResponseUrl;
+                            break;
+                        case "like-of":
+                            ResponseText = "Like of";
+                            ResponseUrl = item.getResponseType("like-of");
+                            ResponseLinkText = ResponseUrl;
+                            break;
+                        case "repost-of":
+                        case "quotation-of":
+                            ResponseText = "Repost of";
+                            ResponseUrl = item.getResponseType(item.getType());
+                            ResponseLinkText = ResponseUrl;
+                            break;
+                        case "bookmark-of":
+                            ResponseText = "Bookmark of";
+                            ResponseUrl = item.getResponseType("bookmark-of");
+                            ResponseLinkText = ResponseUrl;
+                            break;
+                        case "checkin":
+                            ResponseText = "Checked in at ";
+                            ResponseUrl = item.getResponseType("checkin-url");
+                            ResponseLinkText = item.getResponseType("checkin");
+                            break;
                     }
-                    else {
-                        sequence = Html.fromHtml(html);
+
+                    try {
+                        if (ResponseText.length() > 0 && ResponseUrl.length() > 0) {
+                            ResponseData = ResponseText + " <a href=\"" + ResponseUrl + "\">" + ResponseLinkText + "</a>";
+                        }
                     }
+                    catch (Exception ignored) { }
+                }
 
-                    // Trim end.
-                    sequence = Utility.trim(sequence);
+                if (ResponseData.length() > 0) {
+                    holder.response.setVisibility(View.VISIBLE);
+                    //holder.context.setClickable(true);
 
+                    CharSequence sequence = Html.fromHtml(ResponseData);
                     SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
                     URLSpan[] urls = strBuilder.getSpans(0, sequence.length(), URLSpan.class);
                     for (URLSpan span : urls) {
                         makeLinkClickable(strBuilder, span);
                     }
-                    holder.content.setText(strBuilder);
-                    holder.content.setMovementMethod(LinkMovementMethod.getInstance());
+
+                    holder.response.setText(strBuilder);
+                    holder.response.setMovementMethod(LinkMovementMethod.getInstance());
+                }
+                else {
+                    holder.response.setVisibility(View.GONE);
+                }
+
+                // Content.
+                if (item.getHtmlContent().length() > 0 || item.getTextContent().length() > 0) {
+
+                    holder.content.setVisibility(View.VISIBLE);
+
+                    if (item.getHtmlContent().length() > 0) {
+                        CharSequence sequence;
+                        String html = item.getHtmlContent();
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                            sequence = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
+                        } else {
+                            sequence = Html.fromHtml(html);
+                        }
+
+                        // Trim end.
+                        sequence = Utility.trim(sequence);
+
+                        SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
+                        URLSpan[] urls = strBuilder.getSpans(0, sequence.length(), URLSpan.class);
+                        for (URLSpan span : urls) {
+                            makeLinkClickable(strBuilder, span);
+                        }
+                        holder.content.setText(strBuilder);
+                        holder.content.setMovementMethod(LinkMovementMethod.getInstance());
+                    }
+                    else {
+                        holder.content.setMovementMethod(null);
+                        holder.content.setText(item.getTextContent().trim());
+                    }
+
+                    if (item.getTextContent().length() > 400) {
+                        holder.expand.setVisibility(View.VISIBLE);
+
+                        holder.expand.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(final View v) {
+                                if (holder.content.isExpanded()) {
+                                    holder.content.collapse();
+                                    holder.expand.setText(R.string.read_more);
+                                } else {
+                                    holder.content.expand();
+                                    holder.expand.setText(R.string.close);
+                                }
+                            }
+                        });
+
+                        // Set listener on end collapse.
+                        holder.content.addOnExpandListener(new ExpandableTextView.OnExpandListener() {
+                            @Override
+                            public void onEndCollapse(@NonNull ExpandableTextView view) {
+                                listView.setSelection(position);
+                            }
+                        });
+
+                    }
+                    else {
+                        holder.expand.setVisibility(View.GONE);
+                    }
                 }
                 else {
                     holder.content.setMovementMethod(null);
-                    holder.content.setText(item.getTextContent().trim());
-                }
-
-                if (item.getTextContent().length() > 400) {
-                    holder.expand.setVisibility(View.VISIBLE);
-
-                    holder.expand.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(final View v) {
-                            if (holder.content.isExpanded()) {
-                                holder.content.collapse();
-                                holder.expand.setText(R.string.read_more);
-                            }
-                            else {
-                                holder.content.expand();
-                                holder.expand.setText(R.string.close);
-                            }
-                        }
-                    });
-
-                    // Set listener on end collapse.
-                    holder.content.addOnExpandListener(new ExpandableTextView.OnExpandListener() {
-                        @Override
-                        public void onEndCollapse(@NonNull ExpandableTextView view) {
-                            listView.setSelection(position);
-                        }
-                    });
-
-                }
-                else {
+                    holder.content.setVisibility(View.GONE);
                     holder.expand.setVisibility(View.GONE);
                 }
-            }
-            else {
-                holder.content.setMovementMethod(null);
-                holder.content.setVisibility(View.GONE);
-                holder.expand.setVisibility(View.GONE);
-            }
 
-            // Reference.
-            if (item.getReference().length() > 0) {
-                holder.reference.setVisibility(View.VISIBLE);
-                holder.reference.setText(item.getReference());
-            }
-            else {
-                holder.reference.setVisibility(View.GONE);
-            }
+                // Reference.
+                if (item.getReference().length() > 0) {
+                    holder.reference.setVisibility(View.VISIBLE);
+                    holder.reference.setText(item.getReference());
+                }
+                else {
+                    holder.reference.setVisibility(View.GONE);
+                }
 
-            // Image.
-            if (item.getPhotos().size() > 0) {
+                // Image.
+                if (item.getPhotos().size() > 0) {
 
-                if (imagePreview) {
-                    Glide.with(context)
-                            .load(item.getPhotos().get(0))
-                            .into(holder.image);
+                    if (imagePreview) {
+                        Glide.with(context)
+                                .load(item.getPhotos().get(0))
+                                .into(holder.image);
+                        holder.image.setVisibility(View.VISIBLE);
+                        holder.card.setVisibility(View.VISIBLE);
+                        holder.image.setOnClickListener(new OnImageClickListener(position));
+                    }
+                    else {
+                        holder.image.setVisibility(View.GONE);
+                        holder.card.setVisibility(View.GONE);
+                        holder.imageCount.setTextSize(16);
+                        holder.imageCount.setOnClickListener(new OnImageClickListener(position));
+                    }
+
+                    if (item.getPhotos().size() > 1 || !imagePreview) {
+                        holder.imageCount.setVisibility(View.VISIBLE);
+                        if (item.getPhotos().size() > 1) {
+                            holder.imageCount.setText(String.format("%d images", item.getPhotos().size()));
+                        }
+                        else {
+                            holder.imageCount.setText(R.string.one_image);
+                        }
+                    }
+                    else {
+                        holder.imageCount.setVisibility(View.GONE);
+                    }
+                }
+                else if (staticMap && item.getLongitude().length() > 0 && item.getLatitude().length() > 0) {
                     holder.image.setVisibility(View.VISIBLE);
                     holder.card.setVisibility(View.VISIBLE);
-                    holder.image.setOnClickListener(new OnImageClickListener(position));
+                    String mapUrl = "http://atlas.p3k.io/map/img?marker[]=lat:" + item.getLatitude() + ";lng:" + item.getLongitude() + ";icon:small-blue-cutout&basemap=gray&width=460&height=460&zoom=14";
+                    Glide.with(context)
+                            .load(mapUrl)
+                            .into(holder.image);
                 }
                 else {
                     holder.image.setVisibility(View.GONE);
                     holder.card.setVisibility(View.GONE);
-                    holder.imageCount.setTextSize(16);
-                    holder.imageCount.setOnClickListener(new OnImageClickListener(position));
-                }
-
-                if (item.getPhotos().size() > 1 || !imagePreview) {
-                    holder.imageCount.setVisibility(View.VISIBLE);
-                    if (item.getPhotos().size() > 1) {
-                        holder.imageCount.setText(String.format("%d images", item.getPhotos().size()));
-                    }
-                    else {
-                        holder.imageCount.setText(R.string.one_image);
-                    }
-                }
-                else {
                     holder.imageCount.setVisibility(View.GONE);
                 }
-            }
-            else if (staticMap && item.getLongitude().length() > 0 && item.getLatitude().length() > 0) {
-                holder.image.setVisibility(View.VISIBLE);
-                holder.card.setVisibility(View.VISIBLE);
-                String mapUrl = "http://atlas.p3k.io/map/img?marker[]=lat:" + item.getLatitude() + ";lng:" + item.getLongitude() +";icon:small-blue-cutout&basemap=gray&width=460&height=460&zoom=14";
-                Glide.with(context)
-                        .load(mapUrl)
-                        .into(holder.image);
-            }
-            else {
-                holder.image.setVisibility(View.GONE);
-                holder.card.setVisibility(View.GONE);
-                holder.imageCount.setVisibility(View.GONE);
-            }
 
-            // Audio.
-            if (item.getAudio().length() > 0) {
-                holder.audio.setVisibility(View.VISIBLE);
-                holder.audio.setOnClickListener(new OnAudioClickListener(position));
-            }
-            else {
-                holder.audio.setVisibility(View.GONE);
-            }
-
-            // Audio.
-            if (item.getVideo().length() > 0) {
-                holder.video.setVisibility(View.VISIBLE);
-                holder.video.setOnClickListener(new OnVideoClickListener(position));
-            }
-            else {
-                holder.video.setVisibility(View.GONE);
-            }
-
-            // Map.
-            if (item.getLatitude().length() > 0 && item.getLongitude().length() > 0) {
-                holder.map.setVisibility(View.VISIBLE);
-                holder.map.setOnClickListener(new OnMapClickListener(position));
-            }
-            else {
-                holder.map.setVisibility(View.GONE);
-            }
-
-            // Button listeners.
-            if (item.getUrl().length() > 0) {
-                holder.bookmark.setVisibility(View.VISIBLE);
-                holder.reply.setVisibility(View.VISIBLE);
-                holder.like.setVisibility(View.VISIBLE);
-                holder.repost.setVisibility(View.VISIBLE);
-                holder.external.setVisibility(View.VISIBLE);
-
-                holder.bookmark.setOnClickListener(new OnBookmarkClickListener(position));
-                holder.reply.setOnClickListener(new OnReplyClickListener(position));
-                holder.like.setOnClickListener(new OnLikeClickListener(position));
-                holder.repost.setOnClickListener(new OnRepostClickListener(position));
-                holder.external.setOnClickListener(new OnExternalClickListener(position));
-
-                if (item.getType().equals("event")) {
-                    holder.rsvp.setVisibility(View.VISIBLE);
-                    holder.rsvp.setOnClickListener(new OnRsvpClickListener(position));
+                // Audio.
+                if (item.getAudio().length() > 0) {
+                    holder.audio.setVisibility(View.VISIBLE);
+                    holder.audio.setOnClickListener(new OnAudioClickListener(position));
                 }
                 else {
+                    holder.audio.setVisibility(View.GONE);
+                }
+
+                // Audio.
+                if (item.getVideo().length() > 0) {
+                    holder.video.setVisibility(View.VISIBLE);
+                    holder.video.setOnClickListener(new OnVideoClickListener(position));
+                }
+                else {
+                    holder.video.setVisibility(View.GONE);
+                }
+
+                // Map.
+                if (item.getLatitude().length() > 0 && item.getLongitude().length() > 0) {
+                    holder.map.setVisibility(View.VISIBLE);
+                    holder.map.setOnClickListener(new OnMapClickListener(position));
+                }
+                else {
+                    holder.map.setVisibility(View.GONE);
+                }
+
+                // Button listeners.
+                if (item.getUrl().length() > 0) {
+                    holder.bookmark.setVisibility(View.VISIBLE);
+                    holder.reply.setVisibility(View.VISIBLE);
+                    holder.like.setVisibility(View.VISIBLE);
+                    holder.repost.setVisibility(View.VISIBLE);
+                    holder.external.setVisibility(View.VISIBLE);
+
+                    holder.bookmark.setOnClickListener(new OnBookmarkClickListener(position));
+                    holder.reply.setOnClickListener(new OnReplyClickListener(position));
+                    holder.like.setOnClickListener(new OnLikeClickListener(position));
+                    holder.repost.setOnClickListener(new OnRepostClickListener(position));
+                    holder.external.setOnClickListener(new OnExternalClickListener(position));
+
+                    if (item.getType().equals("event")) {
+                        holder.rsvp.setVisibility(View.VISIBLE);
+                        holder.rsvp.setOnClickListener(new OnRsvpClickListener(position));
+                    }
+                    else {
+                        holder.rsvp.setVisibility(View.GONE);
+                    }
+                }
+                else {
+                    holder.bookmark.setVisibility(View.GONE);
+                    holder.reply.setVisibility(View.GONE);
+                    holder.like.setVisibility(View.GONE);
+                    holder.repost.setVisibility(View.GONE);
+                    holder.external.setVisibility(View.GONE);
                     holder.rsvp.setVisibility(View.GONE);
                 }
+
+                holder.menu.setOnClickListener(new OnMenuClickListener(position, this.debugItemJSON));
             }
             else {
-                holder.bookmark.setVisibility(View.GONE);
-                holder.reply.setVisibility(View.GONE);
-                holder.like.setVisibility(View.GONE);
-                holder.repost.setVisibility(View.GONE);
-                holder.external.setVisibility(View.GONE);
-                holder.rsvp.setVisibility(View.GONE);
+
+                // Set on touch listener.
+                convertView.setOnTouchListener(eventTouch);
+
             }
-
-            holder.menu.setOnClickListener(new OnMenuClickListener(position, this.debugItemJSON));
-
         }
 
         return convertView;
     }
+
+    /**
+     * OnTouchListener for channel row.
+     */
+    private View.OnTouchListener eventTouch = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent motionEvent) {
+            TimelineListAdapter.ViewHolder holder = (TimelineListAdapter.ViewHolder)v.getTag();
+            switch(motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    int downColor = context.getResources().getColor(R.color.listRowBackgroundColorTouched);
+                    holder.row.setBackgroundColor(downColor);
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    int cancelColor = context.getResources().getColor(R.color.listRowBackgroundColor);
+                    holder.row.setBackgroundColor(cancelColor);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    int position = holder.position;
+                    int color = context.getResources().getColor(R.color.listRowBackgroundColor);
+                    TimelineItem item = items.get(position);
+                    holder.row.setBackgroundColor(color);
+                    //Intent intent = new Intent(context, TimelineDetailActivity.class);
+                    //intent.putExtra("channelId", channel.getUid());
+                    //intent.putExtra("channelName", channel.getName());
+                    //intent.putExtra("unread", channel.getUnread());
+                    //context.startActivity(intent);
+                    break;
+            }
+            return true;
+        }
+    };
 
     /**
      * Link clickable.

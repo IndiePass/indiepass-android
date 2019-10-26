@@ -23,6 +23,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/timeline_style"
+        android:title="@string/timeline_style"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/timeline_debug"
         android:title="@string/debug"
         android:visible="false"
