@@ -20,6 +20,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -111,7 +112,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public Button locationQuery;
     public Double latitude = null;
     public Double longitude = null;
-
+    public RelativeLayout progressBar;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -314,7 +315,8 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
             sendItem.setEnabled(false);
         }
 
-        Toast.makeText(getApplicationContext(), "Sending, please wait", Toast.LENGTH_SHORT).show();
+        showProgressBar();
+        //Toast.makeText(getApplicationContext(), "Sending, please wait", Toast.LENGTH_SHORT).show();
 
         String endpoint = user.getMicropubEndpoint();
         if (isMediaRequest) {
@@ -337,6 +339,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                                 db.deleteDraft(draftId);
                             }
 
+                            hideProgressBar();
                             finish();
                         }
 
@@ -355,6 +358,8 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                             if (sendItem != null) {
                                 sendItem.setEnabled(true);
                             }
+
+                            hideProgressBar();
                         }
 
                     }
@@ -380,6 +385,8 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                         if (sendItem != null) {
                             sendItem.setEnabled(true);
                         }
+
+                        hideProgressBar();
                     }
                 }
         )
@@ -596,6 +603,24 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
             else if (body != null) {
                 body.requestFocus();
             }
+        }
+    }
+
+    /**
+     * Show progress bar.
+     */
+    public void showProgressBar() {
+        if (progressBar != null) {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * Hide progress bar.
+     */
+    public void hideProgressBar() {
+        if (progressBar != null) {
+            progressBar.setVisibility(View.GONE);
         }
     }
 

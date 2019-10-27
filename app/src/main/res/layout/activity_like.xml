@@ -1,44 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scroll"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-        <include layout="@layout/widget_post_status_date" />
-
-        <EditText
-            android:textColor="@color/textColor"
-            android:textSize="@dimen/inputText"
-            android:id="@+id/url"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:hint="@string/url_hint"
-            android:inputType="textUri" />
-
-        <MultiAutoCompleteTextView
-            android:id="@+id/tags"
-            android:textColor="@color/textColor"
-            android:textSize="@dimen/inputText"
-            android:hint="@string/tags"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:id="@+id/syndicationTargets"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
 
-    </LinearLayout>
-</ScrollView>
+            <include layout="@layout/widget_post_status_date" />
+
+            <EditText
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/inputText"
+                android:id="@+id/url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:hint="@string/url_hint"
+                android:inputType="textUri" />
+
+            <MultiAutoCompleteTextView
+                android:id="@+id/tags"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/inputText"
+                android:hint="@string/tags"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/syndicationTargets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center_horizontal"
+        android:minHeight="40dp"
+        android:minWidth="40dp" />
+
+</RelativeLayout>

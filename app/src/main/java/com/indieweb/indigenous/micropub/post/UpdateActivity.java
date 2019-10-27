@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -38,6 +40,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
     private EditText body;
     private MenuItem sendItem;
     private User user;
+    public RelativeLayout progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
         postStatus = findViewById(R.id.postStatus);
         title = findViewById(R.id.title);
         body = findViewById(R.id.body);
+        progressBar = findViewById(R.id.progressBar);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -94,6 +98,8 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
             return;
         }
 
+        showProgressBar();
+
         if (sendItem != null) {
             sendItem.setEnabled(false);
         }
@@ -107,6 +113,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(getApplicationContext(), "Update success", Toast.LENGTH_SHORT).show();
+                        hideProgressBar();
                         finish();
                     }
                 },
@@ -132,6 +139,8 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
                         if (sendItem != null) {
                             sendItem.setEnabled(true);
                         }
+
+                        hideProgressBar();
                     }
                 }
         )
@@ -194,6 +203,24 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
         request.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(request);
 
+    }
+
+    /**
+     * Show progress bar.
+     */
+    public void showProgressBar() {
+        if (progressBar != null) {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * Hide progress bar.
+     */
+    public void hideProgressBar() {
+        if (progressBar != null) {
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
 }

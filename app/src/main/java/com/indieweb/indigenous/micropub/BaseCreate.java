@@ -79,6 +79,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
         body = findViewById(R.id.body);
         url = findViewById(R.id.url);
         tags = findViewById(R.id.tags);
+        progressBar = findViewById(R.id.progressBar);
         saveAsDraft = findViewById(R.id.saveAsDraft);
         publishDate = findViewById(R.id.publishDate);
         imagePreviewGallery = findViewById(R.id.imagePreviewGallery);

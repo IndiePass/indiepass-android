@@ -19,4 +19,7 @@
     <color name="loadMoreButtonBackgroundColor">#f5f5f5</color>
     <color name="loadMoreButtonBackgroundColorTouched">#e2e6e9</color>
     <color name="micropubActionTouched">#e2e6e9</color>
+    <color name="transparentProgress">#80000000</color>
+    <color name="progressWidget">#ffffff</color>
+
 </resources>

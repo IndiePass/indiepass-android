@@ -1,47 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scroll"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:layout_height="match_parent">
 
-        <Switch
-            android:padding="@dimen/box_padding"
-            android:textColor="@color/textColor"
-            android:id="@+id/postStatus"
-            android:checked="true"
-            android:text="@string/published"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:textColor="@color/textColor"
-            android:textSize="@dimen/inputText"
-            android:id="@+id/url"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:hint="@string/url_hint"
-            android:inputType="textUri" />
+            android:orientation="vertical"
+            android:padding="10dp">
 
-        <EditText
-            android:textColor="@color/textColor"
-            android:textSize="@dimen/inputText"
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:ems="10"
-            android:hint="@string/title"
-            android:inputType="text" />
+            <Switch
+                android:padding="@dimen/box_padding"
+                android:textColor="@color/textColor"
+                android:id="@+id/postStatus"
+                android:checked="true"
+                android:text="@string/published"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-        <include layout="@layout/widget_body" />
+            <EditText
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/inputText"
+                android:id="@+id/url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:hint="@string/url_hint"
+                android:inputType="textUri" />
 
-    </LinearLayout>
+            <EditText
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/inputText"
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:ems="10"
+                android:hint="@string/title"
+                android:inputType="text" />
 
-</ScrollView>
+            <include layout="@layout/widget_body" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <include layout="@layout/widget_progress_bar" />
+
+</RelativeLayout>

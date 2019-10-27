@@ -132,6 +132,7 @@
     <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="share_post">Share</string>
     <string name="timeline_style">Style</string>
+    <string name="posting">Sending</string>
 
 
     <string name="push_notifications">Push notifications</string>

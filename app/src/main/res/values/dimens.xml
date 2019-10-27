@@ -30,6 +30,7 @@
     <dimen name="draft_list_divider_height">2px</dimen>
     <dimen name="box_padding">10dp</dimen>
     <dimen name="button_padding">5dp</dimen>
+    <dimen name="progressBarTop">100dp</dimen>
 
     <dimen name="user_list_item_icon_size">25dp</dimen>
     <dimen name="user_list_item_padding">15dp</dimen>

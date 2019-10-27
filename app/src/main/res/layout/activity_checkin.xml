@@ -1,40 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scroll"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/box_padding">
-
-        <include layout="@layout/widget_post_status_date" />
-
-        <include layout="@layout/widget_location" />
-
-        <include layout="@layout/widget_body" />
-
-        <MultiAutoCompleteTextView
-            android:id="@+id/tags"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginBottom="5dp"
-            android:textColor="@color/textColor"
-            android:textSize="@dimen/inputText"
-            android:hint="@string/tags"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:id="@+id/syndicationTargets"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/box_padding">
+
+            <include layout="@layout/widget_post_status_date" />
+
+            <include layout="@layout/widget_location" />
+
+            <include layout="@layout/widget_body" />
+
+            <MultiAutoCompleteTextView
+                android:id="@+id/tags"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/inputText"
+                android:hint="@string/tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/syndicationTargets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </LinearLayout>
+
+            <include layout="@layout/widget_image_preview" />
+
         </LinearLayout>
+    </ScrollView>
 
-        <include layout="@layout/widget_image_preview" />
+    <include layout="@layout/widget_progress_bar" />
 
-    </LinearLayout>
-</ScrollView>
+</RelativeLayout>
