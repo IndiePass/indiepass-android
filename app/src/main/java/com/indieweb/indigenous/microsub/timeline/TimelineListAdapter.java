@@ -41,8 +41,6 @@ import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.microsub.MicrosubAction;
-import com.indieweb.indigenous.microsub.channel.ChannelListAdapter;
-import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Preferences;

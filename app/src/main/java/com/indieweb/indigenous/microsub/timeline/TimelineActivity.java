@@ -237,7 +237,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             case R.id.timeline_style:
                 final AlertDialog.Builder builder = new AlertDialog.Builder(TimelineActivity.this);
                 final DatabaseHelper db = new DatabaseHelper(TimelineActivity.this);
-                final CharSequence[] styleOptions = {"Compact", "Extended"};
+                final CharSequence[] styleOptions = {"Compact", "Summary"};
                 builder.setTitle("Select style");
                 builder.setCancelable(true);
                 builder.setNegativeButton(getApplicationContext().getString(R.string.close), new DialogInterface.OnClickListener() {
