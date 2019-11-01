@@ -12,6 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.PopupMenu;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
@@ -57,7 +58,7 @@ import java.util.List;
 import static com.indieweb.indigenous.microsub.timeline.TimelineActivity.MARK_READ_CHANNEL_CLICK;
 import static com.indieweb.indigenous.microsub.timeline.TimelineActivity.MARK_READ_MANUAL;
 import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_COMPACT;
-import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_NORMAL;
+import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_SUMMARY;
 
 /**
  * Timeline items list adapter.
@@ -107,6 +108,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
     public static class ViewHolder {
         public int position;
+        public TextView meta;
         public TextView unread;
         public TextView channel;
         public TextView author;
@@ -146,14 +148,26 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
 
             holder = new ViewHolder();
-            holder.unread = convertView.findViewById(R.id.timeline_new);
-            holder.published = convertView.findViewById(R.id.timeline_published);
             holder.name = convertView.findViewById(R.id.timeline_name);
+            holder.meta = convertView.findViewById(R.id.timeline_meta);
             holder.row = convertView.findViewById(R.id.timeline_item_row);
-            holder.author = convertView.findViewById(R.id.timeline_author);
+            holder.reply = convertView.findViewById(R.id.itemReply);
+            holder.bookmark = convertView.findViewById(R.id.itemBookmark);
+            holder.like = convertView.findViewById(R.id.itemLike);
+            holder.repost = convertView.findViewById(R.id.itemRepost);
+            holder.audio = convertView.findViewById(R.id.itemAudio);
+            holder.video = convertView.findViewById(R.id.itemVideo);
+            holder.external = convertView.findViewById(R.id.itemExternal);
+            holder.rsvp = convertView.findViewById(R.id.itemRSVP);
+            holder.menu = convertView.findViewById(R.id.itemMenu);
+            holder.map = convertView.findViewById(R.id.itemMap);
 
-            // Normal version.
-            if (Style == TIMELINE_STYLE_NORMAL) {
+            // Summary version.
+            if (Style == TIMELINE_STYLE_SUMMARY) {
+                holder.unread = convertView.findViewById(R.id.timeline_new);
+                holder.published = convertView.findViewById(R.id.timeline_published);
+                holder.author = convertView.findViewById(R.id.timeline_author);
+                holder.imageCount = convertView.findViewById(R.id.timeline_image_count);
                 holder.channel = convertView.findViewById(R.id.timeline_channel);
                 holder.authorPhoto = convertView.findViewById(R.id.timeline_author_photo);
                 holder.reference = convertView.findViewById(R.id.timeline_reference);
@@ -161,18 +175,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.content = convertView.findViewById(R.id.timeline_content);
                 holder.expand = convertView.findViewById(R.id.timeline_content_more);
                 holder.image = convertView.findViewById(R.id.timeline_image);
-                holder.imageCount = convertView.findViewById(R.id.timeline_image_count);
                 holder.card = convertView.findViewById(R.id.timeline_card);
-                holder.reply = convertView.findViewById(R.id.itemReply);
-                holder.bookmark = convertView.findViewById(R.id.itemBookmark);
-                holder.like = convertView.findViewById(R.id.itemLike);
-                holder.repost = convertView.findViewById(R.id.itemRepost);
-                holder.audio = convertView.findViewById(R.id.itemAudio);
-                holder.video = convertView.findViewById(R.id.itemVideo);
-                holder.external = convertView.findViewById(R.id.itemExternal);
-                holder.rsvp = convertView.findViewById(R.id.itemRSVP);
-                holder.map = convertView.findViewById(R.id.itemMap);
-                holder.menu = convertView.findViewById(R.id.itemMenu);
             }
 
             convertView.setTag(holder);
@@ -190,43 +193,64 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             int color = context.getResources().getColor(R.color.listRowBackgroundColor);
             holder.row.setBackgroundColor(color);
 
-            // Unread.
-            if (!item.isRead()) {
-                holder.unread.setVisibility(View.VISIBLE);
-                holder.unread.setText(R.string.unread);
+            // Published.
+            SimpleDateFormat formatOut;
+            if (Style == TIMELINE_STYLE_COMPACT) {
+                formatOut = new SimpleDateFormat("dd MMM yyyy");
             }
             else {
-                holder.unread.setVisibility(View.GONE);
+                formatOut = new SimpleDateFormat("dd MMM yyyy kk:mm");
             }
 
-            // Published.
-            SimpleDateFormat formatOut = new SimpleDateFormat("dd MMM yyyy kk:mm");
-            Date result = null;
+            Date dateResult = null;
             for (String formatString : dateFormatStrings) {
                 try {
-                    if (result != null) {
+                    if (dateResult != null) {
                         break;
                     }
-                    result = new SimpleDateFormat(formatString).parse(item.getPublished());
+                    dateResult = new SimpleDateFormat(formatString).parse(item.getPublished());
                 }
                 catch (ParseException ignored) {}
             }
 
-            if (result != null) {
-                holder.published.setVisibility(View.VISIBLE);
-                holder.published.setText(formatOut.format(result));
-            }
-            else {
-                holder.published.setVisibility(View.GONE);
+            // Author.
+            String author = "";
+            if (item.getAuthorName().length() > 0) {
+                author = item.getAuthorName();
             }
 
-            // Author.
-            if (item.getAuthorName().length() > 0) {
-                holder.author.setVisibility(View.VISIBLE);
-                holder.author.setText(item.getAuthorName());
-            }
-            else {
-                holder.author.setVisibility(View.GONE);
+            // Meta
+            if (Style == TIMELINE_STYLE_COMPACT) {
+
+                List<String>  meta = new ArrayList<String>();
+                if (!item.isRead()) {
+                    meta.add(context.getString(R.string.unread));
+                }
+
+                if (dateResult != null) {
+                    meta.add(formatOut.format(dateResult));
+                }
+
+                if (author.length() > 0) {
+                    meta.add(author);
+                }
+
+                if (item.getPhotos().size() > 0) {
+                    if (item.getPhotos().size() > 1) {
+                        meta.add(String.format("%d images", item.getPhotos().size()));
+                    }
+                    else {
+                        meta.add(context.getString(R.string.one_image));
+                    }
+                }
+
+                if (meta.size() > 0) {
+                    holder.meta.setVisibility(View.VISIBLE);
+                    holder.meta.setText(TextUtils.join(" - ", meta));
+                }
+                else {
+                    holder.meta.setVisibility(View.GONE);
+                }
             }
 
             // Name.
@@ -249,8 +273,86 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.name.setVisibility(View.GONE);
             }
 
-            // Normal version.
-            if (Style == TIMELINE_STYLE_NORMAL) {
+            // Button listeners.
+            if (item.getUrl().length() > 0) {
+                holder.bookmark.setVisibility(View.VISIBLE);
+                holder.reply.setVisibility(View.VISIBLE);
+                holder.like.setVisibility(View.VISIBLE);
+                holder.repost.setVisibility(View.VISIBLE);
+                holder.external.setVisibility(View.VISIBLE);
+
+                holder.bookmark.setOnClickListener(new OnBookmarkClickListener(position));
+                holder.reply.setOnClickListener(new OnReplyClickListener(position));
+                holder.like.setOnClickListener(new OnLikeClickListener(position));
+                holder.repost.setOnClickListener(new OnRepostClickListener(position));
+                holder.external.setOnClickListener(new OnExternalClickListener(position));
+
+                if (item.getType().equals("event")) {
+                    holder.rsvp.setVisibility(View.VISIBLE);
+                    holder.rsvp.setOnClickListener(new OnRsvpClickListener(position));
+                }
+                else {
+                    holder.rsvp.setVisibility(View.GONE);
+                }
+            }
+            else {
+                holder.bookmark.setVisibility(View.GONE);
+                holder.reply.setVisibility(View.GONE);
+                holder.like.setVisibility(View.GONE);
+                holder.repost.setVisibility(View.GONE);
+                holder.external.setVisibility(View.GONE);
+                holder.rsvp.setVisibility(View.GONE);
+            }
+
+            // Menu listener.
+            holder.menu.setOnClickListener(new OnMenuClickListener(position, this.debugItemJSON));
+
+            // Audio.
+            if (item.getAudio().length() > 0) {
+                holder.audio.setVisibility(View.VISIBLE);
+                holder.audio.setOnClickListener(new OnAudioClickListener(position));
+            }
+            else {
+                holder.audio.setVisibility(View.GONE);
+            }
+
+            // Video.
+            if (item.getVideo().length() > 0) {
+                holder.video.setVisibility(View.VISIBLE);
+                holder.video.setOnClickListener(new OnVideoClickListener(position));
+            }
+            else {
+                holder.video.setVisibility(View.GONE);
+            }
+
+            // Map.
+            if (item.getLatitude().length() > 0 && item.getLongitude().length() > 0) {
+                holder.map.setVisibility(View.VISIBLE);
+                holder.map.setOnClickListener(new OnMapClickListener(position));
+            }
+            else {
+                holder.map.setVisibility(View.GONE);
+            }
+
+            // Summary version.
+            if (Style == TIMELINE_STYLE_SUMMARY) {
+
+                // Unread.
+                if (!item.isRead()) {
+                    holder.unread.setVisibility(View.VISIBLE);
+                    holder.unread.setText(R.string.unread);
+                }
+                else {
+                    holder.unread.setVisibility(View.GONE);
+                }
+
+                if (dateResult != null) {
+                    holder.published.setVisibility(View.VISIBLE);
+                    holder.published.setText(formatOut.format(dateResult));
+                }
+                else {
+                    holder.published.setVisibility(View.GONE);
+                }
 
                 // Channel.
                 if (item.getChannelName().length() > 0) {
@@ -259,6 +361,14 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 }
                 else {
                     holder.channel.setVisibility(View.GONE);
+                }
+
+                if (author.length() > 0) {
+                    holder.author.setVisibility(View.VISIBLE);
+                    holder.author.setText(author);
+                }
+                else {
+                    holder.author.setVisibility(View.GONE);
                 }
 
                 // Author photo.
@@ -450,66 +560,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     holder.card.setVisibility(View.GONE);
                     holder.imageCount.setVisibility(View.GONE);
                 }
-
-                // Audio.
-                if (item.getAudio().length() > 0) {
-                    holder.audio.setVisibility(View.VISIBLE);
-                    holder.audio.setOnClickListener(new OnAudioClickListener(position));
-                }
-                else {
-                    holder.audio.setVisibility(View.GONE);
-                }
-
-                // Audio.
-                if (item.getVideo().length() > 0) {
-                    holder.video.setVisibility(View.VISIBLE);
-                    holder.video.setOnClickListener(new OnVideoClickListener(position));
-                }
-                else {
-                    holder.video.setVisibility(View.GONE);
-                }
-
-                // Map.
-                if (item.getLatitude().length() > 0 && item.getLongitude().length() > 0) {
-                    holder.map.setVisibility(View.VISIBLE);
-                    holder.map.setOnClickListener(new OnMapClickListener(position));
-                }
-                else {
-                    holder.map.setVisibility(View.GONE);
-                }
-
-                // Button listeners.
-                if (item.getUrl().length() > 0) {
-                    holder.bookmark.setVisibility(View.VISIBLE);
-                    holder.reply.setVisibility(View.VISIBLE);
-                    holder.like.setVisibility(View.VISIBLE);
-                    holder.repost.setVisibility(View.VISIBLE);
-                    holder.external.setVisibility(View.VISIBLE);
-
-                    holder.bookmark.setOnClickListener(new OnBookmarkClickListener(position));
-                    holder.reply.setOnClickListener(new OnReplyClickListener(position));
-                    holder.like.setOnClickListener(new OnLikeClickListener(position));
-                    holder.repost.setOnClickListener(new OnRepostClickListener(position));
-                    holder.external.setOnClickListener(new OnExternalClickListener(position));
-
-                    if (item.getType().equals("event")) {
-                        holder.rsvp.setVisibility(View.VISIBLE);
-                        holder.rsvp.setOnClickListener(new OnRsvpClickListener(position));
-                    }
-                    else {
-                        holder.rsvp.setVisibility(View.GONE);
-                    }
-                }
-                else {
-                    holder.bookmark.setVisibility(View.GONE);
-                    holder.reply.setVisibility(View.GONE);
-                    holder.like.setVisibility(View.GONE);
-                    holder.repost.setVisibility(View.GONE);
-                    holder.external.setVisibility(View.GONE);
-                    holder.rsvp.setVisibility(View.GONE);
-                }
-
-                holder.menu.setOnClickListener(new OnMenuClickListener(position, this.debugItemJSON));
             }
             else {
 
@@ -543,11 +593,8 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     int color = context.getResources().getColor(R.color.listRowBackgroundColor);
                     TimelineItem item = items.get(position);
                     holder.row.setBackgroundColor(color);
-                    //Intent intent = new Intent(context, TimelineDetailActivity.class);
-                    //intent.putExtra("channelId", channel.getUid());
-                    //intent.putExtra("channelName", channel.getName());
-                    //intent.putExtra("unread", channel.getUnread());
-                    //context.startActivity(intent);
+                    Intent intent = new Intent(context, TimelineDetailActivity.class);
+                    context.startActivity(intent);
                     break;
             }
             return true;

@@ -12,7 +12,7 @@ import com.indieweb.indigenous.model.TimelineStyle;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_NORMAL;
+import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_SUMMARY;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -38,7 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Get a timeline style.
      */
     public int getStyle(String channelId) {
-        int style = TIMELINE_STYLE_NORMAL;
+        int style = TIMELINE_STYLE_SUMMARY;
 
         // Select query
         String selectQuery = "SELECT " + TimelineStyle.COLUMN_TYPE + " FROM " + TimelineStyle.TABLE_NAME + " WHERE " + TimelineStyle.COLUMN_CHANNEL_ID + "='" + channelId + "'";

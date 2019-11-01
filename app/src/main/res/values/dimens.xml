@@ -14,6 +14,7 @@
     <dimen name="channel_list_divider_height">2px</dimen>
     <dimen name="timeline_list_item_padding">15dp</dimen>
     <dimen name="timeline_list_item_text_margin_left">15dp</dimen>
+    <dimen name="timeline_list_item_text_compact_margin_left">7dp</dimen>
     <dimen name="timeline_list_item_text_size">15sp</dimen>
     <dimen name="timeline_list_item_author_size">16sp</dimen>
     <dimen name="timeline_list_item_global">14sp</dimen>

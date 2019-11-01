@@ -3,7 +3,7 @@ package com.indieweb.indigenous.model;
 public class TimelineStyle {
 
     public static final int TIMELINE_STYLE_COMPACT = 0;
-    public static final int TIMELINE_STYLE_NORMAL = 1;
+    public static final int TIMELINE_STYLE_SUMMARY = 1;
 
     public static final String TABLE_NAME = "timeline_style";
     public static final String COLUMN_TYPE = "type";
