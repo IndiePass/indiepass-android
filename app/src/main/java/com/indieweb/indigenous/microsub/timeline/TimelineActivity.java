@@ -10,11 +10,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -142,6 +145,26 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             // Get style.
             DatabaseHelper db = new DatabaseHelper(TimelineActivity.this);
             style = db.getStyle(channelId);
+
+            // Autoload more posts.
+            if (Preferences.getPreference(TimelineActivity.this, "pref_key_timeline_autoload_more", false)) {
+                listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+                    @Override
+                    public void onScrollStateChanged(AbsListView view, int scrollState) {
+                        if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE
+                                && (listView.getLastVisiblePosition() - listView.getHeaderViewsCount() -
+                                listView.getFooterViewsCount()) >= (adapter.getCount() - 1)) {
+                            if (!loadMoreClicked) {
+                                loadMoreItems();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {}
+                });
+            }
 
             startTimeline();
         }
@@ -648,6 +671,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                             if (olderItems[0] != null && olderItems[0].length() > 0) {
 
                                 loadMoreClicked = false;
+                                loadMoreButton.setText(R.string.load_more);
 
                                 if (!loadMoreButtonAdded) {
                                     loadMoreButtonAdded = true;
@@ -756,10 +780,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     break;
                 case MotionEvent.ACTION_UP:
                     if (!loadMoreClicked) {
-                        loadMoreClicked = true;
-                        int downColor = getResources().getColor(R.color.loadMoreButtonBackgroundColor);
-                        loadMoreButton.setBackgroundColor(downColor);
-                        getTimeLineItems(olderItems[0]);
+                        loadMoreItems();
                     }
                     break;
 
@@ -767,6 +788,17 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             return true;
         }
     };
+
+    /**
+     * Load more items.
+     */
+    private void loadMoreItems() {
+        loadMoreClicked = true;
+        int downColor = getResources().getColor(R.color.loadMoreButtonBackgroundColor);
+        loadMoreButton.setBackgroundColor(downColor);
+        loadMoreButton.setText(R.string.loading);
+        getTimeLineItems(olderItems[0]);
+    }
 
     /**
      * Returns the reference content.

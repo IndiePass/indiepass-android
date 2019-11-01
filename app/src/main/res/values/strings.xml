@@ -122,6 +122,7 @@
     <string name="channels_not_found">Channels not found, check your internet connection</string>
     <string name="no_posts_found">Posts not found, check your internet connection</string>
     <string name="load_more">Load More</string>
+    <string name="loading">Loading…</string>
     <string name="event">Event</string>
     <string name="rsvp">RSVP</string>
     <string name="rsvp_select">Select RSVP</string>
@@ -203,6 +204,8 @@
     <string name="pref_key_author_timeline_summary">Makes the author avatar clickable to see all posts by this author</string>
     <string name="pref_key_unread_items_channel_title">Enable unread items channel</string>
     <string name="pref_key_unread_items_channel_summary">Adds a channel at the top of the list which allows you to view all unread items across all channels at once. Will not show up if there are not unread items or only within one channel. Marking items as read needs to happen manually.</string>
+    <string name="pref_key_timeline_autoload_more_title">Autoload more posts</string>
+    <string name="pref_key_timeline_autoload_more_summary">When the \'Load more\' button comes into view, autoload more posts instead of having to click manually.</string>
 
     <!-- Preferences: Media handling -->
     <string name="pref_category_media_title">Media</string>
