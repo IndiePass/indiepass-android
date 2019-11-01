@@ -407,13 +407,17 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
                                 }
 
-                                // Channel name.
+                                // Channel name and id.
+                                item.setChannelId(channelId);
                                 if (object.has("_channel") && isGlobalUnread) {
                                     try {
                                         String itemChannelName = object.getJSONObject("_channel").getString("name");
                                         item.setChannelName(itemChannelName);
                                     }
                                     catch (Exception ignored) {}
+                                }
+                                else if (channelName.length() > 0) {
+                                    item.setChannelName(channelName);
                                 }
 
                                 // In reply to.

@@ -51,7 +51,6 @@ import com.indieweb.indigenous.widget.ExpandableTextView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -59,6 +58,7 @@ import static com.indieweb.indigenous.microsub.timeline.TimelineActivity.MARK_RE
 import static com.indieweb.indigenous.microsub.timeline.TimelineActivity.MARK_READ_MANUAL;
 import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_COMPACT;
 import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_SUMMARY;
+import static com.indieweb.indigenous.util.Utility.dateFormatStrings;
 
 /**
  * Timeline items list adapter.
@@ -76,7 +76,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     private final String channelId;
     private final ListView listView;
     private final int Style;
-    private List<String> dateFormatStrings = Arrays.asList("yyyy-MM-dd'T'kk:mm:ssZ", "yyyy-MM-dd'T'kk:mm:ss", "yyyy-MM-dd kk:mm:ssZ", "yyyy-MM-dd kk:mmZ");
 
     TimelineListAdapter(Context context, List<TimelineItem> items, User user, String channelId, ListView listView, boolean isSourceView, int style) {
         this.context = context;
@@ -266,8 +265,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     length = 100;
                     elipsis = " ...";
                 }
-                // TODO remove newlines
-                holder.name.setText(item.getTextContent().substring(0, length) + elipsis);
+                holder.name.setText(item.getTextContent().replace("\n", "").replace("\r", "").replace("\r\n", "").substring(0, length) + elipsis);
             }
             else {
                 holder.name.setVisibility(View.GONE);
@@ -355,7 +353,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 }
 
                 // Channel.
-                if (item.getChannelName().length() > 0) {
+                if (channelId.equals("global") && item.getChannelName().length() > 0) {
                     holder.channel.setVisibility(View.VISIBLE);
                     holder.channel.setText(item.getChannelName());
                 }
@@ -426,7 +424,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
                 if (ResponseData.length() > 0) {
                     holder.response.setVisibility(View.VISIBLE);
-                    //holder.context.setClickable(true);
 
                     CharSequence sequence = Html.fromHtml(ResponseData);
                     SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
@@ -560,12 +557,15 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     holder.card.setVisibility(View.GONE);
                     holder.imageCount.setVisibility(View.GONE);
                 }
-            }
-            else {
 
                 // Set on touch listener.
+                if (Preferences.getPreference(context, "pref_key_timeline_summary_detail_click", false)) {
+                    convertView.setOnTouchListener(eventTouch);
+                }
+            }
+            else {
+                // Set on touch listener.
                 convertView.setOnTouchListener(eventTouch);
-
             }
         }
 
@@ -593,6 +593,8 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     int color = context.getResources().getColor(R.color.listRowBackgroundColor);
                     TimelineItem item = items.get(position);
                     holder.row.setBackgroundColor(color);
+                    Indigenous app = Indigenous.getInstance();
+                    app.setTimelineItem(item);
                     Intent intent = new Intent(context, TimelineDetailActivity.class);
                     context.startActivity(intent);
                     break;
@@ -830,7 +832,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         }
     }
 
-    // Audio listener.
+    // Author listener.
     class OnAuthorClickListener implements OnClickListener {
 
         int position;

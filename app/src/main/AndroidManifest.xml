@@ -130,6 +130,15 @@
         </activity>
 
         <activity
+            android:name=".microsub.timeline.TimelineDetailActivity"
+            android:label="@string/title_activity_timeline_detail"
+            android:parentActivityName=".LaunchActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.LaunchActivity" />
+        </activity>
+
+        <activity
             android:name=".microsub.timeline.TimelineAudioActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_timeline_audio"

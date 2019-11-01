@@ -116,6 +116,11 @@
             android:entryValues="@array/mark_read_array_values"
             android:defaultValue="1" />
         <SwitchPreference
+            android:key="pref_key_timeline_summary_detail_click"
+            android:title="@string/pref_key_timeline_summary_detail_click_title"
+            android:summary="@string/pref_key_timeline_summary_detail_click_summary"
+            android:defaultValue="false" />
+        <SwitchPreference
             android:key="pref_key_image_preview"
             android:title="@string/pref_key_image_preview_title"
             android:summary="@string/pref_key_image_preview_summary"

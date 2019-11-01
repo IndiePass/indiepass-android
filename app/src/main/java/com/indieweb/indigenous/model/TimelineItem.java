@@ -1,10 +1,11 @@
 package com.indieweb.indigenous.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class TimelineItem {
+public class TimelineItem implements Serializable {
 
     private boolean isRead;
     private String sourceId;
@@ -16,6 +17,7 @@ public class TimelineItem {
     private String htmlContent;
     private String url;
     private String authorName;
+    private String channelId = "";
     private String channelName = "";
     private String authorPhoto = "";
     private String reference = "";
@@ -57,6 +59,14 @@ public class TimelineItem {
 
     public void setChannelName(String channelName) {
         this.channelName = channelName;
+    }
+
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
     }
 
     public String getType() {
