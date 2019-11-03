@@ -198,7 +198,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 formatOut = new SimpleDateFormat("dd MMM yyyy");
             }
             else {
-                formatOut = new SimpleDateFormat("dd MMM yyyy kk:mm");
+                formatOut = new SimpleDateFormat("dd MMM yyyy HH:mm");
             }
 
             Date dateResult = null;

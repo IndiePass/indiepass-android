@@ -108,8 +108,8 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             holder.row.setBackgroundColor(color);
 
             // Published.
-            SimpleDateFormat formatIn = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ssZ");
-            SimpleDateFormat formatOut = new SimpleDateFormat("dd MMM yyyy kk:mm");
+            SimpleDateFormat formatIn = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+            SimpleDateFormat formatOut = new SimpleDateFormat("dd MMM yyyy HH:mm");
             Date result;
             try {
                 result = formatIn.parse(item.getPublished());

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class Utility {
 
-    public static List<String> dateFormatStrings = Arrays.asList("yyyy-MM-dd'T'kk:mm:ssZ", "yyyy-MM-dd'T'kk:mm:ss", "yyyy-MM-dd kk:mm:ssZ", "yyyy-MM-dd kk:mmZ");
+    public static List<String> dateFormatStrings = Arrays.asList("yyyy-MM-dd'T'HH:mm:ssZ", "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd HH:mm:ssZ", "yyyy-MM-dd HH:mmZ");
 
     /**
      * Copy to clipboard.
@@ -91,7 +91,7 @@ public class Utility {
                                         value[0] = cal.getTime();
 
                                         @SuppressLint("SimpleDateFormat")
-                                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:00Z");
+                                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:00Z");
                                         String result;
                                         try {
                                             result = df.format(value[0]);

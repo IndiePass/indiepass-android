@@ -439,7 +439,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 else {
                     Date date = Calendar.getInstance().getTime();
                     @SuppressLint("SimpleDateFormat")
-                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:00Z");
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:00Z");
                     df.setTimeZone(TimeZone.getDefault());
                     bodyParams.put("published", df.format(date));
                 }

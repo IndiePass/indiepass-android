@@ -1,5 +1,6 @@
 <h4>xx/xx/xxxx - 0.46</h4>
 <ul>
+    <li>Fix 24 hour format notation</li>
     <li>Better indication when sending a post</li>
     <li>Allow to autoload more posts in the reader</li>
     <li>Fix crash on channel list when turning screen</li>
