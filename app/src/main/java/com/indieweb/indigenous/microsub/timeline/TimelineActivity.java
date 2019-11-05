@@ -82,6 +82,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     String debugResponse;
     User user;
     Integer style;
+    private String readLater;
 
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
@@ -100,6 +101,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
 
+            readLater = Preferences.getPreference(TimelineActivity.this, "pref_key_read_later", "");
             channelId = extras.getString("channelId");
             channelName = extras.getString("channelName");
             unread = extras.getInt("unread");
@@ -652,7 +654,9 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                             adapter.notifyDataSetChanged();
 
                             // Notify
-                            if (!isGlobalUnread && !isSourceView && (unread > 0 || unread == -1) && entries.size() > 0 && Preferences.getPreference(getApplicationContext(), "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_CHANNEL_CLICK) {
+                            if (!isGlobalUnread && !isSourceView && (unread > 0 || unread == -1) && entries.size() > 0
+                                    && Preferences.getPreference(getApplicationContext(), "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_CHANNEL_CLICK
+                                    && !readLater.equals(channelId)) {
                                 new MicrosubAction(TimelineActivity.this, user).markRead(channelId, entries, false);
                             }
 

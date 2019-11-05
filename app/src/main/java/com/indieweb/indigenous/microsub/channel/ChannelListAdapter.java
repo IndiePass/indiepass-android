@@ -29,10 +29,12 @@ public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
     private final Context context;
     private final List<Channel> channels;
     private LayoutInflater mInflater;
+    private String readLaterId;
 
-    public ChannelListAdapter(Context context, List<Channel> channels) {
+    public ChannelListAdapter(Context context, List<Channel> channels, String readLater) {
         this.context = context;
         this.channels = channels;
+        this.readLaterId = readLater;
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -132,7 +134,7 @@ public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
                     intent.putExtra("channelId", channel.getUid());
                     intent.putExtra("channelName", channel.getName());
                     intent.putExtra("unread", channel.getUnread());
-                    if (Preferences.getPreference(context, "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_CHANNEL_CLICK) {
+                    if (Preferences.getPreference(context, "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_CHANNEL_CLICK && !readLaterId.equals(channel.getUid())) {
                         channels.get(position).setUnread(0);
                         holder.unread.setVisibility(View.GONE);
                     }

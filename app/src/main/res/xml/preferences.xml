@@ -115,6 +115,12 @@
             android:entries="@array/mark_read_array"
             android:entryValues="@array/mark_read_array_values"
             android:defaultValue="1" />
+        <EditTextPreference
+            android:inputType="text"
+            android:key="pref_key_read_later"
+            android:title="@string/pref_key_read_later_title"
+            android:summary="@string/pref_key_read_later_summary"
+            android:defaultValue="" />
         <SwitchPreference
             android:key="pref_key_move_item"
             android:title="@string/pref_key_move_item_title"
@@ -164,7 +170,6 @@
             android:title="@string/pref_key_unread_items_channel_title"
             android:summary="@string/pref_key_unread_items_channel_summary"
             android:defaultValue="false" />
-
     </PreferenceCategory>
 
     <PreferenceCategory

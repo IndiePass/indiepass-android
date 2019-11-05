@@ -54,6 +54,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
     private List<Channel> Channels = new ArrayList<>();
     private User user;
     private String debugResponse;
+    private String readLater;
 
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
@@ -73,6 +74,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
         refreshLayout = view.findViewById(R.id.refreshChannels);
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setRefreshing(true);
+        readLater = Preferences.getPreference(requireContext(), "pref_key_read_later", "");
 
         user = new Accounts(getContext()).getCurrentUser();
         requireActivity().setTitle("Reader");
@@ -97,7 +99,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
     private void startChannels() {
         Channels = new ArrayList<>();
         listChannel.setVisibility(View.VISIBLE);
-        adapter = new ChannelListAdapter(requireContext(), Channels);
+        adapter = new ChannelListAdapter(requireContext(), Channels, readLater);
         listChannel.setAdapter(adapter);
         loadChannels();
     }
@@ -138,6 +140,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
                                 Channel channel = new Channel();
                                 channel.setUid(object.getString("uid"));
                                 channel.setName(object.getString("name"));
+
                                 Integer unread = 0;
                                 if (object.has("unread")) {
                                     Object unreadCheck = object.get("unread");
@@ -154,6 +157,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
                                         }
                                     }
                                 }
+
                                 channel.setUnread(unread);
                                 Channels.add(index++, channel);
                             }
