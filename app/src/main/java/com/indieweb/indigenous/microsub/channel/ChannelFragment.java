@@ -171,7 +171,8 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
 
                             adapter.notifyDataSetChanged();
                             checkRefreshingStatus();
-
+                            Indigenous app = Indigenous.getInstance();
+                            app.setChannels(Channels);
                         }
                         catch (JSONException e) {
                             Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();

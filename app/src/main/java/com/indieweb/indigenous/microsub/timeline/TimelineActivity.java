@@ -11,7 +11,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -282,7 +281,6 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     }
                 });
                 builder.show();
-
                 return true;
         }
 

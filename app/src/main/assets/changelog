@@ -1,6 +1,7 @@
 <h4>xx/xx/xxxx - 0.47</h4>
 <ul>
     <li>Fix crash in source view</li>
+    <li>Allow moving items from one channel to another</li>
 </ul>
 <h4>03/11/2019 - 0.46</h4>
 <ul>

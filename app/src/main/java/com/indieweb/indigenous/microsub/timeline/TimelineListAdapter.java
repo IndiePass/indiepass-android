@@ -42,7 +42,9 @@ import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.microsub.MicrosubAction;
+import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.TimelineItem;
+import com.indieweb.indigenous.model.TimelineStyle;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
@@ -892,6 +894,9 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 }
             }
 
+            // Get static app.
+            final Indigenous app = Indigenous.getInstance();
+
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(final MenuItem item) {
@@ -909,6 +914,46 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
+                                }
+                            });
+                            builder.show();
+                            break;
+
+                        case R.id.timeline_entry_move:
+
+                            final List<Channel> channels = app.getChannelsList();
+                            final List<CharSequence> displayValues = new ArrayList<>();
+                            for (Channel channel : channels) {
+                                String uid = channel.getUid();
+                                if (!uid.equals("notifications") && !uid.equals("global") && !uid.equals(channelId)) {
+                                    displayValues.add(channel.getName());
+                                }
+                            }
+                            final CharSequence[] channelItems = displayValues.toArray(new CharSequence[displayValues.size()]);
+
+                            builder.setTitle("Select channel");
+                            builder.setSingleChoiceItems(channelItems, -1, null);
+                            builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            builder.setPositiveButton(R.string.move_item, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ListView lw = ((AlertDialog)dialog).getListView();
+                                    Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+                                    if (checkedItem != null) {
+                                        for (Channel channel : channels) {
+                                            if (channel.getName() == checkedItem) {
+                                                new MicrosubAction(context, user).movePost(channel.getUid(), channel.getName(), entry.getId());
+                                                items.remove(position);
+                                                notifyDataSetChanged();
+                                                break;
+                                            }
+                                        }
+                                    }
                                 }
                             });
                             builder.show();
@@ -932,7 +977,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
                         case R.id.timeline_entry_debug:
                             Intent i = new Intent(context, DebugActivity.class);
-                            Indigenous app = Indigenous.getInstance();
                             app.setDebug(entry.getJson());
                             context.startActivity(i);
                             break;

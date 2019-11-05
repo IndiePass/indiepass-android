@@ -70,7 +70,7 @@
     <string name="add_rsvp">RSVP</string>
     <string name="add_checkin">Checkin</string>
     <string name="add_geocache">Geocache</string>
-    <string name="move_item">Move item</string>
+    <string name="move_item">Move</string>
     <string name="delete">Delete</string>
     <string name="external_link">Opens this post in browser</string>
     <string name="update_post">Update</string>

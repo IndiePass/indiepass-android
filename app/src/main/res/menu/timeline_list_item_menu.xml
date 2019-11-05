@@ -19,6 +19,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/timeline_entry_move"
+        android:title="@string/move_item"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/timeline_entry_delete"
         android:title="@string/delete_post"
         app:showAsAction="never" />

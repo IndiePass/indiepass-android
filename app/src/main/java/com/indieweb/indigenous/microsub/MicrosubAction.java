@@ -14,7 +14,6 @@ import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Connection;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -161,6 +160,56 @@ public class MicrosubAction {
 
                 params.put("action", "timeline");
                 params.put("method", "remove");
+                params.put("channel", channelId);
+                params.put("entry", postId);
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json");
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
+                return headers;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(getRequest);
+    }
+
+    /**
+     * Move post.
+     */
+    public void movePost(final String channelId, String channelName, final String postId) {
+
+        if (!new Connection(context).hasConnection()) {
+            Toast.makeText(context, context.getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Toast.makeText(context, "Post moved to " + channelName, Toast.LENGTH_SHORT).show();
+
+        String MicrosubEndpoint = user.getMicrosubEndpoint();
+        StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {}
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {}
+                }
+        )
+        {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+
+                params.put("action", "timeline");
+                params.put("method", "move");
                 params.put("channel", channelId);
                 params.put("entry", postId);
 
