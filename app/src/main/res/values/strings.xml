@@ -219,7 +219,7 @@
     <string name="pref_key_image_quality_title">Image upload quality</string>
     <string name="pref_key_image_quality_summary">Define the quality for image manipulations. Ranges from 0 to 100. Higher values mean better image quality but bigger files.</string>
     <string name="pref_key_image_size_title">Image upload size</string>
-    <string name="pref_key_image_size_summary">Maximum image size in for width or height. In case the preview keeps blank, set the default size lower as this indicates the phone has ran out of memory.</string>
+    <string name="pref_key_image_size_summary">Maximum image size in for width or height. In case the preview is blank, set the default size lower as this indicates the phone has ran out of memory.</string>
     <string name="pref_key_media_name_title">Add name to upload</string>
     <string name="pref_key_media_name_summary">Exposes a textfield on the Upload screen so you can send a title for your uploaded file to the media endpoint.</string>
 
