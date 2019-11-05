@@ -74,14 +74,16 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     private boolean isSourceView;
     private final User user;
     private final String channelId;
+    private final String channelName;
     private final ListView listView;
     private final int Style;
 
-    TimelineListAdapter(Context context, List<TimelineItem> items, User user, String channelId, ListView listView, boolean isSourceView, int style) {
+    TimelineListAdapter(Context context, List<TimelineItem> items, User user, String channelId, String channelName, ListView listView, boolean isSourceView, int style) {
         this.context = context;
         this.items = items;
         this.user = user;
         this.channelId = channelId;
+        this.channelName = channelName;
         this.listView = listView;
         this.isSourceView = isSourceView;
         this.Style = style;
@@ -353,7 +355,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 }
 
                 // Channel.
-                if (channelId.equals("global") && item.getChannelName().length() > 0) {
+                if ((channelId.equals("global") || isSourceView) && item.getChannelName().length() > 0) {
                     holder.channel.setVisibility(View.VISIBLE);
                     holder.channel.setText(item.getChannelName());
                 }
@@ -846,6 +848,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             TimelineItem item = items.get(this.position);
             Intent intent = new Intent(context, TimelineActivity.class);
             intent.putExtra("channelId", channelId);
+            intent.putExtra("channelName", channelName);
             intent.putExtra("sourceId", item.getSourceId());
             intent.putExtra("sourceName", item.getAuthorName());
             context.startActivity(intent);

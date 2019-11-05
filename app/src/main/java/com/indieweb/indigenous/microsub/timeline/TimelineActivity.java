@@ -320,7 +320,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
      */
     public void startTimeline() {
         TimelineItems = new ArrayList<>();
-        adapter = new TimelineListAdapter(this, TimelineItems, user, channelId, listView, isSourceView, style);
+        adapter = new TimelineListAdapter(this, TimelineItems, user, channelId, channelName, listView, isSourceView, style);
         listView.setAdapter(adapter);
         getTimeLineItems("");
     }
@@ -439,7 +439,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                     }
                                     catch (Exception ignored) {}
                                 }
-                                else if (channelName.length() > 0) {
+                                else if (channelName != null && channelName.length() > 0) {
                                     item.setChannelName(channelName);
                                 }
 
