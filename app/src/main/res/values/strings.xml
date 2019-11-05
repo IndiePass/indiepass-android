@@ -206,6 +206,8 @@
     <string name="pref_key_unread_items_channel_summary">Adds a channel at the top of the list which allows you to view all unread items across all channels at once. Will not show up if there are not unread items or only within one channel. Marking items as read needs to happen manually.</string>
     <string name="pref_key_timeline_autoload_more_title">Autoload more posts</string>
     <string name="pref_key_timeline_autoload_more_summary">When the \'Load more\' button comes into view, autoload more posts instead of having to click manually.</string>
+    <string name="pref_key_move_item_title">Move items</string>
+    <string name="pref_key_move_item_summary">Allows moving posts from one channel to another. Only enable if your server supports it.</string>
 
     <!-- Preferences: Media handling -->
     <string name="pref_category_media_title">Media</string>

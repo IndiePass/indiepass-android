@@ -116,6 +116,11 @@
             android:entryValues="@array/mark_read_array_values"
             android:defaultValue="1" />
         <SwitchPreference
+            android:key="pref_key_move_item"
+            android:title="@string/pref_key_move_item_title"
+            android:summary="@string/pref_key_move_item_summary"
+            android:defaultValue="false" />
+        <SwitchPreference
             android:key="pref_key_timeline_autoload_more"
             android:title="@string/pref_key_timeline_autoload_more_title"
             android:summary="@string/pref_key_timeline_autoload_more_summary"

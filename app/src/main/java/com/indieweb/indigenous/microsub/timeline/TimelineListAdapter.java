@@ -876,6 +876,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             Menu menu = popup.getMenu();
             popup.getMenuInflater().inflate(R.menu.timeline_list_item_menu, menu);
 
+            // Debug menu item.
             if (this.debugJson) {
                 MenuItem itemDebug = menu.findItem(R.id.timeline_entry_debug);
                 if (itemDebug != null) {
@@ -883,6 +884,15 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 }
             }
 
+            // Move menu item.
+            if (Preferences.getPreference(context, "pref_key_move_item", false)) {
+                MenuItem itemMove = menu.findItem(R.id.timeline_entry_move);
+                if (itemMove != null) {
+                    itemMove.setVisible(true);
+                }
+            }
+
+            // Mark read menu item.
             if (!entry.isRead() && (channelId.equals("global") || Preferences.getPreference(context, "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_MANUAL)) {
                 MenuItem itemMarkRead = menu.findItem(R.id.timeline_entry_mark_read);
                 if (itemMarkRead != null) {
