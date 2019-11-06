@@ -9,13 +9,17 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.microsub.MicrosubAction;
+import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.Feed;
 import com.indieweb.indigenous.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,6 +56,7 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
     public static class ViewHolder {
         public TextView url;
         public Button delete;
+        public Button move;
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -61,6 +66,7 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
             convertView = mInflater.inflate(R.layout.list_item_manage_feed, null);
             holder = new ViewHolder();
             holder.url = convertView.findViewById(R.id.url);
+            holder.move = convertView.findViewById(R.id.feedMove);
             holder.delete = convertView.findViewById(R.id.feedDelete);
             convertView.setTag(holder);
         }
@@ -71,6 +77,7 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
         final Feed item = items.get(position);
         if (item != null) {
             holder.url.setText(item.getUrl());
+            holder.move.setOnClickListener(new OnMoveClickListener(position));
             holder.delete.setOnClickListener(new OnDeleteClickListener(position));
         }
 
@@ -109,4 +116,56 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
         }
     }
 
+    // Move listener.
+    class OnMoveClickListener implements OnClickListener {
+
+        int position;
+
+        OnMoveClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            final Feed feed = items.get(this.position);
+            final Indigenous app = Indigenous.getInstance();
+
+            final List<Channel> channels = app.getChannelsList();
+            final List<CharSequence> displayValues = new ArrayList<>();
+            for (Channel channel : channels) {
+                String uid = channel.getUid();
+                if (!uid.equals("notifications") && !uid.equals("global") && !uid.equals(feed.getChannel())) {
+                    displayValues.add(channel.getName());
+                }
+            }
+            final CharSequence[] channelItems = displayValues.toArray(new CharSequence[displayValues.size()]);
+
+            final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Move feed to channel");
+            builder.setSingleChoiceItems(channelItems, -1, null);
+            builder.setPositiveButton(context.getString(R.string.move_item),new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    ListView lw = ((AlertDialog)dialog).getListView();
+                    Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+                    if (checkedItem != null) {
+                        for (Channel channel : channels) {
+                            if (channel.getName() == checkedItem) {
+                                new MicrosubAction(context, user).subscribe(feed.getUrl(), channel.getUid(), true);
+                                items.remove(position);
+                                notifyDataSetChanged();
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
+            builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.show();
+        }
+    }
 }

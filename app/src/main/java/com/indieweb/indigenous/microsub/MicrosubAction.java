@@ -483,14 +483,19 @@ public class MicrosubAction {
     /**
      * Subscribe.
      */
-    public void subscribe(final String url, final String channelId) {
+    public void subscribe(final String url, final String channelId, final boolean update) {
 
         if (!new Connection(context).hasConnection()) {
             Toast.makeText(context, context.getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Toast.makeText(context, "Subscribed to feed, reload list", Toast.LENGTH_SHORT).show();
+        if (update) {
+            Toast.makeText(context, "Feed updated", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(context, "Subscribed to feed, reload list", Toast.LENGTH_SHORT).show();
+        }
 
         String MicrosubEndpoint = user.getMicrosubEndpoint();
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
@@ -508,6 +513,10 @@ public class MicrosubAction {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
+
+                if (update) {
+                    params.put("method", "update");
+                }
 
                 params.put("action", "follow");
                 params.put("url", url);

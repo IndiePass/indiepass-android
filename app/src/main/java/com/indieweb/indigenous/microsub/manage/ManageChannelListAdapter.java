@@ -102,7 +102,7 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
-        holder.name.setText(channels.get(position).getName() + " (" + channels.get(position).getUid() + ")");
+        holder.name.setText(channels.get(position).getName() + " (id: " + channels.get(position).getUid() + ")");
 
         if (isShare) {
             holder.drag.setVisibility(View.GONE);

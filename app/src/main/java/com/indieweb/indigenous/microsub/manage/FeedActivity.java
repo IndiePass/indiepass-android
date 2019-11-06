@@ -256,7 +256,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
                 builder.setTitle("Subscribe to feed '"+ feed.getUrl() +"' ?");
                 builder.setPositiveButton(context.getString(R.string.subscribe),new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
-                        new MicrosubAction(context, user).subscribe(feed.getUrl(), feed.getChannel());
+                        new MicrosubAction(context, user).subscribe(feed.getUrl(), feed.getChannel(), false);
                         finish();
                     }
                 });
