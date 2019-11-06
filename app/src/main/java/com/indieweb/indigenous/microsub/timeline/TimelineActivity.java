@@ -156,7 +156,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                         if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE
                                 && (listView.getLastVisiblePosition() - listView.getHeaderViewsCount() -
                                 listView.getFooterViewsCount()) >= (adapter.getCount() - 1)) {
-                            if (!loadMoreClicked) {
+                            if (!loadMoreClicked && loadMoreButtonAdded) {
                                 loadMoreItems();
                             }
                         }
@@ -353,7 +353,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             }
 
             // Pager.
-            if (pagerAfter.length() > 0) {
+            if (pagerAfter != null && pagerAfter.length() > 0) {
                 MicrosubEndpoint += "&after=" + pagerAfter;
             }
         }
@@ -376,8 +376,13 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                     if (microsubResponse.getJSONObject("paging").has("after")) {
                                         olderItems[0] = microsubResponse.getJSONObject("paging").getString("after");
                                     }
+                                    else {
+                                        olderItems[0] = "";
+                                    }
                                 }
-                                catch (JSONException ignored) {}
+                                catch (JSONException ignored) {
+                                    olderItems[0] = "";
+                                }
                             }
 
                             for (int i = 0; i < itemList.length(); i++) {
@@ -521,6 +526,12 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
                                 }
 
+                                // Location.
+                                if (object.has("location")) {
+                                    String location = getSingleJsonValueFromArrayOrString("location", object);
+                                    item.setLocation(location);
+                                }
+
                                 // Set type.
                                 item.setType(type);
 
@@ -536,6 +547,20 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                     published = object.getString("published");
                                 }
                                 item.setPublished(published);
+
+                                // Start
+                                String start = "";
+                                if (object.has("start")) {
+                                    start = object.getString("start");
+                                }
+                                item.setStart(start);
+
+                                // End
+                                String end = "";
+                                if (object.has("end")) {
+                                    end = object.getString("end");
+                                }
+                                item.setEnd(end);
 
                                 // Author.
                                 if (object.has("author")) {
@@ -670,7 +695,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                             }
 
                             // Older items.
-                            if (olderItems[0] != null && olderItems[0].length() > 0) {
+                            if (olderItems != null && olderItems[0] != null && olderItems[0].length() > 0) {
 
                                 loadMoreClicked = false;
                                 loadMoreButton.setText(R.string.load_more);

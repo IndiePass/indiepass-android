@@ -23,6 +23,9 @@ public class TimelineItem implements Serializable {
     private String reference = "";
     private String latitude = "";
     private String longitude = "";
+    private String start = "";
+    private String end = "";
+    private String location = "";
     private ArrayList<String> photos = new ArrayList<>();
     private String audio = "";
     private String video = "";
@@ -91,6 +94,22 @@ public class TimelineItem implements Serializable {
 
     public void setPublished(String published) {
         this.published = published;
+    }
+
+    public String getStart() {
+        return start;
+    }
+
+    public void setStart(String start) {
+        this.start = start;
+    }
+
+    public String getEnd() {
+        return end;
+    }
+
+    public void setEnd(String end) {
+        this.end = end;
     }
 
     public String getName() {
@@ -197,5 +216,13 @@ public class TimelineItem implements Serializable {
 
     public void setLongitude(String longitude) {
         this.longitude = longitude;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

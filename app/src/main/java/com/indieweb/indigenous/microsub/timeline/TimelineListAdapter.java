@@ -44,12 +44,12 @@ import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.TimelineItem;
-import com.indieweb.indigenous.model.TimelineStyle;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
 import com.indieweb.indigenous.widget.ExpandableTextView;
 
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -126,6 +126,9 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public TextView imageCount;
         public CardView card;
         public LinearLayout row;
+        public TextView start;
+        public TextView end;
+        public TextView location;
         public Button reply;
         public Button like;
         public Button repost;
@@ -169,6 +172,9 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             if (Style == TIMELINE_STYLE_SUMMARY) {
                 holder.unread = convertView.findViewById(R.id.timeline_new);
                 holder.published = convertView.findViewById(R.id.timeline_published);
+                holder.start = convertView.findViewById(R.id.timeline_start);
+                holder.end = convertView.findViewById(R.id.timeline_end);
+                holder.location = convertView.findViewById(R.id.timeline_location);
                 holder.author = convertView.findViewById(R.id.timeline_author);
                 holder.imageCount = convertView.findViewById(R.id.timeline_image_count);
                 holder.channel = convertView.findViewById(R.id.timeline_channel);
@@ -354,6 +360,84 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 }
                 else {
                     holder.published.setVisibility(View.GONE);
+                }
+
+                // Start
+                if (item.getStart().length() > 0) {
+                    Date startDate = null;
+                    for (String formatString : dateFormatStrings) {
+                        try {
+                            if (startDate != null) {
+                                break;
+                            }
+                            startDate = new SimpleDateFormat(formatString).parse(item.getStart());
+                        }
+                        catch (ParseException ignored) {}
+                    }
+
+                    if (startDate != null) {
+                        holder.start.setVisibility(View.VISIBLE);
+                        holder.start.setText("Start: " + formatOut.format(startDate));
+                    }
+                    else {
+                        holder.start.setVisibility(View.GONE);
+                    }
+                }
+                else {
+                    holder.start.setVisibility(View.GONE);
+                }
+
+                // End
+                if (item.getEnd().length() > 0) {
+                    Date endDate = null;
+                    for (String formatString : dateFormatStrings) {
+                        try {
+                            if (endDate != null) {
+                                break;
+                            }
+                            endDate = new SimpleDateFormat(formatString).parse(item.getEnd());
+                        }
+                        catch (ParseException ignored) {}
+                    }
+
+                    if (endDate != null) {
+                        holder.end.setVisibility(View.VISIBLE);
+                        holder.end.setText("End: " + formatOut.format(endDate));
+                    }
+                    else {
+                        holder.end.setVisibility(View.GONE);
+                    }
+                }
+                else {
+                    holder.end.setVisibility(View.GONE);
+                }
+
+                // Location
+                if (item.getLocation().length() > 0) {
+
+                    String location = "@ ";
+                    try {
+                        new URL(item.getLocation()).toURI();
+                        location += "<a href=\"" + item.getLocation() + "\">" + item.getLocation() + "</a>";
+                    }
+                    catch (Exception e) {
+                        location += item.getLocation();
+                    }
+
+                    CharSequence sequence = Html.fromHtml(location);
+                    SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
+                    URLSpan[] urls = strBuilder.getSpans(0, sequence.length(), URLSpan.class);
+                    for (URLSpan span : urls) {
+                        makeLinkClickable(strBuilder, span);
+                    }
+
+                    holder.location.setMovementMethod(LinkMovementMethod.getInstance());
+                    holder.location.setVisibility(View.VISIBLE);
+                    holder.location.setText(strBuilder);
+                }
+                else {
+                    holder.location.setMovementMethod(null);
+                    holder.location.setVisibility(View.GONE);
                 }
 
                 // Channel.

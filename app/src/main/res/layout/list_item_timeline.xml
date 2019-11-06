@@ -77,6 +77,33 @@
             android:textSize="@dimen/timeline_list_item_text_size"
             android:layout_width="fill_parent" />
 
+        <TextView
+            android:id="@+id/timeline_start"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/timeline_list_item_text_size"
+            android:layout_width="fill_parent" />
+
+        <TextView
+            android:id="@+id/timeline_end"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/timeline_list_item_text_size"
+            android:layout_width="fill_parent" />
+
+        <TextView
+            android:id="@+id/timeline_location"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/timeline_list_item_text_size"
+            android:layout_width="fill_parent" />
+
         <com.indieweb.indigenous.widget.ExpandableTextView
             android:id="@+id/timeline_content"
             android:layout_marginTop="5dp"

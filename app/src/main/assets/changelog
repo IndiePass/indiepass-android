@@ -2,6 +2,7 @@
 <ul>
     <li>Fix crash in source view</li>
     <li>Allow moving a feed to another channel</li>
+    <li>Render start, end and location for events</li>
     <li>Allow to configure a 'Read later' channel</li>
     <li>Allow moving items from one channel to another</li>
 </ul>

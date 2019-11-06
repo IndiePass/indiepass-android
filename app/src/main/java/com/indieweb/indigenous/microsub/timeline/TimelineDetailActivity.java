@@ -42,6 +42,7 @@ import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
 
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -124,6 +125,87 @@ public class TimelineDetailActivity extends AppCompatActivity {
             }
             else {
                 authorName.setVisibility(View.GONE);
+            }
+
+            // Start
+            TextView start = findViewById(R.id.timeline_start);
+            if (item.getStart().length() > 0) {
+                Date startDate = null;
+                for (String formatString : dateFormatStrings) {
+                    try {
+                        if (startDate != null) {
+                            break;
+                        }
+                        startDate = new SimpleDateFormat(formatString).parse(item.getStart());
+                    }
+                    catch (ParseException ignored) {}
+                }
+
+                if (startDate != null) {
+                    start.setVisibility(View.VISIBLE);
+                    start.setText("Start: " + formatOut.format(startDate));
+                }
+                else {
+                    start.setVisibility(View.GONE);
+                }
+            }
+            else {
+                start.setVisibility(View.GONE);
+            }
+
+            // End
+            TextView end = findViewById(R.id.timeline_end);
+            if (item.getEnd().length() > 0) {
+                Date endDate = null;
+                for (String formatString : dateFormatStrings) {
+                    try {
+                        if (endDate != null) {
+                            break;
+                        }
+                        endDate = new SimpleDateFormat(formatString).parse(item.getEnd());
+                    }
+                    catch (ParseException ignored) {}
+                }
+
+                if (endDate != null) {
+                    end.setVisibility(View.VISIBLE);
+                    end.setText("End: " + formatOut.format(endDate));
+                }
+                else {
+                    end.setVisibility(View.GONE);
+                }
+            }
+            else {
+                end.setVisibility(View.GONE);
+            }
+
+            // Location
+            TextView location = findViewById(R.id.timeline_location);
+            if (item.getLocation().length() > 0) {
+
+                String locationString = "@ ";
+                try {
+                    new URL(item.getLocation()).toURI();
+                    locationString += "<a href=\"" + item.getLocation() + "\">" + item.getLocation() + "</a>";
+                }
+                catch (Exception e) {
+                    locationString += item.getLocation();
+                }
+
+                CharSequence sequence = Html.fromHtml(locationString);
+                SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
+                URLSpan[] urls = strBuilder.getSpans(0, sequence.length(), URLSpan.class);
+                for (URLSpan span : urls) {
+                    makeLinkClickable(strBuilder, span);
+                }
+
+                location.setMovementMethod(LinkMovementMethod.getInstance());
+                location.setVisibility(View.VISIBLE);
+                location.setText(strBuilder);
+            }
+            else {
+                location.setMovementMethod(null);
+                location.setVisibility(View.GONE);
             }
 
             // Response.
