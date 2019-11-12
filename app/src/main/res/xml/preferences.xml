@@ -142,6 +142,11 @@
             android:summary="@string/pref_key_image_preview_summary"
             android:defaultValue="true" />
         <SwitchPreference
+            android:key="pref_key_image_preview_compact"
+            android:title="@string/pref_key_image_preview_compact_title"
+            android:summary="@string/pref_key_image_preview_compact_summary"
+            android:defaultValue="false" />
+        <SwitchPreference
             android:key="pref_key_video_autoplay"
             android:title="@string/pref_key_video_autoplay_title"
             android:defaultValue="false" />

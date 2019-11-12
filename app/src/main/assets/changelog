@@ -5,6 +5,7 @@
     <li>Render start, end and location for events</li>
     <li>Allow to configure a 'Read later' channel</li>
     <li>Allow moving items from one channel to another</li>
+    <li>Add a preview image on the compact style, configurable</li>
 </ul>
 <h4>03/11/2019 - 0.46</h4>
 <ul>

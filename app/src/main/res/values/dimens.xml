@@ -5,6 +5,7 @@
     <dimen name="channel_list_item_padding">15sp</dimen>
     <dimen name="channel_list_item_text_size">16sp</dimen>
     <dimen name="big_list_title">18sp</dimen>
+    <dimen name="compact_list_title">16sp</dimen>
     <dimen name="info_text">16sp</dimen>
     <dimen name="help_text">12sp</dimen>
     <dimen name="big_text">20sp</dimen>

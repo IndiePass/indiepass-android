@@ -70,7 +70,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     private final Context context;
     private final List<TimelineItem> items;
     private LayoutInflater mInflater;
-    private boolean imagePreview;
     private boolean debugItemJSON;
     private boolean staticMap;
     private boolean isSourceView;
@@ -89,7 +88,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         this.listView = listView;
         this.isSourceView = isSourceView;
         this.Style = style;
-        this.imagePreview = Preferences.getPreference(context, "pref_key_image_preview", true);
         this.staticMap = Preferences.getPreference(context, "pref_key_static_map", true);
         this.debugItemJSON = Preferences.getPreference(context, "pref_key_debug_microsub_item_json", false);
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -167,6 +165,8 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.rsvp = convertView.findViewById(R.id.itemRSVP);
             holder.menu = convertView.findViewById(R.id.itemMenu);
             holder.map = convertView.findViewById(R.id.itemMap);
+            holder.image = convertView.findViewById(R.id.timeline_image);
+            holder.card = convertView.findViewById(R.id.timeline_card);
 
             // Summary version.
             if (Style == TIMELINE_STYLE_SUMMARY) {
@@ -183,8 +183,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.response = convertView.findViewById(R.id.timeline_response);
                 holder.content = convertView.findViewById(R.id.timeline_content);
                 holder.expand = convertView.findViewById(R.id.timeline_content_more);
-                holder.image = convertView.findViewById(R.id.timeline_image);
-                holder.card = convertView.findViewById(R.id.timeline_card);
             }
 
             convertView.setTag(holder);
@@ -253,6 +251,18 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     }
                 }
 
+                if (item.getPhotos().size() > 0 && Preferences.getPreference(context, "pref_key_image_preview_compact", false)) {
+                    Glide.with(context)
+                            .load(item.getPhotos().get(0))
+                            .into(holder.image);
+                    holder.card.setVisibility(View.VISIBLE);
+                    holder.image.setVisibility(View.VISIBLE);
+                }
+                else {
+                    holder.card.setVisibility(View.GONE);
+                    holder.image.setVisibility(View.GONE);
+                }
+
                 if (meta.size() > 0) {
                     holder.meta.setVisibility(View.VISIBLE);
                     holder.meta.setText(TextUtils.join(" - ", meta));
@@ -260,6 +270,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 else {
                     holder.meta.setVisibility(View.GONE);
                 }
+
             }
 
             // Name.
@@ -604,6 +615,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 // Image.
                 if (item.getPhotos().size() > 0) {
 
+                    boolean imagePreview = Preferences.getPreference(context, "pref_key_image_preview", true);
                     if (imagePreview) {
                         Glide.with(context)
                                 .load(item.getPhotos().get(0))

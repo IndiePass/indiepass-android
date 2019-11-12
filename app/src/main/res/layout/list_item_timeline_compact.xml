@@ -1,24 +1,57 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/timeline_item_row"
     android:layout_height="wrap_content"
     android:padding="@dimen/timeline_list_item_padding"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/timeline_name"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textColor"
-        android:textSize="@dimen/big_list_title"
-        android:layout_width="fill_parent" />
+    <LinearLayout
+        android:weightSum="1.0"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/timeline_meta"
-        android:textColor="@color/textColor"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textSize="@dimen/timeline_list_item_global"
-        android:layout_width="wrap_content" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/timeline_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/compact_list_title" />
+
+            <TextView
+                android:id="@+id/timeline_meta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/timeline_list_item_global" />
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_marginStart="@dimen/box_padding"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/timeline_card"
+            app:cardCornerRadius="8dp">
+
+            <ImageView
+                android:contentDescription="@string/timeline_image"
+                android:scaleType="centerCrop"
+                android:id="@+id/timeline_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp" />
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"

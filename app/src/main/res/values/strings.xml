@@ -190,8 +190,10 @@
     <string name="pref_key_video_autoplay_title">Video autoplay</string>
     <string name="pref_key_timeline_summary_detail_click_title">Summary detail click</string>
     <string name="pref_key_timeline_summary_detail_click_summary">Clicking on an item in the summary style opens the full detail view of the post. In compact mode this is always the case.</string>
-    <string name="pref_key_image_preview_title">Image preview</string>
-    <string name="pref_key_image_preview_summary">Show the first image per post in the summary style. If you choose to hide, you can still view the images attached to the post by clicking on the images information at the bottom of the post.</string>
+    <string name="pref_key_image_preview_title">Image preview on summary</string>
+    <string name="pref_key_image_preview_summary">Show the first image per post in the summary style. Click on the images information to see all images.</string>
+    <string name="pref_key_image_preview_compact_title">Image preview on compact</string>
+    <string name="pref_key_image_preview_compact_summary">Show the first image per post in the compact style. The images are always visible on the full detail of the post.</string>
     <string name="pref_key_static_map_title">Static map</string>
     <string name="pref_key_static_map_summary">Show a static map on checkin posts, as long as the checkin post does not contain pictures</string>
     <string name="pref_key_mark_read_title">Mark items read</string>
