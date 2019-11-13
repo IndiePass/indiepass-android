@@ -55,6 +55,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -95,7 +96,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public boolean canAddImage = false;
     public boolean canAddLocation = false;
     public boolean addCounter = false;
-    public Map<String, String> bodyParams = new HashMap<>();
+    public Map<String, String> bodyParams = new LinkedHashMap<>();
 
     public Integer draftId;
     String fileUrl;
@@ -470,9 +471,11 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 if (captions.size() > 0) {
                     int ia = 0;
                     for (String s: captions) {
+                        String caption = "";
                         if (s.length() > 0) {
-                            bodyParams.put("mp-photo-alt_multiple_[" + ia + "]", s);
+                            caption = s;
                         }
+                        bodyParams.put("mp-photo-alt_multiple_[" + ia + "]", caption);
                         ia++;
                     }
                 }
@@ -520,7 +523,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
             @Override
             protected Map<String, DataPart> getByteData() {
-                Map<String, DataPart> params = new HashMap<>();
+                Map<String, DataPart> params = new LinkedHashMap<>();
 
                 if (images.size() > 0) {
 
