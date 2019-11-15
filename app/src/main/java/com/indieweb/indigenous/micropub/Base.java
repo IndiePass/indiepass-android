@@ -317,7 +317,6 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         }
 
         showProgressBar();
-        //Toast.makeText(getApplicationContext(), "Sending, please wait", Toast.LENGTH_SHORT).show();
 
         String endpoint = user.getMicropubEndpoint();
         if (isMediaRequest) {
