@@ -1,6 +1,6 @@
-<h4>xx/xx/xxxx - 0.48</h4>
+<h4>22/11/2019 - 0.48</h4>
 <ul>
-    <li></li>
+    <li>Fix crash on Android 7.1 for authentication</li>
 </ul>
 <h4>21/11/2019 - 0.47</h4>
 <ul>

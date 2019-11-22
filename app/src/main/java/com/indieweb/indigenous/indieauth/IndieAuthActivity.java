@@ -141,6 +141,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                 domainInput = "https://" + domainInput;
             }
 
+            changeSignInButton(R.string.connecting);
             if (validDomain(domainInput)) {
 
                 String url = authorizationEndpoint + "?response_type=code&redirect_uri=" + RedirectUri + "&client_id=" + ClientId + "&me=" + domainInput + "&scope=create+update+delete+media+read+follow+channels+mute+block&state=" + state;
@@ -156,6 +157,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
 
             }
             else {
+                changeSignInButton(R.string.sign_in_with_domain);
                 Toast.makeText(getApplicationContext(), "We did not find the necessary rel links on your domain (authorization_endpoint, token_endpoint, micropub, microsub)", Toast.LENGTH_LONG).show();
             }
 
@@ -181,10 +183,13 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
         int numberOfAuthEndpoints = 0;
         boolean hasMicropubOrMicrosub = false;
 
+        // This crashes on 7.1.
+        if (android.os.Build.VERSION.SDK_INT != 25) {
+            Toast.makeText(getApplicationContext(), "Connecting to domain, one moment", Toast.LENGTH_SHORT).show();
+        }
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
-        Toast.makeText(getApplicationContext(), "Connecting to domain, one moment", Toast.LENGTH_SHORT).show();
 
         try {
             org.jsoup.Connection connection = Jsoup.connect($domain);
@@ -380,7 +385,6 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "Authentication failed: " + errorMessage, Toast.LENGTH_LONG).show();
-
                         showForm();
                     }
                 }
@@ -434,12 +438,23 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
     }
 
     /**
+     * Change the sign in button.
+     *
+     * @param text
+     *   The text to change the sign in button to.
+     */
+    public void changeSignInButton(int text) {
+        signIn.setText(text);
+    }
+
+    /**
      * Show sign in form.
      */
     public void showForm() {
         info.setVisibility(View.VISIBLE);
         domain.setVisibility(View.VISIBLE);
         signIn.setVisibility(View.VISIBLE);
+        changeSignInButton(R.string.sign_in_with_domain);
     }
 
 }
