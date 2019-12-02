@@ -4,6 +4,7 @@ import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
 import android.accounts.AuthenticatorException;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -66,15 +67,16 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
     public static class ViewHolder {
         public TextView name;
         public TextView url;
-        public TextView userCurrent;
-        public ImageView avatar;
-        public TextView endpoints;
-        public RelativeLayout row;
-        public Button sync;
-        public Button switchAccount;
+        TextView userCurrent;
+        ImageView avatar;
+        TextView endpoints;
+        RelativeLayout row;
+        Button sync;
+        Button switchAccount;
         public Button delete;
     }
 
+    @SuppressLint("InflateParams")
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
 
@@ -101,7 +103,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
 
             if (item.getMe().equals(currentUser.getMe())) {
                 holder.userCurrent.setVisibility(View.VISIBLE);
-                holder.userCurrent.setText("Current user");
+                holder.userCurrent.setText(R.string.current_user);
                 holder.switchAccount.setVisibility(View.GONE);
             }
             else {
@@ -185,7 +187,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
         @Override
         public void onClick(View v) {
             final User user = items.get(this.position);
-            Toast.makeText(context, "Syncing " + user.getMe(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, String.format(context.getString(R.string.account_sync), user.getMe()), Toast.LENGTH_SHORT).show();
             new Endpoints(context, user).refresh();
             new MicropubConfig(context, user).refresh();
         }
@@ -205,7 +207,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
             final User user = items.get(this.position);
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Are you sure you want to delete account " + user.getMe() + " ?");
+            builder.setTitle(String.format(context.getString(R.string.account_delete_confirm), user.getMe()));
             builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,int id) {
 
@@ -267,7 +269,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
      *   The position in the adapter.
      */
     private void handleSuccessRemoval(String user, int position) {
-        Toast.makeText(context, "User " + user + " removed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, String.format(context.getString(R.string.account_removed), user), Toast.LENGTH_SHORT).show();
         if (user.equals(currentUser.getMe())) {
             Intent main = new Intent(context, LaunchActivity.class);
             context.startActivity(main);

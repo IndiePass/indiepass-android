@@ -88,7 +88,8 @@ work fine.
 Indigenous is currently only available in English. If you want to
 translate to another language, the following file contains all strings
 use in the app. Either send a pull request or open an issue with the
-file attached.
+file attached. Some strings contain '%s'. These are placeholders and
+should be kept.
 
 https://github.com/swentel/indigenous-android/blob/master/app/src/main/res/values/strings.xml
 

@@ -40,6 +40,7 @@ import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
 import org.json.JSONException;
@@ -63,34 +64,33 @@ abstract public class BasePlatformCreate extends Base {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.addLocation:
-                if (!mRequestingLocationUpdates) {
-                    Dexter.withActivity(this)
-                            .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                            .withListener(new PermissionListener() {
-                                @Override
-                                public void onPermissionGranted(PermissionGrantedResponse response) {
-                                    mRequestingLocationUpdates = true;
-                                    startLocationUpdates();
+        if (item.getItemId() == R.id.addLocation) {
+            if (!mRequestingLocationUpdates) {
+                Dexter.withActivity(this)
+                        .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                        .withListener(new PermissionListener() {
+                            @Override
+                            public void onPermissionGranted(PermissionGrantedResponse response) {
+                                mRequestingLocationUpdates = true;
+                                startLocationUpdates();
+                            }
+
+                            @Override
+                            public void onPermissionDenied(PermissionDeniedResponse response) {
+                                if (response.isPermanentlyDenied()) {
+                                    openSettings();
                                 }
+                            }
 
-                                @Override
-                                public void onPermissionDenied(PermissionDeniedResponse response) {
-                                    if (response.isPermanentlyDenied()) {
-                                        openSettings();
-                                    }
-                                }
+                            @Override
+                            public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                                token.continuePermissionRequest();
+                            }
 
-                                @Override
-                                public void onPermissionRationaleShouldBeShown(com.karumi.dexter.listener.PermissionRequest permission, PermissionToken token) {
-                                    token.continuePermissionRequest();
-                                }
+                        }).check();
+            }
 
-                            }).check();
-                }
-
-                return true;
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -143,12 +143,11 @@ abstract public class BasePlatformCreate extends Base {
                                 rae.startResolutionForResult(BasePlatformCreate.this, REQUEST_CHECK_SETTINGS);
                             }
                             catch (IntentSender.SendIntentException sie) {
-                                Toast.makeText(getApplicationContext(), "PendingIntent unable to execute request.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.location_intent_error), Toast.LENGTH_SHORT).show();
                             }
                             break;
                         case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                            String errorMessage = "Location settings are inadequate, and cannot be fixed here. Fix in Settings.";
-                            Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.location_settings_error), Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -160,8 +159,8 @@ abstract public class BasePlatformCreate extends Base {
     public void updateLocationUI() {
         if (mCurrentLocation != null) {
 
-            coordinates = mCurrentLocation.getLatitude() + "," + mCurrentLocation.getLongitude() + "," + mCurrentLocation.getAltitude();
-            String coordinatesText = "Coordinates (lat, lon, alt) " + coordinates;
+            coordinates = String.format("%s,%s,%s", mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(), mCurrentLocation.getAltitude());
+            String coordinatesText = String.format(getString(R.string.location_coordinates), coordinates);
             locationCoordinates.setText(coordinatesText);
             latitude = mCurrentLocation.getLatitude();
             longitude = mCurrentLocation.getLongitude();
@@ -279,7 +278,7 @@ abstract public class BasePlatformCreate extends Base {
                 MicropubEndpoint += "&lat=" + latitude.toString() + "&lon=" + longitude.toString();
             }
 
-            Toast.makeText(getApplicationContext(), "Getting location name", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.location_get, Toast.LENGTH_SHORT).show();
             StringRequest getRequest = new StringRequest(Request.Method.GET, MicropubEndpoint,
                     new Response.Listener<String>() {
                         @Override
@@ -299,7 +298,7 @@ abstract public class BasePlatformCreate extends Base {
                                 }
                             }
                             catch (JSONException e) {
-                                Toast.makeText(getApplicationContext(), "Error parsing JSON: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.location_error) + e.getMessage(), Toast.LENGTH_LONG).show();
                             }
 
                             if (label.length() > 0) {
@@ -316,7 +315,7 @@ abstract public class BasePlatformCreate extends Base {
                                 }
                             }
                             else {
-                                Toast.makeText(getApplicationContext(), "No location name found", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.location_no_name), Toast.LENGTH_SHORT).show();
                             }
 
                         }

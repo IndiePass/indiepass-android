@@ -63,7 +63,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
             channelId = extras.getString("channelId");
             channelName = extras.getString("channelName");
             shareUrl = extras.getString("url");
-            this.setTitle("Add feed in " + channelName);
+            this.setTitle(String.format(getString(R.string.add_feed_in_channel), channelName));
             user = new Accounts(this).getCurrentUser();
 
             feedResults = findViewById(R.id.feedResults);
@@ -111,7 +111,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        Toast.makeText(getApplicationContext(), "Searching, stay tuned", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), getString(R.string.feed_searching), Toast.LENGTH_LONG).show();
 
         String MicrosubEndpoint = user.getMicrosubEndpoint();
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
@@ -139,11 +139,11 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
                                 adapter.notifyDataSetChanged();
                             }
                             else {
-                                Toast.makeText(getApplicationContext(), "No results found, please try again.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.feed_no_results), Toast.LENGTH_SHORT).show();
                             }
                         }
                         catch (JSONException e) {
-                            Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.feed_parse_error), e.getMessage()), Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -151,7 +151,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Something went wrong, please try again.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), R.string.feed_search_error, Toast.LENGTH_LONG).show();
                     }
                 }
         )
@@ -253,7 +253,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
                 final Feed feed = items.get(this.position);
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Subscribe to feed '"+ feed.getUrl() +"' ?");
+                builder.setTitle(String.format(getString(R.string.feed_subscribe), feed.getUrl()));
                 builder.setPositiveButton(context.getString(R.string.subscribe),new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
                         new MicrosubAction(context, user).subscribe(feed.getUrl(), feed.getChannel(), false);

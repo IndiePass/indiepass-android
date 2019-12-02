@@ -70,7 +70,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
                 }
 
             } catch (JSONException e) {
-                Toast.makeText(this, "Error parsing syndication targets: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, String.format(getString(R.string.syndication_targets_parse_error), e.getMessage()), Toast.LENGTH_LONG).show();
             }
         }
 
@@ -272,7 +272,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
             // Location coordinates.
             if (locationCoordinates != null && draft.getCoordinates().length() > 0) {
                 coordinates = draft.getCoordinates();
-                String coordinatesText = "Coordinates (lat, lon, alt) " + coordinates;
+                String coordinatesText = String.format(getString(R.string.location_coordinates), coordinates);
                 locationCoordinates.setText(coordinatesText);
                 toggleLocationVisibilities(true);
 

@@ -17,14 +17,12 @@ import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UsersFragment extends Fragment {
 
-    User currentUser;
-    ListView listView;
-    List<User> users = new ArrayList<>();
+    private User currentUser;
+    private ListView listView;
 
     @Nullable
     @Override
@@ -45,14 +43,14 @@ public class UsersFragment extends Fragment {
     /**
      * Start users lists.
      */
-    public void startUsersList() {
-        users = new Accounts(getContext()).getAllUsers();
+    private void startUsersList() {
+        List<User> users = new Accounts(getContext()).getAllUsers();
         UsersListAdapter adapter = new UsersListAdapter(requireContext(), getActivity(), users, currentUser);
         listView.setAdapter(adapter);
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.accounts_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -60,11 +58,10 @@ public class UsersFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
-            case R.id.user_add:
-                Intent addUser = new Intent(getContext(), IndieAuthActivity.class);
-                startActivity(addUser);
-                return true;
+        if (item.getItemId() == R.id.user_add) {
+            Intent addUser = new Intent(getContext(), IndieAuthActivity.class);
+            startActivity(addUser);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

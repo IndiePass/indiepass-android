@@ -139,7 +139,7 @@ public class MicrosubAction {
             return;
         }
 
-        Toast.makeText(context, "Post deleted", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, context.getString(R.string.post_removed), Toast.LENGTH_SHORT).show();
 
         String MicrosubEndpoint = user.getMicrosubEndpoint();
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
@@ -189,7 +189,7 @@ public class MicrosubAction {
             return;
         }
 
-        Toast.makeText(context, "Post moved to " + channelName, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, String.format(context.getString(R.string.post_moved), channelName), Toast.LENGTH_SHORT).show();
 
         String MicrosubEndpoint = user.getMicrosubEndpoint();
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
@@ -240,7 +240,7 @@ public class MicrosubAction {
         }
 
         // TODO send event to update channel list (since we need the new uid)
-        Toast.makeText(context, "Channel created, reload the list", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, context.getString(R.string.channel_created), Toast.LENGTH_SHORT).show();
 
         String MicrosubEndpoint = user.getMicrosubEndpoint();
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
@@ -288,7 +288,7 @@ public class MicrosubAction {
             return;
         }
 
-        Toast.makeText(context, "Channel updated", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, context.getString(R.string.channel_updated), Toast.LENGTH_SHORT).show();
 
         String MicrosubEndpoint = user.getMicrosubEndpoint();
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
@@ -337,7 +337,7 @@ public class MicrosubAction {
             return;
         }
 
-        Toast.makeText(context, "Channel deleted", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, context.getString(R.string.channel_deleted), Toast.LENGTH_SHORT).show();
 
         String MicrosubEndpoint = user.getMicrosubEndpoint();
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
@@ -386,7 +386,7 @@ public class MicrosubAction {
             return;
         }
 
-        Toast.makeText(context, "Channels order changed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, context.getString(R.string.channels_order_updated), Toast.LENGTH_SHORT).show();
 
         String MicrosubEndpoint = user.getMicrosubEndpoint();
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
@@ -441,7 +441,7 @@ public class MicrosubAction {
             return;
         }
 
-        Toast.makeText(context, "Feed deleted", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, context.getString(R.string.feed_deleted), Toast.LENGTH_SHORT).show();
 
         String MicrosubEndpoint = user.getMicrosubEndpoint();
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
@@ -491,10 +491,10 @@ public class MicrosubAction {
         }
 
         if (update) {
-            Toast.makeText(context, "Feed updated", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.feed_updated), Toast.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(context, "Subscribed to feed, reload list", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.feed_subscribed), Toast.LENGTH_SHORT).show();
         }
 
         String MicrosubEndpoint = user.getMicrosubEndpoint();

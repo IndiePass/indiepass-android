@@ -40,7 +40,7 @@ public class TimelineImageActivity extends AppCompatActivity {
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                     if (photos.size() > 0) {
                         Integer total = photos.size();
-                        String infoText = (position + 1) + " of " + total;
+                        String infoText = String.format(getString(R.string.image_pager), position + 1, total);
                         info.setText(infoText);
                     }
                 }
@@ -54,7 +54,7 @@ public class TimelineImageActivity extends AppCompatActivity {
             viewPager.setAdapter(adapter);
         }
         else {
-            Toast.makeText(TimelineImageActivity.this, "No photos found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TimelineImageActivity.this, getString(R.string.no_photos_found), Toast.LENGTH_SHORT).show();
         }
     }
 

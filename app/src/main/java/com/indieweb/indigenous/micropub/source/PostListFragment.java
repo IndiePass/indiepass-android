@@ -277,7 +277,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
 
                         }
                         catch (JSONException e) {
-                            Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), String.format(getString(R.string.post_list_parse_error), e.getMessage()), Toast.LENGTH_LONG).show();
                         }
 
                         checkRefreshingStatus();

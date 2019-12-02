@@ -122,7 +122,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             // Post status.
             if (item.getPostStatus().length() > 0) {
                 holder.postStatus.setVisibility(View.VISIBLE);
-                holder.postStatus.setText("Status: " + item.getPostStatus());
+                holder.postStatus.setText(String.format(context.getString(R.string.post_status), item.getPostStatus()));
             }
             else {
                 holder.postStatus.setVisibility(View.GONE);
@@ -274,7 +274,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             final PostListItem item = items.get(this.position);
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Are you sure you want to delete this post ?");
+            builder.setTitle(context.getString(R.string.post_delete_confirm));
             builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,int id) {
                     new MicropubAction(context, user).deletePost(item.getUrl());

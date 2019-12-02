@@ -66,7 +66,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
         Indigenous app = Indigenous.getInstance();
         item = app.getTimelineItem();
         if (item == null) {
-            Toast.makeText(TimelineDetailActivity.this, "No item found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TimelineDetailActivity.this, getString(R.string.no_item_found), Toast.LENGTH_SHORT).show();
             finish();
         }
         else {
@@ -143,7 +143,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
                 if (startDate != null) {
                     start.setVisibility(View.VISIBLE);
-                    start.setText("Start: " + formatOut.format(startDate));
+                    start.setText(String.format(getString(R.string.start_date_event), formatOut.format(startDate)));
                 }
                 else {
                     start.setVisibility(View.GONE);
@@ -169,7 +169,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
                 if (endDate != null) {
                     end.setVisibility(View.VISIBLE);
-                    end.setText("End: " + formatOut.format(endDate));
+                    end.setText(String.format(getString(R.string.end_date_event), formatOut.format(endDate)));
                 }
                 else {
                     end.setVisibility(View.GONE);
@@ -325,7 +325,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
                 if (item.getPhotos().size() > 1) {
                     if (item.getPhotos().size() > 1) {
-                        imageCount.setText(String.format("%d images", item.getPhotos().size()));
+                        imageCount.setText(String.format(getString(R.string.number_of_images), item.getPhotos().size()));
                     }
                     else {
                         imageCount.setText(R.string.one_image);
@@ -537,7 +537,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             else {
-                Toast.makeText(TimelineDetailActivity.this, "Install a maps application to view this location", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TimelineDetailActivity.this, getString(R.string.maps_info), Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -583,7 +583,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
                 public boolean onMenuItemClick(final MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.timeline_entry_delete:
-                            builder.setTitle("Are you sure you want to delete this post ?");
+                            builder.setTitle(getString(R.string.delete_post_confirm));
                             builder.setPositiveButton(getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,int id) {
                                     new MicrosubAction(TimelineDetailActivity.this, user).deletePost(entry.getChannelId(), entry.getId());
@@ -601,13 +601,13 @@ public class TimelineDetailActivity extends AppCompatActivity {
                         case R.id.timeline_entry_mark_unread:
                             List<String> unreadEntries = new ArrayList<>();
                             new MicrosubAction(TimelineDetailActivity.this, user).markUnread(entry.getChannelId(), unreadEntries);
-                            Toast.makeText(TimelineDetailActivity.this, "Item marked unread", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TimelineDetailActivity.this, R.string.item_marked_unread, Toast.LENGTH_SHORT).show();
                             break;
 
                         case R.id.timeline_entry_mark_read:
                             List<String> readEntries = new ArrayList<>();
                             new MicrosubAction(TimelineDetailActivity.this, user).markRead(entry.getChannelId(), readEntries, false);
-                            Toast.makeText(TimelineDetailActivity.this, "Item marked read", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TimelineDetailActivity.this, R.string.item_marked_read, Toast.LENGTH_SHORT).show();
                             break;
 
                         case R.id.timeline_entry_debug:
@@ -622,7 +622,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
                             share.setType("text/plain");
                             share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
                             share.putExtra(Intent.EXTRA_TEXT, entry.getUrl());
-                            startActivity(Intent.createChooser(share, "Share post"));
+                            startActivity(Intent.createChooser(share, getString(R.string.share_post)));
                             break;
                     }
                     return true;

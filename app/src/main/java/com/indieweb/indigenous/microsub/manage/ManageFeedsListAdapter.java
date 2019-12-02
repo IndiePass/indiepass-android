@@ -98,7 +98,7 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
             final Feed feed = items.get(this.position);
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Are you sure you want to delete feed '"+ feed.getUrl() +"' ?");
+            builder.setTitle(String.format(context.getString(R.string.delete_feed_confirm), feed.getUrl()));
             builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,int id) {
                     new MicrosubAction(context, user).deleteFeed(feed.getUrl(), feed.getChannel());
@@ -141,7 +141,7 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
             final CharSequence[] channelItems = displayValues.toArray(new CharSequence[displayValues.size()]);
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Move feed to channel");
+            builder.setTitle(context.getString(R.string.feed_move_to_channel));
             builder.setSingleChoiceItems(channelItems, -1, null);
             builder.setPositiveButton(context.getString(R.string.move_item),new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {

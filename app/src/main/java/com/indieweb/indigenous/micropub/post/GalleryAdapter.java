@@ -79,7 +79,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
         @Override
         public void onClick(View v) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Set caption or remove image");
+            builder.setTitle(context.getString(R.string.set_caption_or_remove));
 
             View view = LayoutInflater.from(context).inflate(R.layout.dialog_single_input, null);
             final EditText input = view.findViewById(R.id.editText);
@@ -101,7 +101,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
             });
             builder.setView(view);
 
-            builder.setPositiveButton("Save and close", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(context.getString(R.string.save_and_close), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     String caption = input.getText().toString();

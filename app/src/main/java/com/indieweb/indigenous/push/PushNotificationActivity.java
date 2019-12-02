@@ -134,7 +134,7 @@ public class PushNotificationActivity extends AppCompatActivity {
                     storePushyMeTokenOnBackend(credentials.token);
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), "Pushy.me token not found to register on backend.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.pushy_me_token_not_found, Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -179,18 +179,18 @@ public class PushNotificationActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        String message = "unknown error";
+                        String message = getString(R.string.indigenous_unknown_error);
                         int code = error.networkResponse.statusCode;
                         switch (code) {
                             case 404:
-                                message = "Account not found";
+                                message = getString(R.string.indigenous_account_not_found);
                                 break;
                             case 400:
-                                message = "Account is blocked";
+                                message = getString(R.string.indigenous_account_blocked);
                                 break;
                         }
 
-                        Toast.makeText(getApplicationContext(), "Error checking account: " + message, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), String.format(getString(R.string.indigenous_account_error), message), Toast.LENGTH_LONG).show();
                     }
                 }
         )
@@ -271,7 +271,7 @@ public class PushNotificationActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         enablePushyMe();
-                        Toast.makeText(getApplicationContext(), "Registration successful", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.indigenous_registration_success, Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -281,13 +281,13 @@ public class PushNotificationActivity extends AppCompatActivity {
                         int code = error.networkResponse.statusCode;
                         switch (code) {
                             case 404:
-                                message = "Account not found";
+                                message = getString(R.string.indigenous_account_not_found);
                                 break;
                             case 400:
-                                message = "Account is blocked";
+                                message = getString(R.string.indigenous_account_blocked);
                                 break;
                         }
-                        Toast.makeText(getApplicationContext(), "Error storing device: " + message, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), String.format(getString(R.string.indigenous_device_store_error), message), Toast.LENGTH_LONG).show();
                     }
                 }
         )

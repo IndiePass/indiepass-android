@@ -77,7 +77,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
         readLater = Preferences.getPreference(requireContext(), "pref_key_read_later", "");
 
         user = new Accounts(getContext()).getCurrentUser();
-        requireActivity().setTitle("Reader");
+        requireActivity().setTitle(getString(R.string.nav_reader));
 
         if (user.getMicrosubEndpoint().length() > 0) {
             setHasOptionsMenu(true);

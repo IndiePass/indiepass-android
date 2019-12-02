@@ -1,5 +1,6 @@
 package com.indieweb.indigenous.microsub.manage;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -99,6 +100,7 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
         return new ViewHolder(itemView);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
@@ -198,7 +200,7 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
             final Channel channel = getItem(this.position);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Update channel");
+            builder.setTitle(context.getString(R.string.channel_update));
             View view = LayoutInflater.from(context).inflate(R.layout.dialog_single_input, null);
             final EditText input = view.findViewById(R.id.editText);
             input.setText(channel.getName());
@@ -216,7 +218,7 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
             });
             builder.setView(view);
 
-            builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(context.getString(R.string.save), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -254,7 +256,7 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
             final Channel channel = channels.get(this.position);
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Are you sure you want to delete channel '"+ channel.getName() +"' ?");
+            builder.setTitle(String.format(context.getString(R.string.channel_delete_confirm), channel.getName()));
             builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,int id) {
                     new MicrosubAction(context, user).deleteChannel(channel.getUid());

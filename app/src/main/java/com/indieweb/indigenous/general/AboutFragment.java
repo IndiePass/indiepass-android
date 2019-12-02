@@ -21,7 +21,7 @@ import java.io.InputStreamReader;
 
 public class AboutFragment extends Fragment {
 
-    View currentView;
+    private View currentView;
 
     @Nullable
     @Override
@@ -32,7 +32,7 @@ public class AboutFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        requireActivity().setTitle("About");
+        requireActivity().setTitle(getString(R.string.about));
         currentView = view;
 
         // Html.
@@ -48,7 +48,7 @@ public class AboutFragment extends Fragment {
 
         // Version number.
         TextView version = view.findViewById(R.id.about_version);
-        version.setText("Indigenous version: " + BuildConfig.VERSION_NAME);
+        version.setText(String.format(getString(R.string.indigenous_version), BuildConfig.VERSION_NAME));
 
         // Changelog.
         Button changelog = view.findViewById(R.id.about_changelog_button);
@@ -63,7 +63,7 @@ public class AboutFragment extends Fragment {
     /**
      * Load changelog.
      */
-    public void loadChangelog() {
+    private void loadChangelog() {
         StringBuilder text = new StringBuilder();
 
         try {

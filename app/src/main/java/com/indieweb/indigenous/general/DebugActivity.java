@@ -47,18 +47,16 @@ public class DebugActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.clipboard:
+        if (item.getItemId() == R.id.clipboard) {
+            try {
+                Utility.copyToClipboard(debugString, getString(R.string.clipboard_label), getApplicationContext());
+                Toast.makeText(getApplicationContext(), R.string.clipboard_success, Toast.LENGTH_SHORT).show();
+            }
+            catch (Exception ignored) {
+                Toast.makeText(getApplicationContext(), R.string.clipboard_error, Toast.LENGTH_SHORT).show();
+            }
 
-                try {
-                    Utility.copyToClipboard(debugString, "Media url", getApplicationContext());
-                    Toast.makeText(getApplicationContext(), "Copied to clipboard", Toast.LENGTH_SHORT).show();
-                }
-                catch (Exception ignored) {
-                    Toast.makeText(getApplicationContext(), "Something went wrong to copy the text to the clipboard.", Toast.LENGTH_SHORT).show();
-                }
-
-                return true;
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

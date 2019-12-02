@@ -170,7 +170,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             startTimeline();
         }
         else {
-            Toast.makeText(this, "Channel not found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.channel_not_found), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -255,14 +255,14 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     entries.add(firstEntryId);
                 }
                 new MicrosubAction(getApplicationContext(), user).markRead(channelId, entries, clearAll);
-                Toast.makeText(getApplicationContext(), "Marked all as read", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.marked_as_read), Toast.LENGTH_SHORT).show();
                 return true;
 
             case R.id.timeline_style:
                 final AlertDialog.Builder builder = new AlertDialog.Builder(TimelineActivity.this);
                 final DatabaseHelper db = new DatabaseHelper(TimelineActivity.this);
                 final CharSequence[] styleOptions = {"Compact", "Summary"};
-                builder.setTitle("Select style");
+                builder.setTitle(getString(R.string.select_style));
                 builder.setCancelable(true);
                 builder.setNegativeButton(getApplicationContext().getString(R.string.close), new DialogInterface.OnClickListener() {
                     @Override

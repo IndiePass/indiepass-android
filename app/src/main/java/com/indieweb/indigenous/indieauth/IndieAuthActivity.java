@@ -100,7 +100,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
 
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 
-            Toast.makeText(getApplicationContext(), "Validating code", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.validating_code, Toast.LENGTH_SHORT).show();
 
             // Get the code and state.
             String code = intent.getData().getQueryParameter("code");
@@ -109,7 +109,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                 validateCode(code, returnedState);
             }
             else {
-                Toast.makeText(getApplicationContext(), "No code found in URL to validate", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.no_code_found, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -158,7 +158,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
             }
             else {
                 changeSignInButton(R.string.sign_in_with_domain);
-                Toast.makeText(getApplicationContext(), "We did not find the necessary rel links on your domain (authorization_endpoint, token_endpoint, micropub, microsub)", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), R.string.missing_rel_links, Toast.LENGTH_LONG).show();
             }
 
         }
@@ -278,11 +278,8 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
             catch (Exception ignored) { }
 
         }
-        catch (IllegalArgumentException ignored) {
-            Toast.makeText(getApplicationContext(), "Could not connect to domain", Toast.LENGTH_SHORT).show();
-        }
-        catch (IOException error) {
-            Toast.makeText(getApplicationContext(), "Could not connect to domain", Toast.LENGTH_SHORT).show();
+        catch (IllegalArgumentException | IOException e) {
+            Toast.makeText(getApplicationContext(), String.format(getString(R.string.domain_connect_error), e.getMessage()), Toast.LENGTH_SHORT).show();
         }
         catch (Exception ignored) { }
 
@@ -331,7 +328,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                                 query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
                             }
                             accessToken = query_pairs.get("access_token");
-                            if (accessToken.length() > 0) {
+                            if (accessToken != null && accessToken.length() > 0) {
                                 accessTokenFound = true;
                             }
 
@@ -376,7 +373,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                         user.setAccount(account);
                         new MicropubConfig(getApplicationContext(), user).refresh();
 
-                        Toast.makeText(getApplicationContext(), "Authentication successful", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.authentication_success, Toast.LENGTH_SHORT).show();
 
                         // Start launch activity which will determine where it will go.
                         Intent launch = new Intent(getBaseContext(), LaunchActivity.class);
@@ -384,7 +381,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                         finish();
                     }
                     else {
-                        Toast.makeText(getApplicationContext(), "Authentication failed: " + errorMessage, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), String.format(getString(R.string.authentication_fail_token), errorMessage), Toast.LENGTH_LONG).show();
                         showForm();
                     }
                 }
@@ -397,14 +394,14 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                         if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
                             int code = networkResponse.statusCode;
                             String result = new String(networkResponse.data);
-                            Toast.makeText(getApplicationContext(), "Authentication failed: Status code: " + code + "; message: " + result, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.authentication_fail), code, result), Toast.LENGTH_LONG).show();
                         }
                         else {
-                            Toast.makeText(getApplicationContext(), "Authentication failed due to network failure: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.network_failure) + error.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                     catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), "Network error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), String.format(getString(R.string.network_error), e.getMessage()), Toast.LENGTH_LONG).show();
                     }
 
                     showForm();

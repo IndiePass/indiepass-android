@@ -58,7 +58,7 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
             startFeed();
         }
         else {
-            Toast.makeText(this, "Channel not found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.channel_not_found), Toast.LENGTH_SHORT).show();
         }
     }
 

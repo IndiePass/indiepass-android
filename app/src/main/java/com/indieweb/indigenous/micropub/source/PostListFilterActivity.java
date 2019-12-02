@@ -48,7 +48,7 @@ public class PostListFilterActivity extends AppCompatActivity {
         // Set post type spinner values.
         defaultPostType = Preferences.getPreference(getApplicationContext(), "source_post_list_filter_post_type", "all_source_post_types");
         ArrayList<PostType> postTypeList = new ArrayList<>();
-        postTypeList.add(new PostType("all_source_post_types", "All post types"));
+        postTypeList.add(new PostType("all_source_post_types", getString(R.string.post_types_all)));
         postTypesSpinner = findViewById(R.id.postTypes);
         String postTypes = user.getPostTypes();
         if (postTypes != null && postTypes.length() > 0) {
@@ -68,7 +68,7 @@ public class PostListFilterActivity extends AppCompatActivity {
 
             }
             catch (JSONException e) {
-                Toast.makeText(this, "Error parsing post types: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, String.format(getString(R.string.post_types_parse_error), e.getMessage()), Toast.LENGTH_LONG).show();
             }
         }
 

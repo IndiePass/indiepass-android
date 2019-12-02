@@ -49,13 +49,13 @@ public class MicropubAction {
             return;
         }
 
-        Toast.makeText(context, "Sending, please wait", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, R.string.sending_please_wait, Toast.LENGTH_SHORT).show();
         String MicropubEndpoint = user.getMicropubEndpoint();
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicropubEndpoint,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(context, "Delete success", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.post_delete_success, Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -66,14 +66,14 @@ public class MicropubAction {
                             if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
                                 Integer code = networkResponse.statusCode;
                                 String result = new String(networkResponse.data);
-                                Toast.makeText(context, "Error deleting post. Status code: " + code + "; message: " + result, Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, String.format(context.getString(R.string.delete_post_network_error), code, result), Toast.LENGTH_LONG).show();
                             }
                             else {
-                                Toast.makeText(context, "Error deleting post: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, String.format(context.getString(R.string.delete_post_error), error.getMessage()), Toast.LENGTH_LONG).show();
                             }
                         }
                         catch (Exception e) {
-                            Toast.makeText(context, "Error deleting post: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, String.format(context.getString(R.string.delete_post_error), e.getMessage()), Toast.LENGTH_LONG).show();
                         }
                     }
                 }

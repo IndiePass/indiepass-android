@@ -81,10 +81,10 @@ public class Accounts {
      */
     public void switchAccount(final Activity activity, final User user) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Switch to account " + user.getMe() + " ?");
+        builder.setTitle(String.format(context.getString(R.string.account_switch), user.getMe()));
         builder.setPositiveButton(context.getString(R.string.switch_account),new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int id) {
-                Toast.makeText(context, "Account set to " + user.getMe(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, String.format(context.getString(R.string.account_selected), user.getMe()), Toast.LENGTH_SHORT).show();
                 SharedPreferences.Editor editor = context.getSharedPreferences("indigenous", MODE_PRIVATE).edit();
                 editor.putString("account", user.getAccount().name);
                 editor.apply();
@@ -119,13 +119,13 @@ public class Accounts {
 
         final CharSequence[] accountItems = accounts.toArray(new CharSequence[accounts.size()]);
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Select account");
+        builder.setTitle(activity.getString(R.string.account_select));
 
         builder.setCancelable(true);
         builder.setItems(accountItems, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int index) {
-                Toast.makeText(context, "Account set to " + accounts.get(index), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, String.format(context.getString(R.string.account_selected), accounts.get(index)), Toast.LENGTH_SHORT).show();
                 SharedPreferences.Editor editor = context.getSharedPreferences("indigenous", MODE_PRIVATE).edit();
                 editor.putString("account", accounts.get(index));
                 editor.apply();

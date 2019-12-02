@@ -148,7 +148,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 if (!isMediaRequest) {
                     intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 }
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+                startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)), PICK_IMAGE_REQUEST);
                 return true;
         }
 
@@ -330,7 +330,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                     public void onResponse(NetworkResponse response) {
 
                         if (finishActivity) {
-                            Toast.makeText(getApplicationContext(), "Post success", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.post_success), Toast.LENGTH_SHORT).show();
 
                             // Remove draft if needed.
                             // TODO notify draft adapter
@@ -346,13 +346,13 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                         if (isMediaRequest) {
                             fileUrl = response.headers.get("Location");
                             if (fileUrl != null && fileUrl.length() > 0) {
-                                Toast.makeText(getApplicationContext(), "Media upload success", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), R.string.media_upload_success, Toast.LENGTH_SHORT).show();
                                 mediaUrl.setText(fileUrl);
                                 mediaUrl.setVisibility(View.VISIBLE);
-                                Utility.copyToClipboard(fileUrl, "Media url", getApplicationContext());
+                                Utility.copyToClipboard(fileUrl, getString(R.string.clipboard_media_url), getApplicationContext());
                             }
                             else {
-                                Toast.makeText(getApplicationContext(), "No file url found", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), R.string.no_media_url_found, Toast.LENGTH_SHORT).show();
                             }
 
                             if (sendItem != null) {
@@ -372,14 +372,14 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                             if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
                                 int code = networkResponse.statusCode;
                                 String result = new String(networkResponse.data);
-                                Toast.makeText(getApplicationContext(), postType + " posting failed. Status code: " + code + "; message: " + result, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), String.format(getString(R.string.post_network_fail), postType, code, result), Toast.LENGTH_LONG).show();
                             }
                             else {
-                                Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), String.format(getString(R.string.post_fail), error.getMessage()), Toast.LENGTH_LONG).show();
                             }
                         }
                         catch (Exception e) {
-                            Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.post_fail), error.getMessage()), Toast.LENGTH_LONG).show();
                         }
 
                         if (sendItem != null) {

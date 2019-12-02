@@ -115,7 +115,8 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
             for (Map.Entry<String, String> entry : params.entrySet()) {
                 buildTextPart(dataOutputStream, entry.getKey(), entry.getValue());
             }
-        } catch (UnsupportedEncodingException uee) {
+        }
+        catch (UnsupportedEncodingException uee) {
             throw new RuntimeException("Encoding not supported: " + encoding, uee);
         }
     }

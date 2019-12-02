@@ -104,7 +104,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
             sendItem.setEnabled(false);
         }
 
-        Toast.makeText(getApplicationContext(), "Sending, please wait", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), getString(R.string.sending_please_wait), Toast.LENGTH_SHORT).show();
 
         String endpoint = user.getMicropubEndpoint();
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
@@ -112,7 +112,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(getApplicationContext(), "Update success", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.post_update_success), Toast.LENGTH_SHORT).show();
                         hideProgressBar();
                         finish();
                     }
@@ -126,14 +126,14 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
                             if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
                                 Integer code = networkResponse.statusCode;
                                 String result = new String(networkResponse.data);
-                                Toast.makeText(getApplicationContext(), "Update failed. Status code: " + code + "; message: " + result, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), String.format(getString(R.string.post_update_network_fail), code, result), Toast.LENGTH_LONG).show();
                             }
                             else {
-                                Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), String.format(getString(R.string.post_update_fail), error.getMessage()), Toast.LENGTH_LONG).show();
                             }
                         }
                         catch (Exception e) {
-                            Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.post_update_fail), error.getMessage()), Toast.LENGTH_LONG).show();
                         }
 
                         if (sendItem != null) {

@@ -121,7 +121,7 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
             try {
                 holder.published.setVisibility(View.VISIBLE);
                 result = formatIn.parse(draft.getTimestamp());
-                holder.published.setText(draft.getType() + " - last edit on " + formatOut.format(result));
+                holder.published.setText(String.format(context.getString(R.string.draft_last_edit), draft.getType(), formatOut.format(result)));
             }
             catch (ParseException ignored) {
                 holder.published.setVisibility(View.GONE);
@@ -216,7 +216,7 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
             final Draft draft = drafts.get(this.position);
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Are you sure you want to delete this draft ?");
+            builder.setTitle(context.getString(R.string.draft_delete_confirm));
             builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,int id) {
                     DatabaseHelper db = new DatabaseHelper(context);

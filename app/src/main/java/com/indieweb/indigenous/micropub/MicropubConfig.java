@@ -11,6 +11,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 
 import org.json.JSONArray;
@@ -60,7 +61,7 @@ public class MicropubConfig {
                             }
                         }
                         catch (JSONException e) {
-                            Toast.makeText(context, "Error getting syndication targets: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, String.format(context.getString(R.string.syndication_targets_error), e.getMessage()), Toast.LENGTH_LONG).show();
                         }
 
                         // Media endpoint.
@@ -75,7 +76,7 @@ public class MicropubConfig {
                             }
                         }
                         catch (JSONException e) {
-                            Toast.makeText(context, "Error getting media endpoint: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, String.format(context.getString(R.string.media_endpoint_error), e.getMessage()), Toast.LENGTH_LONG).show();
                         }
 
                         // Post types.
@@ -90,10 +91,10 @@ public class MicropubConfig {
                             }
                         }
                         catch (JSONException e) {
-                            Toast.makeText(context, "Error getting post-types: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, String.format(context.getString(R.string.post_types_error), e.getMessage()), Toast.LENGTH_LONG).show();
                         }
 
-                        Toast.makeText(context, "Micropub configuration updated", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.micropub_config_updated, Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -104,14 +105,14 @@ public class MicropubConfig {
                             if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
                                 int code = networkResponse.statusCode;
                                 String result = new String(networkResponse.data);
-                                Toast.makeText(context, "Error getting configuration. Status code: " + code + "; message: " + result, Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, String.format(context.getString(R.string.micropub_config_network_error), code, result), Toast.LENGTH_LONG).show();
                             }
                             else {
-                                Toast.makeText(context, "Error getting configuration: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, String.format(context.getString(R.string.micropub_config_error), error.getMessage()), Toast.LENGTH_LONG).show();
                             }
                         }
                         catch (Exception e) {
-                            Toast.makeText(context, "Error getting configuration: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, String.format(context.getString(R.string.micropub_config_error), e.getMessage()), Toast.LENGTH_LONG).show();
                         }
                     }
                 }

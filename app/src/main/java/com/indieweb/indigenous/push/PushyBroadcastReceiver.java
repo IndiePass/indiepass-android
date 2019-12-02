@@ -18,7 +18,7 @@ public class PushyBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String notificationTitle = "Click to open the app";
+        String notificationTitle = context.getString(R.string.push_notification_label);
         String notificationText = "";
 
         // Attempt to extract the "message" property from the payload: {"message":"Hello World!"}

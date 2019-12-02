@@ -6,6 +6,7 @@ import android.os.StrictMode;
 
 import android.widget.Toast;
 
+import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.HCard;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.mf2.Mf2Parser;
@@ -122,14 +123,14 @@ public class Endpoints {
                 am.setUserData(user.getAccount(), "micropub_media_endpoint", micropubMediaEndpoint);
                 am.setUserData(user.getAccount(), "author_name", authorName);
                 am.setUserData(user.getAccount(), "author_avatar", authorAvatar);
-                Toast.makeText(context, "Endpoints and metadata updated. You might need to restart the app for some changes to see effect.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.account_sync_done, Toast.LENGTH_SHORT).show();
             }
         }
         catch (IllegalArgumentException e) {
-            Toast.makeText(context, "Error syncing: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, String.format(context.getString(R.string.account_sync_error), e.getMessage()), Toast.LENGTH_SHORT).show();
         }
         catch (IOException e) {
-            Toast.makeText(context, "Could not connect to domain: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, String.format(context.getString(R.string.domain_connect_error), e.getMessage()), Toast.LENGTH_SHORT).show();
         }
     }
 

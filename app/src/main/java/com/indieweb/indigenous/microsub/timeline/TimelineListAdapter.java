@@ -244,7 +244,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
                 if (item.getPhotos().size() > 0) {
                     if (item.getPhotos().size() > 1) {
-                        meta.add(String.format("%d images", item.getPhotos().size()));
+                        meta.add(String.format(context.getString(R.string.number_of_images), item.getPhotos().size()));
                     }
                     else {
                         meta.add(context.getString(R.string.one_image));
@@ -388,7 +388,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
                     if (startDate != null) {
                         holder.start.setVisibility(View.VISIBLE);
-                        holder.start.setText("Start: " + formatOut.format(startDate));
+                        holder.start.setText(String.format(context.getString(R.string.start_date_event), formatOut.format(startDate)));
                     }
                     else {
                         holder.start.setVisibility(View.GONE);
@@ -413,7 +413,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
                     if (endDate != null) {
                         holder.end.setVisibility(View.VISIBLE);
-                        holder.end.setText("End: " + formatOut.format(endDate));
+                        holder.end.setText(String.format(context.getString(R.string.end_date_event), formatOut.format(endDate)));
                     }
                     else {
                         holder.end.setVisibility(View.GONE);
@@ -634,7 +634,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     if (item.getPhotos().size() > 1 || !imagePreview) {
                         holder.imageCount.setVisibility(View.VISIBLE);
                         if (item.getPhotos().size() > 1) {
-                            holder.imageCount.setText(String.format("%d images", item.getPhotos().size()));
+                            holder.imageCount.setText(String.format(context.getString(R.string.number_of_images), item.getPhotos().size()));
                         }
                         else {
                             holder.imageCount.setText(R.string.one_image);
@@ -1008,7 +1008,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 public boolean onMenuItemClick(final MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.timeline_entry_delete:
-                            builder.setTitle("Are you sure you want to delete this post ?");
+                            builder.setTitle(context.getString(R.string.delete_post_confirm));
                             builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,int id) {
                                     new MicrosubAction(context, user).deletePost(channelId, entry.getId());
@@ -1037,7 +1037,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             }
                             final CharSequence[] channelItems = displayValues.toArray(new CharSequence[displayValues.size()]);
 
-                            builder.setTitle("Select channel");
+                            builder.setTitle(context.getString(R.string.select_channel));
                             builder.setSingleChoiceItems(channelItems, -1, null);
                             builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
                                 @Override
@@ -1070,7 +1070,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             unreadEntries.add(entry.getId());
                             entry.setRead(false);
                             new MicrosubAction(context, user).markUnread(channelId, unreadEntries);
-                            Toast.makeText(context, "Item marked unread", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, context.getString(R.string.item_marked_unread), Toast.LENGTH_SHORT).show();
                             break;
 
                         case R.id.timeline_entry_mark_read:
@@ -1078,7 +1078,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             readEntries.add(entry.getId());
                             entry.setRead(true);
                             new MicrosubAction(context, user).markRead(channelId, readEntries, false);
-                            Toast.makeText(context, "Item marked read", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, context.getString(R.string.item_marked_read), Toast.LENGTH_SHORT).show();
                             break;
 
                         case R.id.timeline_entry_debug:
@@ -1092,7 +1092,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             share.setType("text/plain");
                             share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
                             share.putExtra(Intent.EXTRA_TEXT, entry.getUrl());
-                            context.startActivity(Intent.createChooser(share, "Share post"));
+                            context.startActivity(Intent.createChooser(share, context.getString(R.string.share_post)));
                             break;
                     }
                     return true;

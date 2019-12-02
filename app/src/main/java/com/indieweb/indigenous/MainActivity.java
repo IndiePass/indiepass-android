@@ -359,7 +359,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void openDrawer(int id) {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer != null) {
-            drawer.openDrawer(Gravity.START);
+            drawer.openDrawer(GravityCompat.START);
         }
 
         if (id > 0) {
