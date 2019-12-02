@@ -33,7 +33,7 @@
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginBottom="5dp"
-        android:hint="@string/publish_date_hit"
+        android:hint="@string/publish_date_hint"
         android:id="@+id/publishDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

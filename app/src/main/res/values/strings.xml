@@ -1,8 +1,22 @@
 <resources>
+
+    <!-- General -->
     <string name="app_name">Indigenous</string>
     <string name="about">About</string>
+    <string name="main_menu">Main menu</string>
     <string name="no_connection">No internet connection found</string>
+    <string name="delete">Delete</string>
+    <string name="copy_to_clipboard">Copy to clipboard</string>
+    <string name="one_image">1 image</string>
+    <string name="debug">Debug</string>
+    <string name="go_to_main_app">Go to main app</string>
+    <string name="cancel">Cancel</string>
+    <string name="close">Close</string>
+    <string name="timeline">Timeline</string>
+    <string name="channels">Channels</string>
+    <string name="nav_reader">Reader</string>
 
+    <!-- Authentication and accounts -->
     <string name="account_type">IndieAuth</string>
     <string name="accounts">Accounts</string>
     <string name="add_new_account">Add new account</string>
@@ -16,33 +30,28 @@
     <string name="switch_account">Switch</string>
     <string name="account_delete_error">Error deleting account</string>
     <string name="connecting">Connecting…</string>
+    <string name="refresh_configuration">Refresh configuration</string>
+    <string name="log_out">Log out</string>
+    <string name="endpoints">Endpoints</string>
+    <string name="title_activity_indieauth">Sign in</string>
 
+    <!-- About -->
     <string name="about_info"><![CDATA[Indigenous allows you to engage with the internet as you do on social media sites, but posts it all on your website. Use the built-in reader to read and respond to posts across the internet. Indigenous doesn\'t track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/swentel/indigenous-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a>, <a href="https://openclipart.org">Openclipart</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
     <string name="view_changelog">View changelog</string>
 
+    <!-- Drafts -->
     <string name="drafts">Drafts</string>
     <string name="save_as_draft">Save as draft</string>
     <string name="draft_saved">Draft saved</string>
     <string name="draft_deleted">Draft deleted</string>
     <string name="no_drafts">You have no drafts for this account</string>
+
+    <!-- Channels and timelines -->
     <string name="channels_refreshed">Channels refreshed</string>
     <string name="no_microsub_endpoint">We did not find your reader endpoint. In the accounts section, you can synchronize your account to add it. You can also just use the app for posting only.</string>
     <string name="feed_items_refreshed">Feeds refreshed</string>
     <string name="timeline_items_refreshed">Timeline refreshed</string>
     <string name="timeline_list_refresh">Refresh timeline</string>
-    <string name="source_post_list_refresh">Refresh posts</string>
-    <string name="source_post_list_items_refreshed">Posts refreshed</string>
-    <string name="channel_list_refresh">Refresh channels</string>
-    <string name="tags">Tags - separate with comma</string>
-    <string name="note">Note</string>
-    <string name="image_preview">Image preview</string>
-    <string name="send_original_picture">Send original picture</string>
-    <string name="publish_date_hit">Publish date - leave empty for \'now\'</string>
-    <string name="title">Title</string>
-    <string name="published">Published</string>
-    <string name="syndicate_to">Syndicate to</string>
-    <string name="required_field">This field is required</string>
-    <string name="required_select_image">Please select an image</string>
     <string name="channel_manage">Manage channels</string>
     <string name="feeds_manage">Manage feeds</string>
     <string name="add_channel">Add channel</string>
@@ -54,14 +63,49 @@
     <string name="subscribe">Subscribe</string>
     <string name="preview">Preview</string>
     <string name="results">Results</string>
-
     <string name="mark_read">Mark read</string>
     <string name="mark_unread">Mark unread</string>
     <string name="mark_all_read">Mark all read</string>
+    <string name="source_post_list">Posts</string>
+    <string name="move_item">Move</string>
+    <string name="title_activity_share">Share</string>
+    <string name="audio">Listen to audio</string>
+    <string name="video">Watch video</string>
+    <string name="map">View map</string>
+    <string name="audio_not_loaded">Audio could not be loaded</string>
+    <string name="channels_not_found">Channels not found, check your internet connection</string>
+    <string name="no_posts_found">Posts not found, check your internet connection</string>
+    <string name="load_more">Load More</string>
+    <string name="loading">Loading…</string>
+    <string name="author_photo">Author photo</string>
+    <string name="timeline_image">Timeline image</string>
+    <string name="share_post">Share</string>
+    <string name="timeline_style">Style</string>
+    <string name="unread">New</string>
+    <string name="external_link">Opens this post in browser</string>
+    <string name="title_activity_timeline_detail">Detail</string>
+    <string name="title_activity_timeline_audio">Audio</string>
+    <string name="title_activity_timeline_video">Video</string>
+    <string name="title_activity_timeline_image">Image</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Search posts</string>
+    <string name="item_menu">More options</string>
+    <string name="read_more">Read more</string>
+
+    <!-- Micropub -->
+    <string name="tags">Tags - separate with comma</string>
+    <string name="note">Note</string>
+    <string name="image_preview">Image preview</string>
+    <string name="send_original_picture">Send original picture</string>
+    <string name="publish_date_hint">Publish date - leave empty for \'now\'</string>
+    <string name="title">Title</string>
+    <string name="published">Published</string>
+    <string name="syndicate_to">Syndicate to</string>
+    <string name="required_field">This field is required</string>
+    <string name="required_select_image">Please select an image</string>
     <string name="create_post">Write</string>
     <string name="add_note">Note</string>
     <string name="add_article">Article</string>
-    <!-- TODO cleanup strings -->
     <string name="add_reply">Reply</string>
     <string name="add_repost">Repost</string>
     <string name="add_like">Like</string>
@@ -71,75 +115,37 @@
     <string name="add_rsvp">RSVP</string>
     <string name="add_checkin">Checkin</string>
     <string name="add_geocache">Geocache</string>
-    <string name="move_item">Move</string>
-    <string name="delete">Delete</string>
-    <string name="external_link">Opens this post in browser</string>
-    <string name="update_post">Update</string>
-    <string name="delete_post">Delete</string>
     <string name="discard_post">Discard</string>
     <string name="delete_image">Remove image</string>
     <string name="image_preview_help">Click on an image to set a caption or to remove it</string>
-    <string name="source_post_list">Posts</string>
-    <string name="cancel">Cancel</string>
-    <string name="source_post_list_filter">Filter posts</string>
-    <string name="main_menu">Main menu</string>
-    <string name="endpoints">Endpoints</string>
     <string name="keep_editing">Keep editing</string>
     <string name="confirm_close">You have unsaved changes, are you sure you want to leave ?</string>
-    <string name="disable_pushy_me_title">Disable push notifications from Pushy.me ?</string>
-
-    <string name="unread">New</string>
-    <string name="log_out">Log out</string>
-    <string name="timeline">Timeline</string>
-    <string name="channels">Channels</string>
-    <string name="nav_reader">Reader</string>
-    <string name="read_more">Read more</string>
-    <string name="refresh_configuration">Refresh configuration</string>
-    <string name="search">Search</string>
-    <string name="search_hint">Search posts</string>
     <string name="send">Send</string>
-    <string name="author_photo">Author photo</string>
-    <string name="timeline_image">Timeline image</string>
     <string name="add_image">Add image</string>
-    <string name="close">Close</string>
     <string name="full_screen_image">Full screen image</string>
     <string name="content">Content</string>
     <string name="repost">Repost</string>
     <string name="reply_to">Reply to</string>
-    <string name="audio_not_loaded">Audio could not be loaded</string>
-    <string name="title_activity_timeline_detail">Detail</string>
-    <string name="title_activity_timeline_audio">Audio</string>
-    <string name="title_activity_timeline_video">Video</string>
-    <string name="title_activity_timeline_image">Image</string>
-    <string name="title_activity_indieauth">Sign in</string>
-    <string name="title_activity_share">Share</string>
-    <string name="audio">Listen to audio</string>
-    <string name="video">Watch video</string>
-    <string name="map">View map</string>
-    <string name="item_menu">More options</string>
-    <string name="select_post_type">Select a post type</string>
-    <string name="select_post_limit">Select post limit</string>
-    <string name="go_to_main_app">Go to main app</string>
-    <string name="channels_not_found">Channels not found, check your internet connection</string>
-    <string name="no_posts_found">Posts not found, check your internet connection</string>
-    <string name="load_more">Load More</string>
-    <string name="loading">Loading…</string>
     <string name="event">Event</string>
     <string name="rsvp">RSVP</string>
     <string name="rsvp_select">Select RSVP</string>
     <string name="geocache_select">Select log type</string>
     <string name="upload">Upload</string>
     <string name="upload_description">Upload images to your media endpoint. On success, the file URL will be added to the clipboard automatically.</string>
-    <string name="one_image">1 image</string>
-    <string name="debug">Debug</string>
-    <string name="copy_to_clipboard">Copy to clipboard</string>
-    <string name="share_post">Share</string>
-    <string name="timeline_style">Style</string>
     <string name="posting">Sending</string>
 
+    <!-- Source lists -->
+    <string name="source_post_list_refresh">Refresh posts</string>
+    <string name="source_post_list_items_refreshed">Posts refreshed</string>
+    <string name="channel_list_refresh">Refresh channels</string>
+    <string name="source_post_list_filter">Filter posts</string>
+    <string name="update_post">Update</string>
+    <string name="delete_post">Delete</string>
+    <string name="select_post_type">Select a post type</string>
+    <string name="select_post_limit">Select post limit</string>
 
+    <!-- Push notifications -->
     <string name="push_notifications">Push notifications</string>
-    <!--<string name="push_notifications_text">You can receive push notifications either via Pushy.me or using your own MQTT server.</string>-->
     <string name="push_notifications_text">Receive push notifications via Pushy.me</string>
     <string name="push_notifications_title_pushy">Pushy.me and Indigenous site</string>
     <string name="push_notifications_text_pushy">Send push notifications with your account at https://indigenous.realize.be. The backend uses Pushy.me to send notifications. We will first check if your account exists before registering your device at Pushy.me.</string>
@@ -148,6 +154,7 @@
     <string name="push_notification_site_api_token">Indigenous API token</string>
     <string name="register_device">Register device</string>
     <string name="disable_pushy_me_button">Disable Pushy.me</string>
+    <string name="disable_pushy_me_title">Disable push notifications from Pushy.me ?</string>
     <string name="push_notifications_title_custom">Custom setup</string>
     <string name="push_notification_no_configuration">No push notifications have been configured</string>
     <string name="push_notification_configuration_pushy">You are using Indigenous and Pushy.me to receive notifications</string>
@@ -248,6 +255,7 @@
     <string name="pref_key_source_delete_title">Delete posts</string>
     <string name="pref_key_source_delete_summary">Expose a delete button on the update screen, or in the posts list.</string>
 
+    <!-- Events and location -->
     <string name="settings">Settings</string>
     <string name="end_date">End date</string>
     <string name="start_date">Start date</string>
@@ -270,11 +278,13 @@
         <item>2</item>
     </string-array>
 
+    <!-- These should not be translated -->
     <string-array name="geocache_array">
         <item>found</item>
         <item>not-found</item>
     </string-array>
 
+    <!-- These should not be translated -->
     <string-array name="rsvp_array">
         <item>yes</item>
         <item>no</item>
@@ -282,6 +292,7 @@
         <item>interested</item>
     </string-array>
 
+    <!-- These should not be translated -->
     <string-array name="location_visibility_array">
         <item>public</item>
         <item>private</item>

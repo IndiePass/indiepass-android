@@ -3,8 +3,10 @@
 An app with extensions for sharing information to micropub endpoints and reading from microsub
 endpoints.
 
-Install from Google Play: https://play.google.com/store/apps/details?id=com.indieweb.indigenous  
-Install from F-Droid: https://f-droid.org/en/packages/com.indieweb.indigenous/
+Install from Google Play:
+https://play.google.com/store/apps/details?id=com.indieweb.indigenous  
+Install from F-Droid:
+https://f-droid.org/en/packages/com.indieweb.indigenous/
 
 No builds will be uploaded anymore to GitHub, use F-Droid for that. Not that the F-droid releases 
 currently have no support for getting the location from the device, that will be added in a next 
@@ -14,17 +16,21 @@ More information at https://indieweb.org/Indigenous and https://indigenous.reali
 
 ## Functionality
 
-- Login with multiple domains, discover indieauth, micropub, microsub and media endpoints.
-  The micropub and microsub endpoints are optional, but at least one should be available.
+- Login with multiple domains, discover indieauth, micropub, microsub
+  and media endpoints. The micropub and microsub endpoints are optional,
+  but at least one should be available.
 - Micropub
-  - post types: article, note, reply, repost, like, bookmark, event, issue, rsvp, geocache and checkin
+  - post types: article, note, reply, repost, like, bookmark, event,
+    issue, rsvp, geocache and checkin
   - add multiple images, tags, toggle syndication targets
   - share location on note, article, event, checkin and geocache
   - send image to media endpoint
   - Toggle post-status (published vs draft)
-  - Save as local draft to finish later. This also includes coordinates, so you can finish later even
-    when you are on a different location then.
-  - Query, update and delete: get a list of posts and update basic properties (experimental)
+  - Save as local draft to finish later. This also includes coordinates,
+    so you can finish later even when you are on a different location
+    then.
+  - Query, update and delete: get a list of posts and update basic
+    properties (experimental)
 - Microsub
   - read channels, with pull to refresh
   - read items per channel, with pull to refresh, response actions per item
@@ -32,11 +38,12 @@ More information at https://indieweb.org/Indigenous and https://indigenous.reali
   - listen to audio or watch video if available 
   - view fullscreen images, zoom and pinch
   - Manage channels and feeds
-- Share intents: receive text or images from other apps to directly share
-- Push notifications: receive push notifications if you have an account on https://indigenous.realize.be
+- Share intents: receive text or images to directly share
+- Push notifications: receive push notifications if you have an account
+  on https://indigenous.realize.be
 
-Note: Checkin and Geocache are experimental and pass on all information into a Geo URI in the 
-checkin property, e.g.
+Note: Checkin and Geocache are experimental and pass on all information
+into a Geo URI in the checkin property, e.g.
 
 ```
 geo:51.5258325,-0.1359825,0.0;name=london;url=https://hwclondon.co.uk
@@ -50,9 +57,10 @@ geo:51.5258325,-0.1359825,0.0;name=london;url=https://hwclondon.co.uk
 
 #### Authentication loop
 
-When authenticating for the first time, you might see a message "Authentication successul" but then
-returning to the Sign in screen. While the account has been created, the default was not set. In
-this case, the sign in screen will allow you to select the account.
+When authenticating for the first time, you might see a message
+"Authentication successul" but then returning to the Sign in screen.
+While the account has been created, the default was not set. In this
+case, the sign in screen will allow you to select the account.
 
 See https://github.com/swentel/indigenous-android/issues/84  
 This happens sometimes, but not always.
@@ -63,16 +71,30 @@ See https://github.com/swentel/indigenous-android/issues/152
 
 #### Authenticating
 
-- Some browsers (e.g. the default browser on LineageOS), won't allow Indigenous to listen to the callback
-to verify the authorization code. Install a browser like Firefox (any flavor) so you can login.
+- Some browsers (e.g. the default browser on LineageOS), won't allow
+  Indigenous to listen to the callback to verify the authorization code.
+  Install a browser like Firefox (any flavor) so you can login.
 - When your account requires 2FA, put the apps in split screen mode, see
 https://github.com/swentel/indigenous-android/issues/210
 
 #### Notifications don't arrive after the app is closed
 
-This is due to new default settings in the latest Android versions. Try turning of battery optimization for the Indigenous app and it should work fine.
+This is due to new default settings in the latest Android versions. Try
+turning of battery optimization for the Indigenous app and it should
+work fine.
+
+## Translations
+
+Indigenous is currently only available in English. If you want to
+translate to another language, the following file contains all strings
+use in the app. Either send a pull request or open an issue with the
+file attached.
+
+https://github.com/swentel/indigenous-android/blob/master/app/src/main/res/values/strings.xml
 
 ## iOS
+
+Deprecated - new apps are coming.
 
 https://indigenous.abode.pub/ios/  
 https://github.com/EdwardHinkle/indigenous-ios
