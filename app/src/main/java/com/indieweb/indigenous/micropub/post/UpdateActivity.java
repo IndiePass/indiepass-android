@@ -104,8 +104,6 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
             sendItem.setEnabled(false);
         }
 
-        Toast.makeText(getApplicationContext(), getString(R.string.sending_please_wait), Toast.LENGTH_SHORT).show();
-
         String endpoint = user.getMicropubEndpoint();
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         StringRequest request = new StringRequest(Request.Method.POST, endpoint,
