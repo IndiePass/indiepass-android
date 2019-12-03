@@ -1,3 +1,8 @@
+<h4>xx/xx/xxxx - 0.50</h4>
+<ul>
+    <li>Clearer error messages for posting and reading</li>
+    <li>All strings are now in the xml file, so translators welcome!</li>
+</ul>
 <h4>26/11/2019 - 0.49</h4>
 <ul>
     <li>Allow cleartext HTTP traffic</li>
