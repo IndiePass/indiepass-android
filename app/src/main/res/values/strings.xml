@@ -100,7 +100,6 @@
     <string name="video">Watch video</string>
     <string name="map">View map</string>
     <string name="audio_not_loaded">Audio could not be loaded</string>
-    <string name="no_posts_found">Posts not found, check your internet connection</string>
     <string name="channel_not_found">Channel not found</string>
     <string name="load_more">Load More</string>
     <string name="loading">Loading…</string>
@@ -144,6 +143,7 @@
     <string name="channel_update">Update channel</string>
     <string name="channel_delete_confirm">Are you sure you want to delete channel \'%s\' ?</string>
     <string name="add_feed_in_channel">Add feed in %s</string>
+    <string name="timeline_parse_error">Error: %s</string>
     <string name="feed_searching">Searching, stay tuned</string>
     <string name="feed_no_results">No results found, please try again.</string>
     <string name="feed_parse_error">Error: %s</string>
@@ -151,6 +151,8 @@
     <string name="feed_subscribe">Subscribe to feed \'%s\' ?</string>
     <string name="channel_network_fail">Getting channels failed. Status code: %d; message: %s</string>
     <string name="channel_fail">Failed getting channels, unknown error</string>
+    <string name="timeline_network_fail">Getting timeline failed. Status code: %d; message: %s</string>
+    <string name="timeline_fail">Failed getting timeline, unknown error</string>
     <string name="posts_network_fail">Getting posts failed. Status code: %d; message: %s</string>
     <string name="posts_fail">Failed getting posts, unknown error</string>
 

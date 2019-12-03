@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -33,10 +34,12 @@ import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.microsub.MicrosubAction;
+import com.indieweb.indigenous.microsub.manage.ManageChannelActivity;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.TimelineStyle;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
+import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Preferences;
 
 import org.json.JSONArray;
@@ -329,6 +332,13 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
      * Get items.
      */
     public void getTimeLineItems(String pagerAfter) {
+
+        if (!new Connection(getApplicationContext()).hasConnection()) {
+            showRefreshMessage = false;
+            checkRefreshingStatus();
+            Toast.makeText(getApplicationContext(), getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         entries.clear();
         int method = Request.Method.GET;
@@ -715,7 +725,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
                         }
                         catch (JSONException e) {
-                            Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            showRefreshMessage = false;
+                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.timeline_parse_error), e.getMessage()), Toast.LENGTH_LONG).show();
                         }
 
                         checkRefreshingStatus();
@@ -724,7 +735,18 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.no_posts_found), Toast.LENGTH_SHORT).show();
+
+                        NetworkResponse networkResponse = error.networkResponse;
+                        if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
+                            int code = networkResponse.statusCode;
+                            String result = new String(networkResponse.data).trim();
+                            Toast.makeText(TimelineActivity.this, String.format(getString(R.string.timeline_network_fail), code, result), Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Toast.makeText(TimelineActivity.this, getString(R.string.channel_fail), Toast.LENGTH_LONG).show();
+                        }
+
+                        showRefreshMessage = false;
                         checkRefreshingStatus();
                     }
                 }
