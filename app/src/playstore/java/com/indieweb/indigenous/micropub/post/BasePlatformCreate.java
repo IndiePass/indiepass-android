@@ -9,8 +9,12 @@ import android.net.Uri;
 import android.os.Looper;
 import android.provider.Settings;
 import androidx.annotation.NonNull;
+
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -35,6 +39,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.indieweb.indigenous.BuildConfig;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.Base;
+import com.indieweb.indigenous.model.Place;
 import com.indieweb.indigenous.util.Preferences;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -43,6 +48,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -186,6 +192,7 @@ abstract public class BasePlatformCreate extends Base {
         if (toggleWrapper) {
             locationWrapper.setVisibility(View.VISIBLE);
             locationCoordinates.setVisibility(View.VISIBLE);
+            return;
         }
 
         boolean showLocationVisibility = Preferences.getPreference(getApplicationContext(), "pref_key_location_visibility", false);
@@ -281,12 +288,16 @@ abstract public class BasePlatformCreate extends Base {
             Toast.makeText(getApplicationContext(), R.string.location_get, Toast.LENGTH_SHORT).show();
             StringRequest getRequest = new StringRequest(Request.Method.GET, MicropubEndpoint,
                     new Response.Listener<String>() {
+                        @SuppressLint("ClickableViewAccessibility")
                         @Override
                         public void onResponse(String response) {
+                            placeItems.clear();
                             String label = "";
                             String visibility = "";
                             try {
                                 JSONObject geoResponse = new JSONObject(response);
+
+                                // Geo property.
                                 if (geoResponse.has("geo")) {
                                     JSONObject geoObject = geoResponse.getJSONObject("geo");
                                     if (geoObject.has("label")) {
@@ -296,13 +307,70 @@ abstract public class BasePlatformCreate extends Base {
                                         visibility = geoObject.getString("visibility");
                                     }
                                 }
+
+                                // Places property.
+                                if (geoResponse.has("places")) {
+                                    JSONObject placeObject;
+                                    JSONArray placesList = geoResponse.getJSONArray("places");
+                                    for (int i = 0; i < placesList.length(); i++) {
+                                        Place place = new Place();
+                                        placeObject = placesList.getJSONObject(i);
+
+                                        if (placeObject.has("label")) {
+                                            place.setName(placeObject.getString("label"));
+
+                                            if (placeObject.has("longitude")) {
+                                                place.setLongitude(placeObject.getString("longitude"));
+                                            }
+
+                                            if (placeObject.has("latitude")) {
+                                                place.setLatitude(placeObject.getString("latitude"));
+                                            }
+
+                                            if (placeObject.has("url")) {
+                                                place.setUrl(placeObject.getString("url"));
+                                            }
+
+                                            placeItems.add(place);
+                                        }
+                                    }
+                                }
                             }
                             catch (JSONException e) {
                                 Toast.makeText(getApplicationContext(), getString(R.string.location_error) + e.getMessage(), Toast.LENGTH_LONG).show();
                             }
 
-                            if (label.length() > 0) {
-                                locationName.setText(label);
+                            if (label.length() > 0 || placeItems.size() > 0) {
+                                if (placeItems.size() > 0) {
+                                    Toast.makeText(getApplicationContext(), getString(R.string.venues_found), Toast.LENGTH_SHORT).show();
+
+                                    locationName.setThreshold(1);
+                                    final ArrayAdapter venuesAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.popup_item, placeItems);
+                                    locationName.setAdapter(venuesAdapter);
+                                    locationName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                                            Place selected = (Place) arg0.getAdapter().getItem(arg2);
+                                            locationName.setText(selected.getName());
+                                            if (selected.getUrl().length() > 0) {
+                                                locationUrl.setText(selected.getUrl());
+                                            }
+                                        }
+                                    });
+                                    locationName.setOnTouchListener(new View.OnTouchListener() {
+                                        @Override
+                                        public boolean onTouch(View paramView, MotionEvent paramMotionEvent) {
+                                            if (!locationName.getText().toString().equals("")) {
+                                                venuesAdapter.getFilter().filter(null);
+                                            }
+                                            locationName.showDropDown();
+                                            return false;
+                                        }
+                                    });
+                                }
+                                else {
+                                    locationName.setText(label);
+                                }
                                 if (visibility.length() > 0) {
                                     int selection = 0;
                                     if (visibility.equals("private")) {
@@ -315,7 +383,7 @@ abstract public class BasePlatformCreate extends Base {
                                 }
                             }
                             else {
-                                Toast.makeText(getApplicationContext(), getString(R.string.location_no_name), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.location_no_results), Toast.LENGTH_SHORT).show();
                             }
 
                         }

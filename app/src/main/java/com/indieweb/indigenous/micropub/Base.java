@@ -15,6 +15,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -39,6 +40,7 @@ import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.micropub.post.GalleryAdapter;
 import com.indieweb.indigenous.micropub.post.SendPostInterface;
+import com.indieweb.indigenous.model.Place;
 import com.indieweb.indigenous.model.Syndication;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Connection;
@@ -106,8 +108,9 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
     public LinearLayout locationWrapper;
     public Spinner locationVisibility;
-    public EditText locationName;
+    public AutoCompleteTextView locationName;
     public EditText locationUrl;
+    public List<Place> placeItems = new ArrayList<>();
     public TextView locationCoordinates;
     public String coordinates;
     public Button locationQuery;

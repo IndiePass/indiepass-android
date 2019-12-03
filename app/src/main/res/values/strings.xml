@@ -364,7 +364,6 @@
     <string name="start_date">Start date</string>
     <string name="add_location">Add location</string>
     <string name="getting_coordinates">Getting coordinates …</string>
-    <string name="no_coordinates_found">No coordinates found, please try again</string>
     <string name="location_visibility_select">Location visibility</string>
     <string name="location">Location</string>
     <string name="location_label">Location name</string>
@@ -374,7 +373,8 @@
     <string name="location_coordinates">Coordinates (lat, lon, alt) %s</string>
     <string name="location_get">Getting location name</string>
     <string name="location_error">Error parsing JSON:</string>
-    <string name="location_no_name">No location name found</string>
+    <string name="location_no_results">No location name or venues found</string>
+    <string name="venues_found">Venues found, the location name input will show suggestions when you type</string>
 
     <string-array name="mark_read_array">
         <item>Channel per page</item>
