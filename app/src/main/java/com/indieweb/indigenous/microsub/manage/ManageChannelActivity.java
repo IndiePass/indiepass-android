@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -50,6 +51,7 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
     User user;
     String incomingText = "";
     boolean isShare = false;
+    private boolean showRefreshMessage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,7 +163,8 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
                             checkRefreshingStatus();
                         }
                         catch (JSONException e) {
-                            Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            showRefreshMessage = false;
+                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.channel_list_parse_error), e.getMessage()), Toast.LENGTH_LONG).show();
                             checkRefreshingStatus();
                         }
 
@@ -170,7 +173,16 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.channels_not_found), Toast.LENGTH_SHORT).show();
+                        NetworkResponse networkResponse = error.networkResponse;
+                        if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
+                            int code = networkResponse.statusCode;
+                            String result = new String(networkResponse.data).trim();
+                            Toast.makeText(ManageChannelActivity.this, String.format(getString(R.string.channel_network_fail), code, result), Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Toast.makeText(ManageChannelActivity.this, getString(R.string.channel_fail), Toast.LENGTH_LONG).show();
+                        }
+                        showRefreshMessage = false;
                         checkRefreshingStatus();
                     }
                 }
@@ -201,6 +213,7 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.channel_list_refresh:
+                showRefreshMessage = true;
                 refreshLayout.setRefreshing(true);
                 startChannels();
                 return true;

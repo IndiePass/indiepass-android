@@ -100,7 +100,6 @@
     <string name="video">Watch video</string>
     <string name="map">View map</string>
     <string name="audio_not_loaded">Audio could not be loaded</string>
-    <string name="channels_not_found">Channels not found, check your internet connection</string>
     <string name="no_posts_found">Posts not found, check your internet connection</string>
     <string name="channel_not_found">Channel not found</string>
     <string name="load_more">Load More</string>
@@ -150,6 +149,10 @@
     <string name="feed_parse_error">Error: %s</string>
     <string name="feed_search_error">Something went wrong, please try again.</string>
     <string name="feed_subscribe">Subscribe to feed \'%s\' ?</string>
+    <string name="channel_network_fail">Getting channels failed. Status code: %d; message: %s</string>
+    <string name="channel_fail">Failed getting channels, unknown error</string>
+    <string name="posts_network_fail">Getting posts failed. Status code: %d; message: %s</string>
+    <string name="posts_fail">Failed getting posts, unknown error</string>
 
     <!-- Micropub -->
     <string name="tags">Tags - separate with comma</string>
@@ -221,6 +224,7 @@
     <string name="post_types_all">All post types</string>
     <string name="post_types_parse_error">Error parsing post types: %s</string>
     <string name="post_list_parse_error">Error: %s</string>
+    <string name="channel_list_parse_error">Error: %s</string>
 
     <!-- Source lists -->
     <string name="source_post_list_refresh">Refresh posts</string>

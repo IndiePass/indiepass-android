@@ -1,5 +1,6 @@
 package com.indieweb.indigenous.micropub.source;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -277,6 +279,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
 
                         }
                         catch (JSONException e) {
+                            showRefreshMessage = false;
                             Toast.makeText(getContext(), String.format(getString(R.string.post_list_parse_error), e.getMessage()), Toast.LENGTH_LONG).show();
                         }
 
@@ -286,7 +289,19 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), getString(R.string.no_posts_found), Toast.LENGTH_SHORT).show();
+                        Context context = getContext();
+                        if (context != null) {
+                            NetworkResponse networkResponse = error.networkResponse;
+                            if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
+                                int code = networkResponse.statusCode;
+                                String result = new String(networkResponse.data).trim();
+                                Toast.makeText(context, String.format(context.getString(R.string.posts_network_fail), code, result), Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                Toast.makeText(context, context.getString(R.string.posts_fail), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        showRefreshMessage = false;
                         checkRefreshingStatus();
                     }
                 }

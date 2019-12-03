@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -179,7 +180,8 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
                             app.setChannels(Channels);
                         }
                         catch (JSONException e) {
-                            Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            showRefreshMessage = false;
+                            Toast.makeText(getContext(), String.format(getString(R.string.channel_list_parse_error), e.getMessage()), Toast.LENGTH_LONG).show();
                             checkRefreshingStatus();
                         }
 
@@ -190,8 +192,17 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
                     public void onErrorResponse(VolleyError error) {
                         Context context = getContext();
                         if (context != null) {
-                            Toast.makeText(requireContext(), getString(R.string.channels_not_found), Toast.LENGTH_SHORT).show();
+                            NetworkResponse networkResponse = error.networkResponse;
+                            if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
+                                int code = networkResponse.statusCode;
+                                String result = new String(networkResponse.data).trim();
+                                Toast.makeText(context, String.format(context.getString(R.string.channel_network_fail), code, result), Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                Toast.makeText(context, context.getString(R.string.channel_fail), Toast.LENGTH_LONG).show();
+                            }
                         }
+                        showRefreshMessage = false;
                         checkRefreshingStatus();
                     }
                 }
