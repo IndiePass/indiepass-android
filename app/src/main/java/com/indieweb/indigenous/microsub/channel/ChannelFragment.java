@@ -35,6 +35,7 @@ import com.indieweb.indigenous.microsub.timeline.TimelineActivity;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
+import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Preferences;
 
 import org.json.JSONArray;
@@ -115,6 +116,13 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
      * Get channels.
      */
     private void loadChannels() {
+
+        if (!new Connection(requireContext()).hasConnection()) {
+            showRefreshMessage = false;
+            checkRefreshingStatus();
+            Toast.makeText(requireContext(), requireContext().getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         String microsubEndpoint = user.getMicrosubEndpoint();
 

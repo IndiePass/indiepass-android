@@ -32,6 +32,7 @@ import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.model.PostListItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
+import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Preferences;
 
 import org.json.JSONArray;
@@ -168,6 +169,13 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
      * Get items in channel.
      */
     public void getSourcePostListItems(String pagerAfter) {
+
+        if (!new Connection(requireContext()).hasConnection()) {
+            showRefreshMessage = false;
+            checkRefreshingStatus();
+            Toast.makeText(requireContext(), requireContext().getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         String MicropubEndpoint = user.getMicropubEndpoint();
         // Some endpoints already contain GET params. Instead of overriding the getParams method, we

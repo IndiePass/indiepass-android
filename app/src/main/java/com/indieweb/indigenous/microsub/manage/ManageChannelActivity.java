@@ -31,6 +31,7 @@ import com.indieweb.indigenous.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
+import com.indieweb.indigenous.util.Connection;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,7 +52,7 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
     User user;
     String incomingText = "";
     boolean isShare = false;
-    private boolean showRefreshMessage = false;
+    boolean showRefreshMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +127,13 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
      * Load channels.
      */
     public void loadChannels() {
+
+        if (!new Connection(getApplicationContext()).hasConnection()) {
+            showRefreshMessage = false;
+            checkRefreshingStatus();
+            Toast.makeText(getApplicationContext(), getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         String microsubEndpoint = user.getMicrosubEndpoint();
 

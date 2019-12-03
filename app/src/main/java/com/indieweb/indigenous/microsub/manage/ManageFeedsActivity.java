@@ -20,6 +20,7 @@ import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Feed;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
+import com.indieweb.indigenous.util.Connection;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +40,7 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
     SwipeRefreshLayout refreshLayout;
     ListView listView;
     User user;
+    boolean showRefreshMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,7 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.feed_list_refresh:
+                showRefreshMessage = true;
                 refreshLayout.setRefreshing(true);
                 startFeed();
                 return true;
@@ -96,7 +99,9 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
      */
     public void checkRefreshingStatus() {
         if (refreshLayout.isRefreshing()) {
-            Toast.makeText(getApplicationContext(), getString(R.string.feed_items_refreshed), Toast.LENGTH_SHORT).show();
+            if (showRefreshMessage) {
+                Toast.makeText(getApplicationContext(), getString(R.string.feed_items_refreshed), Toast.LENGTH_SHORT).show();
+            }
             refreshLayout.setRefreshing(false);
         }
     }
@@ -115,6 +120,13 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
      * Get feeds in channel.
      */
     public void getFeeds() {
+
+        if (!new Connection(getApplicationContext()).hasConnection()) {
+            showRefreshMessage = false;
+            checkRefreshingStatus();
+            Toast.makeText(getApplicationContext(), getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         String MicrosubEndpoint = user.getMicrosubEndpoint();
         MicrosubEndpoint += "?action=follow&channel=" + channelId;
@@ -142,7 +154,8 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
                             adapter.notifyDataSetChanged();
                         }
                         catch (JSONException e) {
-                            Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            showRefreshMessage = false;
+                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.feed_parse_error), e.getMessage()), Toast.LENGTH_LONG).show();
                         }
 
                         checkRefreshingStatus();
@@ -151,6 +164,7 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        showRefreshMessage = false;
                         Toast.makeText(getApplicationContext(), getString(R.string.no_feeds_found), Toast.LENGTH_SHORT).show();
                         checkRefreshingStatus();
                     }
