@@ -211,7 +211,6 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
             builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,int id) {
 
-                    final String userMe = user.getMe();
                     AccountManager accountManager = AccountManager.get(context);
 
                     if (Build.VERSION.SDK_INT < 23) {
@@ -220,7 +219,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
                             public void run(AccountManagerFuture<Boolean> accountManagerFuture) {
                                 try {
                                     if (accountManagerFuture.getResult()) {
-                                        handleSuccessRemoval(userMe, position);
+                                        handleSuccessRemoval(user, position);
                                     }
                                 }
                                 catch (android.accounts.OperationCanceledException | IOException | AuthenticatorException e) {
@@ -235,7 +234,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
                             public void run(AccountManagerFuture<Bundle> accountManagerFuture) {
                                 try {
                                     if (accountManagerFuture.getResult() != null) {
-                                        handleSuccessRemoval(userMe, position);
+                                        handleSuccessRemoval(user, position);
                                     }
                                 }
                                 catch (android.accounts.OperationCanceledException | AuthenticatorException | IOException e) {
@@ -268,10 +267,11 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
      * @param position
      *   The position in the adapter.
      */
-    private void handleSuccessRemoval(String user, int position) {
+    private void handleSuccessRemoval(User user, int position) {
         Toast.makeText(context, String.format(context.getString(R.string.account_removed), user), Toast.LENGTH_SHORT).show();
-        if (user.equals(currentUser.getMe())) {
+        if (user.getMe().equals(currentUser.getMe())) {
             Intent main = new Intent(context, LaunchActivity.class);
+            new IndieAuthAction(context, user).revoke();
             context.startActivity(main);
             activity.finish();
         }
