@@ -34,7 +34,6 @@ import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.microsub.MicrosubAction;
-import com.indieweb.indigenous.microsub.manage.ManageChannelActivity;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.TimelineStyle;
 import com.indieweb.indigenous.model.User;
