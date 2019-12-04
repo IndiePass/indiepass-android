@@ -374,7 +374,7 @@
     <string name="location_get">Getting location name</string>
     <string name="location_error">Error parsing JSON:</string>
     <string name="location_no_results">No location name or venues found</string>
-    <string name="venues_found">Venues found, the location name input will show suggestions when you type</string>
+    <string name="places_found">Places found, the location name input will show suggestions when you type</string>
 
     <string-array name="mark_read_array">
         <item>Channel per page</item>

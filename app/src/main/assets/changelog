@@ -1,6 +1,6 @@
 <h4>xx/xx/xxxx - 0.50</h4>
 <ul>
-    <li>Location query can use venues for suggestions</li>
+    <li>Location query can use places for suggestions</li>
     <li>Send revoke token call when deleting account</li>
     <li>Clearer error messages for posting and reading</li>
     <li>All strings are now in the xml file, so translators welcome!</li>

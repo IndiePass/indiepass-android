@@ -293,6 +293,7 @@ abstract public class BasePlatformCreate extends Base {
                         public void onResponse(String response) {
                             placeItems.clear();
                             String label = "";
+                            String url = "";
                             String visibility = "";
                             try {
                                 JSONObject geoResponse = new JSONObject(response);
@@ -302,6 +303,9 @@ abstract public class BasePlatformCreate extends Base {
                                     JSONObject geoObject = geoResponse.getJSONObject("geo");
                                     if (geoObject.has("label")) {
                                         label = geoObject.getString("label");
+                                    }
+                                    if (geoObject.has("url")) {
+                                        url = geoObject.getString("url");
                                     }
                                     if (geoObject.has("visibility")) {
                                         visibility = geoObject.getString("visibility");
@@ -342,26 +346,36 @@ abstract public class BasePlatformCreate extends Base {
 
                             if (label.length() > 0 || placeItems.size() > 0) {
                                 if (placeItems.size() > 0) {
-                                    Toast.makeText(getApplicationContext(), getString(R.string.venues_found), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), getString(R.string.places_found), Toast.LENGTH_SHORT).show();
+
+                                    // Add default as a place as well.
+                                    if (label.length() > 0) {
+                                        Place place = new Place();
+                                        place.setName(label);
+                                        if (url.length() > 0) {
+                                            place.setUrl(url);
+                                        }
+                                        placeItems.add(place);
+                                    }
 
                                     locationName.setThreshold(1);
-                                    final ArrayAdapter venuesAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.popup_item, placeItems);
-                                    locationName.setAdapter(venuesAdapter);
+                                    final ArrayAdapter placesAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.popup_item, placeItems);
+                                    locationName.setAdapter(placesAdapter);
                                     locationName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                         @Override
                                         public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                                             Place selected = (Place) arg0.getAdapter().getItem(arg2);
                                             locationName.setText(selected.getName());
-                                            if (selected.getUrl().length() > 0) {
-                                                locationUrl.setText(selected.getUrl());
-                                            }
+                                            // Set this, even if it's empty as the user might have
+                                            // selected another place first which had a URL.
+                                            locationUrl.setText(selected.getUrl());
                                         }
                                     });
                                     locationName.setOnTouchListener(new View.OnTouchListener() {
                                         @Override
                                         public boolean onTouch(View paramView, MotionEvent paramMotionEvent) {
                                             if (!locationName.getText().toString().equals("")) {
-                                                venuesAdapter.getFilter().filter(null);
+                                                placesAdapter.getFilter().filter(null);
                                             }
                                             locationName.showDropDown();
                                             return false;
@@ -370,7 +384,12 @@ abstract public class BasePlatformCreate extends Base {
                                 }
                                 else {
                                     locationName.setText(label);
+                                    if (url.length() > 0) {
+                                        locationUrl.setText(url);
+                                    }
                                 }
+
+                                // Visibility.
                                 if (visibility.length() > 0) {
                                     int selection = 0;
                                     if (visibility.equals("private")) {

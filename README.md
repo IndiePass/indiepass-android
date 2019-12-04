@@ -31,7 +31,7 @@ https://indigenous.realize.be
   - Toggle post-status (published vs draft)
   - Save as local draft to finish later. This also includes coordinates,
     so you can finish later even when you are on a different location
-    then.
+    then. Place suggestions are also supported.
   - Query, update and delete: get a list of posts and update basic
     properties (experimental)
 - Microsub
