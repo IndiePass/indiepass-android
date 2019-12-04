@@ -8,6 +8,10 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -104,6 +108,40 @@ public class Utility {
                     }
                 }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
                 cal.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+    /**
+     * Make sure url is an absolute URL.
+     *
+     * @param url
+     *   The url to test.
+     * @param domain
+     *   The domain to prefix the url with.
+     *
+     * @return string
+     */
+    public static String checkAbsoluteUrl(String url, String domain) {
+        String returnUrl;
+
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+
+            try {
+                URL baseUrl = new URL(domain);
+                URI uri = baseUrl.toURI();
+                URI newUri = uri.resolve(domain + "/" + url);
+                returnUrl = newUri.normalize().toURL().toString();
+            }
+            catch (MalformedURLException | URISyntaxException e) {
+                // This shouldn't happen. We concatenate although it will still likely fail.
+                returnUrl = domain + url;
+            }
+
+        }
+        else {
+            returnUrl = url;
+        }
+
+        return returnUrl;
     }
 
 }

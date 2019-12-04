@@ -30,6 +30,7 @@ import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.micropub.MicropubConfig;
+import com.indieweb.indigenous.util.Utility;
 import com.indieweb.indigenous.util.mf2.Mf2Parser;
 
 import org.json.JSONException;
@@ -204,6 +205,8 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                         String endpoint = split[0].replace("<", "").replace(">", "").trim();
                         String rel = split[1].trim().replace("rel=", "").replace("\"", "");
 
+                        endpoint = Utility.checkAbsoluteUrl(endpoint, $domain);
+
                         switch (rel) {
                             case "authorization_endpoint":
                                 authorizationEndpoint = endpoint;
@@ -234,27 +237,27 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
             Elements imports = doc.select("link[href]");
             for (Element link : imports) {
                 if (authorizationEndpoint.length() == 0 && link.attr("rel").equals("authorization_endpoint")) {
-                    authorizationEndpoint = link.attr("abs:href");
+                    authorizationEndpoint = Utility.checkAbsoluteUrl(link.attr("abs:href"), $domain);
                     numberOfAuthEndpoints++;
                 }
 
                 if (tokenEndpoint.length() == 0 && link.attr("rel").equals("token_endpoint")) {
-                    tokenEndpoint = link.attr("abs:href");
+                    tokenEndpoint = Utility.checkAbsoluteUrl(link.attr("abs:href"), $domain);
                     numberOfAuthEndpoints++;
                 }
 
                 if (micropubEndpoint.length() == 0 && link.attr("rel").equals("micropub")) {
                     hasMicropubOrMicrosub = true;
-                    micropubEndpoint = link.attr("abs:href");
+                    micropubEndpoint = Utility.checkAbsoluteUrl(link.attr("abs:href"), $domain);
                 }
 
                 if (microsubEndpoint.length() == 0 && link.attr("rel").equals("microsub")) {
                     hasMicropubOrMicrosub = true;
-                    microsubEndpoint = link.attr("abs:href");
+                    microsubEndpoint = Utility.checkAbsoluteUrl(link.attr("abs:href"), $domain);
                 }
 
                 if (micropubMediaEndpoint.length() == 0 && link.attr("rel").equals("micropub_media")) {
-                    micropubMediaEndpoint = link.attr("abs:href");
+                    micropubMediaEndpoint = Utility.checkAbsoluteUrl(link.attr("abs:href"), $domain);
                 }
             }
 

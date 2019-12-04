@@ -1,5 +1,6 @@
-<h4>xx/xx/xxxx - 0.50</h4>
+<h4>04/12/2019 - 0.50</h4>
 <ul>
+    <li>Support relative endpoint urls</li>
     <li>Allow autocomplete of usernames in body</li>
     <li>Location query can use places for suggestions</li>
     <li>Send revoke token call when deleting account</li>

@@ -268,10 +268,10 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
      *   The position in the adapter.
      */
     private void handleSuccessRemoval(User user, int position) {
-        Toast.makeText(context, String.format(context.getString(R.string.account_removed), user), Toast.LENGTH_SHORT).show();
+        new IndieAuthAction(context, user).revoke();
+        Toast.makeText(context, String.format(context.getString(R.string.account_removed), user.getMe()), Toast.LENGTH_SHORT).show();
         if (user.getMe().equals(currentUser.getMe())) {
             Intent main = new Intent(context, LaunchActivity.class);
-            new IndieAuthAction(context, user).revoke();
             context.startActivity(main);
             activity.finish();
         }

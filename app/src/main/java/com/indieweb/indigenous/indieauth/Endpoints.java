@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.HCard;
 import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.util.Utility;
 import com.indieweb.indigenous.util.mf2.Mf2Parser;
 
 import org.jsoup.Jsoup;
@@ -57,6 +58,8 @@ public class Endpoints {
                         String endpoint = split[0].replace("<", "").replace(">", "").trim();
                         String rel = split[1].trim().replace("rel=", "").replace("\"", "");
 
+                        endpoint = Utility.checkAbsoluteUrl(endpoint, url);
+
                         switch (rel) {
                             case "micropub":
                                 foundInfo = true;
@@ -80,17 +83,17 @@ public class Endpoints {
             for (Element link : links) {
                 if (micropubEndpoint.length() == 0 && link.attr("rel").equals("micropub")) {
                     foundInfo = true;
-                    micropubEndpoint = link.attr("abs:href");
+                    micropubEndpoint = Utility.checkAbsoluteUrl(link.attr("abs:href"), url);
                 }
 
                 if (micropubMediaEndpoint.length() == 0 && link.attr("rel").equals("micropub_media")) {
                     foundInfo = true;
-                    micropubMediaEndpoint = link.attr("abs:href");
+                    micropubMediaEndpoint = Utility.checkAbsoluteUrl(link.attr("abs:href"), url);
                 }
 
                 if (microsubEndpoint.length() == 0 && link.attr("rel").equals("microsub")) {
                     foundInfo = true;
-                    microsubEndpoint = link.attr("abs:href");
+                    microsubEndpoint = Utility.checkAbsoluteUrl(link.attr("abs:href"), url);
                 }
             }
 

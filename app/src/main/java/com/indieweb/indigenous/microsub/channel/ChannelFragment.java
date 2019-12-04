@@ -37,6 +37,7 @@ import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Preferences;
+import com.indieweb.indigenous.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
