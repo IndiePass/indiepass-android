@@ -369,7 +369,6 @@ public class MicropubAction {
                     i--;
                 }
 
-
                 // Check if token really started with @, else we don't have a valid token.
                 if (i < 1 || text.charAt(i - 1) != '@') {
                     return cursor;
