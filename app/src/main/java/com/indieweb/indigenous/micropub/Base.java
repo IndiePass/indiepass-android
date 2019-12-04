@@ -69,7 +69,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
     public boolean isTesting = false;
     boolean hasChanges = false;
-    public EditText body;
+    public MultiAutoCompleteTextView body;
     public EditText title;
     public Switch saveAsDraft;
     public DatabaseHelper db;

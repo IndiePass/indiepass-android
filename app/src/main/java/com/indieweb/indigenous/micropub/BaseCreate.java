@@ -93,6 +93,12 @@ abstract public class BaseCreate extends BasePlatformCreate {
         // Add listener on body.
         if (body != null) {
             body.addTextChangedListener(BaseCreate.this);
+
+            // Autocomplete of contacts.
+            if (Preferences.getPreference(this, "pref_key_contact_body_autocomplete", false)) {
+                new MicropubAction(getApplicationContext(), user).prepareContactAutocomplete(body);
+            }
+
         }
 
         // On checkin, set label and url visible already.
@@ -107,7 +113,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
 
         // Autocomplete of tags.
         if (tags != null && Preferences.getPreference(this, "pref_key_tags_list", false)) {
-            new MicropubAction(getApplicationContext(), user).getTagsList(tags);
+            new MicropubAction(getApplicationContext(), user).prepareTagsAutocomplete(tags);
         }
 
         if (isMediaRequest) {

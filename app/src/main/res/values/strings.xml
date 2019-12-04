@@ -294,6 +294,10 @@
     <string name="pref_key_post_type_hide_summary">Hide post types in the menu which are not supported or enabled by your Micropub endpoint. Leave disabled if your endpoint does not send post-types in the ?q=config query.</string>
     <string name="pref_key_access_token_body_title">Send access token in body</string>
     <string name="pref_key_access_token_body_summary">The access token for a Micropub request is send along in the header by default. If enabled, this setting will send it in the body of the request instead of the header.</string>
+    <string name="pref_key_contact_body_autocomplete_title">Contact body autocomplete</string>
+    <string name="pref_key_contact_body_autocomplete_summary">Get a list of contacts from your endpoint for autocompletion in body fields when you start typing an @. They will be saved so they can be used offline as well. Leave disabled if your endpoint does not support the ?q=contact query.</string>
+    <string name="pref_key_contact_body_autocomplete_value_title">Use nickname for autocomplete</string>
+    <string name="pref_key_contact_body_autocomplete_value_summary">Contacts can have name and nickname. If a nickname is available, that value will be used for the suggestions instead of the full name.</string>
 
     <!-- Preferences: Reader -->
     <string name="pref_category_reader_title">Reader</string>

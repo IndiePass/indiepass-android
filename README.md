@@ -32,6 +32,7 @@ https://indigenous.realize.be
   - Save as local draft to finish later. This also includes coordinates,
     so you can finish later even when you are on a different location
     then. Place suggestions are also supported.
+  - Allow autocomplete of usernames in body text
   - Query, update and delete: get a list of posts and update basic
     properties (experimental)
 - Microsub

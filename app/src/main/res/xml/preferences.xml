@@ -69,7 +69,16 @@
         android:layout="@layout/preference_category"
         android:title="@string/pref_category_posts_title"
         android:summary="@string/pref_category_posts_summary">
-
+        <SwitchPreference
+            android:key="pref_key_post_type_hide"
+            android:title="@string/pref_key_post_type_hide_title"
+            android:summary="@string/pref_key_post_type_hide_summary"
+            android:defaultValue="false" />
+        <SwitchPreference
+            android:key="pref_key_tags_list"
+            android:title="@string/pref_key_tags_list_title"
+            android:summary="@string/pref_key_tags_list_summary"
+            android:defaultValue="false" />
         <SwitchPreference
             android:key="pref_key_location_label"
             android:title="@string/pref_key_location_label_title"
@@ -86,14 +95,15 @@
             android:summary="@string/pref_key_location_label_query_summary"
             android:defaultValue="false" />
         <SwitchPreference
-            android:key="pref_key_tags_list"
-            android:title="@string/pref_key_tags_list_title"
-            android:summary="@string/pref_key_tags_list_summary"
+            android:key="pref_key_contact_body_autocomplete"
+            android:title="@string/pref_key_contact_body_autocomplete_title"
+            android:summary="@string/pref_key_contact_body_autocomplete_summary"
             android:defaultValue="false" />
         <SwitchPreference
-            android:key="pref_key_post_type_hide"
-            android:title="@string/pref_key_post_type_hide_title"
-            android:summary="@string/pref_key_post_type_hide_summary"
+            android:dependency="pref_key_contact_body_autocomplete"
+            android:key="pref_key_contact_body_autocomplete_value"
+            android:title="@string/pref_key_contact_body_autocomplete_value_title"
+            android:summary="@string/pref_key_contact_body_autocomplete_value_summary"
             android:defaultValue="false" />
         <SwitchPreference
             android:key="pref_key_access_token_body"
