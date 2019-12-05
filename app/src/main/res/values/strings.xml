@@ -354,11 +354,11 @@
 
     <!-- Preferences: experimental -->
     <string name="pref_category_experimental_title">Experimental</string>
-    <string name="pref_category_experimental_summary">Experimental features. Some depend on functionality that needs to be supported on the server. Leave disabled if unknown.</string>
+    <string name="pref_category_experimental_summary">Experimental features which are either not fully mature yet from a spec perspective or have little support by servers.</string>
+    <string name="pref_key_source_post_list_title">Posts list</string>
+    <string name="pref_key_source_post_list_summary">Expose a "Posts list" which lists the content of your site. Leave disabled if your micropub endpoint does not support the ?q=source query.</string>
     <string name="pref_key_source_update_title">Update posts</string>
     <string name="pref_key_source_update_summary">Expose an "Update" screen which allows you to update basic properties of a post.</string>
-    <string name="pref_key_source_post_list_title">Posts list</string>
-    <string name="pref_key_source_post_list_summary">Expose a "Posts list" screen which queries your micropub endpoint on q=source. Experimental as not many servers support this.</string>
     <string name="pref_key_source_delete_title">Delete posts</string>
     <string name="pref_key_source_delete_summary">Expose a delete button on the update screen, or in the posts list.</string>
 
