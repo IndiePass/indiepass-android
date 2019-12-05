@@ -17,7 +17,6 @@
         android:scrollbars="horizontal" />
 
     <TextView
-        android:paddingLeft="@dimen/box_padding"
         android:textSize="@dimen/help_text"
         android:textColor="@color/textColor"
         android:text="@string/image_preview_help"

@@ -1,7 +1,6 @@
 package com.indieweb.indigenous.util.mf2;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class JsonList extends ArrayList<Object> {
 

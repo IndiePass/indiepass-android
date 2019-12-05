@@ -40,6 +40,7 @@
             <ImageView
                 android:scaleType="centerCrop"
                 android:id="@+id/previewImage"
+                android:contentDescription="@string/image_preview"
                 android:layout_width="fill_parent"
                 android:layout_height="230dp" />
 

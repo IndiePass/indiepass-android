@@ -6,7 +6,7 @@
     android:paddingBottom="16dip"
     android:orientation="vertical">
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    <TextView
         android:id="@android:id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:paddingEnd="15dp"
         android:paddingTop="10dip" />
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    <TextView
         android:id="@android:id/summary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

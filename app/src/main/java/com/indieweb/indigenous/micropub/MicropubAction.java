@@ -102,7 +102,7 @@ public class MicropubAction {
 
             @Override
             public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<String, String>();
+                HashMap<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json");
 
                 // Send access token in header by default.

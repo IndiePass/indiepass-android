@@ -1,5 +1,6 @@
 <h4>xx/xx/xxxx - 0.51</h4>
 <ul>
+    <li>Fix setting latitude and longitude in drafts</li>
     <li>Code cleanup and better protection against crashes in rare cases</li>
 </ul>
 <h4>04/12/2019 - 0.50</h4>

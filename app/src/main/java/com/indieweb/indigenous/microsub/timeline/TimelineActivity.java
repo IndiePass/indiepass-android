@@ -742,7 +742,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                             Toast.makeText(TimelineActivity.this, String.format(getString(R.string.timeline_network_fail), code, result), Toast.LENGTH_LONG).show();
                         }
                         else {
-                            Toast.makeText(TimelineActivity.this, getString(R.string.channel_fail), Toast.LENGTH_LONG).show();
+                            Toast.makeText(TimelineActivity.this, getString(R.string.timeline_fail), Toast.LENGTH_LONG).show();
                         }
 
                         showRefreshMessage = false;
@@ -772,7 +772,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
             @Override
             public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<String, String>();
+                HashMap<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json");
                 headers.put("Authorization", "Bearer " + user.getAccessToken());
                 return headers;

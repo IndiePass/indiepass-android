@@ -89,15 +89,12 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.search:
-                if (!TextUtils.isEmpty(url.getText())) {
-                    searchFeeds(url.getText().toString());
-                }
-                else {
-                    url.setError(getString(R.string.required_field));
-                }
-                break;
+        if (v.getId() == R.id.search) {
+            if (!TextUtils.isEmpty(url.getText())) {
+                searchFeeds(url.getText().toString());
+            } else {
+                url.setError(getString(R.string.required_field));
+            }
         }
     }
 

@@ -336,11 +336,8 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                             }
 
                         }
-                        catch (UnsupportedEncodingException e1) {
+                        catch (Exception e1) {
                             errorMessage += " - " + e1.getMessage();
-                        }
-                        catch (Exception e2) {
-                            errorMessage += " - " + e2.getMessage();
                         }
 
                     }

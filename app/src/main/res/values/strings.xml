@@ -13,7 +13,6 @@
     <string name="cancel">Cancel</string>
     <string name="close">Close</string>
     <string name="timeline">Timeline</string>
-    <string name="channels">Channels</string>
     <string name="nav_reader">Reader</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -25,6 +24,7 @@
     <string name="clipboard_media_url">Media url</string>
     <string name="source_post_list">Posts</string>
     <string name="save">Save</string>
+    <string name="search_hint">Search posts</string>
 
     <!-- Authentication and accounts -->
     <string name="account_type">IndieAuth</string>
@@ -40,8 +40,6 @@
     <string name="switch_account">Switch</string>
     <string name="account_delete_error">Error deleting account</string>
     <string name="connecting">Connecting…</string>
-    <string name="refresh_configuration">Refresh configuration</string>
-    <string name="log_out">Log out</string>
     <string name="endpoints">Endpoints</string>
     <string name="title_activity_indieauth">Sign in</string>
     <string name="authentication_success">Authentication successful</string>
@@ -85,7 +83,6 @@
     <string name="add_channel">Add channel</string>
     <string name="add_feed">Add feed</string>
     <string name="no_feeds_found">No feeds found</string>
-    <string name="channel_select">Select channel</string>
     <string name="search_feed">Search feeds</string>
     <string name="select_channel">Select channel to add the feed to</string>
     <string name="subscribe">Subscribe</string>
@@ -114,7 +111,6 @@
     <string name="title_activity_timeline_video">Video</string>
     <string name="title_activity_timeline_image">Image</string>
     <string name="search">Search</string>
-    <string name="search_hint">Search posts</string>
     <string name="item_menu">More options</string>
     <string name="read_more">Read more</string>
     <string name="feed_updated">Feed updated</string>
@@ -158,9 +154,7 @@
 
     <!-- Micropub -->
     <string name="tags">Tags - separate with comma</string>
-    <string name="note">Note</string>
     <string name="image_preview">Image preview</string>
-    <string name="send_original_picture">Send original picture</string>
     <string name="publish_date_hint">Publish date - leave empty for \'now\'</string>
     <string name="title">Title</string>
     <string name="published">Published</string>
@@ -250,10 +244,8 @@
     <string name="register_device">Register device</string>
     <string name="disable_pushy_me_button">Disable Pushy.me</string>
     <string name="disable_pushy_me_title">Disable push notifications from Pushy.me ?</string>
-    <string name="push_notifications_title_custom">Custom setup</string>
     <string name="push_notification_no_configuration">No push notifications have been configured</string>
     <string name="push_notification_configuration_pushy">You are using Indigenous and Pushy.me to receive notifications</string>
-    <string name="push_notification_configuration_custom">You are using a custom MQTT setup</string>
     <string name="indigenous_account_not_found">Account not found</string>
     <string name="indigenous_account_blocked">Account is blocked</string>
     <string name="indigenous_account_error">Error checking account: %s</string>
@@ -379,6 +371,7 @@
     <string name="location_error">Error parsing JSON:</string>
     <string name="location_no_results">No location name or venues found</string>
     <string name="places_found">Places found, the location name input will show suggestions when you type</string>
+    <string name="read_new">new</string>
 
     <string-array name="mark_read_array">
         <item>Channel per page</item>

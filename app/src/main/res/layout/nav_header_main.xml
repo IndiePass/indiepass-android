@@ -21,7 +21,6 @@
         app:srcCompat="@drawable/avatar_small" />
 
     <TextView
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:visibility="gone"
         android:id="@+id/navAuthorName"
         android:textColor="#fff"
@@ -32,7 +31,6 @@
         android:layout_marginStart="@dimen/activity_horizontal_margin" />
 
     <TextView
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:visibility="gone"
         android:id="@+id/navAuthorUrl"
         android:layout_width="match_parent"

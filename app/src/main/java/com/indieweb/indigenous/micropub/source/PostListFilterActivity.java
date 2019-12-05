@@ -42,7 +42,7 @@ public class PostListFilterActivity extends AppCompatActivity {
         // Get post limit spinner.
         postLimitSpinner = findViewById(R.id.postLimit);
         String limit = Preferences.getPreference(getApplicationContext(), "source_post_list_filter_post_limit", "10");
-        Integer selectedItem = (Integer.parseInt(limit) / 10) - 1;
+        int selectedItem = (Integer.parseInt(limit) / 10) - 1;
         postLimitSpinner.setSelection(selectedItem);
 
         // Set post type spinner values.

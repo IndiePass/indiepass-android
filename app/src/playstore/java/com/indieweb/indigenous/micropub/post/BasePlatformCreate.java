@@ -192,7 +192,6 @@ abstract public class BasePlatformCreate extends Base {
         if (toggleWrapper) {
             locationWrapper.setVisibility(View.VISIBLE);
             locationCoordinates.setVisibility(View.VISIBLE);
-            return;
         }
 
         boolean showLocationVisibility = Preferences.getPreference(getApplicationContext(), "pref_key_location_visibility", false);

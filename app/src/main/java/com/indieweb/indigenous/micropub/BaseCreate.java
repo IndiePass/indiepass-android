@@ -295,6 +295,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
                                 break;
                         }
                     }
+                    cc++;
                 }
             }
 

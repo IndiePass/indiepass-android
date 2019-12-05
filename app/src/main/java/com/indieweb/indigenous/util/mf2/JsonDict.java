@@ -46,7 +46,7 @@ public class JsonDict extends HashMap<String, Object> {
         StringBuilder sb = new StringBuilder("{");
         boolean first = true;
 
-        List<String> keys = new ArrayList<String>(keySet());
+        List<String> keys = new ArrayList<>(keySet());
         Collections.sort(keys);
 
         for (String key : keys) {

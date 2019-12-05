@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/box_padding"
@@ -34,7 +34,6 @@
         android:id="@+id/resultsTitle"
         android:textColor="@color/textColor"
         android:layout_marginBottom="@dimen/box_padding"
-        android:layout_marginLeft="@dimen/box_padding"
         android:textSize="@dimen/big_list_title"
         android:text="@string/results"
         android:layout_width="wrap_content"

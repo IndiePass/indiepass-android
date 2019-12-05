@@ -229,7 +229,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             // Meta
             if (Style == TIMELINE_STYLE_COMPACT) {
 
-                List<String>  meta = new ArrayList<String>();
+                List<String>  meta = new ArrayList<>();
                 if (!item.isRead()) {
                     meta.add(context.getString(R.string.unread));
                 }

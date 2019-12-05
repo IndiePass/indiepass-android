@@ -129,8 +129,7 @@
             android:inputType="text"
             android:key="pref_key_read_later"
             android:title="@string/pref_key_read_later_title"
-            android:summary="@string/pref_key_read_later_summary"
-            android:defaultValue="" />
+            android:summary="@string/pref_key_read_later_summary" />
         <SwitchPreference
             android:key="pref_key_move_item"
             android:title="@string/pref_key_move_item_title"

@@ -173,7 +173,7 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
         {
             @Override
             public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<String, String>();
+                HashMap<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json");
                 headers.put("Authorization", "Bearer " + user.getAccessToken());
                 return headers;

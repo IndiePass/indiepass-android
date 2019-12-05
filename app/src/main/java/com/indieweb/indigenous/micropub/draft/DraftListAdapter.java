@@ -117,10 +117,9 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
             SimpleDateFormat formatIn = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             @SuppressLint("SimpleDateFormat")
             SimpleDateFormat formatOut = new SimpleDateFormat("dd MMM yyyy HH:mm");
-            Date result;
             try {
                 holder.published.setVisibility(View.VISIBLE);
-                result = formatIn.parse(draft.getTimestamp());
+                Date result = formatIn.parse(draft.getTimestamp());
                 holder.published.setText(String.format(context.getString(R.string.draft_last_edit), draft.getType(), formatOut.format(result)));
             }
             catch (ParseException ignored) {

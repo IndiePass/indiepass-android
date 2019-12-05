@@ -19,7 +19,7 @@ import org.jsoup.select.Elements;
  */
 public class Mf2Parser {
 
-    private ArrayList<HCard> hcards = new ArrayList<HCard>();
+    private ArrayList<HCard> hcards = new ArrayList<>();
 
     /**
      * Constructor
@@ -38,7 +38,8 @@ public class Mf2Parser {
             try
             {
                 baseUri = new URI(baseUri.getScheme(), baseUri.getAuthority(), "/", null, null);
-            } catch (URISyntaxException e) {}
+            }
+            catch (URISyntaxException ignored) {}
         }
         return baseUri;
     }

@@ -19,7 +19,6 @@ import com.indieweb.indigenous.util.Preferences;
 import java.util.List;
 
 import static com.indieweb.indigenous.microsub.timeline.TimelineActivity.MARK_READ_CHANNEL_CLICK;
-import static com.indieweb.indigenous.microsub.timeline.TimelineActivity.MARK_READ_MANUAL;
 
 /**
  * Channels list adapter.
@@ -89,14 +88,14 @@ public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
             holder.name.setText(channel.getName());
 
             // Unread.
-            Integer unreadText = channel.getUnread();
+            int unreadText = channel.getUnread();
             if (unreadText > 0) {
                 holder.unread.setVisibility(View.VISIBLE);
                 holder.unread.setText(String.valueOf(unreadText));
             }
             else if (unreadText == -1) {
                 holder.unread.setVisibility(View.VISIBLE);
-                holder.unread.setText("new");
+                holder.unread.setText(context.getString(R.string.read_new));
             }
             else {
                 holder.unread.setVisibility(View.GONE);
