@@ -98,7 +98,6 @@ public class Endpoints {
             }
 
             // Author h-card.
-            // TODO cleanup discovery as we have the same in IndieAuthActivity
             String noProtocolUrl = user.getMeWithoutProtocol();
             try {
 

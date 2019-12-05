@@ -89,7 +89,6 @@ public class PostListFilterActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) { }
         });
 
-        // TODO style buttons (e.g. gotoreader as well)
         filterSourcePostListButton = findViewById(R.id.filterSourcePostListButton);
         filterSourcePostListButton.setOnClickListener(new filterSourcePostListOnClickListener());
 

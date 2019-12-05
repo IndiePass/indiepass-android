@@ -144,9 +144,9 @@ public class Mf2Parser {
             if (names.size() > 0)
                 return names.get(0);
         }
-        //else if it's an e-* property element, re-use its { } structure with existing value: inside.
-        //TODO: implement this or find out if its handled by default case below
-        //else if it's a u-* property element and the h-* child has a u-url, use the first such u-url
+        // else if it's an e-* property element, re-use its { } structure with existing value: inside.
+        // not-sure: implement this or find out if its handled by default case below
+        // else if it's a u-* property element and the h-* child has a u-url, use the first such u-url
         if (className.startsWith("u-") && properties.containsKey("url")) {
             JsonList urls = (JsonList) properties.get("url");
             if (urls.size() > 0)
@@ -200,7 +200,7 @@ public class Mf2Parser {
     }
 
     private String parseTextProperty(Element elem) {
-        /// TODO value-class-pattern
+        /// not-sure: value-class-pattern
         if ("abbr".equals(elem.tagName()) && elem.hasAttr("title")) {
             return elem.attr("title");
         }
@@ -210,7 +210,7 @@ public class Mf2Parser {
         if (("img".equals(elem.tagName()) || "area".equals(elem.tagName())) && elem.hasAttr("alt")) {
             return elem.attr("alt");
         }
-        // TODO replace nested <img> with alt or src
+        // not-sure: replace nested <img> with alt or src
         return elem.text().trim();
     }
 
@@ -229,7 +229,7 @@ public class Mf2Parser {
         if (url != null) {
             return baseUri.resolve(url).toString();
         }
-        // TODO value-class-pattern
+        // not-sure: value-class-pattern
         if ("abbr".equals(elem.tagName()) && elem.hasAttr("title")) {
             return elem.attr("title");
         }

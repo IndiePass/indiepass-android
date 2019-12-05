@@ -127,9 +127,6 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
 
         String microsubEndpoint = user.getMicrosubEndpoint();
 
-        // TODO abstract this all in one helper request class.
-        // probably use jsonArrayRequest too, will be faster, but we'll see once we get all
-        // kind of calls more or less ready.
         microsubEndpoint += "?action=channels";
         StringRequest getRequest = new StringRequest(Request.Method.GET, microsubEndpoint,
                 new Response.Listener<String>() {

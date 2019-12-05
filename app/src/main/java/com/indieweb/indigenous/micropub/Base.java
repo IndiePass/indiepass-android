@@ -336,7 +336,6 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                             Toast.makeText(getApplicationContext(), getString(R.string.post_success), Toast.LENGTH_SHORT).show();
 
                             // Remove draft if needed.
-                            // TODO notify draft adapter
                             if (draftId != null && draftId > 0) {
                                 db = new DatabaseHelper(getApplicationContext());
                                 db.deleteDraft(draftId);

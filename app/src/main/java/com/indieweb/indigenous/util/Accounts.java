@@ -61,9 +61,7 @@ public class Accounts {
                     user.setMicropubEndpoint(accountManager.getUserData(account, "micropub_endpoint"));
                     user.setMicropubMediaEndpoint(accountManager.getUserData(account, "micropub_media_endpoint"));
 
-                    // TODO we should convert this already into a map
                     user.setSyndicationTargets(accountManager.getUserData(account, "syndication_targets"));
-                    // TODO we should convert this already into a map
                     user.setPostTypes(accountManager.getUserData(account, "post_types"));
                     user.setAccount(account);
                 }

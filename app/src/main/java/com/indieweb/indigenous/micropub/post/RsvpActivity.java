@@ -16,7 +16,6 @@ public class RsvpActivity extends BaseCreate {
         urlPostKey = "in-reply-to";
         addCounter = true;
         setContentView(R.layout.activity_rsvp);
-        // TODO make the options translatable
         rsvp = findViewById(R.id.rsvp);
         super.onCreate(savedInstanceState);
     }

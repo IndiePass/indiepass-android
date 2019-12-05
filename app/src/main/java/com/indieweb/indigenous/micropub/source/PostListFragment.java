@@ -1,5 +1,6 @@
 package com.indieweb.indigenous.micropub.source;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -205,6 +206,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
         RequestQueue queue = Volley.newRequestQueue(requireContext());
         StringRequest getRequest = new StringRequest(Request.Method.GET, MicropubEndpoint,
                 new Response.Listener<String>() {
+                    @SuppressLint("ClickableViewAccessibility")
                     @Override
                     public void onResponse(String response) {
 
@@ -276,7 +278,6 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
                                     listView.addFooterView(loadMoreButton);
                                 }
 
-                                // TODO check this warning
                                 loadMoreButton.setOnTouchListener(loadMoreTouch);
                             }
                             else {

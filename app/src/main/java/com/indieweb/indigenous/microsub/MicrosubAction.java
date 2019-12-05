@@ -239,7 +239,6 @@ public class MicrosubAction {
             return;
         }
 
-        // TODO send event to update channel list (since we need the new uid)
         Toast.makeText(context, context.getString(R.string.channel_created), Toast.LENGTH_SHORT).show();
 
         String MicrosubEndpoint = user.getMicrosubEndpoint();
@@ -409,7 +408,6 @@ public class MicrosubAction {
                 params.put("method", "order");
 
                 int i = 0;
-                // TODO these shouldn't be indexed (but works for now).
                 for (Channel c : Channels) {
                     params.put("channels[" + i + "]", c.getUid());
                     i++;
