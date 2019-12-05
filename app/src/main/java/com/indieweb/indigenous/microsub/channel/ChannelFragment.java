@@ -37,7 +37,6 @@ import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Preferences;
-import com.indieweb.indigenous.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,15 +74,15 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
         view.findViewById(R.id.actionButton).setOnClickListener(this);
         listChannel = view.findViewById(R.id.channel_list);
         refreshLayout = view.findViewById(R.id.refreshChannels);
-        refreshLayout.setOnRefreshListener(this);
-        refreshLayout.setRefreshing(true);
-        readLater = Preferences.getPreference(requireContext(), "pref_key_read_later", "");
 
         user = new Accounts(getContext()).getCurrentUser();
         requireActivity().setTitle(getString(R.string.nav_reader));
 
         if (user.getMicrosubEndpoint().length() > 0) {
             setHasOptionsMenu(true);
+            refreshLayout.setOnRefreshListener(this);
+            refreshLayout.setRefreshing(true);
+            readLater = Preferences.getPreference(requireContext(), "pref_key_read_later", "");
             refreshLayout.setVisibility(View.VISIBLE);
             listChannel.setVisibility(View.VISIBLE);
             startChannels();

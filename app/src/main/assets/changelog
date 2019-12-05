@@ -1,3 +1,7 @@
+<h4>xx/xx/xxxx - 0.51</h4>
+<ul>
+    <li>Code cleanup and better protection against crashes in rare cases</li>
+</ul>
 <h4>04/12/2019 - 0.50</h4>
 <ul>
     <li>Support relative endpoint urls</li>
