@@ -27,7 +27,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.indieweb.indigenous.LaunchActivity;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.micropub.MicropubConfig;
+import com.indieweb.indigenous.micropub.MicropubAction;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 
@@ -189,7 +189,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
             final User user = items.get(this.position);
             Toast.makeText(context, String.format(context.getString(R.string.account_sync), user.getMe()), Toast.LENGTH_SHORT).show();
             new Endpoints(context, user).refresh();
-            new MicropubConfig(context, user).refresh();
+            new MicropubAction(context, user).refreshConfig();
         }
     }
 

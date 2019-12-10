@@ -20,7 +20,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -35,6 +34,7 @@ import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Preferences;
+import com.indieweb.indigenous.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -299,17 +299,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Context context = getContext();
-                        if (context != null) {
-                            NetworkResponse networkResponse = error.networkResponse;
-                            if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
-                                int code = networkResponse.statusCode;
-                                String result = new String(networkResponse.data).trim();
-                                Toast.makeText(context, String.format(context.getString(R.string.posts_network_fail), code, result), Toast.LENGTH_LONG).show();
-                            }
-                            else {
-                                Toast.makeText(context, context.getString(R.string.posts_fail), Toast.LENGTH_LONG).show();
-                            }
-                        }
+                        Utility.parseNetworkError(error, context, R.string.posts_network_fail, R.string.posts_fail);
                         showRefreshMessage = false;
                         checkRefreshingStatus();
                     }

@@ -46,7 +46,6 @@
     <string name="authentication_fail">Authentication failed: Status code: %d; message: %s</string>
     <string name="authentication_fail_token">Authentication failed: %s</string>
     <string name="network_error">Network error: %s</string>
-    <string name="network_failure">Authentication failed due to network failure:</string>
     <string name="missing_rel_links">We did not find the necessary rel links on your domain (authorization_endpoint, token_endpoint, micropub, microsub)</string>
     <string name="no_code_found">No code found in URL to validate</string>
     <string name="validating_code">Validating code</string>

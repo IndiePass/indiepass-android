@@ -24,6 +24,7 @@ import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Connection;
+import com.indieweb.indigenous.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -117,25 +118,10 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        try {
-                            NetworkResponse networkResponse = error.networkResponse;
-                            if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
-                                Integer code = networkResponse.statusCode;
-                                String result = new String(networkResponse.data);
-                                Toast.makeText(getApplicationContext(), String.format(getString(R.string.post_update_network_fail), code, result), Toast.LENGTH_LONG).show();
-                            }
-                            else {
-                                Toast.makeText(getApplicationContext(), String.format(getString(R.string.post_update_fail), error.getMessage()), Toast.LENGTH_LONG).show();
-                            }
-                        }
-                        catch (Exception e) {
-                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.post_update_fail), error.getMessage()), Toast.LENGTH_LONG).show();
-                        }
-
+                        Utility.parseNetworkError(error, getApplicationContext(), R.string.post_update_network_fail, R.string.post_update_fail);
                         if (sendItem != null) {
                             sendItem.setEnabled(true);
                         }
-
                         hideProgressBar();
                     }
                 }

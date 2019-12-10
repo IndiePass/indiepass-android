@@ -7,6 +7,11 @@ import android.content.Context;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.android.volley.NetworkResponse;
+import com.android.volley.VolleyError;
+import com.indieweb.indigenous.R;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -108,6 +113,32 @@ public class Utility {
                     }
                 }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),
                 cal.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+    /**
+     * Parse network error
+     *
+     * @param error
+     *   The VolleyError
+     * @param context
+     *   The current context
+     * @param network_fail
+     *   The string in case of network fail.
+     * @param fail
+     *   The string in case of general fail.
+     */
+    public static void parseNetworkError(VolleyError error, Context context, int network_fail, int fail) {
+        if (context != null) {
+            NetworkResponse networkResponse = error.networkResponse;
+            if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
+                int code = networkResponse.statusCode;
+                String result = new String(networkResponse.data).trim();
+                Toast.makeText(context, String.format(context.getString(network_fail), code, result), Toast.LENGTH_LONG).show();
+            }
+            else {
+                Toast.makeText(context, context.getString(fail), Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     /**

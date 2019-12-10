@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -25,11 +24,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.LaunchActivity;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.micropub.MicropubAction;
 import com.indieweb.indigenous.model.HCard;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Connection;
-import com.indieweb.indigenous.micropub.MicropubConfig;
 import com.indieweb.indigenous.util.Utility;
 import com.indieweb.indigenous.util.mf2.Mf2Parser;
 
@@ -41,7 +40,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -371,7 +369,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                         user.setMicropubEndpoint(micropubEndpoint);
                         user.setAccessToken(accessToken);
                         user.setAccount(account);
-                        new MicropubConfig(getApplicationContext(), user).refresh();
+                        new MicropubAction(getApplicationContext(), user).refreshConfig();
 
                         Toast.makeText(getApplicationContext(), R.string.authentication_success, Toast.LENGTH_SHORT).show();
 
@@ -389,23 +387,8 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
             new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    try {
-                        NetworkResponse networkResponse = error.networkResponse;
-                        if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
-                            int code = networkResponse.statusCode;
-                            String result = new String(networkResponse.data);
-                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.authentication_fail), code, result), Toast.LENGTH_LONG).show();
-                        }
-                        else {
-                            Toast.makeText(getApplicationContext(), getString(R.string.network_failure) + error.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                    catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), String.format(getString(R.string.network_error), e.getMessage()), Toast.LENGTH_LONG).show();
-                    }
-
+                    Utility.parseNetworkError(error, getApplicationContext(), R.string.authentication_fail, R.string.network_error);
                     showForm();
-
                 }
             }
         )

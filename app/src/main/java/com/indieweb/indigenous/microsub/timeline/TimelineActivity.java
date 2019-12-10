@@ -22,7 +22,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -40,6 +39,7 @@ import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Preferences;
+import com.indieweb.indigenous.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -734,17 +734,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
-                        NetworkResponse networkResponse = error.networkResponse;
-                        if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
-                            int code = networkResponse.statusCode;
-                            String result = new String(networkResponse.data).trim();
-                            Toast.makeText(TimelineActivity.this, String.format(getString(R.string.timeline_network_fail), code, result), Toast.LENGTH_LONG).show();
-                        }
-                        else {
-                            Toast.makeText(TimelineActivity.this, getString(R.string.timeline_fail), Toast.LENGTH_LONG).show();
-                        }
-
+                        Utility.parseNetworkError(error, getApplicationContext(), R.string.timeline_network_fail, R.string.timeline_fail);
                         showRefreshMessage = false;
                         checkRefreshingStatus();
                     }
