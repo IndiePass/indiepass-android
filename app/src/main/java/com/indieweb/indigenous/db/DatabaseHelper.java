@@ -163,7 +163,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Draft draft = new Draft();
         draft.setId(0);
-        if (cursor != null) {
+        if (cursor != null && cursor.moveToFirst()) {
             cursor.moveToFirst();
             setDraftProperties(draft, cursor);
             cursor.close();
