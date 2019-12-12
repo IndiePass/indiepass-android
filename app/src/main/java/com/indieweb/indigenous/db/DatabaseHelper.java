@@ -68,7 +68,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(TimelineStyle.COLUMN_TYPE, t.getType());
         values.put(TimelineStyle.COLUMN_CHANNEL_ID, t.getChannelId());
 
-        db.delete(TimelineStyle.TABLE_NAME, TimelineStyle.COLUMN_CHANNEL_ID + "=" + t.getChannelId(), null);
+        db.delete(TimelineStyle.TABLE_NAME, TimelineStyle.COLUMN_CHANNEL_ID + "=?", new String[]{t.getChannelId()});
         db.insert(TimelineStyle.TABLE_NAME, null, values);
 
         db.close();
