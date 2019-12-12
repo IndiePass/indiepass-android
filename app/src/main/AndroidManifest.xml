@@ -320,6 +320,15 @@
         </activity>
 
         <activity
+            android:name=".micropub.post.ContactActivity"
+            android:label="@string/contact"
+            android:parentActivityName=".LaunchActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.LaunchActivity" />
+        </activity>
+
+        <activity
             android:name=".micropub.post.UploadActivity"
             android:label="@string/upload"
             android:parentActivityName=".LaunchActivity">

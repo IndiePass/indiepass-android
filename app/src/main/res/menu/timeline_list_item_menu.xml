@@ -25,6 +25,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/timeline_save_author"
+        android:title="@string/save_author"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/timeline_entry_delete"
         android:title="@string/delete_post"
         app:showAsAction="never" />

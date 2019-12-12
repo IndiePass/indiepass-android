@@ -581,6 +581,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                                     String authorUrl = "";
                                     if (author.has("url")) {
                                         authorUrl = author.getString("url");
+                                        item.setAuthorUrl(authorUrl);
                                     }
                                     if (authorName.equals("null") && authorUrl.length() > 0) {
                                         authorName = authorUrl;

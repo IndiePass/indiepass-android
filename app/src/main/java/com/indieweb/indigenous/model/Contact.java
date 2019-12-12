@@ -2,12 +2,15 @@ package com.indieweb.indigenous.model;
 
 import androidx.annotation.NonNull;
 
-public class Contact {
+import java.io.Serializable;
+
+public class Contact implements Serializable {
 
     public String name = "";
     public String nickname = "";
     public String url = "";
     public String photo = "";
+    public String internalUrl = "";
 
     @NonNull
     @Override
@@ -45,5 +48,13 @@ public class Contact {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public String getInternalUrl() {
+        return internalUrl;
+    }
+
+    public void setInternalUrl(String internalUrl) {
+        this.internalUrl = internalUrl;
     }
 }

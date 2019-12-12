@@ -33,6 +33,7 @@ https://indigenous.realize.be
     so you can finish later even when you are on a different location
     then. Place suggestions are also supported.
   - Allow autocomplete of usernames in body text
+  - Manage contacts (add/delete/update)
   - Query, update and delete: get a list of posts and update basic
     properties (experimental)
 - Microsub

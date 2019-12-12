@@ -3,6 +3,7 @@ package com.indieweb.indigenous;
 import android.app.Application;
 
 import com.indieweb.indigenous.model.Channel;
+import com.indieweb.indigenous.model.Contact;
 import com.indieweb.indigenous.model.TimelineItem;
 
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ public class Indigenous extends Application {
     public static String debug;
 
     public static TimelineItem timelineItem;
+
+    public static Contact contactItem;
 
     public static Indigenous getInstance(){
         return singleton;
@@ -36,6 +39,14 @@ public class Indigenous extends Application {
 
     public TimelineItem getTimelineItem() {
         return timelineItem;
+    }
+
+    public void setContact(Contact contact) {
+        contactItem = contact;
+    }
+
+    public Contact getContact() {
+        return contactItem;
     }
 
     public void setChannels(List<Channel> channels) {

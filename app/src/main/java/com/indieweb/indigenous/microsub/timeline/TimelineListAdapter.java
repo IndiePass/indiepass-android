@@ -37,12 +37,14 @@ import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
+import com.indieweb.indigenous.micropub.post.ContactActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.Channel;
+import com.indieweb.indigenous.model.Contact;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Preferences;
@@ -988,6 +990,14 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 }
             }
 
+            // Save contact menu item.
+            if (Preferences.getPreference(context, "pref_key_contact_manage", false)) {
+                MenuItem itemContact = menu.findItem(R.id.timeline_save_author);
+                if (itemContact != null) {
+                    itemContact.setVisible(true);
+                }
+            }
+
             // Mark read menu item.
             if (!entry.isRead() && (channelId.equals("global") || Preferences.getPreference(context, "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_MANUAL)) {
                 MenuItem itemMarkRead = menu.findItem(R.id.timeline_entry_mark_read);
@@ -1085,6 +1095,31 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             Intent i = new Intent(context, DebugActivity.class);
                             app.setDebug(entry.getJson());
                             context.startActivity(i);
+                            break;
+
+                        case R.id.timeline_save_author:
+                            Indigenous app = Indigenous.getInstance();
+
+                            if (entry.getAuthorName().length() > 0) {
+
+                                Contact contact = new Contact();
+                                contact.setName(entry.getAuthorName());
+                                if (entry.getAuthorPhoto().length() > 0) {
+                                    contact.setPhoto(entry.getAuthorPhoto());
+                                }
+                                if (entry.getAuthorUrl().length() > 0) {
+                                    contact.setUrl(entry.getAuthorUrl());
+                                }
+
+                                app.setContact(contact);
+                                Intent startActivity =  new Intent(context, ContactActivity.class);
+                                startActivity.putExtra("addContact", true);
+                                context.startActivity(startActivity);
+                            }
+                            else {
+                                Toast.makeText(context, context.getString(R.string.contact_no_name), Toast.LENGTH_SHORT).show();
+                            }
+
                             break;
 
                         case R.id.timeline_entry_share:

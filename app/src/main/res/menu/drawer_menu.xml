@@ -33,6 +33,11 @@
             android:title="@string/source_post_list" />
 
         <item
+            android:id="@+id/nav_contacts"
+            android:icon="@drawable/nav_contacts"
+            android:title="@string/contact_list_title" />
+
+        <item
             android:id="@+id/nav_accounts"
             android:icon="@drawable/nav_accounts"
             android:title="@string/accounts" />

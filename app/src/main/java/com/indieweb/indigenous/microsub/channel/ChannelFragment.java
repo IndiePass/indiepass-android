@@ -125,8 +125,13 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
         }
 
         String microsubEndpoint = user.getMicrosubEndpoint();
+        if (microsubEndpoint.contains("?")) {
+            microsubEndpoint += "&action=channels";
+        }
+        else {
+            microsubEndpoint += "?action=channels";
+        }
 
-        microsubEndpoint += "?action=channels";
         StringRequest getRequest = new StringRequest(Request.Method.GET, microsubEndpoint,
                 new Response.Listener<String>() {
                     @Override

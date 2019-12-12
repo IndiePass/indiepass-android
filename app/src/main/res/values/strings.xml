@@ -25,6 +25,8 @@
     <string name="source_post_list">Posts</string>
     <string name="save">Save</string>
     <string name="search_hint">Search posts</string>
+    <string name="no_microsub_endpoint">We did not find your reader endpoint. In the accounts section, you can synchronize your account to add it. You can also just use the app for posting only.</string>
+    <string name="no_micropub_endpoint">We did not find your micropub endpoint. In the accounts section, you can synchronize your account to add it.</string>
 
     <!-- Authentication and accounts -->
     <string name="account_type">IndieAuth</string>
@@ -72,8 +74,8 @@
     <string name="no_drafts">You have no drafts for this account</string>
 
     <!-- Channels and timelines -->
+    <string name="channel_list_refresh">Refresh channels</string>
     <string name="channels_refreshed">Channels refreshed</string>
-    <string name="no_microsub_endpoint">We did not find your reader endpoint. In the accounts section, you can synchronize your account to add it. You can also just use the app for posting only.</string>
     <string name="feed_items_refreshed">Feeds refreshed</string>
     <string name="timeline_items_refreshed">Timeline refreshed</string>
     <string name="timeline_list_refresh">Refresh timeline</string>
@@ -197,9 +199,9 @@
     <string name="micropub_config_updated">Micropub configuration updated</string>
     <string name="micropub_config_network_error">Error getting configuration. Status code: %d; message: %s</string>
     <string name="micropub_config_error">Error getting configuration: %s</string>
-    <string name="delete_post_network_error">Error deleting post. Status code: %d; message: %s</string>
-    <string name="delete_post_error">Error deleting post: %s</string>
-    <string name="post_delete_success">Delete success</string>
+    <string name="delete_item_network_error">Error deleting item. Status code: %d; message: %s</string>
+    <string name="delete_item_error">Error deleting item: %s</string>
+    <string name="delete_item_success">Delete success</string>
     <string name="sending_please_wait">Sending, please wait</string>
     <string name="select_picture">Select Picture</string>
     <string name="post_success">Post success</string>
@@ -208,7 +210,7 @@
     <string name="post_network_fail">%s posting failed. Status code: %d; message: %s</string>
     <string name="post_fail">Error: %s</string>
     <string name="post_update_network_fail">Update failed. Status code: %d; message: %s</string>
-    <string name="post_update_fail">Error: %s</string>
+    <string name="post_update_fail">Failed updating post</string>
     <string name="post_update_success">Update success</string>
     <string name="set_caption_or_remove">Set caption or remove image</string>
     <string name="save_and_close">Save and close</string>
@@ -221,10 +223,27 @@
     <string name="post_list_parse_error">Error: %s</string>
     <string name="channel_list_parse_error">Error: %s</string>
 
+    <!-- Contacts -->
+    <string name="contact">Contact</string>
+    <string name="contact_list_title">Contacts</string>
+    <string name="no_contacts">No contacts found</string>
+    <string name="contacts_refreshed">Contacts refreshed</string>
+    <string name="contact_network_fail">Getting contacts failed. Status code: %d; message: %s</string>
+    <string name="contact_fail">Failed getting contacts, unknown error</string>
+    <string name="contact_list_parse_error">Error: %s</string>
+    <string name="contact_delete_confirm">Are you sure you want to delete this contact ?</string>
+    <string name="contact_list_refresh">Refresh contacts</string>
+    <string name="save_author">Save author</string>
+    <string name="contact_photo">Photo</string>
+    <string name="contact_no_name">No author name</string>
+    <string name="contact_name">Name</string>
+    <string name="contact_nickname">Nickname</string>
+    <string name="contact_website">Website</string>
+    <string name="contact_photo_hint">Photo URL</string>
+
     <!-- Source lists -->
     <string name="source_post_list_refresh">Refresh posts</string>
     <string name="source_post_list_items_refreshed">Posts refreshed</string>
-    <string name="channel_list_refresh">Refresh channels</string>
     <string name="source_post_list_filter">Filter posts</string>
     <string name="update_post">Update</string>
     <string name="delete_post">Delete</string>
@@ -285,10 +304,6 @@
     <string name="pref_key_post_type_hide_summary">Hide post types in the menu which are not supported or enabled by your Micropub endpoint. Leave disabled if your endpoint does not send post-types in the ?q=config query.</string>
     <string name="pref_key_access_token_body_title">Send access token in body</string>
     <string name="pref_key_access_token_body_summary">The access token for a Micropub request is send along in the header by default. If enabled, this setting will send it in the body of the request instead of the header.</string>
-    <string name="pref_key_contact_body_autocomplete_title">Contact body autocomplete</string>
-    <string name="pref_key_contact_body_autocomplete_summary">Get a list of contacts from your endpoint for autocompletion in body fields when you start typing an @. They will be saved so they can be used offline as well. Leave disabled if your endpoint does not support the ?q=contact query.</string>
-    <string name="pref_key_contact_body_autocomplete_value_title">Use nickname for autocomplete</string>
-    <string name="pref_key_contact_body_autocomplete_value_summary">Contacts can have name and nickname. If a nickname is available, that value will be used for the suggestions instead of the full name.</string>
 
     <!-- Preferences: Reader -->
     <string name="pref_category_reader_title">Reader</string>
@@ -342,6 +357,18 @@
     <string name="pref_key_debug_microsub_item_json_summary">Adds a "Debug" option to every item in the reader to view the JSON representation.</string>
     <string name="pref_key_debug_source_list_title">Posts lists JSON</string>
     <string name="pref_key_debug_source_list_summary">Adds a "Debug" option to the posts lists to view the JSON representation.</string>
+    <string name="pref_key_debug_contact_list_title">Contacts lists JSON</string>
+    <string name="pref_key_debug_contact_list_summary">Adds a "Debug" option to the contacts lists to view the JSON representation.</string>
+
+    <!-- Preferences: contacts -->
+    <string name="pref_category_contact_title">Contacts</string>
+    <string name="pref_category_contact_summary">Leave disabled if your endpoint does not support the ?q=contact query</string>
+    <string name="pref_key_contact_body_autocomplete_title">Contact body autocomplete</string>
+    <string name="pref_key_contact_body_autocomplete_summary">Get a list of contacts from your endpoint for autocompletion in body fields when you start typing an @. They will be saved so they can be used offline as well.</string>
+    <string name="pref_key_contact_body_autocomplete_value_title">Use nickname for autocomplete</string>
+    <string name="pref_key_contact_body_autocomplete_value_summary">Contacts can have name and nickname. If a nickname is available, that value will be used for the suggestions instead of the full name.</string>
+    <string name="pref_key_contact_manage_title">Manage contacts</string>
+    <string name="pref_key_contact_manage_summary">This will add a menu item that allows you to manage your contacts. An action will be added to every timeline item too to save the author of a post to your contacts.</string>
 
     <!-- Preferences: experimental -->
     <string name="pref_category_experimental_title">Experimental</string>

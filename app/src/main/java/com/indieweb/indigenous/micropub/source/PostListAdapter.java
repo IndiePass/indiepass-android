@@ -277,7 +277,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             builder.setTitle(context.getString(R.string.post_delete_confirm));
             builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,int id) {
-                    new MicropubAction(context, user).deletePost(item.getUrl());
+                    new MicropubAction(context, user).deleteItem(item.getUrl());
                     items.remove(position);
                     notifyDataSetChanged();
                 }

@@ -23,6 +23,7 @@ import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.general.AboutFragment;
 import com.indieweb.indigenous.general.SettingsActivity;
 import com.indieweb.indigenous.indieauth.UsersFragment;
+import com.indieweb.indigenous.micropub.contact.ContactFragment;
 import com.indieweb.indigenous.micropub.draft.DraftFragment;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
@@ -129,6 +130,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Hide Posts if setting is not enabled.
         if (!Preferences.getPreference(this, "pref_key_source_post_list", false)) {
             menu.removeItem(R.id.nav_posts);
+        }
+
+        // Hide Contacts if setting is not enabled.
+        if (!Preferences.getPreference(this, "pref_key_contact_manage", false)) {
+            menu.removeItem(R.id.nav_contacts);
         }
 
         // Update draft menu item.
@@ -251,6 +257,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_drafts:
                 close = true;
                 fragment = new DraftFragment();
+                break;
+
+            case R.id.nav_contacts:
+                close = true;
+                fragment = new ContactFragment();
                 break;
 
             case R.id.nav_posts:

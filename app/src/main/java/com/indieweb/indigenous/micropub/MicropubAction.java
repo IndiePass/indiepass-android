@@ -42,12 +42,12 @@ public class MicropubAction {
     }
 
     /**
-     * Delete a post.
+     * Delete an item.
      *
      * @param url
      *   The url to delete.
      */
-    public void deletePost(final String url) {
+    public void deleteItem(final String url) {
 
         if (!new Connection(context).hasConnection()) {
             Toast.makeText(context, context.getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
@@ -60,13 +60,13 @@ public class MicropubAction {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(context, R.string.post_delete_success, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.delete_item_success, Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Utility.parseNetworkError(error, context, R.string.delete_post_network_error, R.string.delete_post_error);
+                        Utility.parseNetworkError(error, context, R.string.delete_item_network_error, R.string.delete_item_error);
                     }
                 }
         )
@@ -103,7 +103,6 @@ public class MicropubAction {
 
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(getRequest);
-
     }
 
     /**
@@ -296,6 +295,10 @@ public class MicropubAction {
 
                             if (contactObject.has("photo")) {
                                 contact.setPhoto(contactObject.getString("photo"));
+                            }
+
+                            if (contactObject.has("_internal_url")) {
+                                contact.setInternalUrl(contactObject.getString("_internal_url"));
                             }
 
                             contactItems.add(contact);
