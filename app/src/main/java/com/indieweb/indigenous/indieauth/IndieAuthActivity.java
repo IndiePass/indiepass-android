@@ -65,6 +65,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
     String micropubMediaEndpoint = "";
     String authorAvatar;
     String authorName;
+    Document doc;
     String ClientId = "https://indigenous.realize.be";
     String RedirectUri = "https://indigenous.realize.be/indigenous-callback.php";
 
@@ -231,7 +232,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
             }
 
             // Get from link tags.
-            Document doc = connection.get();
+            doc = connection.get();
             Elements imports = doc.select("link[href]");
             for (Element link : imports) {
                 if (authorizationEndpoint.length() == 0 && link.attr("rel").equals("authorization_endpoint")) {
@@ -258,25 +259,6 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                     micropubMediaEndpoint = Utility.checkAbsoluteUrl(link.attr("abs:href"), $domain);
                 }
             }
-
-            String noProtocolUrl = $domain.replace("https://","").replace("http://", "");
-            try {
-
-                Mf2Parser parser = new Mf2Parser();
-                ArrayList<HCard> cards = parser.parse(doc, new URI($domain));
-
-                for (HCard c : cards) {
-                    if (c.getUrl() != null && c.getName() != null) {
-                        String HCardURL = c.getUrl().replace("https://","").replace("http://", "");
-                        if (HCardURL.equals(noProtocolUrl) || HCardURL.equals(noProtocolUrl + "/")) {
-                            authorAvatar = c.getAvatar();
-                            authorName = c.getName();
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (Exception ignored) { }
 
         }
         catch (IllegalArgumentException | IOException e) {
@@ -312,6 +294,17 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                         JSONObject indieAuthResponse = new JSONObject(response);
                         accessToken = indieAuthResponse.getString("access_token");
                         accessTokenFound = true;
+
+                        // Check profile key.
+                        if (indieAuthResponse.has("profile")) {
+                            JSONObject profile = indieAuthResponse.getJSONObject("profile");
+                            if (profile.has("name")) {
+                                authorName = profile.getString("name");
+                            }
+                            if (profile.has("photo")) {
+                                authorAvatar = profile.getString("photo");
+                            }
+                        }
                     }
                     catch (JSONException e) {
 
@@ -341,6 +334,32 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                     }
 
                     if (accessTokenFound && returnedState.equals(state)) {
+
+                        // If author name or avatar are still empty, try parsing the HTML.
+                        if (authorName.length() == 0 || authorAvatar.length() == 0) {
+                            String noProtocolUrl = domainInput.replace("https://","").replace("http://", "");
+                            try {
+
+                                Mf2Parser parser = new Mf2Parser();
+                                ArrayList<HCard> cards = parser.parse(doc, new URI(domainInput));
+
+                                for (HCard c : cards) {
+                                    if (c.getUrl() != null && c.getName() != null) {
+                                        String HCardURL = c.getUrl().replace("https://","").replace("http://", "");
+                                        if (HCardURL.equals(noProtocolUrl) || HCardURL.equals(noProtocolUrl + "/")) {
+                                            if (authorName.length() == 0) {
+                                                authorName = c.getName();
+                                            }
+                                            if (authorAvatar.length() == 0) {
+                                                authorAvatar = c.getAvatar();
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            catch (Exception ignored) { }
+                        }
 
                         AccountManager am = AccountManager.get(getApplicationContext());
                         int numberOfAccounts = am.getAccounts().length;
