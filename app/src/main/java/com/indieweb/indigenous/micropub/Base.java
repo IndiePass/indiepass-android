@@ -585,7 +585,10 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
             locationUrl.setText(incomingUrl);
         }
         else {
-            url.setText(incomingUrl);
+            if (url != null) {
+                url.setText(incomingUrl);
+            }
+
             if (title != null) {
                 title.requestFocus();
             }
