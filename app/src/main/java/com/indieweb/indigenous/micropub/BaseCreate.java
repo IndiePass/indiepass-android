@@ -165,7 +165,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
                 String incomingText = extras.getString("incomingText");
                 if (incomingText != null && incomingText.length() > 0 && (body != null || url != null || locationUrl != null)) {
                     setChanges(true);
-                    if (locationUrl != null) {
+                    if (isCheckin && locationUrl != null) {
                         setUrlAndFocusOnMessage(incomingText);
                     }
                     else if (url != null) {
