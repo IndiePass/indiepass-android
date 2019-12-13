@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
+import android.util.Base64;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -20,6 +21,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.MessageDigest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -188,6 +190,27 @@ public class Utility {
         }
 
         return returnUrl;
+    }
+
+    /**
+     * Generate sha256
+     *
+     * @param string
+     *   The string to hash.
+     *
+     * @return base64 encoded string
+     */
+    public static String sha256(String string) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(string.getBytes());
+            byte[] byteData = md.digest();
+            String encoded = Base64.encodeToString(byteData, Base64.NO_WRAP);
+            return encoded.trim().replace("=", "").replace("+", "-").replace("/", "_");
+        }
+        catch (Exception e) {
+            return string;
+        }
     }
 
 }

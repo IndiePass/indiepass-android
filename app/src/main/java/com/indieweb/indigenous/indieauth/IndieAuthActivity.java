@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -65,14 +66,15 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
     EditText domain;
     TextView info;
     String domainInput;
+    Document doc;
     String authorizationEndpoint = "";
     String tokenEndpoint = "";
     String micropubEndpoint = "";
     String microsubEndpoint = "";
     String micropubMediaEndpoint = "";
-    String authorAvatar;
-    String authorName;
-    Document doc;
+    String authorAvatar = "";
+    String authorName = "";
+    String codeVerifier = "";
     String ClientId = "https://indigenous.realize.be";
     String RedirectUri = "https://indigenous.realize.be/indigenous-callback.php";
 
@@ -87,8 +89,13 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
+
                         // Generate state, use uuid and take first 10 chars.
                         state = UUID.randomUUID().toString().substring(0, 10);
+
+                        // Generate a code verifier. concatenate 2 uuids.
+                        String temp = UUID.randomUUID().toString() + UUID.randomUUID().toString();
+                        codeVerifier = temp.replace("-", "");
 
                         domain = findViewById(R.id.domain);
                         info = findViewById(R.id.info);
@@ -172,7 +179,9 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
             changeSignInButton(R.string.connecting);
             if (validDomain(domainInput)) {
 
-                String url = authorizationEndpoint + "?response_type=code&redirect_uri=" + RedirectUri + "&client_id=" + ClientId + "&me=" + domainInput + "&scope=create+update+delete+media+read+follow+channels+mute+block&state=" + state;
+
+                String codeChallenge = Utility.sha256(codeVerifier);
+                String url = authorizationEndpoint + "?code_challenge_method=S256&code_challenge=" + codeChallenge + "&response_type=code&redirect_uri=" + RedirectUri + "&client_id=" + ClientId + "&me=" + domainInput + "&scope=create+update+delete+media+read+follow+channels+mute+block&state=" + state;
                 Uri uri = Uri.parse(url);
 
                 CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
@@ -449,6 +458,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                 params.put("redirect_uri", RedirectUri);
                 params.put("client_id", ClientId);
                 params.put("grant_type", "authorization_code");
+                params.put("code_verifier", codeVerifier);
 
                 return params;
             }
@@ -475,13 +485,19 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
     }
 
     /**
-     * Show sign in form.
+     * Show sign in form and reset variables.
      */
     public void showForm() {
         info.setVisibility(View.VISIBLE);
         domain.setVisibility(View.VISIBLE);
         signIn.setVisibility(View.VISIBLE);
         changeSignInButton(R.string.sign_in_with_domain);
+        authorizationEndpoint = "";
+        tokenEndpoint = "";
+        micropubEndpoint = "";
+        microsubEndpoint = "";
+        authorName = "";
+        authorAvatar = "";
     }
 
 }

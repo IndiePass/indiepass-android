@@ -1,6 +1,7 @@
 <h4>xx/xx/xxxx - 0.51</h4>
 <ul>
     <li>Manage contacts</li>
+    <li>Add PKCE support</li>
     <li>Fix crash on saving styles</li>
     <li>Ask for accounts permission</li>
     <li>Fix setting latitude and longitude in drafts</li>

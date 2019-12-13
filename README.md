@@ -21,7 +21,7 @@ https://indigenous.realize.be
 - Login with multiple domains, discover indieauth, micropub, microsub
   and media endpoints. The micropub and microsub endpoints are optional,
   but at least one should be available. Token revoke happens when deleting
-  an account.
+  an account. PKCE support for additional security when authenticating.
 - Micropub
   - post types: article, note, reply, repost, like, bookmark, event,
     issue, rsvp, geocache and checkin
