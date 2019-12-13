@@ -67,13 +67,13 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
     TextView info;
     String domainInput;
     Document doc;
-    String authorizationEndpoint = "";
-    String tokenEndpoint = "";
-    String micropubEndpoint = "";
-    String microsubEndpoint = "";
-    String micropubMediaEndpoint = "";
-    String authorAvatar = "";
-    String authorName = "";
+    String authorizationEndpoint;
+    String tokenEndpoint;
+    String micropubEndpoint;
+    String microsubEndpoint;
+    String micropubMediaEndpoint;
+    String authorAvatar;
+    String authorName;
     String codeVerifier = "";
     String ClientId = "https://indigenous.realize.be";
     String RedirectUri = "https://indigenous.realize.be/indigenous-callback.php";
@@ -168,6 +168,14 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                 Toast.makeText(getApplicationContext(), getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            // Reset variables.
+            authorizationEndpoint = "";
+            tokenEndpoint = "";
+            micropubEndpoint = "";
+            microsubEndpoint = "";
+            authorName = "";
+            authorAvatar = "";
 
             domainInput = domain.getText().toString();
 
@@ -492,12 +500,6 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
         domain.setVisibility(View.VISIBLE);
         signIn.setVisibility(View.VISIBLE);
         changeSignInButton(R.string.sign_in_with_domain);
-        authorizationEndpoint = "";
-        tokenEndpoint = "";
-        micropubEndpoint = "";
-        microsubEndpoint = "";
-        authorName = "";
-        authorAvatar = "";
     }
 
 }
