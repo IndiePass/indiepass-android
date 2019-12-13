@@ -20,7 +20,7 @@ public class UploadActivity extends BaseCreate {
         setContentView(R.layout.activity_upload);
         super.onCreate(savedInstanceState);
 
-        if (title != null && Preferences.getPreference(getApplicationContext(), "pref_key_media_name", true)) {
+        if (title != null && Preferences.getPreference(getApplicationContext(), "pref_key_media_name", false)) {
             title.setVisibility(View.VISIBLE);
         }
     }
