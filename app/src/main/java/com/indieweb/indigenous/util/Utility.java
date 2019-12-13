@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
-import com.indieweb.indigenous.R;
 
 import java.net.MalformedURLException;
 import java.net.URI;
