@@ -2,6 +2,7 @@
 <ul>
     <li>Manage contacts</li>
     <li>Fix crash on saving styles</li>
+    <li>Ask for accounts permission</li>
     <li>Fix setting latitude and longitude in drafts</li>
     <li>Use profile info from token request if available</li>
     <li>Code cleanup and better protection against crashes in rare cases</li>

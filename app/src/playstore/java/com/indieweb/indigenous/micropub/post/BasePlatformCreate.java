@@ -41,6 +41,7 @@ import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.Base;
 import com.indieweb.indigenous.model.Place;
 import com.indieweb.indigenous.util.Preferences;
+import com.indieweb.indigenous.util.Utility;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -84,7 +85,7 @@ abstract public class BasePlatformCreate extends Base {
                             @Override
                             public void onPermissionDenied(PermissionDeniedResponse response) {
                                 if (response.isPermanentlyDenied()) {
-                                    openSettings();
+                                    Utility.openSettings(getApplicationContext());
                                 }
                             }
 
@@ -248,18 +249,6 @@ abstract public class BasePlatformCreate extends Base {
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(mLocationRequest);
         mLocationSettingsRequest = builder.build();
-    }
-
-    /**
-     * Open settings screen.
-     */
-    private void openSettings() {
-        Intent intent = new Intent();
-        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", BuildConfig.APPLICATION_ID, null);
-        intent.setData(uri);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
     }
 
     // Location query listener.

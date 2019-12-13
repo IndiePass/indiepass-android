@@ -1,5 +1,6 @@
 package com.indieweb.indigenous.indieauth;
 
+import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
@@ -31,6 +32,12 @@ import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Utility;
 import com.indieweb.indigenous.util.mf2.Mf2Parser;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,24 +81,45 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_indieauth);
 
-        // Generate state, use uuid and take first 10 chars.
-        state = UUID.randomUUID().toString().substring(0, 10);
+        // This requires user permission from 22 on.
+        Dexter.withActivity(IndieAuthActivity.this)
+                .withPermission(Manifest.permission.GET_ACCOUNTS)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        // Generate state, use uuid and take first 10 chars.
+                        state = UUID.randomUUID().toString().substring(0, 10);
 
-        domain = findViewById(R.id.domain);
-        info = findViewById(R.id.info);
-        signIn = findViewById(R.id.signInButton);
-        signIn.setOnClickListener(doSignIn);
+                        domain = findViewById(R.id.domain);
+                        info = findViewById(R.id.info);
+                        signIn = findViewById(R.id.signInButton);
+                        signIn.setOnClickListener(doSignIn);
 
-        // Show 'select account' button.
-        AccountManager accountManager = AccountManager.get(this);
-        Account[] accounts = accountManager.getAccounts();
-        if (accounts.length > 0) {
-            TextView setAccountInfo = findViewById(R.id.selectAccountButtonInfo);
-            setAccountInfo.setVisibility(View.VISIBLE);
-            Button selectAccount = findViewById(R.id.selectAccountButton);
-            selectAccount.setOnClickListener(this.selectAccount);
-            selectAccount.setVisibility(View.VISIBLE);
-        }
+                        // Show 'select account' button.
+                        AccountManager accountManager = AccountManager.get(getApplicationContext());
+                        Account[] accounts = accountManager.getAccounts();
+                        if (accounts.length > 0) {
+                            TextView setAccountInfo = findViewById(R.id.selectAccountButtonInfo);
+                            setAccountInfo.setVisibility(View.VISIBLE);
+                            Button selectAccount = findViewById(R.id.selectAccountButton);
+                            selectAccount.setOnClickListener(selectAccountListener);
+                            selectAccount.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        if (response.isPermanentlyDenied()) {
+                            Utility.openSettings(getApplicationContext());
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+
+                }).check();
     }
 
     @Override
@@ -117,7 +145,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
     /**
      * OnClickListener for the 'Set account' button.
      */
-    private final View.OnClickListener selectAccount = new View.OnClickListener() {
+    public final View.OnClickListener selectAccountListener = new View.OnClickListener() {
         public void onClick(View v) {
             new Accounts(IndieAuthActivity.this).selectAccount(IndieAuthActivity.this);
         }

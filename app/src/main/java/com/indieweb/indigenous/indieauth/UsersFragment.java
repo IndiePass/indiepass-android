@@ -1,10 +1,12 @@
 package com.indieweb.indigenous.indieauth;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +18,13 @@ import android.widget.ListView;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
+import com.indieweb.indigenous.util.Utility;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.util.List;
 
@@ -37,7 +46,29 @@ public class UsersFragment extends Fragment {
         listView = view.findViewById(R.id.users_list);
         currentUser = new Accounts(getContext()).getCurrentUser();
         requireActivity().setTitle(R.string.accounts);
-        startUsersList();
+
+        // This requires user permission from 22 on.
+        Dexter.withActivity(requireActivity())
+                .withPermission(Manifest.permission.GET_ACCOUNTS)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        startUsersList();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        if (response.isPermanentlyDenied()) {
+                            Utility.openSettings(requireContext());
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+
+                }).check();
     }
 
     /**
