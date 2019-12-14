@@ -174,6 +174,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
             tokenEndpoint = "";
             micropubEndpoint = "";
             microsubEndpoint = "";
+            micropubMediaEndpoint = "";
             authorName = "";
             authorAvatar = "";
 
@@ -186,7 +187,6 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
 
             changeSignInButton(R.string.connecting);
             if (validDomain(domainInput)) {
-
 
                 String codeChallenge = Utility.sha256(codeVerifier);
                 String url = authorizationEndpoint + "?code_challenge_method=S256&code_challenge=" + codeChallenge + "&response_type=code&redirect_uri=" + RedirectUri + "&client_id=" + ClientId + "&me=" + domainInput + "&scope=create+update+delete+media+read+follow+channels+mute+block&state=" + state;
