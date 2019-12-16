@@ -145,17 +145,20 @@ public class Utility {
      *   The string in case of general fail.
      */
     public static void parseNetworkError(VolleyError error, Context context, int network_fail, int fail) {
-        if (context != null) {
-            NetworkResponse networkResponse = error.networkResponse;
-            if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
-                int code = networkResponse.statusCode;
-                String result = new String(networkResponse.data).trim();
-                Toast.makeText(context, String.format(context.getString(network_fail), code, result), Toast.LENGTH_LONG).show();
-            }
-            else {
-                Toast.makeText(context, context.getString(fail), Toast.LENGTH_LONG).show();
+        try {
+            if (context != null) {
+                NetworkResponse networkResponse = error.networkResponse;
+                if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
+                    int code = networkResponse.statusCode;
+                    String result = new String(networkResponse.data).trim();
+                    Toast.makeText(context, String.format(context.getString(network_fail), code, result), Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(context, context.getString(fail), Toast.LENGTH_LONG).show();
+                }
             }
         }
+        catch (Exception ignored) {}
     }
 
     /**
