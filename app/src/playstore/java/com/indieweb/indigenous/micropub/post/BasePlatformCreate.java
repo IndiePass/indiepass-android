@@ -5,9 +5,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
-import android.net.Uri;
+
 import android.os.Looper;
-import android.provider.Settings;
 import androidx.annotation.NonNull;
 
 import android.view.MenuItem;
@@ -36,7 +35,6 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.indieweb.indigenous.BuildConfig;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.Base;
 import com.indieweb.indigenous.model.Place;
