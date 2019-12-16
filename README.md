@@ -91,7 +91,7 @@ work fine.
 ## Translations
 
 Indigenous is currently only available in English. If you want to
-translate to another language (or make the default English better, the
+translate to another language (or make the default English better), the
 following file contains all strings use in the app. Either send a pull
 request or open an issue with the file attached. Some strings contain '%s'.
 These are placeholders and should be kept.
