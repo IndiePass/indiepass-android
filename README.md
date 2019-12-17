@@ -8,10 +8,7 @@ https://play.google.com/store/apps/details?id=com.indieweb.indigenous
 Install from F-Droid:
 https://f-droid.org/en/packages/com.indieweb.indigenous/
 
-No builds will be uploaded anymore to GitHub, use F-Droid for that. Note
-that the F-droid releases  currently have no support for getting the location
-from the device, that will be added in a next  release, see
-https://github.com/swentel/indigenous-android/issues/174
+No builds will be uploaded anymore to GitHub, use F-Droid for that.
 
 More information at https://indieweb.org/Indigenous and
 https://indigenous.realize.be

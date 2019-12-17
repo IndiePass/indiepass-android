@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
@@ -75,9 +76,14 @@ public class UsersFragment extends Fragment {
      * Start users lists.
      */
     private void startUsersList() {
-        List<User> users = new Accounts(getContext()).getAllUsers();
-        UsersListAdapter adapter = new UsersListAdapter(requireContext(), getActivity(), users, currentUser);
-        listView.setAdapter(adapter);
+        try {
+            List<User> users = new Accounts(getContext()).getAllUsers();
+            UsersListAdapter adapter = new UsersListAdapter(requireContext(), getActivity(), users, currentUser);
+            listView.setAdapter(adapter);
+        }
+        catch (Exception e) {
+            Toast.makeText(requireContext(), getString(R.string.user_exception), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

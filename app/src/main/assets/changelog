@@ -1,5 +1,6 @@
 <h4>xx/12/2019 - 0.52</h4>
 <ul>
+    <li>Add location support for F-Droid</li>
     <li>Fix exception in error messages</li>
 </ul>
 <h4>15/12/2019 - 0.51</h4>

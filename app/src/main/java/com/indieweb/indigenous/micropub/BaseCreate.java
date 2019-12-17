@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
 import com.google.android.material.textfield.TextInputLayout;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -200,6 +202,27 @@ abstract public class BaseCreate extends BasePlatformCreate {
                 prepareDraft(draftId);
             }
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CHECK_SETTINGS && resultCode == RESULT_OK) {
+            startLocationUpdates();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.addLocation) {
+            if (!mRequestingLocationUpdates) {
+                startLocationUpdates();
+            }
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**

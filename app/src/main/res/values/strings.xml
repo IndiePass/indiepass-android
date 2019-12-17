@@ -61,6 +61,7 @@
     <string name="account_select">Select account</string>
     <string name="account_selected">Account set to %s</string>
     <string name="account_switch">Switch to account %s ?</string>
+    <string name="user_exception">We ran into an exception getting the accounts. Please manage the accounts from the device accounts section.</string>
 
     <!-- About -->
     <string name="about_info"><![CDATA[Indigenous allows you to engage with the internet as you do on social media sites, but posts it all on your website. Use the built-in reader to read and respond to posts across the internet. Indigenous doesn\'t track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/swentel/indigenous-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a>, <a href="https://openclipart.org">Openclipart</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>

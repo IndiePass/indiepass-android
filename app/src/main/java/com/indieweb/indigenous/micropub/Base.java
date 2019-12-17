@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +15,10 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -33,6 +37,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -47,6 +52,10 @@ import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
 import com.indieweb.indigenous.util.VolleyMultipartRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -117,6 +126,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public Double latitude = null;
     public Double longitude = null;
     public RelativeLayout progressBar;
+    public Location mCurrentLocation;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -642,6 +652,200 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         @Override
         public void onClick(View v) {
             Utility.showDateTimePickerDialog(Base.this, publishDate);
+        }
+    }
+
+    /**
+     * Toggle location visibilities.
+     */
+    public void toggleLocationVisibilities(Boolean toggleWrapper) {
+
+        if (toggleWrapper) {
+            locationWrapper.setVisibility(View.VISIBLE);
+            locationCoordinates.setVisibility(View.VISIBLE);
+        }
+
+        boolean showLocationVisibility = Preferences.getPreference(getApplicationContext(), "pref_key_location_visibility", false);
+        boolean showLocationName = Preferences.getPreference(getApplicationContext(), "pref_key_location_label", false);
+        boolean showLocationQueryButton = Preferences.getPreference(getApplicationContext(), "pref_key_location_label_query", false);
+        if (isCheckin || showLocationVisibility || showLocationName || showLocationQueryButton) {
+            if (showLocationName || isCheckin) {
+                locationName.setVisibility(View.VISIBLE);
+            }
+            if (showLocationVisibility) {
+                locationVisibility.setVisibility(View.VISIBLE);
+            }
+            if (showLocationQueryButton) {
+                locationQuery.setVisibility(View.VISIBLE);
+                locationQuery.setOnClickListener(new OnLocationLabelQueryListener());
+            }
+            if (isCheckin) {
+                locationUrl.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    // Location query listener.
+    public class OnLocationLabelQueryListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+
+            // Get geo from the endpoint.
+            String MicropubEndpoint = user.getMicropubEndpoint();
+            if (MicropubEndpoint.contains("?")) {
+                MicropubEndpoint += "&q=geo";
+            }
+            else {
+                MicropubEndpoint += "?q=geo";
+            }
+
+            if (mCurrentLocation != null) {
+                MicropubEndpoint += "&lat=" + mCurrentLocation.getLatitude() + "&lon=" + mCurrentLocation.getLongitude();
+            }
+            else if (latitude != null && longitude != null) {
+                MicropubEndpoint += "&lat=" + latitude.toString() + "&lon=" + longitude.toString();
+            }
+
+            Toast.makeText(getApplicationContext(), R.string.location_get, Toast.LENGTH_SHORT).show();
+            StringRequest getRequest = new StringRequest(Request.Method.GET, MicropubEndpoint,
+                    new Response.Listener<String>() {
+                        @SuppressLint("ClickableViewAccessibility")
+                        @Override
+                        public void onResponse(String response) {
+                            placeItems.clear();
+                            String label = "";
+                            String url = "";
+                            String visibility = "";
+                            try {
+                                JSONObject geoResponse = new JSONObject(response);
+
+                                // Geo property.
+                                if (geoResponse.has("geo")) {
+                                    JSONObject geoObject = geoResponse.getJSONObject("geo");
+                                    if (geoObject.has("label")) {
+                                        label = geoObject.getString("label");
+                                    }
+                                    if (geoObject.has("url")) {
+                                        url = geoObject.getString("url");
+                                    }
+                                    if (geoObject.has("visibility")) {
+                                        visibility = geoObject.getString("visibility");
+                                    }
+                                }
+
+                                // Places property.
+                                if (geoResponse.has("places")) {
+                                    JSONObject placeObject;
+                                    JSONArray placesList = geoResponse.getJSONArray("places");
+                                    for (int i = 0; i < placesList.length(); i++) {
+                                        Place place = new Place();
+                                        placeObject = placesList.getJSONObject(i);
+
+                                        if (placeObject.has("label")) {
+                                            place.setName(placeObject.getString("label"));
+
+                                            if (placeObject.has("longitude")) {
+                                                place.setLongitude(placeObject.getString("longitude"));
+                                            }
+
+                                            if (placeObject.has("latitude")) {
+                                                place.setLatitude(placeObject.getString("latitude"));
+                                            }
+
+                                            if (placeObject.has("url")) {
+                                                place.setUrl(placeObject.getString("url"));
+                                            }
+
+                                            placeItems.add(place);
+                                        }
+                                    }
+                                }
+                            }
+                            catch (JSONException e) {
+                                Toast.makeText(getApplicationContext(), getString(R.string.location_error) + e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+
+                            if (label.length() > 0 || placeItems.size() > 0) {
+                                if (placeItems.size() > 0) {
+                                    Toast.makeText(getApplicationContext(), getString(R.string.places_found), Toast.LENGTH_SHORT).show();
+
+                                    // Add default as a place as well.
+                                    if (label.length() > 0) {
+                                        Place place = new Place();
+                                        place.setName(label);
+                                        if (url.length() > 0) {
+                                            place.setUrl(url);
+                                        }
+                                        placeItems.add(place);
+                                    }
+
+                                    locationName.setThreshold(1);
+                                    final ArrayAdapter placesAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.popup_item, placeItems);
+                                    locationName.setAdapter(placesAdapter);
+                                    locationName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                                            Place selected = (Place) arg0.getAdapter().getItem(arg2);
+                                            locationName.setText(selected.getName());
+                                            // Set this, even if it's empty as the user might have
+                                            // selected another place first which had a URL.
+                                            locationUrl.setText(selected.getUrl());
+                                        }
+                                    });
+                                    locationName.setOnTouchListener(new View.OnTouchListener() {
+                                        @Override
+                                        public boolean onTouch(View paramView, MotionEvent paramMotionEvent) {
+                                            if (!locationName.getText().toString().equals("")) {
+                                                placesAdapter.getFilter().filter(null);
+                                            }
+                                            locationName.showDropDown();
+                                            return false;
+                                        }
+                                    });
+                                }
+                                else {
+                                    locationName.setText(label);
+                                    if (url.length() > 0) {
+                                        locationUrl.setText(url);
+                                    }
+                                }
+
+                                // Visibility.
+                                if (visibility.length() > 0) {
+                                    int selection = 0;
+                                    if (visibility.equals("private")) {
+                                        selection = 1;
+                                    }
+                                    else if (visibility.equals("protected")) {
+                                        selection = 2;
+                                    }
+                                    locationVisibility.setSelection(selection);
+                                }
+                            }
+                            else {
+                                Toast.makeText(getApplicationContext(), getString(R.string.location_no_results), Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {}
+                    }
+            )
+            {
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put("Accept", "application/json");
+                    headers.put("Authorization", "Bearer " + user.getAccessToken());
+                    return headers;
+                }
+            };
+
+            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+            queue.add(getRequest);
         }
     }
 

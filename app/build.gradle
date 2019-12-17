@@ -53,9 +53,9 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
     implementation 'com.4ert:audioview:0.4.2'
     implementation 'me.pushy:sdk:1.0.44'
+    implementation 'com.karumi:dexter:4.2.0'
 
     // Specific to Google Playstore
-    playstoreImplementation 'com.karumi:dexter:4.2.0'
     playstoreImplementation 'com.google.android.gms:play-services-location:17.0.0'
 
     // Tests
