@@ -51,10 +51,35 @@ import java.util.ArrayList;
 
 import me.pushy.sdk.Pushy;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DraftFragment.OnDraftChangedListener {
 
-    NavigationView navigationView;
+    Menu menu;
     User user;
+    NavigationView navigationView;
+    public static final int CREATE_DRAFT = 1001;
+    public static final int POST_DRAFT = 1002;
+
+    @Override
+    public void onAttachFragment(@NonNull Fragment fragment) {
+        if (fragment instanceof DraftFragment) {
+            DraftFragment draftFragment = (DraftFragment) fragment;
+            draftFragment.OnDraftChangedListener(this);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CREATE_DRAFT && resultCode == RESULT_OK) {
+            updateDraftMenuItem(true);
+        }
+
+        if (requestCode == POST_DRAFT && resultCode == RESULT_OK) {
+            updateDraftMenuItem(true);
+            startFragment(new DraftFragment());
+        }
+    }
 
     /**
      * Set first navigation view.
@@ -120,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         // Hide Media if micropub media endpoint is empty.
-        Menu menu = navigationView.getMenu();
+        menu = navigationView.getMenu();
         String micropubMediaEndpoint = user.getMicropubMediaEndpoint();
         if (micropubMediaEndpoint == null || micropubMediaEndpoint.length() == 0) {
             menu.removeItem(R.id.nav_upload);
@@ -138,14 +163,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         // Update draft menu item.
-        DatabaseHelper db = new DatabaseHelper(getApplicationContext());
-        int draftCount = db.getDraftCount();
-        if (draftCount > 0) {
-            MenuItem draftItem = menu.findItem(R.id.nav_drafts);
-            if (draftItem != null) {
-                draftItem.setTitle(getString(R.string.drafts) + " (" + draftCount + ")");
-            }
-        }
+        updateDraftMenuItem(false);
 
         // Hide post types if configured.
         if (Preferences.getPreference(this, "pref_key_post_type_hide", false)) {
@@ -169,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             // Loop over menu items.
             String menuType = null;
-            for (int i = 0; i < menu.size(); i++){
+            for (int i = 0; i < menu.size(); i++) {
                 int id = menu.getItem(i).getItemId();
                 switch (id) {
                     case R.id.createNote:
@@ -286,57 +304,57 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.createArticle:
                 Intent CreateArticle = new Intent(getBaseContext(), ArticleActivity.class);
-                startActivity(CreateArticle);
+                startActivityForResult(CreateArticle, CREATE_DRAFT);
                 break;
 
             case R.id.createNote:
                 Intent CreateNote = new Intent(getBaseContext(), NoteActivity.class);
-                startActivity(CreateNote);
+                startActivityForResult(CreateNote, CREATE_DRAFT);
                 break;
 
             case R.id.createLike:
                 Intent CreateLike = new Intent(getBaseContext(), LikeActivity.class);
-                startActivity(CreateLike);
+                startActivityForResult(CreateLike, CREATE_DRAFT);
                 break;
 
             case R.id.createReply:
                 Intent CreateReply = new Intent(getBaseContext(), ReplyActivity.class);
-                startActivity(CreateReply);
+                startActivityForResult(CreateReply, CREATE_DRAFT);
                 break;
 
             case R.id.createBookmark:
                 Intent CreateBookmark = new Intent(getBaseContext(), BookmarkActivity.class);
-                startActivity(CreateBookmark);
+                startActivityForResult(CreateBookmark, CREATE_DRAFT);
                 break;
 
             case R.id.createRepost:
                 Intent CreateRepost = new Intent(getBaseContext(), RepostActivity.class);
-                startActivity(CreateRepost);
+                startActivityForResult(CreateRepost, CREATE_DRAFT);
                 break;
 
             case R.id.createEvent:
                 Intent CreateEvent = new Intent(getBaseContext(), EventActivity.class);
-                startActivity(CreateEvent);
+                startActivityForResult(CreateEvent, CREATE_DRAFT);
                 break;
 
             case R.id.createRSVP:
                 Intent CreateRSVP = new Intent(getBaseContext(), RsvpActivity.class);
-                startActivity(CreateRSVP);
+                startActivityForResult(CreateRSVP, CREATE_DRAFT);
                 break;
 
             case R.id.createIssue:
                 Intent CreateIssue = new Intent(getBaseContext(), IssueActivity.class);
-                startActivity(CreateIssue);
+                startActivityForResult(CreateIssue, CREATE_DRAFT);
                 break;
 
             case R.id.createCheckin:
                 Intent CreateCheckin = new Intent(getBaseContext(), CheckinActivity.class);
-                startActivity(CreateCheckin);
+                startActivityForResult(CreateCheckin, CREATE_DRAFT);
                 break;
 
             case R.id.createGeocache:
                 Intent CreateGeocache = new Intent(getBaseContext(), GeocacheActivity.class);
-                startActivity(CreateGeocache);
+                startActivityForResult(CreateGeocache, CREATE_DRAFT);
                 break;
 
             case R.id.nav_upload:
@@ -352,12 +370,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Update main content frame.
         if (fragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, fragment);
-            ft.commit();
+            startFragment(fragment);
         }
 
         return true;
+    }
+
+    /**
+     * Start a fragment.
+     *
+     * @param fragment
+     *   Start a fragment.
+     */
+    public void startFragment(Fragment fragment) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.commit();
     }
 
     /**
@@ -377,4 +405,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().performIdentifierAction(id, 0);
         }
     }
+
+    /**
+     * Updates the Draft menu item.
+     */
+    public void updateDraftMenuItem(boolean callbackOrPost) {
+        DatabaseHelper db = new DatabaseHelper(getApplicationContext());
+        int draftCount = db.getDraftCount();
+        if (draftCount > 0) {
+            MenuItem draftItem = menu.findItem(R.id.nav_drafts);
+            if (draftItem != null) {
+                draftItem.setTitle(getString(R.string.drafts) + " (" + draftCount + ")");
+            }
+        }
+        else if (callbackOrPost) {
+            MenuItem draftItem = menu.findItem(R.id.nav_drafts);
+            draftItem.setTitle(getString(R.string.drafts));
+        }
+    }
+
+    @Override
+    public void onDraftChanged() {
+        updateDraftMenuItem(true);
+    }
+
 }

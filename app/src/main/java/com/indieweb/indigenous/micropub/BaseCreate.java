@@ -465,6 +465,9 @@ abstract public class BaseCreate extends BasePlatformCreate {
         db.saveDraft(draft);
 
         Toast.makeText(this, getString(R.string.draft_saved), Toast.LENGTH_SHORT).show();
+
+        Intent returnIntent = new Intent();
+        setResult(RESULT_OK, returnIntent);
         finish();
     }
 

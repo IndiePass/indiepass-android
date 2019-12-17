@@ -349,6 +349,8 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                             if (draftId != null && draftId > 0) {
                                 db = new DatabaseHelper(getApplicationContext());
                                 db.deleteDraft(draftId);
+                                Intent returnIntent = new Intent();
+                                setResult(RESULT_OK, returnIntent);
                             }
 
                             hideProgressBar();

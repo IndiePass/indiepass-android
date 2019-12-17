@@ -20,6 +20,16 @@ import java.util.List;
 
 public class DraftFragment extends Fragment {
 
+    private OnDraftChangedListener callback;
+
+    public void OnDraftChangedListener(OnDraftChangedListener callback) {
+        this.callback = callback;
+    }
+
+    public interface OnDraftChangedListener {
+        void onDraftChanged();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,10 +54,9 @@ public class DraftFragment extends Fragment {
             empty.setVisibility(View.VISIBLE);
         }
         else {
-            DraftListAdapter adapter = new DraftListAdapter(requireContext(), drafts);
+            DraftListAdapter adapter = new DraftListAdapter(requireContext(), drafts, callback);
             listDraft.setAdapter(adapter);
             adapter.notifyDataSetChanged();
         }
     }
-
 }

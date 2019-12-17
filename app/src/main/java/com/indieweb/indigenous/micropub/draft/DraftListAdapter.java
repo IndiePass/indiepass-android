@@ -1,6 +1,7 @@
 package com.indieweb.indigenous.micropub.draft;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,6 +36,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static com.indieweb.indigenous.MainActivity.POST_DRAFT;
+
 /**
  * Drafts list adapter.
  */
@@ -43,10 +46,12 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
     private final Context context;
     private final List<Draft> drafts;
     private LayoutInflater mInflater;
+    private DraftFragment.OnDraftChangedListener callback;
 
-    DraftListAdapter(Context context, List<Draft> drafts) {
+    DraftListAdapter(Context context, List<Draft> drafts, DraftFragment.OnDraftChangedListener callback) {
         this.context = context;
         this.drafts = drafts;
+        this.callback = callback;
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -196,7 +201,7 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
             }
 
             if (startActivity != null) {
-                context.startActivity(startActivity);
+                ((Activity) context).startActivityForResult(startActivity, POST_DRAFT);
             }
         }
     }
@@ -222,6 +227,7 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
                     db.deleteDraft(draft.getId());
                     drafts.remove(position);
                     notifyDataSetChanged();
+                    callback.onDraftChanged();
                     Toast.makeText(context, context.getString(R.string.draft_deleted), Toast.LENGTH_SHORT).show();
                 }
             });
