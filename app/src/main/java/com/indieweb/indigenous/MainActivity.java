@@ -37,6 +37,7 @@ import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.micropub.post.UploadActivity;
+import com.indieweb.indigenous.micropub.post.VenueActivity;
 import com.indieweb.indigenous.micropub.source.PostListFragment;
 import com.indieweb.indigenous.microsub.channel.ChannelFragment;
 import com.indieweb.indigenous.model.User;
@@ -220,6 +221,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.createCheckin:
                         menuType = "checkin";
                         break;
+                    case R.id.createVenu:
+                        menuType = "venue";
+                        break;
                     case R.id.createGeocache:
                         menuType = "geocache";
                         break;
@@ -350,6 +354,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.createCheckin:
                 Intent CreateCheckin = new Intent(getBaseContext(), CheckinActivity.class);
                 startActivityForResult(CreateCheckin, CREATE_DRAFT);
+                break;
+
+            case R.id.createVenu:
+                Intent CreateVenue = new Intent(getBaseContext(), VenueActivity.class);
+                startActivityForResult(CreateVenue, CREATE_DRAFT);
                 break;
 
             case R.id.createGeocache:

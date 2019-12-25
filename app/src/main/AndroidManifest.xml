@@ -184,6 +184,15 @@
         </activity>
 
         <activity
+            android:name=".micropub.post.VenueActivity"
+            android:label="@string/add_venue"
+            android:parentActivityName=".LaunchActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.LaunchActivity" />
+        </activity>
+
+        <activity
             android:name=".micropub.post.GeocacheActivity"
             android:label="@string/add_geocache"
             android:parentActivityName=".LaunchActivity">

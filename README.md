@@ -21,9 +21,9 @@ https://indigenous.realize.be
   an account. PKCE support for additional security when authenticating.
 - Micropub
   - post types: article, note, reply, repost, like, bookmark, event,
-    issue, rsvp, geocache and checkin
+    issue, rsvp, geocache, checkin and venue (h-card).
   - add multiple images, tags, toggle syndication targets
-  - share location on note, article, event, checkin and geocache
+  - share location on note, article, event, checkin, geocache and venue
   - send image to media endpoint
   - Toggle post-status (published vs draft)
   - Save as local draft to finish later. This also includes coordinates,
@@ -44,8 +44,8 @@ https://indigenous.realize.be
 - Push notifications: receive push notifications if you have an account
   on https://indigenous.realize.be
 
-Note: Checkin and Geocache are experimental and pass on all information
-into a Geo URI in the checkin property, e.g.
+Note: Checkin, Geocache and Venue are experimental and pass on all information
+into a Geo URI in the geo property, e.g.
 
 ```
 geo:51.5258325,-0.1359825,0.0;name=london;url=https://hwclondon.co.uk

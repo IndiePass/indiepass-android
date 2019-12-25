@@ -30,6 +30,7 @@ import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.micropub.post.UploadActivity;
+import com.indieweb.indigenous.micropub.post.VenueActivity;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Preferences;
@@ -177,6 +178,9 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                         case R.id.createCheckin:
                             menuType = "checkin";
                             break;
+                        case R.id.createVenu:
+                            menuType = "venue";
+                            break;
                         case R.id.createGeocache:
                             menuType = "geocache";
                             break;
@@ -285,6 +289,13 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                     CreateCheckin.putExtra("incomingText", incomingText);
                 }
                 startActivity(CreateCheckin);
+                break;
+            case R.id.createVenu:
+                Intent CreateVenue = new Intent(getBaseContext(), VenueActivity.class);
+                if (incomingText.length() > 0) {
+                    CreateVenue.putExtra("incomingText", incomingText);
+                }
+                startActivity(CreateVenue);
                 break;
             case R.id.createGeocache:
                 Intent CreateGeocache = new Intent(getBaseContext(), GeocacheActivity.class);
