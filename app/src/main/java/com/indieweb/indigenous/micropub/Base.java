@@ -738,7 +738,6 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                         }
                     }
 
-
                     // Put image in body. Send along whether to scale or not.
                     params.put("file", new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap, scale, u, mime)));
 

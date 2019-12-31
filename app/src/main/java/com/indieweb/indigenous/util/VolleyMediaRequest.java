@@ -9,6 +9,4 @@ public class VolleyMediaRequest extends VolleyMultipartRequest {
         super(method, url, listener, errorListener);
     }
 
-
-
 }
