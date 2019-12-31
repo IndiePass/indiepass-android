@@ -27,6 +27,7 @@
     <string name="search_hint">Search posts</string>
     <string name="no_microsub_endpoint">We did not find your reader endpoint. In the accounts section, you can synchronize your account to add it. You can also just use the app for posting only.</string>
     <string name="no_micropub_endpoint">We did not find your micropub endpoint. In the accounts section, you can synchronize your account to add it.</string>
+    <string name="no_micropub_media_endpoint">We did not find your media endpoint. In the accounts section, you can synchronize your account to add it.</string>
     <string name="install_map_app">Install a maps application to view this location</string>
 
     <!-- Authentication and accounts -->
@@ -225,6 +226,9 @@
     <string name="post_types_parse_error">Error parsing post types: %s</string>
     <string name="post_list_parse_error">Error: %s</string>
     <string name="channel_list_parse_error">Error: %s</string>
+    <string name="bitmap_error">Error generating bitmap from image</string>
+    <string name="media_network_fail">Uploading media failed. Status code: %d; message: %s</string>
+    <string name="media_fail">Failed uploading media, unknown error</string>
 
     <!-- Contacts -->
     <string name="contact">Contact</string>
@@ -374,6 +378,8 @@
     <string name="pref_key_image_size_summary">Maximum image size in for width or height. In case the preview is blank, set the default size lower as this indicates the phone has ran out of memory.</string>
     <string name="pref_key_media_name_title">Add name to upload</string>
     <string name="pref_key_media_name_summary">Exposes a textfield on the Upload screen so you can send a title for your uploaded file to the media endpoint.</string>
+    <string name="pref_key_upload_media_endpoint_title">Use media endpoint to upload</string>
+    <string name="pref_key_upload_media_endpoint_summary">Use the media endpoint, if available, when attaching uploads to a post.</string>
 
     <!-- Preferences: tracker -->
     <string name="pref_category_tracker_title">Tracker</string>

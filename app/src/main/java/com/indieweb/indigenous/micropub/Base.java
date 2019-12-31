@@ -51,6 +51,8 @@ import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
+import com.indieweb.indigenous.util.VolleyMediaRequest;
+import com.indieweb.indigenous.util.VolleyMediaRequestListener;
 import com.indieweb.indigenous.util.VolleyMultipartRequest;
 
 import org.json.JSONArray;
@@ -74,7 +76,7 @@ import java.util.TimeZone;
 import static java.lang.Integer.parseInt;
 
 @SuppressLint("Registered")
-abstract public class Base extends AppCompatActivity implements SendPostInterface, TextWatcher {
+abstract public class Base extends AppCompatActivity implements SendPostInterface, TextWatcher, VolleyMediaRequestListener {
 
     public boolean isTesting = false;
     boolean hasChanges = false;
@@ -85,6 +87,11 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public User user;
     public MultiAutoCompleteTextView tags;
     public List<Uri> images = new ArrayList<>();
+    public int imageCount = 0;
+    public int imageUploadedCount = 0;
+    public Map<Uri, String> imageUrls = new HashMap<>();
+    public boolean uploadMediaImageDone = false;
+    public boolean uploadMediaImageError = false;
     public List<String> captions = new ArrayList<>();
     public boolean preparedDraft = false;
     public List<Syndication> syndicationTargets = new ArrayList<>();
@@ -92,6 +99,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public LinearLayout imagePreviewGallery;
     private Switch postStatus;
     private int PICK_IMAGE_REQUEST = 1;
+    private VolleyMediaRequestListener volleyMediaRequestListener;
 
     public EditText url;
     public Spinner rsvp;
@@ -316,6 +324,10 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
     /**
      * Send post.
+     *
+     * This is used for all posts and the single media endpoint activity. In case the media endpoint
+     * must be used for attached media on a post, sendMediaPost() will be called as well to first
+     * upload all media before coming back to this one.
      */
     public void sendBasePost(MenuItem item) {
         sendItem = item;
@@ -331,6 +343,14 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
         showProgressBar();
 
+        // Use media endpoint to upload media attached to the post.
+        if (Preferences.getPreference(getApplicationContext(), "pref_key_upload_media_endpoint", false) && images.size() > 0 && !uploadMediaImageDone) {
+            imageCount = images.size();
+            sendMediaPost();
+            return;
+        }
+
+        // Get the endpoint. The single media endpoint also uses this method.
         String endpoint = user.getMicropubEndpoint();
         if (isMediaRequest) {
             endpoint = user.getMicropubMediaEndpoint();
@@ -503,6 +523,15 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                     }
                 }
 
+                // Media urls.
+                if (Preferences.getPreference(getApplicationContext(), "pref_key_upload_media_endpoint", false) && uploadMediaImageDone && images.size() > 0 && imageUrls.size() > 0) {
+                    int mi = 0;
+                    for (Uri u: images) {
+                        bodyParams.put("photo_multiple_[" + mi + "]", imageUrls.get(u));
+                        mi++;
+                    }
+                }
+
                 return bodyParams;
             }
 
@@ -523,7 +552,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new LinkedHashMap<>();
 
-                if (images.size() > 0) {
+                if (images.size() > 0 && !Preferences.getPreference(getApplicationContext(), "pref_key_upload_media_endpoint", false)) {
 
                     int ImageSize = 1000;
                     Boolean scale = Preferences.getPreference(getApplicationContext(), "pref_key_image_scale", true);
@@ -587,6 +616,182 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     }
 
     /**
+     * Send media post.
+     */
+    public void sendMediaPost() {
+
+        imageUrls.clear();
+        imageUploadedCount = 0;
+        uploadMediaImageDone = false;
+        uploadMediaImageError = false;
+
+        String endpoint = user.getMicropubMediaEndpoint();
+        if (endpoint.length() == 0) {
+            if (sendItem != null) {
+                sendItem.setEnabled(true);
+            }
+            Toast.makeText(getApplicationContext(), getString(R.string.no_micropub_media_endpoint), Toast.LENGTH_SHORT).show();
+            hideProgressBar();
+            return;
+        }
+
+        // Set listener.
+        VolleyMediaRequestListener(this);
+
+        for (final Uri u : images) {
+            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+            VolleyMediaRequest request = new VolleyMediaRequest(Request.Method.POST, endpoint,
+                    new Response.Listener<NetworkResponse>() {
+                        @Override
+                        public void onResponse(NetworkResponse response) {
+
+                            String fileUrl = response.headers.get("Location");
+                            if (fileUrl != null && fileUrl.length() > 0) {
+                                imageUrls.put(u, fileUrl);
+                                imageUploadedCount++;
+                                volleyMediaRequestListener.OnSuccessRequest();
+                            }
+                            else {
+                                uploadMediaImageError = true;
+                                volleyMediaRequestListener.OnFailureRequest();
+                                Toast.makeText(getApplicationContext(), R.string.no_media_url_found, Toast.LENGTH_SHORT).show();
+                            }
+
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            uploadMediaImageError = true;
+                            volleyMediaRequestListener.OnFailureRequest();
+                            Utility.parseNetworkError(error, getApplicationContext(), R.string.media_network_fail, R.string.media_fail);
+                        }
+                    }
+            )
+            {
+                @Override
+                protected Map<String, String> getParams() {
+
+                    // Send along access token if configured.
+                    if (Preferences.getPreference(getApplicationContext(), "pref_key_access_token_body", false)) {
+                        bodyParams.put("access_token", user.getAccessToken());
+                    }
+
+                    return bodyParams;
+                }
+
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put("Accept", "application/json");
+
+                    // Send access token in header by default.
+                    if (!Preferences.getPreference(getApplicationContext(), "pref_key_access_token_body", false)) {
+                        headers.put("Authorization", "Bearer " + user.getAccessToken());
+                    }
+
+                    return headers;
+                }
+
+                @Override
+                protected Map<String, DataPart> getByteData() {
+                    Map<String, DataPart> params = new LinkedHashMap<>();
+
+                    int ImageSize = 1000;
+                    Boolean scale = Preferences.getPreference(getApplicationContext(), "pref_key_image_scale", true);
+                    if (scale) {
+                        String sizePreference = Preferences.getPreference(getApplicationContext(), "pref_key_image_size", Integer.toString(ImageSize));
+                        if (parseInt(sizePreference) > 0) {
+                            ImageSize = parseInt(sizePreference);
+                        }
+                    }
+
+                    ContentResolver cR = getApplicationContext().getContentResolver();
+
+                    Bitmap bitmap = null;
+                    if (scale) {
+                        try {
+                            bitmap = Glide
+                                    .with(getApplicationContext())
+                                    .asBitmap()
+                                    .load(u)
+                                    .apply(new RequestOptions().override(ImageSize, ImageSize))
+                                    .submit()
+                                    .get();
+                        }
+                        catch (Exception ignored) {}
+
+                        if (bitmap == null) {
+                            uploadMediaImageError = true;
+                            Toast.makeText(getApplicationContext(), getString(R.string.bitmap_error), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    long imagename = System.currentTimeMillis();
+                    String mime = cR.getType(u);
+
+                    String extension = "jpg";
+                    if (mime != null) {
+                        if (mime.equals("image/png")) {
+                            extension = "png";
+                        }
+                    }
+
+
+                    // Put image in body. Send along whether to scale or not.
+                    params.put("file", new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap, scale, u, mime)));
+
+                    return params;
+                }
+            };
+
+            request.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            queue.add(request);
+        }
+    }
+
+    /**
+     * Set listener.
+     *
+     * @param volleyMediaRequestListener
+     *   The volley media request listener.
+     */
+    public void VolleyMediaRequestListener(VolleyMediaRequestListener volleyMediaRequestListener) {
+        this.volleyMediaRequestListener = volleyMediaRequestListener;
+    }
+
+
+    @Override
+    public void OnSuccessRequest() {
+
+        // In case everything is fine, send base post.
+        if (imageUploadedCount == imageCount && !uploadMediaImageError) {
+            uploadMediaImageDone = true;
+            sendBasePost(sendItem);
+        }
+
+        // There's a possibility no url was found, we need to stop then as well.
+        if (uploadMediaImageError) {
+            if (sendItem != null) {
+                sendItem.setEnabled(true);
+            }
+
+            hideProgressBar();
+        }
+
+    }
+
+    @Override
+    public void OnFailureRequest() {
+        if (sendItem != null) {
+            sendItem.setEnabled(true);
+        }
+
+        hideProgressBar();
+    }
+
+    /**
      * Sets the incoming text as URL and puts focus on either title, or body field.
      *
      * @param incomingUrl
@@ -614,7 +819,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
      * Show progress bar.
      */
     public void showProgressBar() {
-        if (progressBar != null) {
+        if (progressBar != null && (progressBar.getVisibility() != View.VISIBLE)) {
             progressBar.setVisibility(View.VISIBLE);
         }
     }

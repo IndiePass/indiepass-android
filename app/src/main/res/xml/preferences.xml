@@ -179,7 +179,6 @@
         android:layout="@layout/preference_category"
         android:title="@string/pref_category_media_title"
         android:summary="@string/pref_category_media_summary">
-
         <SwitchPreference
             android:key="pref_key_image_scale"
             android:title="@string/pref_key_image_scale_title"
@@ -203,6 +202,11 @@
             android:key="pref_key_media_name"
             android:title="@string/pref_key_media_name_title"
             android:summary="@string/pref_key_media_name_summary"
+            android:defaultValue="false" />
+        <SwitchPreference
+            android:key="pref_key_upload_media_endpoint"
+            android:title="@string/pref_key_upload_media_endpoint_title"
+            android:summary="@string/pref_key_upload_media_endpoint_summary"
             android:defaultValue="false" />
 
     </PreferenceCategory>
