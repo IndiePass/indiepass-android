@@ -35,7 +35,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 abstract public class BasePlatformCreate extends Base {
 
     public Boolean mRequestingLocationUpdates = false;
-    public static final int REQUEST_CHECK_SETTINGS = 100;
+    public static final int REQUEST_CHECK_LOCATION_SETTINGS = 100;
     public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
     public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
 
@@ -93,10 +93,8 @@ abstract public class BasePlatformCreate extends Base {
                     @SuppressLint("MissingPermission")
                     @Override
                     public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-
                         //noinspection MissingPermission
                         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-
                         updateLocationUI();
                     }
                 })
@@ -110,7 +108,7 @@ abstract public class BasePlatformCreate extends Base {
                                     // Show the dialog by calling startResolutionForResult(),
                                     // and check the result in onActivityResult().
                                     ResolvableApiException rae = (ResolvableApiException) e;
-                                    rae.startResolutionForResult(BasePlatformCreate.this, REQUEST_CHECK_SETTINGS);
+                                    rae.startResolutionForResult(BasePlatformCreate.this, REQUEST_CHECK_LOCATION_SETTINGS);
                                 }
                                 catch (IntentSender.SendIntentException sie) {
                                     Toast.makeText(getApplicationContext(), getString(R.string.location_intent_error), Toast.LENGTH_SHORT).show();

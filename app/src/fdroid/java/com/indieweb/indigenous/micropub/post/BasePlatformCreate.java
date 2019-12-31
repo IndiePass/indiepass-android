@@ -24,7 +24,7 @@ abstract public class BasePlatformCreate extends Base {
     LocationManager locationManager;
     LocationListener locationListener;
     public Boolean mRequestingLocationUpdates = false;
-    public static final int REQUEST_CHECK_SETTINGS = 100;
+    public static final int REQUEST_CHECK_LOCATION_SETTINGS = 100;
     public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
 
     /**

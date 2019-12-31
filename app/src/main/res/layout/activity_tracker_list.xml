@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tracker_root"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <ListView
+        android:divider="@color/listDividerColor"
+        android:dividerHeight="@dimen/channel_list_divider_height"
+        android:background="@color/listBackgroundColor"
+        android:id="@+id/tracker_list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+    <TextView
+        android:padding="@dimen/box_padding"
+        android:id="@+id/noTracks"
+        android:visibility="gone"
+        android:textColor="@color/textColor"
+        android:text="@string/no_tracks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/actionButton"
+        android:layout_margin="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/button_location_white"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>

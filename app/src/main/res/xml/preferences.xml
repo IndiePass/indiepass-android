@@ -231,6 +231,16 @@
 
     <PreferenceCategory
         android:layout="@layout/preference_category"
+        android:title="@string/pref_category_tracker_title"
+        android:summary="@string/pref_category_tracker_summary">
+        <SwitchPreference
+            android:key="pref_key_tracker_enable"
+            android:title="@string/pref_category_tracker_enable"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/preference_category"
         android:title="@string/pref_category_experimental_title"
         android:summary="@string/pref_category_experimental_summary">
         <SwitchPreference

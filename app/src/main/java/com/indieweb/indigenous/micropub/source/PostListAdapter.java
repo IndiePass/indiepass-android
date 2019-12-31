@@ -109,7 +109,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
 
             // Published.
             SimpleDateFormat formatIn = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-            SimpleDateFormat formatOut = new SimpleDateFormat("dd MMM yyyy HH:mm");
+            SimpleDateFormat formatOut = new SimpleDateFormat("dd MM yyyy HH:mm");
             Date result;
             try {
                 result = formatIn.parse(item.getPublished());

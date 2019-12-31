@@ -13,6 +13,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <!-- Pushy permissions -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -42,6 +44,14 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
+
+        <!-- Foreground services in Q+ require type. -->
+        <service
+            android:name=".tracker.TrackerService"
+            android:enabled="true"
+            android:exported="true"
+            android:foregroundServiceType="location"
+            tools:targetApi="q" />
 
         <activity android:name=".LaunchActivity">
             <intent-filter>
@@ -381,6 +391,15 @@
         <activity
             android:name=".general.DebugActivity"
             android:label="@string/debug"
+            android:parentActivityName=".LaunchActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.LaunchActivity" />
+        </activity>
+
+        <activity
+            android:name=".tracker.TrackActivity"
+            android:label="@string/new_track"
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

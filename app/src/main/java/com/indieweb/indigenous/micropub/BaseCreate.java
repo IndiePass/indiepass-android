@@ -207,7 +207,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CHECK_SETTINGS && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_CHECK_LOCATION_SETTINGS && resultCode == RESULT_OK) {
             startLocationUpdates();
         }
     }

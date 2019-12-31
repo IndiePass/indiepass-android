@@ -205,10 +205,10 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             // Published.
             SimpleDateFormat formatOut;
             if (Style == TIMELINE_STYLE_COMPACT) {
-                formatOut = new SimpleDateFormat("dd MMM yyyy");
+                formatOut = new SimpleDateFormat("dd MM yyyy");
             }
             else {
-                formatOut = new SimpleDateFormat("dd MMM yyyy HH:mm");
+                formatOut = new SimpleDateFormat("dd MM yyyy HH:mm");
             }
 
             Date dateResult = null;
@@ -928,9 +928,8 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 context.startActivity(intent);
             }
             else {
-                Toast.makeText(context, "Install a maps application to view this location", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.install_map_app), Toast.LENGTH_SHORT).show();
             }
-
         }
     }
 

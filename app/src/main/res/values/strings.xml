@@ -27,6 +27,7 @@
     <string name="search_hint">Search posts</string>
     <string name="no_microsub_endpoint">We did not find your reader endpoint. In the accounts section, you can synchronize your account to add it. You can also just use the app for posting only.</string>
     <string name="no_micropub_endpoint">We did not find your micropub endpoint. In the accounts section, you can synchronize your account to add it.</string>
+    <string name="install_map_app">Install a maps application to view this location</string>
 
     <!-- Authentication and accounts -->
     <string name="account_type">IndieAuth</string>
@@ -243,6 +244,32 @@
     <string name="contact_website">Website</string>
     <string name="contact_photo_hint">Photo URL</string>
 
+    <!-- Tracker -->
+    <string name="tracker">Tracker</string>
+    <string name="no_tracks">No tracks were found for this account.</string>
+    <string name="track_delete_confirm">Are you sure you want to delete this track ?</string>
+    <string name="delete_track">Delete</string>
+    <string name="track_deleted">Track deleted</string>
+    <string name="post_track">Post track</string>
+    <string name="track_title">Track title</string>
+    <string name="new_track">New track</string>
+    <string name="start_track">Start tracking</string>
+    <string name="stop_track">Stop tracking</string>
+    <string name="track_started">Tracking started</string>
+    <string name="map_track">View track on map</string>
+    <string name="tracker_meta">Started: %s - points: %d</string>
+    <string name="tracker_error_start">Error starting tracker: %s</string>
+    <string name="track_start_error_no_id">Error starting tracker: no track id found</string>
+    <string name="tracker_truncate">Delete all data</string>
+    <string name="tracker_truncated">All tracker data removed</string>
+    <string name="tracker_truncate_confirm">Are you sure you want to delete all tracker data?</string>
+    <string name="track_posted">Track has been posted</string>
+    <string name="track_post_confirm">Send track to server?</string>
+    <string name="post_track_success">Post track success</string>
+    <string name="post_track_error">Error posting track, unknown error</string>
+    <string name="post_track_network_error">Error posting track. Status code: %d; message: %s</string>
+    <string name="location_saved">Location saved: %1$s</string>
+
     <!-- Source lists -->
     <string name="source_post_list_refresh">Refresh posts</string>
     <string name="source_post_list_items_refreshed">Posts refreshed</string>
@@ -269,7 +296,7 @@
     <string name="indigenous_account_not_found">Account not found</string>
     <string name="indigenous_account_blocked">Account is blocked</string>
     <string name="indigenous_account_error">Error checking account: %s</string>
-    <string name="indigenous_registration_success">Registration successful</string>
+    <string name="indigenous_registration_success">Registration success</string>
     <string name="indigenous_device_store_error">Error storing device: %s</string>
     <string name="indigenous_unknown_error">unknown error</string>
     <string name="pushy_me_token_not_found">Pushy.me token not found to register on backend.</string>
@@ -347,6 +374,11 @@
     <string name="pref_key_image_size_summary">Maximum image size in for width or height. In case the preview is blank, set the default size lower as this indicates the phone has ran out of memory.</string>
     <string name="pref_key_media_name_title">Add name to upload</string>
     <string name="pref_key_media_name_summary">Exposes a textfield on the Upload screen so you can send a title for your uploaded file to the media endpoint.</string>
+
+    <!-- Preferences: tracker -->
+    <string name="pref_category_tracker_title">Tracker</string>
+    <string name="pref_category_tracker_summary">Adds a tracker menu item to log your itineraries while walking, running, flying etc. The tracks can be posted to your server using the Micropub endpoint.</string>
+    <string name="pref_category_tracker_enable">Enable tracker</string>
 
     <!-- Preferences: debugging -->
     <string name="pref_category_debug_title">Developer</string>

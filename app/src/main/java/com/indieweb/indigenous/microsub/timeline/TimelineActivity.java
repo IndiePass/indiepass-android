@@ -147,7 +147,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
             // Get style.
             DatabaseHelper db = new DatabaseHelper(TimelineActivity.this);
-            style = db.getStyle(channelId);
+            style = db.getTimelineStyle(channelId);
 
             // Autoload more posts.
             if (Preferences.getPreference(TimelineActivity.this, "pref_key_timeline_autoload_more", false)) {
@@ -272,7 +272,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                         dialog.dismiss();
                     }
                 });
-                builder.setSingleChoiceItems(styleOptions, db.getStyle(channelId), new DialogInterface.OnClickListener() {
+                builder.setSingleChoiceItems(styleOptions, db.getTimelineStyle(channelId), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int index) {
                         TimelineStyle s = new TimelineStyle();

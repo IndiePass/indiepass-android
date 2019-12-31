@@ -27,7 +27,7 @@ public class PushyBroadcastReceiver extends BroadcastReceiver {
         }
 
         // If the notification text is empty, bail out.
-        if (notificationText.length() == 0) {
+        if (notificationText == null || notificationText.length() == 0) {
             return;
         }
 

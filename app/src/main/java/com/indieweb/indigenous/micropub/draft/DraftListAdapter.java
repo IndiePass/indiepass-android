@@ -121,7 +121,7 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
             @SuppressLint("SimpleDateFormat")
             SimpleDateFormat formatIn = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat formatOut = new SimpleDateFormat("dd MMM yyyy HH:mm");
+            SimpleDateFormat formatOut = new SimpleDateFormat("dd MM yyyy HH:mm");
             try {
                 holder.published.setVisibility(View.VISIBLE);
                 Date result = formatIn.parse(draft.getTimestamp());

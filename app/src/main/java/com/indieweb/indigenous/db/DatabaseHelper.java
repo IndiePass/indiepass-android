@@ -1,5 +1,6 @@
 package com.indieweb.indigenous.db;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -7,16 +8,20 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.indieweb.indigenous.model.Draft;
+import com.indieweb.indigenous.model.Point;
 import com.indieweb.indigenous.model.TimelineStyle;
+import com.indieweb.indigenous.model.Track;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_SUMMARY;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 18;
+    private static final int DATABASE_VERSION = 22;
     private static final String DATABASE_NAME = "indigenous";
 
     public DatabaseHelper(Context context) {
@@ -27,17 +32,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(Draft.CREATE_TABLE);
         db.execSQL(TimelineStyle.CREATE_TABLE);
+        db.execSQL(Track.CREATE_TABLE);
+        db.execSQL(Point.CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL(Point.CREATE_TABLE);
+        db.execSQL(Track.CREATE_TABLE);
         db.execSQL(TimelineStyle.CREATE_TABLE);
     }
 
     /**
      * Get a timeline style.
      */
-    public int getStyle(String channelId) {
+    public int getTimelineStyle(String channelId) {
         int style = TIMELINE_STYLE_SUMMARY;
 
         // Select query
@@ -73,6 +82,202 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.close();
     }
+
+    /**
+     * Saves a track.
+     *
+     * @param track
+     *   The track to save.
+     */
+    public void saveTrack(Track track) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(Track.COLUMN_ACCOUNT, track.getAccount());
+        values.put(Track.COLUMN_TITLE, track.getTitle());
+
+        db.insert(Track.TABLE_NAME, null, values);
+        db.close();
+    }
+
+    /**
+     * Saves a point.
+     *
+     * @param point
+     *   The point to save.
+     */
+    public void savePoint(Point point) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(Point.COLUMN_POINT, point.getPoint());
+        values.put(Point.COLUMN_TRACK_ID, point.getTrackId());
+
+        db.insert(Point.TABLE_NAME, null, values);
+        db.close();
+    }
+
+    /**
+     * Get points for a track.
+     *
+     * @param trackId
+     *   The track id.
+     *
+     * @return points
+     */
+    public Map<Integer, Point> getPoints(int trackId) {
+        @SuppressLint("UseSparseArrays")
+        Map<Integer, Point> points = new LinkedHashMap<>();
+
+        // Select query
+        String selectQuery = "SELECT * FROM " + Point.TABLE_NAME + " WHERE " + Point.COLUMN_TRACK_ID + "=" + trackId + " " +
+                "ORDER BY " + Point.COLUMN_ID + " ASC";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // Looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Point point = new Point();
+                point.setId(cursor.getInt(cursor.getColumnIndex(Point.COLUMN_ID)));
+                point.setPoint(cursor.getString(cursor.getColumnIndex(Point.COLUMN_POINT)));
+                points.put(point.getId(), point);
+            } while (cursor.moveToNext());
+        }
+
+        // close db connection
+        db.close();
+
+        return points;
+    }
+
+    /**
+     * Get all tracks.
+     *
+     * @param account
+     *   The account to get the tracks for.
+     *
+     * @return <Track>
+     */
+    public List<Track> getTracks(String account) {
+        List<Track> tracks = new ArrayList<>();
+
+        // Select query
+        String selectQuery = "SELECT * FROM " + Track.TABLE_NAME + " WHERE " + Track.COLUMN_ACCOUNT + "='" + account + "' " +
+                "ORDER BY " + Track.COLUMN_START_TIME + " DESC";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // Looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Track track = new Track();
+                setTrackProperties(track, cursor);
+                tracks.add(track);
+            } while (cursor.moveToNext());
+        }
+
+        // close db connection
+        db.close();
+
+        // return tracks list
+        return tracks;
+    }
+
+    /**
+     * Gets the latest track id.
+     *
+     * @return int id
+     */
+    public int getLatestTrackId(String account) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Select query
+        String selectQuery = "SELECT " + Track.COLUMN_ID + " FROM " + Track.TABLE_NAME + "" +
+                " WHERE " + Track.COLUMN_ACCOUNT + "='" + account + "' " +
+                "ORDER BY " + Track.COLUMN_START_TIME + " DESC LIMIT 1";
+
+        int id = 0;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            id = cursor.getInt(cursor.getColumnIndex(Track.COLUMN_ID));
+            cursor.close();
+        }
+
+        return id;
+    }
+
+    /**
+     * Deletes all tracker data.
+     */
+    public void deleteAllTrackerData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL("delete from " + Track.TABLE_NAME);
+        db.execSQL("delete from " + Point.TABLE_NAME);
+    }
+
+    /**
+     * Set track properties.
+     *
+     * @param track
+     *   The track.
+     * @param cursor
+     *   The cursor
+     */
+    private void setTrackProperties(Track track, Cursor cursor) {
+        track.setId(cursor.getInt(cursor.getColumnIndex(Track.COLUMN_ID)));
+        track.setAccount(cursor.getString(cursor.getColumnIndex(Track.COLUMN_ACCOUNT)));
+        track.setTitle(cursor.getString(cursor.getColumnIndex(Track.COLUMN_TITLE)));
+        track.setStartTime(cursor.getString(cursor.getColumnIndex(Track.COLUMN_START_TIME)));
+        track.setEndTime(cursor.getString(cursor.getColumnIndex(Track.COLUMN_END_TIME)));
+        track.setDuration(cursor.getInt(cursor.getColumnIndex(Track.COLUMN_DURATION)));
+        track.setStartLocation(cursor.getString(cursor.getColumnIndex(Track.COLUMN_START_LOCATION)));
+        track.setEndLocation(cursor.getString(cursor.getColumnIndex(Track.COLUMN_END_LOCATION)));
+        track.setTransport(cursor.getString(cursor.getColumnIndex(Track.COLUMN_TRANSPORT)));
+        track.setPointCount(this.getPointCount(track.getId()));
+    }
+
+    /**
+     * Deletes a track.
+     *
+     * @param id
+     *   The track id to delete.
+     */
+    public void deleteTrack(Integer id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(Track.TABLE_NAME, Track.COLUMN_ID + "=" + id, null);
+        db.delete(Point.TABLE_NAME, Point.COLUMN_TRACK_ID + "=" + id, null);
+        db.close();
+    }
+
+    /**
+     * Get the number of points for a track.
+     *
+     * @param trackId
+     *   The track id.
+     *
+     * @return int
+     *   The number of drafts.
+     */
+    private int getPointCount(int trackId) {
+        int count = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor dataCount;
+        if (db != null) {
+            dataCount = db.rawQuery("select " + Point.COLUMN_ID + " from " + Point.TABLE_NAME + " where " + Point.COLUMN_TRACK_ID + "=" + trackId, null);
+            count = dataCount.getCount();
+            //Log.d("indigenous_debug", "Points for " + trackId + ": " + count);
+            //dataCount = db.rawQuery("select " + Point.COLUMN_ID + " from " + Point.TABLE_NAME, null);
+            //count = dataCount.getCount();
+            //Log.d("indigenous_debug", "All points: " + count);
+            db.close();
+        }
+        return count;
+    }
+
 
     /**
      * Saves a draft.
@@ -163,7 +368,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Draft draft = new Draft();
         draft.setId(0);
-        if (cursor != null && cursor.moveToFirst()) {
+        if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             setDraftProperties(draft, cursor);
             cursor.close();
@@ -202,7 +407,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // close db connection
         db.close();
 
-        // return notes list
+        // return tracks list
         return drafts;
     }
 

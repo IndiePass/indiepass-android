@@ -95,7 +95,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
             // Published.
             TextView published = findViewById(R.id.timeline_published);
-            SimpleDateFormat formatOut = new SimpleDateFormat("dd MMM yyyy HH:mm");
+            SimpleDateFormat formatOut = new SimpleDateFormat("dd MM yyyy HH:mm");
             Date dateResult = null;
             for (String formatString : dateFormatStrings) {
                 try {

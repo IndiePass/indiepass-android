@@ -41,6 +41,7 @@ import com.indieweb.indigenous.micropub.post.VenueActivity;
 import com.indieweb.indigenous.micropub.source.PostListFragment;
 import com.indieweb.indigenous.microsub.channel.ChannelFragment;
 import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.tracker.TrackerFragment;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Preferences;
 
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     public static final int CREATE_DRAFT = 1001;
     public static final int POST_DRAFT = 1002;
+    public static final int CREATE_TRACK = 1003;
 
     @Override
     public void onAttachFragment(@NonNull Fragment fragment) {
@@ -79,6 +81,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (requestCode == POST_DRAFT && resultCode == RESULT_OK) {
             updateDraftMenuItem(true);
             startFragment(new DraftFragment());
+        }
+
+        if (requestCode == CREATE_TRACK && resultCode == RESULT_OK) {
+            startFragment(new TrackerFragment());
         }
     }
 
@@ -151,6 +157,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (micropubMediaEndpoint == null || micropubMediaEndpoint.length() == 0) {
             menu.removeItem(R.id.nav_upload);
             menu.removeItem(R.id.nav_upload2);
+        }
+
+        // Hide Tracker if setting is not enabled.
+        if (!Preferences.getPreference(this, "pref_key_tracker_enable", false)) {
+            menu.removeItem(R.id.nav_tracker);
         }
 
         // Hide Posts if setting is not enabled.
@@ -284,6 +295,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_contacts:
                 close = true;
                 fragment = new ContactFragment();
+                break;
+
+            case R.id.nav_tracker:
+                close = true;
+                fragment = new TrackerFragment();
                 break;
 
             case R.id.nav_posts:

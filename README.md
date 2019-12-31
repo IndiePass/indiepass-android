@@ -41,10 +41,13 @@ https://indigenous.realize.be
   - view fullscreen images, zoom and pinch
   - Manage channels and feeds
 - Share intents: receive text or images to directly share
+- GPS tracker: log your itineraries when walking, running, flying and so on.
+  When posting to your site, the data will be send using the micropub
+  endpoint as a trip.
 - Push notifications: receive push notifications if you have an account
   on https://indigenous.realize.be
 
-Note: Checkin, Geocache and Venue are experimental and pass on all information
+Checkin, Geocache and Venue are experimental and pass on all information
 into a Geo URI in the geo property, e.g.
 
 ```
