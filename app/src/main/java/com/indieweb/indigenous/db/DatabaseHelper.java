@@ -22,7 +22,7 @@ import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_SUMMARY
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 22;
+    private static final int DATABASE_VERSION = 23;
     private static final String DATABASE_NAME = "indigenous";
 
     public DatabaseHelper(Context context) {
@@ -182,7 +182,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         Track.COLUMN_TITLE,
                         Track.COLUMN_START_LOCATION,
                         Track.COLUMN_END_LOCATION,
-                        Track.COLUMN_DURATION,
+                        Track.COLUMN_INTERVAL,
                         Track.COLUMN_TRANSPORT,
                         Track.COLUMN_START_TIME,
                         Track.COLUMN_END_TIME
@@ -283,7 +283,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         track.setTitle(cursor.getString(cursor.getColumnIndex(Track.COLUMN_TITLE)));
         track.setStartTime(cursor.getString(cursor.getColumnIndex(Track.COLUMN_START_TIME)));
         track.setEndTime(cursor.getString(cursor.getColumnIndex(Track.COLUMN_END_TIME)));
-        track.setDuration(cursor.getInt(cursor.getColumnIndex(Track.COLUMN_DURATION)));
+        track.setInterval(cursor.getInt(cursor.getColumnIndex(Track.COLUMN_INTERVAL)));
         track.setStartLocation(cursor.getString(cursor.getColumnIndex(Track.COLUMN_START_LOCATION)));
         track.setEndLocation(cursor.getString(cursor.getColumnIndex(Track.COLUMN_END_LOCATION)));
         track.setTransport(cursor.getString(cursor.getColumnIndex(Track.COLUMN_TRANSPORT)));

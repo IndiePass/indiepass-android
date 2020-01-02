@@ -10,7 +10,7 @@ public class Track {
     public static final String COLUMN_END_TIME = "end_time";
     public static final String COLUMN_START_LOCATION = "start_location";
     public static final String COLUMN_END_LOCATION = "end_location";
-    public static final String COLUMN_DURATION = "duration";
+    public static final String COLUMN_INTERVAL = "interval";
     public static final String COLUMN_TRANSPORT = "transport";
 
     public static final String CREATE_TABLE =
@@ -20,7 +20,7 @@ public class Track {
                     + COLUMN_TITLE + " TEXT,"
                     + COLUMN_START_LOCATION + " TEXT,"
                     + COLUMN_END_LOCATION + " TEXT,"
-                    + COLUMN_DURATION + " INTEGER,"
+                    + COLUMN_INTERVAL + " INTEGER,"
                     + COLUMN_TRANSPORT + " TEXT,"
                     + COLUMN_START_TIME + " DATETIME DEFAULT CURRENT_TIMESTAMP,"
                     + COLUMN_END_TIME + " DATETIME DEFAULT CURRENT_TIMESTAMP"
@@ -34,7 +34,7 @@ public class Track {
     private String startLocation = "";
     private String endLocation = "";
     private String transport = "";
-    private int duration = 0;
+    private int interval = 0;
     private int points;
 
     public Integer getId() {
@@ -101,12 +101,12 @@ public class Track {
         this.transport = transport;
     }
 
-    public int getDuration() {
-        return duration;
+    public int getInterval() {
+        return interval;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public void setInterval(int interval) {
+        this.interval = interval;
     }
 
     public int getPointCount() {
