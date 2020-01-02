@@ -276,6 +276,7 @@
     <string name="post_track_error">Error posting track, unknown error</string>
     <string name="post_track_network_error">Error posting track. Status code: %d; message: %s</string>
     <string name="location_saved">Location saved: %1$s</string>
+    <string name="tracker_running">There is a tracker running, stop that one first.</string>
 
     <!-- Source lists -->
     <string name="source_post_list_refresh">Refresh posts</string>

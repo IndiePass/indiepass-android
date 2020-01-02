@@ -2,14 +2,12 @@ package com.indieweb.indigenous.tracker;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.content.ServiceConnection;
-import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -21,7 +19,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -51,9 +48,6 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import java.util.List;
 
 public class TrackActivity extends AppCompatActivity implements View.OnClickListener {
-
-    // The BroadcastReceiver used to listen from broadcasts from the service.
-    private MyReceiver myReceiver;
 
     // A reference to the service used to get location updates.
     private TrackerService mService = null;
@@ -97,7 +91,6 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        myReceiver = new MyReceiver();
         setContentView(R.layout.activity_track);
         action = findViewById(R.id.startNewTrack);
         action.setOnClickListener(this);
@@ -130,19 +123,6 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
         // Bind to the service. If the service is in foreground mode, this signals to the service
         // that since this activity is in the foreground, the service can exit foreground mode.
         bindService(new Intent(this, TrackerService.class), mServiceConnection, Context.BIND_AUTO_CREATE);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        LocalBroadcastManager.getInstance(this).registerReceiver(myReceiver,
-                new IntentFilter(TrackerService.ACTION_BROADCAST));
-    }
-
-    @Override
-    protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(myReceiver);
-        super.onPause();
     }
 
     @Override
@@ -180,7 +160,6 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
 
                 setButtonState(false);
 
-                // TODO check a current track isn't running.
                 Track track = new Track();
                 track.setTitle(title.getText().toString());
                 track.setAccount(user.getMeWithoutProtocol());
@@ -201,20 +180,6 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
                     Toast.makeText(getApplicationContext(), String.format(getString(R.string.tracker_error_start), e.getMessage()), Toast.LENGTH_LONG).show();
                 }
             break;
-        }
-    }
-
-    /**
-     * Receiver for broadcasts sent by {@link TrackerService}.
-     */
-    private class MyReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Location location = intent.getParcelableExtra(TrackerService.EXTRA_LOCATION);
-            if (location != null) {
-                Toast.makeText(TrackActivity.this, TrackerUtils.getLocationText(location),
-                        Toast.LENGTH_SHORT).show();
-            }
         }
     }
 
@@ -307,6 +272,8 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
                     public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                         //noinspection MissingPermission
                         mService.requestLocationUpdates();
+                        Intent returnIntent = new Intent();
+                        setResult(RESULT_OK, returnIntent);
                         finish();
                     }
                 })

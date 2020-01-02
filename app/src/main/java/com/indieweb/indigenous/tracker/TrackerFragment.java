@@ -58,8 +58,13 @@ public class TrackerFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.actionButton) {
-            Intent CreateTrack = new Intent(requireActivity(), TrackActivity.class);
-            ((Activity) requireContext()).startActivityForResult(CreateTrack, CREATE_TRACK);
+            if (!TrackerUtils.requestingLocationUpdates(requireContext())) {
+                Intent CreateTrack = new Intent(requireActivity(), TrackActivity.class);
+                ((Activity) requireContext()).startActivityForResult(CreateTrack, CREATE_TRACK);
+            }
+            else {
+                Toast.makeText(requireContext(), getString(R.string.tracker_running), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

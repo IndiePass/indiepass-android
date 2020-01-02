@@ -21,7 +21,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -64,8 +63,6 @@ public class TrackerService extends Service {
      * Contains parameters used by {@link com.google.android.gms.location.FusedLocationProviderApi}.
      */
     private LocationRequest mLocationRequest;
-
-    static final String ACTION_BROADCAST = PACKAGE_NAME + ".broadcast";
 
     static final String EXTRA_LOCATION = PACKAGE_NAME + ".location";
     private static final String EXTRA_STARTED_FROM_NOTIFICATION = PACKAGE_NAME +
@@ -284,12 +281,6 @@ public class TrackerService extends Service {
         Log.i(TRACKER_TAG, "New location: " + location);
 
         mLocation = location;
-
-        // Notify anyone listening for broadcasts about the new location.
-        Intent intent = new Intent(ACTION_BROADCAST);
-        intent.putExtra(EXTRA_LOCATION, location);
-        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
-
         storeTrackerPoint(getApplicationContext());
 
         // Update notification content if running as a foreground service.
