@@ -33,6 +33,7 @@ import com.google.android.gms.tasks.Task;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.model.Point;
+import com.indieweb.indigenous.model.Track;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 
@@ -178,7 +179,7 @@ public class TrackerService extends Service {
         // We got here because the user decided to remove location updates from the notification.
         if (startedFromNotification) {
             removeLocationUpdates();
-            stopSelf();
+            stopService(getApplicationContext());
         }
         // Tells the system to not try to recreate the service after it has been killed.
         return START_NOT_STICKY;
@@ -216,7 +217,7 @@ public class TrackerService extends Service {
         try {
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
             TrackerUtils.setRequestingLocationUpdates(this, false);
-            stopSelf();
+            stopService(getApplicationContext());
         } catch (SecurityException unlikely) {
             TrackerUtils.setRequestingLocationUpdates(this, true);
             Log.e(TRACKER_TAG, "Lost location permission. Could not remove updates. " + unlikely);
@@ -350,9 +351,30 @@ public class TrackerService extends Service {
             }
             else {
                 Log.i(TRACKER_TAG, "No tracker id found, stopping.");
-                stopSelf();
+                stopService(context);
             }
         }
+    }
+
+    /**
+     * Stop service.
+     *
+     * @param context
+     *   The current context.
+     */
+    public void stopService(Context context) {
+
+        User user = new Accounts(context).getCurrentUser();
+        DatabaseHelper db = new DatabaseHelper(getApplicationContext());
+        int trackerId = db.getLatestTrackId(user.getMeWithoutProtocol());
+        if (trackerId > 0) {
+            Track track = db.getTrack(trackerId);
+            if (track != null && track.getId() > 0) {
+                db.saveTrack(track, true);
+            }
+        }
+
+        stopSelf();
     }
 
 }

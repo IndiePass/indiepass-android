@@ -261,7 +261,10 @@
     <string name="stop_track">Stop tracking</string>
     <string name="track_started">Tracking started</string>
     <string name="map_track">View track on map</string>
-    <string name="tracker_meta">Started: %s - points: %d</string>
+    <string name="edit_track">Edit track</string>
+    <string name="track_updated">Track saved</string>
+    <string name="tracker_start">Points: %d\nStarted: %s</string>
+    <string name="tracker_start_end">Points: %d\nStarted: %s\nEnded: %s</string>
     <string name="tracker_error_start">Error starting tracker: %s</string>
     <string name="track_start_error_no_id">Error starting tracker: no track id found</string>
     <string name="tracker_truncate">Delete all data</string>

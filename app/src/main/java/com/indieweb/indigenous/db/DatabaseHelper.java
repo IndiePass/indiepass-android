@@ -12,6 +12,7 @@ import com.indieweb.indigenous.model.Point;
 import com.indieweb.indigenous.model.TimelineStyle;
 import com.indieweb.indigenous.model.Track;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -89,14 +90,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param track
      *   The track to save.
      */
-    public void saveTrack(Track track) {
+    public void saveTrack(Track track, boolean setEnd) {
         SQLiteDatabase db = this.getWritableDatabase();
-
         ContentValues values = new ContentValues();
-        values.put(Track.COLUMN_ACCOUNT, track.getAccount());
-        values.put(Track.COLUMN_TITLE, track.getTitle());
 
-        db.insert(Track.TABLE_NAME, null, values);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        if (track.getId() > 0) {
+            values.put(Track.COLUMN_TITLE, track.getTitle());
+            if (setEnd) {
+                values.put(Track.COLUMN_END_TIME,dateFormat.format(System.currentTimeMillis()));
+            }
+            db.update(Track.TABLE_NAME, values, Track.COLUMN_ID + "=" + track.getId(), null);
+        }
+        else {
+            values.put(Track.COLUMN_ACCOUNT, track.getAccount());
+            values.put(Track.COLUMN_TITLE, track.getTitle());
+            values.put(Track.COLUMN_START_TIME,dateFormat.format(System.currentTimeMillis()));
+            db.insert(Track.TABLE_NAME, null, values);
+        }
         db.close();
     }
 
@@ -151,6 +163,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return points;
     }
+
+    /**
+     * Gets a single track.
+     *
+     * @param id
+     *   The track id.
+     *
+     * @return Track
+     */
+    public Track getTrack(long id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(Track.TABLE_NAME,
+                new String[]{
+                        Track.COLUMN_ID,
+                        Track.COLUMN_ACCOUNT,
+                        Track.COLUMN_TITLE,
+                        Track.COLUMN_START_LOCATION,
+                        Track.COLUMN_END_LOCATION,
+                        Track.COLUMN_DURATION,
+                        Track.COLUMN_TRANSPORT,
+                        Track.COLUMN_START_TIME,
+                        Track.COLUMN_END_TIME
+                },
+                Track.COLUMN_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null, null);
+
+        Track track = new Track();
+        track.setId(0);
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            setTrackProperties(track, cursor);
+            cursor.close();
+        }
+
+        return track;
+    }
+
 
     /**
      * Get all tracks.

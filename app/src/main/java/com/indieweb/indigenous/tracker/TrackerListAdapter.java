@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -79,7 +78,8 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
         TextView label;
         TextView meta;
         Button post;
-        Button map;
+        Button edit;
+        //Button map;
         Button delete;
         LinearLayout row;
     }
@@ -93,8 +93,9 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
             holder.row = convertView.findViewById(R.id.track_list_item_row);
             holder.label = convertView.findViewById(R.id.track_list_label);
             holder.meta = convertView.findViewById(R.id.track_list_meta);
+            holder.edit = convertView.findViewById(R.id.trackEdit);
             holder.post = convertView.findViewById(R.id.trackPost);
-            holder.map = convertView.findViewById(R.id.trackMap);
+            //holder.map = convertView.findViewById(R.id.trackMap);
             holder.delete = convertView.findViewById(R.id.trackDelete);
             convertView.setTag(holder);
         }
@@ -128,15 +129,48 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
             catch (ParseException ignored) {
                 started = "/";
             }
-            holder.meta.setText(String.format(context.getString(R.string.tracker_meta), started, track.getPointCount()));
+
+            String ended = "";
+            if (!track.getStartTime().equals(track.getEndTime())) {
+                try {
+                    Date result = formatIn.parse(track.getEndTime());
+                    ended = formatOut.format(result);
+                }
+                catch (ParseException e) {
+                    ended = "/";
+                }
+                holder.meta.setText(String.format(context.getString(R.string.tracker_start_end), track.getPointCount(), started, ended));
+            }
+            else {
+                holder.meta.setText(String.format(context.getString(R.string.tracker_start), track.getPointCount(), started));
+            }
 
             holder.post.setOnClickListener(new OnPostClickListener(position));
-            holder.map.setOnClickListener(new OnMapClickListener(position));
+            holder.edit.setOnClickListener(new OnEditClickListener(position));
+            //holder.map.setOnClickListener(new OnMapClickListener(position));
             holder.delete.setOnClickListener(new OnDeleteClickListener(position));
 
         }
 
         return convertView;
+    }
+
+    // Edit listener.
+    class OnEditClickListener implements OnClickListener {
+
+        int position;
+
+        OnEditClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Track track = tracks.get(this.position);
+            Intent startActivity = new Intent(context, TrackActivity.class);
+            startActivity.putExtra("trackId", track.getId());
+            context.startActivity(startActivity);
+        }
     }
 
     // Post listener.
@@ -169,7 +203,7 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
     }
 
     // Map listener.
-    class OnMapClickListener implements OnClickListener {
+    /*class OnMapClickListener implements OnClickListener {
 
         int position;
 
@@ -218,7 +252,7 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
             }
 
         }
-    }
+    }*/
 
     // Delete listener.
     class OnDeleteClickListener implements OnClickListener {

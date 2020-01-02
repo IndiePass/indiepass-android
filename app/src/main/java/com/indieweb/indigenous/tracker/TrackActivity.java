@@ -13,6 +13,7 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -64,6 +65,8 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
     DatabaseHelper db;
     int trackerId = 0;
     Button action;
+    Track track;
+    EditText title;
     public static final int REQUEST_CHECK_BACKGROUND_LOCATION_SETTINGS = 100;
 
     // Monitors the state of the connection to the service.
@@ -100,43 +103,32 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
         action.setOnClickListener(this);
         user = new Accounts(this).getCurrentUser();
         db = new DatabaseHelper(getApplicationContext());
+        title = findViewById(R.id.title);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            int trackerId = extras.getInt("trackId");
+            if (trackerId != 0) {
+                Track t = db.getTrack(trackerId);
+                if (t != null) {
+                    track = t;
+                    Button save = findViewById(R.id.editTrack);
+                    save.setOnClickListener(this);
+                    save.setVisibility(View.VISIBLE);
+                    action.setVisibility(View.GONE);
+                    title.setText(track.getTitle());
+                }
+            }
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        //PreferenceManager.getDefaultSharedPreferences(this)
-        //        .registerOnSharedPreferenceChangeListener(this);
-
-        /*mRequestLocationUpdatesButton = (Button) findViewById(R.id.request_location_updates_button);
-        mRemoveLocationUpdatesButton = (Button) findViewById(R.id.remove_location_updates_button);
-
-        mRequestLocationUpdatesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!checkPermissions()) {
-                    requestPermissions();
-                } else {
-                    mService.requestLocationUpdates();
-                }
-            }
-        });
-
-        mRemoveLocationUpdatesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mService.removeLocationUpdates();
-            }
-        });*/
-
-        // Restore the state of the buttons when the activity (re)launches.
-        //setButtonState(TrackerUtils.requestingLocationUpdates(this));
-
         // Bind to the service. If the service is in foreground mode, this signals to the service
         // that since this activity is in the foreground, the service can exit foreground mode.
-        bindService(new Intent(this, TrackerService.class), mServiceConnection,
-                Context.BIND_AUTO_CREATE);
+        bindService(new Intent(this, TrackerService.class), mServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
@@ -161,37 +153,51 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
             unbindService(mServiceConnection);
             mBound = false;
         }
-        //PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener();
         super.onStop();
     }
 
-
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.startNewTrack) {
-            setButtonState(false);
 
-            // TODO check a current track isn't running.
-            Track track = new Track();
-            EditText title = findViewById(R.id.title);
-            track.setTitle(title.getText().toString());
-            track.setAccount(user.getMeWithoutProtocol());
-            try {
-                db.saveTrack(track);
-                Toast.makeText(getApplicationContext(), getString(R.string.track_started), Toast.LENGTH_LONG).show();
-                trackerId = db.getLatestTrackId(user.getMeWithoutProtocol());
-                if (trackerId > 0) {
-                    startTracker();
+        if (TextUtils.isEmpty(title.getText())) {
+            title.setError(getString(R.string.required_field));
+            return;
+        }
+
+        switch (v.getId()) {
+
+            case R.id.editTrack:
+                track.setTitle(title.getText().toString());
+                db.saveTrack(track, false);
+                Toast.makeText(getApplicationContext(), getString(R.string.track_updated), Toast.LENGTH_SHORT).show();
+                finish();
+                break;
+
+            case R.id.startNewTrack:
+
+                setButtonState(false);
+
+                // TODO check a current track isn't running.
+                Track track = new Track();
+                track.setTitle(title.getText().toString());
+                track.setAccount(user.getMeWithoutProtocol());
+                try {
+                    db.saveTrack(track, false);
+                    Toast.makeText(getApplicationContext(), getString(R.string.track_started), Toast.LENGTH_LONG).show();
+                    trackerId = db.getLatestTrackId(user.getMeWithoutProtocol());
+                    if (trackerId > 0) {
+                        startTracker();
+                    }
+                    else {
+                        setButtonState(true);
+                        Toast.makeText(getApplicationContext(), getString(R.string.track_start_error_no_id), Toast.LENGTH_LONG).show();
+                    }
                 }
-                else {
+                catch (Exception e) {
                     setButtonState(true);
-                    Toast.makeText(getApplicationContext(), getString(R.string.track_start_error_no_id), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), String.format(getString(R.string.tracker_error_start), e.getMessage()), Toast.LENGTH_LONG).show();
                 }
-            }
-            catch (Exception e) {
-                setButtonState(true);
-                Toast.makeText(getApplicationContext(), String.format(getString(R.string.tracker_error_start), e.getMessage()), Toast.LENGTH_LONG).show();
-            }
+            break;
         }
     }
 
@@ -322,17 +328,6 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
                         }
                     }
                 });
-
-        /*request = new LocationRequest();
-        request.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
-        request.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
-        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
-        builder.addLocationRequest(mLocationRequest);
-        mLocationSettingsRequest = builder.build();*/
-
-
     }
 
 }
