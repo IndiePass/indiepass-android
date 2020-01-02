@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final int CREATE_DRAFT = 1001;
     public static final int POST_DRAFT = 1002;
     public static final int CREATE_TRACK = 1003;
+    public static final int UPDATE_TRACK = 1004;
 
     @Override
     public void onAttachFragment(@NonNull Fragment fragment) {
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startFragment(new DraftFragment());
         }
 
-        if (requestCode == CREATE_TRACK && resultCode == RESULT_OK) {
+        if ((requestCode == CREATE_TRACK || requestCode == UPDATE_TRACK) && resultCode == RESULT_OK) {
             startFragment(new TrackerFragment());
         }
     }

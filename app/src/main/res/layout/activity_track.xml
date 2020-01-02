@@ -15,7 +15,7 @@
             android:textSize="@dimen/inputText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="10dp"
             android:ems="10"
             android:hint="@string/track_title"
             android:inputType="text" />
@@ -23,7 +23,7 @@
         <Button
             android:textColor="@color/colorPrimary"
             style="?android:attr/borderlessButtonStyle"
-            android:background="@color/listRowBackgroundColor"
+            android:background="@color/buttonWhite"
             android:id="@+id/startNewTrack"
             android:text="@string/start_track"
             android:padding="@dimen/channel_list_item_padding"
@@ -34,10 +34,9 @@
             android:visibility="gone"
             android:textColor="@color/colorPrimary"
             style="?android:attr/borderlessButtonStyle"
-            android:background="@color/listRowBackgroundColor"
+            android:background="@color/buttonWhite"
             android:id="@+id/editTrack"
             android:text="@string/save"
-            android:padding="@dimen/channel_list_item_padding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

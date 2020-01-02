@@ -1,6 +1,7 @@
 package com.indieweb.indigenous.tracker;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,6 +40,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.indieweb.indigenous.MainActivity.UPDATE_TRACK;
 
 /**
  * Tracker list adapter.
@@ -169,7 +172,7 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
             Track track = tracks.get(this.position);
             Intent startActivity = new Intent(context, TrackActivity.class);
             startActivity.putExtra("trackId", track.getId());
-            context.startActivity(startActivity);
+            ((Activity) context).startActivityForResult(startActivity, UPDATE_TRACK);
         }
     }
 

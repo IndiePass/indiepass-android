@@ -112,6 +112,7 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
                 Track t = db.getTrack(trackerId);
                 if (t != null) {
                     track = t;
+                    setTitle(getString(R.string.edit_track));
                     Button save = findViewById(R.id.editTrack);
                     save.setOnClickListener(this);
                     save.setVisibility(View.VISIBLE);
@@ -170,6 +171,8 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
                 track.setTitle(title.getText().toString());
                 db.saveTrack(track, false);
                 Toast.makeText(getApplicationContext(), getString(R.string.track_updated), Toast.LENGTH_SHORT).show();
+                Intent returnIntent = new Intent();
+                setResult(RESULT_OK, returnIntent);
                 finish();
                 break;
 
