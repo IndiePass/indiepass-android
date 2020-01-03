@@ -7,4 +7,9 @@
         android:title="@string/tracker_truncate"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/tracker_refresh"
+        android:title="@string/tracker_refresh"
+        app:showAsAction="never" />
+
 </menu>

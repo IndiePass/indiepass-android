@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
@@ -29,10 +30,18 @@ import java.util.List;
 
 import static com.indieweb.indigenous.MainActivity.CREATE_TRACK;
 
-public class TrackerFragment extends Fragment implements View.OnClickListener {
+public class TrackerFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private ListView listTracker;
     private TextView empty;
+    private boolean showRefreshMessage = false;
+    private SwipeRefreshLayout refreshLayout;
+
+    @Override
+    public void onRefresh() {
+        showRefreshMessage = true;
+        startTracks();
+    }
 
     @Nullable
     @Override
@@ -51,6 +60,8 @@ public class TrackerFragment extends Fragment implements View.OnClickListener {
 
         listTracker = view.findViewById(R.id.tracker_list);
         empty = view.findViewById(R.id.noTracks);
+        refreshLayout = view.findViewById(R.id.refreshTracks);
+        refreshLayout.setOnRefreshListener(this);
 
         startTracks();
     }
@@ -76,27 +87,35 @@ public class TrackerFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.tracker_truncate) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-            builder.setTitle(getString(R.string.tracker_truncate_confirm));
-            builder.setPositiveButton(getString(R.string.delete_track),new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog,int id) {
-                    DatabaseHelper db = new DatabaseHelper(requireContext());
-                    db.deleteAllTrackerData();
-                    startTracks();
-                    Toast.makeText(requireContext(), getString(R.string.tracker_truncated), Toast.LENGTH_SHORT).show();
-                }
-            });
-            builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            builder.show();
 
-            return true;
+        switch (item.getItemId()) {
+            case R.id.tracker_refresh:
+                showRefreshMessage = true;
+                refreshLayout.setRefreshing(true);
+                startTracks();
+                return true;
+
+            case R.id.tracker_truncate:
+                final AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                builder.setTitle(getString(R.string.tracker_truncate_confirm));
+                builder.setPositiveButton(getString(R.string.delete_track),new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        DatabaseHelper db = new DatabaseHelper(requireContext());
+                        db.deleteAllTrackerData();
+                        startTracks();
+                        Toast.makeText(requireContext(), getString(R.string.tracker_truncated), Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+                return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -112,11 +131,26 @@ public class TrackerFragment extends Fragment implements View.OnClickListener {
         if (tracks.size() == 0) {
             listTracker.setVisibility(View.GONE);
             empty.setVisibility(View.VISIBLE);
+            refreshLayout.setVisibility(View.GONE);
         }
         else {
+            refreshLayout.setRefreshing(true);
             TrackerListAdapter adapter = new TrackerListAdapter(requireContext(), tracks, user);
             listTracker.setAdapter(adapter);
             adapter.notifyDataSetChanged();
+            checkRefreshingStatus();
+        }
+    }
+
+    /**
+     * Checks the state of the pull to refresh.
+     */
+    private void checkRefreshingStatus() {
+        if (refreshLayout.isRefreshing()) {
+            if (showRefreshMessage) {
+                Toast.makeText(getContext(), getString(R.string.tracker_refreshed), Toast.LENGTH_SHORT).show();
+            }
+            refreshLayout.setRefreshing(false);
         }
     }
 

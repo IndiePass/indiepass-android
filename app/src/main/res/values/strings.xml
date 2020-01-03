@@ -283,6 +283,8 @@
     <string name="track_time_amount">Number</string>
     <string name="default_time">30</string>
     <string name="interval_negative">Interval must be a positive number</string>
+    <string name="tracker_refresh">Refresh tracks</string>
+    <string name="tracker_refreshed">Tracks refreshed</string>
 
     <!-- Source lists -->
     <string name="source_post_list_refresh">Refresh posts</string>
