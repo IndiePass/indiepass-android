@@ -134,6 +134,7 @@ public class TrackerFragment extends Fragment implements View.OnClickListener, S
             refreshLayout.setVisibility(View.GONE);
         }
         else {
+            refreshLayout.setVisibility(View.VISIBLE);
             refreshLayout.setRefreshing(true);
             TrackerListAdapter adapter = new TrackerListAdapter(requireContext(), tracks, user);
             listTracker.setAdapter(adapter);
