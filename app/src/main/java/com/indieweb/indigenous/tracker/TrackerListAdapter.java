@@ -133,7 +133,7 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
                 started = "/";
             }
 
-            String ended = "";
+            String ended;
             if (!track.getStartTime().equals(track.getEndTime())) {
                 try {
                     Date result = formatIn.parse(track.getEndTime());
@@ -142,10 +142,10 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
                 catch (ParseException e) {
                     ended = "/";
                 }
-                holder.meta.setText(String.format(context.getString(R.string.tracker_start_end), track.getPointCount(), started, ended));
+                holder.meta.setText(String.format(context.getString(R.string.tracker_meta_end), track.getPointCount(), track.getTransport(), track.getInterval(), started, ended));
             }
             else {
-                holder.meta.setText(String.format(context.getString(R.string.tracker_start), track.getPointCount(), started));
+                holder.meta.setText(String.format(context.getString(R.string.tracker_meta_no_end), track.getPointCount(), track.getTransport(), track.getInterval(), started));
             }
 
             holder.post.setOnClickListener(new OnPostClickListener(position));

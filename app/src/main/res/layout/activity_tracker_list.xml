@@ -14,7 +14,7 @@
         android:layout_height="fill_parent" />
 
     <TextView
-        android:padding="@dimen/box_padding"
+        android:padding="20dp"
         android:id="@+id/noTracks"
         android:visibility="gone"
         android:textColor="@color/textColor"

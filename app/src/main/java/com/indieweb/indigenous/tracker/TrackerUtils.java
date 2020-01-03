@@ -6,6 +6,10 @@ import android.preference.PreferenceManager;
 
 import com.google.android.gms.location.LocationRequest;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.db.DatabaseHelper;
+import com.indieweb.indigenous.model.Track;
+import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.util.Accounts;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -65,10 +69,23 @@ class TrackerUtils {
      *
      * @return LocationRequest
      */
-    static LocationRequest getLocationRequest() {
+    static LocationRequest getLocationRequest(Context context) {
+        long interval = TRACKER_UPDATE_INTERVAL_IN_MILLISECONDS;
+        long fastestInterval = TRACKER_FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS;
+        User user = new Accounts(context).getCurrentUser();
+        DatabaseHelper db = new DatabaseHelper(context);
+        int trackerId = db.getLatestTrackId(user.getMeWithoutProtocol());
+        if (trackerId > 0) {
+            Track track = db.getTrack(trackerId);
+            if (track != null) {
+                interval = track.getInterval();
+                fastestInterval = track.getInterval() / 2;
+            }
+        }
+
         LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(TRACKER_UPDATE_INTERVAL_IN_MILLISECONDS);
-        mLocationRequest.setFastestInterval(TRACKER_FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
+        mLocationRequest.setInterval(interval);
+        mLocationRequest.setFastestInterval(fastestInterval);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         return mLocationRequest;
     }

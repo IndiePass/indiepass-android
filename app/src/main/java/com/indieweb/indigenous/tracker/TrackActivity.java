@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.content.ServiceConnection;
 import android.os.Build;
@@ -15,6 +14,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,6 +47,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 public class TrackActivity extends AppCompatActivity implements View.OnClickListener {
@@ -61,6 +64,9 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
     Button action;
     Track track;
     EditText title;
+    Spinner transport;
+    EditText timeAmmount;
+    Spinner timeUnit;
     public static final int REQUEST_CHECK_BACKGROUND_LOCATION_SETTINGS = 100;
 
     // Monitors the state of the connection to the service.
@@ -97,6 +103,9 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
         user = new Accounts(this).getCurrentUser();
         db = new DatabaseHelper(getApplicationContext());
         title = findViewById(R.id.title);
+        timeAmmount = findViewById(R.id.time_amount);
+        timeUnit = findViewById(R.id.time_unit);
+        transport = findViewById(R.id.transport);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -111,6 +120,18 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
                     save.setVisibility(View.VISIBLE);
                     action.setVisibility(View.GONE);
                     title.setText(track.getTitle());
+                    String[] trans = getResources().getStringArray(R.array.transport_array);
+                    for (int i = 0; i < trans.length; i++) {
+                        if (trans[i].equals(track.getTransport())) {
+                            transport.setSelection(i);
+                        }
+                    }
+
+                    // Hide some stuff.
+                    TextView tt = findViewById(R.id.interval_text);
+                    tt.setVisibility(View.GONE);
+                    LinearLayout lt = findViewById(R.id.track_interval);
+                    lt.setVisibility(View.GONE);
                 }
             }
         }
@@ -140,6 +161,7 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
 
+        // Title is always required.
         if (TextUtils.isEmpty(title.getText())) {
             title.setError(getString(R.string.required_field));
             return;
@@ -158,11 +180,32 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
 
             case R.id.startNewTrack:
 
+                if (TextUtils.isEmpty(timeAmmount.getText())) {
+                    timeAmmount.setError(getString(R.string.required_field));
+                    return;
+                }
+
+                int interval = 0;
+                int amount = Integer.parseInt(timeAmmount.getText().toString());
+                if (timeUnit.getSelectedItem().toString().equals("second(s)")) {
+                    interval = amount * 1000;
+                }
+                else {
+                    interval = (amount * 60) * 1000;
+                }
+
+                if (interval <= 0) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.interval_negative), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 setButtonState(false);
 
                 Track track = new Track();
                 track.setTitle(title.getText().toString());
                 track.setAccount(user.getMeWithoutProtocol());
+                track.setTransport(transport.getSelectedItem().toString());
+                track.setInterval(interval);
                 try {
                     db.saveTrack(track, false);
                     Toast.makeText(getApplicationContext(), getString(R.string.track_started), Toast.LENGTH_LONG).show();
@@ -179,7 +222,7 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
                     setButtonState(true);
                     Toast.makeText(getApplicationContext(), String.format(getString(R.string.tracker_error_start), e.getMessage()), Toast.LENGTH_LONG).show();
                 }
-            break;
+                break;
         }
     }
 
@@ -258,7 +301,7 @@ public class TrackActivity extends AppCompatActivity implements View.OnClickList
      */
     public void startBackgroundService() {
 
-        LocationRequest mLocationRequest = TrackerUtils.getLocationRequest();
+        LocationRequest mLocationRequest = TrackerUtils.getLocationRequest(getApplicationContext());
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
         builder.addLocationRequest(mLocationRequest);
         LocationSettingsRequest mLocationSettingsRequest = builder.build();

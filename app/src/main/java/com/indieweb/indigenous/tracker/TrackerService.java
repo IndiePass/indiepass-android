@@ -147,7 +147,7 @@ public class TrackerService extends Service {
             }
         };
 
-        createLocationRequest();
+        createLocationRequest(getApplicationContext());
         getLastLocation();
 
         HandlerThread handlerThread = new HandlerThread(TRACKER_TAG);
@@ -292,8 +292,8 @@ public class TrackerService extends Service {
     /**
      * Sets the location request parameters.
      */
-    private void createLocationRequest() {
-        mLocationRequest = TrackerUtils.getLocationRequest();
+    private void createLocationRequest(Context context) {
+        mLocationRequest = TrackerUtils.getLocationRequest(context);
     }
 
     /**

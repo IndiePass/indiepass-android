@@ -263,8 +263,8 @@
     <string name="map_track">View track on map</string>
     <string name="edit_track">Edit track</string>
     <string name="track_updated">Track saved</string>
-    <string name="tracker_start">Points: %d\nStarted: %s</string>
-    <string name="tracker_start_end">Points: %d\nStarted: %s\nEnded: %s</string>
+    <string name="tracker_meta_no_end">Points: %d\nTransport: %s\nInterval: %d milliseconds\nStarted: %s</string>
+    <string name="tracker_meta_end">Points: %d\nTransport: %s\nInterval: %d milliseconds\nStarted: %s\nEnded: %s</string>
     <string name="tracker_error_start">Error starting tracker: %s</string>
     <string name="track_start_error_no_id">Error starting tracker: no track id found</string>
     <string name="tracker_truncate">Delete all data</string>
@@ -277,6 +277,12 @@
     <string name="post_track_network_error">Error posting track. Status code: %d; message: %s</string>
     <string name="location_saved">Location saved: %1$s</string>
     <string name="tracker_running">There is a tracker running, stop that one first.</string>
+    <string name="transport">Transport</string>
+    <string name="interval">Interval</string>
+    <string name="time_unit">Time unit</string>
+    <string name="track_time_amount">Number</string>
+    <string name="default_time">30</string>
+    <string name="interval_negative">Interval must be a positive number</string>
 
     <!-- Source lists -->
     <string name="source_post_list_refresh">Refresh posts</string>
@@ -472,6 +478,23 @@
         <item>public</item>
         <item>private</item>
         <item>protected</item>
+    </string-array>
+
+    <!-- These should not be translated -->
+    <string-array name="transport_array">
+        <item>walk</item>
+        <item>run</item>
+        <item>bike</item>
+        <item>drive</item>
+        <item>train</item>
+        <item>flight</item>
+        <item>boat</item>
+        <item>other</item>
+    </string-array>
+
+    <string-array name="unit_array">
+        <item>second(s)</item>
+        <item>minute(s)</item>
     </string-array>
 
     <string-array name="filter_post_limit">

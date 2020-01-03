@@ -96,16 +96,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+        // Values which will always be set.
+        values.put(Track.COLUMN_TITLE, track.getTitle());
+        values.put(Track.COLUMN_TRANSPORT, track.getTransport());
+
         if (track.getId() > 0) {
-            values.put(Track.COLUMN_TITLE, track.getTitle());
             if (setEnd) {
                 values.put(Track.COLUMN_END_TIME,dateFormat.format(System.currentTimeMillis()));
             }
             db.update(Track.TABLE_NAME, values, Track.COLUMN_ID + "=" + track.getId(), null);
         }
         else {
+            values.put(Track.COLUMN_INTERVAL, track.getInterval());
             values.put(Track.COLUMN_ACCOUNT, track.getAccount());
-            values.put(Track.COLUMN_TITLE, track.getTitle());
             values.put(Track.COLUMN_START_TIME,dateFormat.format(System.currentTimeMillis()));
             db.insert(Track.TABLE_NAME, null, values);
         }
