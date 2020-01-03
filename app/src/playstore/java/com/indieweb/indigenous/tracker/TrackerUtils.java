@@ -17,9 +17,18 @@ import java.util.Date;
 import static com.indieweb.indigenous.tracker.TrackerService.TRACKER_FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS;
 import static com.indieweb.indigenous.tracker.TrackerService.TRACKER_UPDATE_INTERVAL_IN_MILLISECONDS;
 
-class TrackerUtils {
+public class TrackerUtils {
 
     private static final String KEY_REQUESTING_LOCATION_UPDATES = "requesting_location_updates";
+
+    /**
+     * Returns whether the tracker is supported.
+     *
+     * @return boolean
+     */
+    public static boolean supportsTracker() {
+        return true;
+    }
 
     /**
      * Returns true if requesting location updates, otherwise returns false.

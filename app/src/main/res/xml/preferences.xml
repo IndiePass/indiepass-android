@@ -1,4 +1,5 @@
 <PreferenceScreen
+    android:key="preferenceScreen"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
@@ -234,6 +235,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="pref_key_category_tracker"
         android:layout="@layout/preference_category"
         android:title="@string/pref_category_tracker_title"
         android:summary="@string/pref_category_tracker_summary">

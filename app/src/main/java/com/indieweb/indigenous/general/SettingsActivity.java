@@ -5,9 +5,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
+import android.preference.PreferenceGroup;
+import android.preference.PreferenceScreen;
 
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.push.PushNotificationActivity;
+import com.indieweb.indigenous.tracker.TrackerUtils;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
@@ -91,6 +95,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
         });
+
+        if (!TrackerUtils.supportsTracker()) {
+            PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("preferenceScreen");
+            PreferenceCategory tracker = (PreferenceCategory) findPreference("pref_key_category_tracker");
+            if (tracker != null) {
+                preferenceScreen.removePreference(tracker);
+            }
+        }
     }
 
     /**
