@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:visibility="gone"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/imagePreviewGallery"
+    android:id="@+id/mediaPreviewGallery"
     android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -19,7 +19,7 @@
     <TextView
         android:textSize="@dimen/help_text"
         android:textColor="@color/textColor"
-        android:text="@string/image_preview_help"
+        android:text="@string/media_preview_help"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/box_padding"

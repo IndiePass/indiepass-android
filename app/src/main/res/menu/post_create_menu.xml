@@ -9,10 +9,24 @@
         android:title="@string/add_location" />
 
     <item
-        android:icon="@drawable/button_photo_add_white"
+        android:icon="@drawable/button_attach_file"
         app:showAsAction="ifRoom"
-        android:id="@+id/addImage"
-        android:title="@string/add_image" />
+        android:id="@+id/addFile"
+        android:title="@string/add_file">
+
+        <menu>
+            <item
+                android:id="@+id/addImage"
+                android:title="@string/add_image" />
+            <item
+                android:id="@+id/addVideo"
+                android:title="@string/add_video" />
+            <item
+                android:id="@+id/addAudio"
+                android:title="@string/add_audio" />
+        </menu>
+
+    </item>
 
     <item
         android:icon="@drawable/button_send_white"

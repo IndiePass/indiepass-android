@@ -180,11 +180,14 @@
     <string name="add_geocache">Geocache</string>
     <string name="discard_post">Discard</string>
     <string name="delete_image">Remove image</string>
-    <string name="image_preview_help">Click on an image to set a caption or to remove it</string>
+    <string name="media_preview_help">Click on an image or title to set a caption or to remove it</string>
     <string name="keep_editing">Keep editing</string>
     <string name="confirm_close">You have unsaved changes, are you sure you want to leave ?</string>
     <string name="send">Send</string>
+    <string name="add_file">Add file</string>
     <string name="add_image">Add image</string>
+    <string name="add_video">Add video</string>
+    <string name="add_audio">Add audio</string>
     <string name="full_screen_image">Full screen image</string>
     <string name="content">Content</string>
     <string name="repost">Repost</string>
@@ -207,7 +210,9 @@
     <string name="delete_item_error">Error deleting item</string>
     <string name="delete_item_success">Delete success</string>
     <string name="sending_please_wait">Sending, please wait</string>
-    <string name="select_picture">Select Picture</string>
+    <string name="select_picture">Select picture</string>
+    <string name="select_video">Select video</string>
+    <string name="select_audio">Select audio</string>
     <string name="post_success">Post success</string>
     <string name="media_upload_success">Media upload success</string>
     <string name="no_media_url_found">No file url found</string>

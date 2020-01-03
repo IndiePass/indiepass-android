@@ -1,5 +1,6 @@
 <h4>xx/xx/2020 - 0.54</h4>
 <ul>
+    <li>Allow to attach video or audio to posts</li>
     <li>Allow to use the media endpoint for media attached to posts. It's a setting you must toggle in the settings screen in the "Media" section.</li>
     <li>Simple GPS tracker to track your itineraries. (Playstore version only at the moment, F-Droid coming later)</li>
 </ul>

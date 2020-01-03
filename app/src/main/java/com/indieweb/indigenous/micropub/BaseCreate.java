@@ -84,7 +84,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
         progressBar = findViewById(R.id.progressBar);
         saveAsDraft = findViewById(R.id.saveAsDraft);
         publishDate = findViewById(R.id.publishDate);
-        imagePreviewGallery = findViewById(R.id.imagePreviewGallery);
+        mediaPreviewGallery = findViewById(R.id.mediaPreviewGallery);
         locationWrapper = findViewById(R.id.locationWrapper);
         locationVisibility = findViewById(R.id.locationVisibility);
         locationName = findViewById(R.id.locationName);
@@ -152,7 +152,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
                     }
 
                     // Stream
-                    if (isMediaRequest && imagePreviewGallery != null && extras.containsKey(Intent.EXTRA_STREAM)) {
+                    if (isMediaRequest && mediaPreviewGallery != null && extras.containsKey(Intent.EXTRA_STREAM)) {
                         setChanges(true);
                         String incomingData = extras.get(Intent.EXTRA_STREAM).toString();
                         images.add(Uri.parse(incomingData));
@@ -186,7 +186,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
 
             if (canAddImage) {
                 String incomingImage = extras.getString("incomingImage");
-                if (incomingImage != null && incomingImage.length() > 0 && imagePreviewGallery != null) {
+                if (incomingImage != null && incomingImage.length() > 0 && mediaPreviewGallery != null) {
                     setChanges(true);
                     images.add(Uri.parse(incomingImage));
                     captions.add("");

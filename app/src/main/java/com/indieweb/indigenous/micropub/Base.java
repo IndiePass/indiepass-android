@@ -87,18 +87,22 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public User user;
     public MultiAutoCompleteTextView tags;
     public List<Uri> images = new ArrayList<>();
-    public int imageCount = 0;
-    public int imageUploadedCount = 0;
-    public Map<Uri, String> imageUrls = new HashMap<>();
+    public List<Uri> videos = new ArrayList<>();
+    public List<Uri> audios = new ArrayList<>();
+    public int mediaCount = 0;
+    public int mediaUploadedCount = 0;
+    public Map<Uri, String> mediaUrls = new HashMap<>();
     public boolean uploadMediaImageDone = false;
     public boolean uploadMediaImageError = false;
     public List<String> captions = new ArrayList<>();
     public boolean preparedDraft = false;
     public List<Syndication> syndicationTargets = new ArrayList<>();
     private MenuItem sendItem;
-    public LinearLayout imagePreviewGallery;
+    public LinearLayout mediaPreviewGallery;
     private Switch postStatus;
     private int PICK_IMAGE_REQUEST = 1;
+    private int PICK_VIDEO_REQUEST = 2;
+    private int PICK_AUDIO_REQUEST = 3;
     private VolleyMediaRequestListener volleyMediaRequestListener;
 
     public EditText url;
@@ -163,13 +167,33 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 return true;
 
             case R.id.addImage:
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                Intent ii = new Intent();
+                ii.setType("image/*");
+                ii.setAction(Intent.ACTION_OPEN_DOCUMENT);
                 if (!isMediaRequest) {
-                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    ii.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 }
-                startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)), PICK_IMAGE_REQUEST);
+                startActivityForResult(Intent.createChooser(ii, getString(R.string.select_picture)), PICK_IMAGE_REQUEST);
+                return true;
+
+            case R.id.addVideo:
+                Intent iv = new Intent();
+                iv.setType("video/*");
+                iv.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                if (!isMediaRequest) {
+                    iv.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                }
+                startActivityForResult(Intent.createChooser(iv, getString(R.string.select_video)), PICK_VIDEO_REQUEST);
+                return true;
+
+            case R.id.addAudio:
+                Intent ia = new Intent();
+                ia.setType("audio/*");
+                ia.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                if (!isMediaRequest) {
+                    ia.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                }
+                startActivityForResult(Intent.createChooser(ia, getString(R.string.select_audio)), PICK_AUDIO_REQUEST);
                 return true;
         }
 
@@ -276,7 +300,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
      * Prepare image preview.
      */
     public void prepareImagePreview() {
-        imagePreviewGallery.setVisibility(View.VISIBLE);
+        mediaPreviewGallery.setVisibility(View.VISIBLE);
         GalleryAdapter galleryAdapter = new GalleryAdapter(this, images, captions, isMediaRequest);
         RecyclerView imageRecyclerView = findViewById(R.id.imageRecyclerView);
         imageRecyclerView.setAdapter(galleryAdapter);
@@ -345,7 +369,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
         // Use media endpoint to upload media attached to the post.
         if (Preferences.getPreference(getApplicationContext(), "pref_key_upload_media_endpoint", false) && images.size() > 0 && !uploadMediaImageDone) {
-            imageCount = images.size();
+            mediaCount = images.size() + videos.size() + audios.size();
             sendMediaPost();
             return;
         }
@@ -524,10 +548,10 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 }
 
                 // Media urls.
-                if (Preferences.getPreference(getApplicationContext(), "pref_key_upload_media_endpoint", false) && uploadMediaImageDone && images.size() > 0 && imageUrls.size() > 0) {
+                if (Preferences.getPreference(getApplicationContext(), "pref_key_upload_media_endpoint", false) && uploadMediaImageDone && images.size() > 0 && mediaUrls.size() > 0) {
                     int mi = 0;
                     for (Uri u: images) {
-                        bodyParams.put("photo_multiple_[" + mi + "]", imageUrls.get(u));
+                        bodyParams.put("photo_multiple_[" + mi + "]", mediaUrls.get(u));
                         mi++;
                     }
                 }
@@ -620,8 +644,8 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
      */
     public void sendMediaPost() {
 
-        imageUrls.clear();
-        imageUploadedCount = 0;
+        mediaUrls.clear();
+        mediaUploadedCount = 0;
         uploadMediaImageDone = false;
         uploadMediaImageError = false;
 
@@ -647,8 +671,8 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
                             String fileUrl = response.headers.get("Location");
                             if (fileUrl != null && fileUrl.length() > 0) {
-                                imageUrls.put(u, fileUrl);
-                                imageUploadedCount++;
+                                mediaUrls.put(u, fileUrl);
+                                mediaUploadedCount++;
                                 volleyMediaRequestListener.OnSuccessRequest();
                             }
                             else {
@@ -765,7 +789,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public void OnSuccessRequest() {
 
         // In case everything is fine, send base post.
-        if (imageUploadedCount == imageCount && !uploadMediaImageError) {
+        if (mediaUploadedCount == mediaCount && !uploadMediaImageError) {
             uploadMediaImageDone = true;
             sendBasePost(sendItem);
         }

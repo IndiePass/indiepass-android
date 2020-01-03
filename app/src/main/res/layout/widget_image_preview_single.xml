@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:visibility="gone"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/imagePreviewGallery"
+    android:id="@+id/mediaPreviewGallery"
     android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
