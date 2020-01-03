@@ -152,7 +152,6 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
             holder.edit.setOnClickListener(new OnEditClickListener(position));
             //holder.map.setOnClickListener(new OnMapClickListener(position));
             holder.delete.setOnClickListener(new OnDeleteClickListener(position));
-
         }
 
         return convertView;

@@ -64,7 +64,6 @@ public class TrackerService extends Service {
      */
     private LocationRequest mLocationRequest;
 
-    static final String EXTRA_LOCATION = PACKAGE_NAME + ".location";
     private static final String EXTRA_STARTED_FROM_NOTIFICATION = PACKAGE_NAME +
             ".started_from_notification";
 
@@ -178,6 +177,7 @@ public class TrackerService extends Service {
             removeLocationUpdates();
             stopService(getApplicationContext());
         }
+
         // Tells the system to not try to recreate the service after it has been killed.
         return START_NOT_STICKY;
     }
@@ -235,13 +235,7 @@ public class TrackerService extends Service {
         // The PendingIntent that leads to a call to onStartCommand() in this service.
         PendingIntent servicePendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // The PendingIntent to launch activity.
-        PendingIntent activityPendingIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, TrackActivity.class), 0);
-
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                //.addAction(R.drawable.ic_launch, getString(R.string.launch_activity),
-                //        activityPendingIntent)
                 .addAction(android.R.drawable.ic_media_pause, getString(R.string.stop_track), servicePendingIntent)
                 .setContentText(text)
                 .setContentTitle(TrackerUtils.getLocationTitle(this))

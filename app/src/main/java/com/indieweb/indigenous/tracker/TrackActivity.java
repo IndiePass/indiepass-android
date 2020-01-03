@@ -47,7 +47,6 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.karumi.dexter.listener.single.PermissionListener;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 public class TrackActivity extends AppCompatActivity implements View.OnClickListener {
