@@ -391,7 +391,7 @@
     <string name="pref_key_media_name_title">Add name to upload</string>
     <string name="pref_key_media_name_summary">Exposes a textfield on the Upload screen so you can send a title for your uploaded file to the media endpoint.</string>
     <string name="pref_key_upload_media_endpoint_title">Use media endpoint to upload</string>
-    <string name="pref_key_upload_media_endpoint_summary">Use the media endpoint, if available, when attaching uploads to a post.</string>
+    <string name="pref_key_upload_media_endpoint_summary">Use the media endpoint, if available, when attaching media to a post.</string>
 
     <!-- Preferences: tracker -->
     <string name="pref_category_tracker_title">Tracker</string>
