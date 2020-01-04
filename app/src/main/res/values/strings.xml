@@ -159,12 +159,13 @@
     <!-- Micropub -->
     <string name="tags">Tags - separate with comma</string>
     <string name="image_preview">Image preview</string>
+    <string name="audio_item">Audio item</string>
     <string name="publish_date_hint">Publish date - leave empty for \'now\'</string>
     <string name="title">Title</string>
     <string name="published">Published</string>
     <string name="syndicate_to">Syndicate to</string>
     <string name="required_field">This field is required</string>
-    <string name="required_select_image">Please select an image</string>
+    <string name="required_select_media">Please select a media item</string>
     <string name="create_post">Write</string>
     <string name="add_note">Note</string>
     <string name="add_article">Article</string>
@@ -180,7 +181,9 @@
     <string name="add_geocache">Geocache</string>
     <string name="discard_post">Discard</string>
     <string name="delete_image">Remove image</string>
-    <string name="media_preview_help">Click on an image or title to set a caption or to remove it</string>
+    <string name="delete_video_confirm">Remove video?</string>
+    <string name="delete_audio_confirm">Remove audio?</string>
+    <string name="media_preview_help">Click on a thumbnail to delete the media item. You can also set captions for images.</string>
     <string name="keep_editing">Keep editing</string>
     <string name="confirm_close">You have unsaved changes, are you sure you want to leave ?</string>
     <string name="send">Send</string>
@@ -197,7 +200,7 @@
     <string name="rsvp_select">Select RSVP</string>
     <string name="geocache_select">Select log type</string>
     <string name="upload">Upload</string>
-    <string name="upload_description">Upload images to your media endpoint. On success, the file URL will be added to the clipboard automatically.</string>
+    <string name="upload_description">Upload an image, video or audio to your media endpoint. On success, the file URL will be added to the clipboard automatically.</string>
     <string name="posting">Sending</string>
     <string name="syndication_targets_error">Error getting syndication targets: %s</string>
     <string name="syndication_targets_parse_error">Error parsing syndication targets: %s</string>

@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.google.android.material.textfield.TextInputLayout;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -155,8 +156,8 @@ abstract public class BaseCreate extends BasePlatformCreate {
                     if (isMediaRequest && mediaPreviewGallery != null && extras.containsKey(Intent.EXTRA_STREAM)) {
                         setChanges(true);
                         String incomingData = extras.get(Intent.EXTRA_STREAM).toString();
-                        images.add(Uri.parse(incomingData));
-                        captions.add("");
+                        image.add(Uri.parse(incomingData));
+                        caption.add("");
                         prepareImagePreview();
                     }
 
@@ -184,12 +185,12 @@ abstract public class BaseCreate extends BasePlatformCreate {
                 }
             }
 
-            if (canAddImage) {
+            if (canAddMedia) {
                 String incomingImage = extras.getString("incomingImage");
                 if (incomingImage != null && incomingImage.length() > 0 && mediaPreviewGallery != null) {
                     setChanges(true);
-                    images.add(Uri.parse(incomingImage));
-                    captions.add("");
+                    image.add(Uri.parse(incomingImage));
+                    caption.add("");
                     prepareImagePreview();
                 }
             }
@@ -364,17 +365,42 @@ abstract public class BaseCreate extends BasePlatformCreate {
             }
 
             // Images.
-            if (canAddImage && draft.getImages().length() > 0) {
+            if (canAddMedia && draft.getImage().length() > 0) {
 
-                String[] uris = draft.getImages().split(";");
+                String[] uris = draft.getImage().split(";");
                 for (String uri : uris) {
-                    images.add(Uri.parse(uri));
+                    image.add(Uri.parse(uri));
                 }
 
-                String[] captionsList = draft.getCaptions().split(";");
-                captions.addAll(Arrays.asList(captionsList));
+                String[] captionsList = draft.getCaption().split(";");
+                caption.addAll(Arrays.asList(captionsList));
+                Log.d("indigenous_debug", "saved list: " + draft.getCaption());
+                Log.d("indigenous_debug", "captions list: " + captionsList.length);
+                Log.d("indigenous_debug", "captions add: " + caption + " -  size: " + caption.size());
 
                 prepareImagePreview();
+            }
+
+            // Video
+            if (canAddMedia && draft.getVideo().length() > 0) {
+
+                String[] uris = draft.getVideo().split(";");
+                for (String uri : uris) {
+                    video.add(Uri.parse(uri));
+                }
+
+                prepareVideoPreview();
+            }
+
+            // Audio
+            if (canAddMedia && draft.getAudio().length() > 0) {
+
+                String[] uris = draft.getAudio().split(";");
+                for (String uri : uris) {
+                    audio.add(Uri.parse(uri));
+                }
+
+                prepareAudioPreview();
             }
         }
     }
@@ -446,19 +472,39 @@ abstract public class BaseCreate extends BasePlatformCreate {
             }
         }
 
-        if (images.size() > 0) {
+        if (image.size() > 0) {
             int index = 0;
             StringBuilder images = new StringBuilder();
             StringBuilder captions = new StringBuilder();
-            for (Uri uri : this.images) {
+            for (Uri uri : this.image) {
                 if (uri != null && uri.toString().length() > 0) {
                     images.append(uri.toString()).append(";");
-                    captions.append(this.captions.get(index)).append(";");
+                    captions.append(this.caption.get(index)).append(";");
                 }
                 index++;
             }
-            draft.setImages(images.toString());
-            draft.setCaptions(captions.toString());
+            draft.setImage(images.toString());
+            draft.setCaption(captions.toString());
+        }
+
+        if (video.size() > 0) {
+            StringBuilder video = new StringBuilder();
+            for (Uri uri : this.video) {
+                if (uri != null && uri.toString().length() > 0) {
+                    video.append(uri.toString()).append(";");
+                }
+            }
+            draft.setVideo(video.toString());
+        }
+
+        if (audio.size() > 0) {
+            StringBuilder audio = new StringBuilder();
+            for (Uri uri : this.audio) {
+                if (uri != null && uri.toString().length() > 0) {
+                    audio.append(uri.toString()).append(";");
+                }
+            }
+            draft.setAudio(audio.toString());
         }
 
         db = new DatabaseHelper(this);

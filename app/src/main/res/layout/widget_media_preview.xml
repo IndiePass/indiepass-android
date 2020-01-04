@@ -9,6 +9,7 @@
     android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:visibility="gone"
         android:id="@+id/imageRecyclerView"
         android:layout_width="match_parent"
         android:orientation="horizontal"
@@ -16,7 +17,26 @@
         android:layout_height="wrap_content"
         android:scrollbars="horizontal" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:visibility="gone"
+        android:id="@+id/videoRecyclerView"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_height="wrap_content"
+        android:scrollbars="horizontal" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:visibility="gone"
+        android:id="@+id/audioRecyclerView"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical" />
+
     <TextView
+        android:paddingTop="10dp"
         android:textSize="@dimen/help_text"
         android:textColor="@color/textColor"
         android:text="@string/media_preview_help"

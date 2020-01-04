@@ -16,7 +16,7 @@ public class EventActivity extends BaseCreate {
     protected void onCreate(Bundle savedInstanceState) {
         postType = "Event";
         hType = "event";
-        canAddImage = true;
+        canAddMedia = true;
         canAddLocation = true;
         addCounter = true;
         setContentView(R.layout.activity_event);

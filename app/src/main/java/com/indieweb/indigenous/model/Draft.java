@@ -10,8 +10,10 @@ public class Draft {
     public static final String COLUMN_TYPE = "type";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_BODY = "body";
-    public static final String COLUMN_IMAGES = "images";
-    public static final String COLUMN_CAPTIONS = "captions";
+    public static final String COLUMN_IMAGE = "image";
+    public static final String COLUMN_CAPTION = "caption";
+    public static final String COLUMN_VIDEO = "video";
+    public static final String COLUMN_AUDIO = "audio";
     public static final String COLUMN_TAGS = "tags";
     public static final String COLUMN_URL = "url";
     public static final String COLUMN_TIMESTAMP = "timestamp";
@@ -26,15 +28,17 @@ public class Draft {
     public static final String COLUMN_SPINNER = "spinner";
 
     public static final String CREATE_TABLE =
-        "CREATE TABLE " + TABLE_NAME + "("
+        "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUMN_SEND_WHEN_ONLINE + " INTEGER,"
                 + COLUMN_ACCOUNT + " TEXT,"
                 + COLUMN_TYPE + " TEXT,"
                 + COLUMN_NAME + " TEXT,"
                 + COLUMN_BODY + " TEXT,"
-                + COLUMN_IMAGES + " TEXT,"
-                + COLUMN_CAPTIONS + " TEXT,"
+                + COLUMN_IMAGE + " TEXT,"
+                + COLUMN_CAPTION + " TEXT,"
+                + COLUMN_VIDEO + " TEXT,"
+                + COLUMN_AUDIO + " TEXT,"
                 + COLUMN_TAGS + " TEXT,"
                 + COLUMN_URL + " TEXT,"
                 + COLUMN_START_DATE + " TEXT,"
@@ -55,8 +59,10 @@ public class Draft {
     private String type;
     private String name = "";
     private String body = "";
-    private String images = "";
-    private String captions = "";
+    private String image = "";
+    private String caption = "";
+    private String video = "";
+    private String audio = "";
     private String tags = "";
     private String url = "";
     private String start_date = "";
@@ -198,20 +204,36 @@ public class Draft {
         this.body = body;
     }
 
-    public String getImages() {
-        return images;
+    public String getImage() {
+        return image;
     }
 
-    public void setImages(String images) {
-        this.images = images;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public String getCaptions() {
-        return captions;
+    public String getCaption() {
+        return caption;
     }
 
-    public void setCaptions(String captions) {
-        this.captions = captions;
+    public void setCaption(String caption) {
+        this.caption = caption;
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
+    }
+
+    public String getAudio() {
+        return audio;
+    }
+
+    public void setAudio(String audio) {
+        this.audio = audio;
     }
 
     public String getTags() {

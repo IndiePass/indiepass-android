@@ -5,7 +5,9 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.OpenableColumns;
 import android.provider.Settings;
 import android.util.Base64;
 import android.widget.DatePicker;
@@ -71,6 +73,33 @@ public class Utility {
                 clipboard.setPrimaryClip(clip);
             }
         }
+    }
+
+    /**
+     * Get a filename.
+     *
+     * @param u
+     *   The filename
+     * @param context
+     *   The current context
+     *
+     * @return string
+     */
+    public static String getFilename(Uri u, Context context) {
+        String filename = "";
+
+        try {
+            Cursor returnCursor = context.getContentResolver().query(u, null, null, null, null);
+            if (returnCursor != null) {
+                int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                returnCursor.moveToFirst();
+                filename = returnCursor.getString(nameIndex);
+                returnCursor.close();
+            }
+        }
+        catch (NullPointerException ignored) {}
+
+        return filename;
     }
 
     /**

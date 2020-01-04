@@ -12,7 +12,7 @@
         app:cardCornerRadius="8dp">
 
     <ImageView
-        android:contentDescription="@string/timeline_image"
+        android:contentDescription="@string/image_preview"
         android:scaleType="centerCrop"
         android:id="@+id/imagePreview"
         android:layout_width="fill_parent"

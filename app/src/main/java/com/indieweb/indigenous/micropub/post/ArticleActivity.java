@@ -11,7 +11,7 @@ public class ArticleActivity extends BaseCreate {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        canAddImage = true;
+        canAddMedia = true;
         canAddLocation = true;
         postType = "Article";
         addCounter = true;

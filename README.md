@@ -22,7 +22,7 @@ https://indigenous.realize.be
 - Micropub
   - post types: article, note, reply, repost, like, bookmark, event,
     issue, rsvp, geocache, checkin and venue (h-card).
-  - add multiple images, tags, toggle syndication targets
+  - add multiple images, videos, audio, tags, toggle syndication targets
   - share location on note, article, event, checkin, geocache and venue
   - send image to media endpoint
   - Toggle post-status (published vs draft)

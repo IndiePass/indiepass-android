@@ -15,7 +15,7 @@ public class UploadActivity extends BaseCreate {
     protected void onCreate(Bundle savedInstanceState) {
         isMediaRequest = true;
         finishActivity = false;
-        canAddImage = true;
+        canAddMedia = true;
         postType = "Media";
         setContentView(R.layout.activity_upload);
         super.onCreate(savedInstanceState);
@@ -27,11 +27,11 @@ public class UploadActivity extends BaseCreate {
 
     @Override
     public void onPostButtonClick(MenuItem item) {
-        if (images.size() == 1) {
+        if (image.size() == 1 || video.size() == 1 || audio.size() == 1) {
             sendBasePost(item);
         }
         else {
-            Toast.makeText(getApplicationContext(), getString(R.string.required_select_image), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.required_select_media), Toast.LENGTH_SHORT).show();
         }
     }
 

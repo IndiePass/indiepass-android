@@ -43,8 +43,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
-import com.indieweb.indigenous.micropub.post.GalleryAdapter;
+import com.indieweb.indigenous.micropub.post.AudioGalleryAdapter;
+import com.indieweb.indigenous.micropub.post.ImageGalleryAdapter;
 import com.indieweb.indigenous.micropub.post.SendPostInterface;
+import com.indieweb.indigenous.micropub.post.VideoGalleryAdapter;
 import com.indieweb.indigenous.model.Place;
 import com.indieweb.indigenous.model.Syndication;
 import com.indieweb.indigenous.model.User;
@@ -86,15 +88,15 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public DatabaseHelper db;
     public User user;
     public MultiAutoCompleteTextView tags;
-    public List<Uri> images = new ArrayList<>();
-    public List<Uri> videos = new ArrayList<>();
-    public List<Uri> audios = new ArrayList<>();
+    public List<Uri> image = new ArrayList<>();
+    public List<Uri> video = new ArrayList<>();
+    public List<Uri> audio = new ArrayList<>();
     public int mediaCount = 0;
     public int mediaUploadedCount = 0;
     public Map<Uri, String> mediaUrls = new HashMap<>();
-    public boolean uploadMediaImageDone = false;
-    public boolean uploadMediaImageError = false;
-    public List<String> captions = new ArrayList<>();
+    public boolean uploadMediaDone = false;
+    public boolean uploadMediaError = false;
+    public List<String> caption = new ArrayList<>();
     public boolean preparedDraft = false;
     public List<Syndication> syndicationTargets = new ArrayList<>();
     private MenuItem sendItem;
@@ -116,7 +118,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public TextView startDate;
     public TextView endDate;
     public boolean finishActivity = true;
-    public boolean canAddImage = false;
+    public boolean canAddMedia = false;
     public boolean canAddLocation = false;
     public boolean addCounter = false;
     public Map<String, String> bodyParams = new LinkedHashMap<>();
@@ -144,7 +146,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.post_create_menu, menu);
 
-        if (!canAddImage) {
+        if (!canAddMedia) {
             MenuItem item = menu.findItem(R.id.addImage);
             item.setVisible(false);
         }
@@ -203,11 +205,24 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
+        if ((requestCode == PICK_IMAGE_REQUEST || requestCode == PICK_VIDEO_REQUEST || requestCode == PICK_AUDIO_REQUEST) && resultCode == RESULT_OK) {
 
             if (isMediaRequest) {
-                images.clear();
-                captions.clear();
+                if (requestCode == PICK_IMAGE_REQUEST) {
+                    caption.clear();
+                    image.clear();
+                    hideMediaPreview(false, true, true);
+                }
+
+                if (requestCode == PICK_VIDEO_REQUEST) {
+                    video.clear();
+                    hideMediaPreview(true, false, true);
+                }
+
+                if (requestCode == PICK_AUDIO_REQUEST) {
+                    audio.clear();
+                    hideMediaPreview(true, true, false);
+                }
             }
 
             if (data.getClipData() != null) {
@@ -223,14 +238,36 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                             getContentResolver().takePersistableUriPermission(data.getClipData().getItemAt(i).getUri(), takeFlags);
                         }
                         catch (Exception ignored) {}
-                        images.add(data.getClipData().getItemAt(i).getUri());
-                        captions.add("");
+
+                        if (requestCode == PICK_IMAGE_REQUEST) {
+                            image.add(data.getClipData().getItemAt(i).getUri());
+                            caption.add("");
+                        }
+
+                        if (requestCode == PICK_VIDEO_REQUEST) {
+                            video.add(data.getClipData().getItemAt(i).getUri());
+                        }
+
+                        if (requestCode == PICK_AUDIO_REQUEST) {
+                            audio.add(data.getClipData().getItemAt(i).getUri());
+                        }
                     }
                 }
             }
             else if (data.getData() != null) {
-                images.add(data.getData());
-                captions.add("");
+
+                if (requestCode == PICK_IMAGE_REQUEST) {
+                    image.add(data.getData());
+                    caption.add("");
+                }
+
+                if (requestCode == PICK_VIDEO_REQUEST) {
+                    video.add(data.getData());
+                }
+
+                if (requestCode == PICK_AUDIO_REQUEST) {
+                    audio.add(data.getData());
+                }
 
                 try {
                     setChanges(true);
@@ -243,7 +280,18 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
             }
 
-            prepareImagePreview();
+            if (requestCode == PICK_IMAGE_REQUEST) {
+                prepareImagePreview();
+            }
+
+            if (requestCode == PICK_VIDEO_REQUEST) {
+                prepareVideoPreview();
+            }
+
+            if (requestCode == PICK_AUDIO_REQUEST) {
+                prepareAudioPreview();
+            }
+
         }
     }
 
@@ -301,15 +349,65 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
      */
     public void prepareImagePreview() {
         mediaPreviewGallery.setVisibility(View.VISIBLE);
-        GalleryAdapter galleryAdapter = new GalleryAdapter(this, images, captions, isMediaRequest);
+        ImageGalleryAdapter galleryAdapter = new ImageGalleryAdapter(this, image, caption, isMediaRequest);
         RecyclerView imageRecyclerView = findViewById(R.id.imageRecyclerView);
+        imageRecyclerView.setVisibility(View.VISIBLE);
         imageRecyclerView.setAdapter(galleryAdapter);
     }
 
     /**
-     * Convert bitmap to byte[] array.
+     * Prepare video preview.
      */
-    public byte[] getFileDataFromDrawable(Bitmap bitmap, Boolean scale, Uri uri, String mime) {
+    public void prepareVideoPreview() {
+        mediaPreviewGallery.setVisibility(View.VISIBLE);
+        VideoGalleryAdapter galleryAdapter = new VideoGalleryAdapter(this, video, isMediaRequest);
+        RecyclerView videoRecyclerView = findViewById(R.id.videoRecyclerView);
+        videoRecyclerView.setVisibility(View.VISIBLE);
+        videoRecyclerView.setAdapter(galleryAdapter);
+    }
+
+    /**
+     * Prepare audio preview.
+     */
+    public void prepareAudioPreview() {
+        mediaPreviewGallery.setVisibility(View.VISIBLE);
+        AudioGalleryAdapter galleryAdapter = new AudioGalleryAdapter(this, audio, isMediaRequest);
+        RecyclerView audioRecyclerView = findViewById(R.id.audioRecyclerView);
+        audioRecyclerView.setVisibility(View.VISIBLE);
+        audioRecyclerView.setAdapter(galleryAdapter);
+    }
+
+    /**
+     * Hide other preview elements.
+     *
+     * @param hideImage
+     *   Whether to hide image or not.
+     * @param hideVideo
+     *   Whether to hide video or not.
+     * @param hideAudio
+     *   Whether to hide audio or not.
+     */
+    public void hideMediaPreview(boolean hideImage, boolean hideVideo, boolean hideAudio) {
+        if (hideImage) {
+            RecyclerView imageRecyclerView = findViewById(R.id.imageRecyclerView);
+            imageRecyclerView.setVisibility(View.GONE);
+        }
+
+        if (hideVideo) {
+            RecyclerView videoRecyclerView = findViewById(R.id.videoRecyclerView);
+            videoRecyclerView.setVisibility(View.GONE);
+        }
+
+        if (hideAudio) {
+            RecyclerView audioRecyclerView = findViewById(R.id.audioRecyclerView);
+            audioRecyclerView.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * Get file data from uri or bitmap.
+     */
+    public byte[] getFileData(Bitmap bitmap, Boolean scale, Uri uri, String mime) {
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -368,8 +466,8 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         showProgressBar();
 
         // Use media endpoint to upload media attached to the post.
-        if (Preferences.getPreference(getApplicationContext(), "pref_key_upload_media_endpoint", false) && images.size() > 0 && !uploadMediaImageDone) {
-            mediaCount = images.size() + videos.size() + audios.size();
+        if (Preferences.getPreference(getApplicationContext(), "pref_key_upload_media_endpoint", false) && image.size() > 0 && !uploadMediaDone) {
+            mediaCount = image.size() + video.size() + audio.size();
             sendMediaPost();
             return;
         }
@@ -510,9 +608,9 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 }
 
                 // Image alt.
-                if (captions.size() > 0) {
+                if (caption.size() > 0) {
                     int ia = 0;
-                    for (String s: captions) {
+                    for (String s: caption) {
                         String caption = "";
                         if (s.length() > 0) {
                             caption = s;
@@ -548,12 +646,25 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 }
 
                 // Media urls.
-                if (Preferences.getPreference(getApplicationContext(), "pref_key_upload_media_endpoint", false) && uploadMediaImageDone && images.size() > 0 && mediaUrls.size() > 0) {
+                if (Preferences.getPreference(getApplicationContext(), "pref_key_upload_media_endpoint", false) && uploadMediaDone && mediaUrls.size() > 0) {
                     int mi = 0;
-                    for (Uri u: images) {
+                    for (Uri u: image) {
                         bodyParams.put("photo_multiple_[" + mi + "]", mediaUrls.get(u));
                         mi++;
                     }
+
+                    int mv = 0;
+                    for (Uri u: video) {
+                        bodyParams.put("video_multiple_[" + mv + "]", mediaUrls.get(u));
+                        mv++;
+                    }
+
+                    int ma = 0;
+                    for (Uri u: audio) {
+                        bodyParams.put("audio_multiple_[" + ma + "]", mediaUrls.get(u));
+                        ma++;
+                    }
+
                 }
 
                 return bodyParams;
@@ -576,7 +687,8 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new LinkedHashMap<>();
 
-                if (images.size() > 0 && !Preferences.getPreference(getApplicationContext(), "pref_key_upload_media_endpoint", false)) {
+                // Images.
+                if (image.size() > 0 && !Preferences.getPreference(getApplicationContext(), "pref_key_upload_media_endpoint", false)) {
 
                     int ImageSize = 1000;
                     Boolean scale = Preferences.getPreference(getApplicationContext(), "pref_key_image_scale", true);
@@ -589,8 +701,8 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
                     ContentResolver cR = getApplicationContext().getContentResolver();
 
-                    int i = 0;
-                    for (Uri u : images) {
+                    int im = 0;
+                    for (Uri u : image) {
 
                         Bitmap bitmap = null;
                         if (scale) {
@@ -620,14 +732,54 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                             }
                         }
 
-                        String imagePostParam = "photo_multiple_[" + i + "]";
+                        String imagePostParam = "photo_multiple_[" + im + "]";
                         if (isMediaRequest) {
                             imagePostParam = "file";
                         }
-                        i++;
+                        im++;
 
                         // Put image in body. Send along whether to scale or not.
-                        params.put(imagePostParam, new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap, scale, u, mime)));
+                        params.put(imagePostParam, new DataPart(imagename + "." + extension, getFileData(bitmap, scale, u, mime)));
+                    }
+                }
+
+                // Videos
+                if (video.size() > 0 && !Preferences.getPreference(getApplicationContext(), "pref_key_upload_media_endpoint", false)) {
+
+                    int iv = 0;
+                    for (Uri v : video) {
+
+                        long imagename = System.currentTimeMillis();
+                        String extension = "mp4";
+
+                        String videoPostParam = "video_multiple_[" + iv + "]";
+                        if (isMediaRequest) {
+                            videoPostParam = "file";
+                        }
+
+                        params.put(videoPostParam, new DataPart(imagename + "." + extension, getFileData(null, false, v, null)));
+
+                        iv++;
+                    }
+                }
+
+                // Audio
+                if (audio.size() > 0 && !Preferences.getPreference(getApplicationContext(), "pref_key_upload_media_endpoint", false)) {
+
+                    int ia = 0;
+                    for (Uri a : audio) {
+
+                        long imagename = System.currentTimeMillis();
+                        String extension = "mp3";
+
+                        String audioPostParam = "audio_multiple_[" + ia + "]";
+                        if (isMediaRequest) {
+                            audioPostParam = "file";
+                        }
+
+                        params.put(audioPostParam, new DataPart(imagename + "." + extension, getFileData(null, false, a, null)));
+
+                        ia++;
                     }
                 }
 
@@ -646,8 +798,8 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
         mediaUrls.clear();
         mediaUploadedCount = 0;
-        uploadMediaImageDone = false;
-        uploadMediaImageError = false;
+        uploadMediaDone = false;
+        uploadMediaError = false;
 
         String endpoint = user.getMicropubMediaEndpoint();
         if (endpoint.length() == 0) {
@@ -662,66 +814,93 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         // Set listener.
         VolleyMediaRequestListener(this);
 
-        for (final Uri u : images) {
-            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-            VolleyMediaRequest request = new VolleyMediaRequest(Request.Method.POST, endpoint,
-                    new Response.Listener<NetworkResponse>() {
-                        @Override
-                        public void onResponse(NetworkResponse response) {
+        for (Uri u : image) {
+            sendMediaRequest(u, endpoint, true, false);
+        }
 
-                            String fileUrl = response.headers.get("Location");
-                            if (fileUrl != null && fileUrl.length() > 0) {
-                                mediaUrls.put(u, fileUrl);
-                                mediaUploadedCount++;
-                                volleyMediaRequestListener.OnSuccessRequest();
-                            }
-                            else {
-                                uploadMediaImageError = true;
-                                volleyMediaRequestListener.OnFailureRequest();
-                                Toast.makeText(getApplicationContext(), R.string.no_media_url_found, Toast.LENGTH_SHORT).show();
-                            }
+        for (Uri u : video) {
+            sendMediaRequest(u, endpoint, false, true);
+        }
 
+        for (Uri u : audio) {
+            sendMediaRequest(u, endpoint, false, false);
+        }
 
+    }
+
+    /**
+     * Send media request.
+     *
+     * @param u
+     *   The media uri
+     * @param endpoint
+     *   The media endpoint
+     * @param image
+     *   Whether this is an image or not
+     * @param video
+     *   Whether this is a video or not
+     */
+    public void sendMediaRequest(final Uri u, String endpoint, final boolean image, final boolean video) {
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        VolleyMediaRequest request = new VolleyMediaRequest(Request.Method.POST, endpoint,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+
+                        String fileUrl = response.headers.get("Location");
+                        if (fileUrl != null && fileUrl.length() > 0) {
+                            mediaUrls.put(u, fileUrl);
+                            mediaUploadedCount++;
+                            volleyMediaRequestListener.OnSuccessRequest();
                         }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            uploadMediaImageError = true;
+                        else {
+                            uploadMediaError = true;
                             volleyMediaRequestListener.OnFailureRequest();
-                            Utility.parseNetworkError(error, getApplicationContext(), R.string.media_network_fail, R.string.media_fail);
+                            Toast.makeText(getApplicationContext(), R.string.no_media_url_found, Toast.LENGTH_SHORT).show();
                         }
-                    }
-            )
-            {
-                @Override
-                protected Map<String, String> getParams() {
 
-                    // Send along access token if configured.
-                    if (Preferences.getPreference(getApplicationContext(), "pref_key_access_token_body", false)) {
-                        bodyParams.put("access_token", user.getAccessToken());
-                    }
 
-                    return bodyParams;
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        uploadMediaError = true;
+                        volleyMediaRequestListener.OnFailureRequest();
+                        Utility.parseNetworkError(error, getApplicationContext(), R.string.media_network_fail, R.string.media_fail);
+                    }
+                }
+        )
+        {
+            @Override
+            protected Map<String, String> getParams() {
+
+                // Send along access token if configured.
+                if (Preferences.getPreference(getApplicationContext(), "pref_key_access_token_body", false)) {
+                    bodyParams.put("access_token", user.getAccessToken());
                 }
 
-                @Override
-                public Map<String, String> getHeaders() {
-                    HashMap<String, String> headers = new HashMap<>();
-                    headers.put("Accept", "application/json");
+                return bodyParams;
+            }
 
-                    // Send access token in header by default.
-                    if (!Preferences.getPreference(getApplicationContext(), "pref_key_access_token_body", false)) {
-                        headers.put("Authorization", "Bearer " + user.getAccessToken());
-                    }
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json");
 
-                    return headers;
+                // Send access token in header by default.
+                if (!Preferences.getPreference(getApplicationContext(), "pref_key_access_token_body", false)) {
+                    headers.put("Authorization", "Bearer " + user.getAccessToken());
                 }
 
-                @Override
-                protected Map<String, DataPart> getByteData() {
-                    Map<String, DataPart> params = new LinkedHashMap<>();
+                return headers;
+            }
 
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new LinkedHashMap<>();
+
+                if (image) {
                     int ImageSize = 1000;
                     Boolean scale = Preferences.getPreference(getApplicationContext(), "pref_key_image_scale", true);
                     if (scale) {
@@ -747,7 +926,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                         catch (Exception ignored) {}
 
                         if (bitmap == null) {
-                            uploadMediaImageError = true;
+                            uploadMediaError = true;
                             Toast.makeText(getApplicationContext(), getString(R.string.bitmap_error), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -763,15 +942,25 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                     }
 
                     // Put image in body. Send along whether to scale or not.
-                    params.put("file", new DataPart(imagename + "." + extension, getFileDataFromDrawable(bitmap, scale, u, mime)));
-
-                    return params;
+                    params.put("file", new DataPart(imagename + "." + extension, getFileData(bitmap, scale, u, mime)));
                 }
-            };
+                else {
+                    long filename = System.currentTimeMillis();
 
-            request.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            queue.add(request);
-        }
+                    String extension = "mp4";
+                    if (!video) {
+                        extension = "mp3";
+                    }
+
+                    params.put("file", new DataPart(filename + "." + extension, getFileData(null, false, u, null)));
+                }
+
+                return params;
+            }
+        };
+
+        request.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(request);
     }
 
     /**
@@ -789,13 +978,13 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public void OnSuccessRequest() {
 
         // In case everything is fine, send base post.
-        if (mediaUploadedCount == mediaCount && !uploadMediaImageError) {
-            uploadMediaImageDone = true;
+        if (mediaUploadedCount == mediaCount && !uploadMediaError) {
+            uploadMediaDone = true;
             sendBasePost(sendItem);
         }
 
         // There's a possibility no url was found, we need to stop then as well.
-        if (uploadMediaImageError) {
+        if (uploadMediaError) {
             if (sendItem != null) {
                 sendItem.setEnabled(true);
             }

@@ -22,7 +22,7 @@ import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_SUMMARY
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 23;
+    private static final int DATABASE_VERSION = 24;
     private static final String DATABASE_NAME = "indigenous";
 
     public DatabaseHelper(Context context) {
@@ -42,6 +42,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(Point.CREATE_TABLE);
         db.execSQL(Track.CREATE_TABLE);
         db.execSQL(TimelineStyle.CREATE_TABLE);
+        db.execSQL("drop table " + Draft.TABLE_NAME);
+        db.execSQL(Draft.CREATE_TABLE);
     }
 
     /**
@@ -347,8 +349,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(Draft.COLUMN_ACCOUNT, draft.getAccount());
         values.put(Draft.COLUMN_NAME, draft.getName());
         values.put(Draft.COLUMN_BODY, draft.getBody());
-        values.put(Draft.COLUMN_IMAGES, draft.getImages());
-        values.put(Draft.COLUMN_CAPTIONS, draft.getCaptions());
+        values.put(Draft.COLUMN_IMAGE, draft.getImage());
+        values.put(Draft.COLUMN_CAPTION, draft.getCaption());
+        values.put(Draft.COLUMN_VIDEO, draft.getVideo());
+        values.put(Draft.COLUMN_AUDIO, draft.getAudio());
         values.put(Draft.COLUMN_TAGS, draft.getTags());
         values.put(Draft.COLUMN_URL, draft.getUrl());
         values.put(Draft.COLUMN_START_DATE, draft.getStartDate());
@@ -401,8 +405,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         Draft.COLUMN_TYPE,
                         Draft.COLUMN_NAME,
                         Draft.COLUMN_BODY,
-                        Draft.COLUMN_IMAGES,
-                        Draft.COLUMN_CAPTIONS,
+                        Draft.COLUMN_IMAGE,
+                        Draft.COLUMN_CAPTION,
+                        Draft.COLUMN_VIDEO,
+                        Draft.COLUMN_AUDIO,
                         Draft.COLUMN_TAGS,
                         Draft.COLUMN_URL,
                         Draft.COLUMN_START_DATE,
@@ -497,8 +503,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         draft.setType(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_TYPE)));
         draft.setName(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_NAME)));
         draft.setBody(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_BODY)));
-        draft.setImages(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_IMAGES)));
-        draft.setCaptions(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_CAPTIONS)));
+        draft.setImage(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_IMAGE)));
+        draft.setCaption(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_CAPTION)));
+        draft.setVideo(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_VIDEO)));
+        draft.setAudio(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_AUDIO)));
         draft.setTags(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_TAGS)));
         draft.setUrl(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_URL)));
         draft.setStartDate(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_START_DATE)));

@@ -11,7 +11,7 @@ public class GeocacheActivity extends BaseCreate {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        canAddImage = true;
+        canAddMedia = true;
         canAddLocation = true;
         postType = "Geocache";
         isCheckin = true;

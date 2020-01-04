@@ -19,9 +19,9 @@ import com.indieweb.indigenous.R;
 
 import java.util.List;
 
-public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHolder> {
+public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.MyViewHolder> {
 
-    private List<Uri> images;
+    private List<Uri> image;
     private List<String> captions;
     private Context context;
     private boolean isMediaRequest;
@@ -35,9 +35,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
         }
     }
 
-    public GalleryAdapter(Activity activity, List<Uri> images, List<String> captions, boolean isMediaRequest) {
+    public ImageGalleryAdapter(Activity activity, List<Uri> image, List<String> captions, boolean isMediaRequest) {
         this.context = activity;
-        this.images = images;
+        this.image = image;
         this.captions = captions;
         this.isMediaRequest = isMediaRequest;
     }
@@ -55,7 +55,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Uri uri = images.get(position);
+        Uri uri = image.get(position);
         if (!isMediaRequest) {
             holder.thumbnail.setOnClickListener(new OnImageClickListener(position));
         }
@@ -64,7 +64,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
 
     @Override
     public int getItemCount() {
-        return images.size();
+        return image.size();
     }
 
     // Image click listener.
@@ -112,7 +112,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
             builder.setNegativeButton(context.getString(R.string.delete_image), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    images.remove(position);
+                    image.remove(position);
                     captions.remove(position);
                     notifyDataSetChanged();
                 }

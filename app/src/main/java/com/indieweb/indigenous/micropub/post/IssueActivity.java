@@ -14,7 +14,7 @@ public class IssueActivity extends BaseCreate {
         postType = "Issue";
         urlPostKey = "in-reply-to";
         addCounter = true;
-        canAddImage = true;
+        canAddMedia = true;
         setContentView(R.layout.activity_issue);
         super.onCreate(savedInstanceState);
     }
