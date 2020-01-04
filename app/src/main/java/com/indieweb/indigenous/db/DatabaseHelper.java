@@ -112,6 +112,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             values.put(Track.COLUMN_INTERVAL, track.getInterval());
             values.put(Track.COLUMN_ACCOUNT, track.getAccount());
             values.put(Track.COLUMN_START_TIME,dateFormat.format(System.currentTimeMillis()));
+            values.put(Track.COLUMN_END_TIME,dateFormat.format(System.currentTimeMillis()));
             db.insert(Track.TABLE_NAME, null, values);
         }
         db.close();
