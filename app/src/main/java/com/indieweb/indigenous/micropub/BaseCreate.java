@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import com.google.android.material.textfield.TextInputLayout;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -374,9 +373,13 @@ abstract public class BaseCreate extends BasePlatformCreate {
 
                 String[] captionsList = draft.getCaption().split(";");
                 caption.addAll(Arrays.asList(captionsList));
-                Log.d("indigenous_debug", "saved list: " + draft.getCaption());
-                Log.d("indigenous_debug", "captions list: " + captionsList.length);
-                Log.d("indigenous_debug", "captions add: " + caption + " -  size: " + caption.size());
+                int index = 0;
+                for (String c: caption) {
+                    if (c.equals(EMPTY_CAPTION)) {
+                        caption.set(index, "");
+                    }
+                    index++;
+                }
 
                 prepareImagePreview();
             }
@@ -479,7 +482,11 @@ abstract public class BaseCreate extends BasePlatformCreate {
             for (Uri uri : this.image) {
                 if (uri != null && uri.toString().length() > 0) {
                     images.append(uri.toString()).append(";");
-                    captions.append(this.caption.get(index)).append(";");
+                    String imageCaption = this.caption.get(index);
+                    if (imageCaption.length() == 0) {
+                        imageCaption = EMPTY_CAPTION;
+                    }
+                    captions.append(imageCaption).append(";");
                 }
                 index++;
             }

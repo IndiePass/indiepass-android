@@ -97,6 +97,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public boolean uploadMediaDone = false;
     public boolean uploadMediaError = false;
     public List<String> caption = new ArrayList<>();
+    public static String EMPTY_CAPTION = "_EMPTY_";
     public boolean preparedDraft = false;
     public List<Syndication> syndicationTargets = new ArrayList<>();
     private MenuItem sendItem;
@@ -664,7 +665,6 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                         bodyParams.put("audio_multiple_[" + ma + "]", mediaUrls.get(u));
                         ma++;
                     }
-
                 }
 
                 return bodyParams;
@@ -749,15 +749,15 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                     int iv = 0;
                     for (Uri v : video) {
 
-                        long imagename = System.currentTimeMillis();
-                        String extension = "mp4";
+                        long videoname = System.currentTimeMillis();
+                        String extension = Utility.getExtension(v, getApplicationContext(), "mp4");
 
                         String videoPostParam = "video_multiple_[" + iv + "]";
                         if (isMediaRequest) {
                             videoPostParam = "file";
                         }
 
-                        params.put(videoPostParam, new DataPart(imagename + "." + extension, getFileData(null, false, v, null)));
+                        params.put(videoPostParam, new DataPart(videoname + "." + extension, getFileData(null, false, v, null)));
 
                         iv++;
                     }
@@ -769,15 +769,15 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                     int ia = 0;
                     for (Uri a : audio) {
 
-                        long imagename = System.currentTimeMillis();
-                        String extension = "mp3";
+                        long audioname = System.currentTimeMillis();
+                        String extension = Utility.getExtension(a, getApplicationContext(), "mp3");
 
                         String audioPostParam = "audio_multiple_[" + ia + "]";
                         if (isMediaRequest) {
                             audioPostParam = "file";
                         }
 
-                        params.put(audioPostParam, new DataPart(imagename + "." + extension, getFileData(null, false, a, null)));
+                        params.put(audioPostParam, new DataPart(audioname + "." + extension, getFileData(null, false, a, null)));
 
                         ia++;
                     }
@@ -947,9 +947,9 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 else {
                     long filename = System.currentTimeMillis();
 
-                    String extension = "mp4";
+                    String extension = Utility.getExtension(u, getApplicationContext(), "mp4");
                     if (!video) {
-                        extension = "mp3";
+                        extension = Utility.getExtension(u, getApplicationContext(), "mp3");
                     }
 
                     params.put("file", new DataPart(filename + "." + extension, getFileData(null, false, u, null)));

@@ -79,7 +79,7 @@ public class Utility {
      * Get a filename.
      *
      * @param u
-     *   The filename
+     *   The uri
      * @param context
      *   The current context
      *
@@ -100,6 +100,36 @@ public class Utility {
         catch (NullPointerException ignored) {}
 
         return filename;
+    }
+
+    /**
+     * Get filename extension.
+     *
+     * @param u
+     *   The uri
+     * @param context
+     *   The current context
+     * @param defaultExtension
+     *   The default extension
+     *
+     * @return string
+     */
+    public static String getExtension(Uri u, Context context, String defaultExtension) {
+        String extension;
+        String filename = getFilename(u, context);
+        if (filename.length() > 0) {
+            if (filename.indexOf(".") > 0) {
+                extension = filename.substring(filename.lastIndexOf(".") + 1);
+            }
+            else {
+                extension = defaultExtension;
+            }
+        }
+        else {
+            extension = defaultExtension;
+        }
+
+        return extension;
     }
 
     /**
