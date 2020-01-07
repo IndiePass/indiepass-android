@@ -5,6 +5,7 @@
     <string name="about">About</string>
     <string name="main_menu">Main menu</string>
     <string name="no_connection">No internet connection found</string>
+    <string name="no_connection_info">No internet connection\nCheck your mobile data or Wi-Fi.</string>
     <string name="delete">Delete</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="one_image">1 image</string>
