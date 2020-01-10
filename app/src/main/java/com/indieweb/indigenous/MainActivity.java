@@ -22,7 +22,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.general.AboutFragment;
-import com.indieweb.indigenous.general.SettingsActivity;
+import com.indieweb.indigenous.general.SettingsFragment;
 import com.indieweb.indigenous.indieauth.UsersFragment;
 import com.indieweb.indigenous.micropub.contact.ContactFragment;
 import com.indieweb.indigenous.micropub.draft.DraftFragment;
@@ -328,8 +328,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_settings:
-                Intent settings = new Intent(getBaseContext(), SettingsActivity.class);
-                startActivity(settings);
+                close = true;
+                fragment = new SettingsFragment();
                 break;
 
             case R.id.nav_about:

@@ -4,21 +4,29 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceGroup;
-import android.preference.PreferenceScreen;
+
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceScreen;
 
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.push.PushNotificationActivity;
 import com.indieweb.indigenous.tracker.TrackerUtils;
 
-public class SettingsActivity extends AppCompatPreferenceActivity {
+@SuppressWarnings("ConstantConditions")
+public class SettingsFragment extends PreferenceFragmentCompat {
+
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        setPreferencesFromResource(R.xml.preferences, rootKey);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.preferences);
+
+        requireActivity().setTitle(getString(R.string.settings));
 
         Preference like = findPreference("pref_key_share_expose_like");
         like.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -90,15 +98,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         pushNotifications.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Intent i = new Intent(getApplicationContext(), PushNotificationActivity.class);
+                Intent i = new Intent(requireContext(), PushNotificationActivity.class);
                 startActivity(i);
                 return true;
             }
         });
 
         if (!TrackerUtils.supportsTracker()) {
-            PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("preferenceScreen");
-            PreferenceCategory tracker = (PreferenceCategory) findPreference("pref_key_category_tracker");
+            PreferenceScreen preferenceScreen = findPreference("preferenceScreen");
+            PreferenceCategory tracker = findPreference("pref_key_category_tracker");
             if (tracker != null) {
                 preferenceScreen.removePreference(tracker);
             }
@@ -113,9 +121,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * @param state
      *   The state of the alias. 1 = enabled, 2 = disabled.
      */
-    public void toggleAliasSetting(String alias, Integer state) {
-        PackageManager pm = getApplicationContext().getPackageManager();
-        ComponentName compName = new ComponentName(getPackageName(), getPackageName() + "." + alias);
+    private void toggleAliasSetting(String alias, Integer state) {
+        PackageManager pm = requireContext().getPackageManager();
+        ComponentName compName = new ComponentName(getContext().getPackageName(), getContext().getPackageName() + "." + alias);
         pm.setComponentEnabledSetting(compName, state, PackageManager.DONT_KILL_APP);
     }
 

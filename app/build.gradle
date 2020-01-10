@@ -44,6 +44,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.browser:browser:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.preference:preference:1.1.0'
     implementation 'com.android.volley:volley:1.1.0'
     implementation 'org.jsoup:jsoup:1.10.3'
     implementation 'com.google.android.material:material:1.0.0'

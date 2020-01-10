@@ -1,114 +1,125 @@
-<PreferenceScreen
-    android:key="preferenceScreen"
+<PreferenceScreen android:key="preferenceScreen"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
-        android:layout="@layout/preference_category"
+        android:layout="@layout/preference_category_custom"
         android:title="@string/push_notifications"
         android:summary="@string/push_notifications_text">
-
         <Preference
+            app:iconSpaceReserved="false"
             android:key="pref_key_push_notifications"
             android:summary="@string/push_notifications_summary" />
-
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:layout="@layout/preference_category"
+        android:layout="@layout/preference_category_custom"
         android:title="@string/pref_category_sharing_title"
         android:summary="@string/pref_category_sharing_summary">
 
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_share_expose_like"
             android:title="@string/pref_share_like_enabled"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_share_like_auto_submit"
             android:title="@string/pref_share_like_auto_submit"
             android:dependency="pref_key_share_expose_like"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_share_expose_bookmark"
             android:title="@string/pref_share_bookmark_enabled"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_share_bookmark_auto_submit"
             android:title="@string/pref_share_bookmark_auto_submit"
             android:dependency="pref_key_share_expose_bookmark"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_share_expose_repost"
             android:title="@string/pref_share_repost_enabled"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_share_repost_auto_submit"
             android:title="@string/pref_share_repost_auto_submit"
             android:dependency="pref_key_share_expose_repost"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_share_expose_reply"
             android:summary="@string/pref_summary_expose_reply"
             android:title="@string/pref_share_reply_enabled"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_share_expose_upload"
             android:summary="@string/pref_summary_expose_upload"
             android:title="@string/pref_share_upload_enabled"
             android:defaultValue="false" />
-
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_share_expose_feed"
             android:summary="@string/pref_summary_expose_feed"
             android:title="@string/pref_share_feed_enabled"
             android:defaultValue="false" />
-
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:layout="@layout/preference_category"
+        android:layout="@layout/preference_category_custom"
         android:title="@string/pref_category_posts_title"
         android:summary="@string/pref_category_posts_summary">
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_post_type_hide"
             android:title="@string/pref_key_post_type_hide_title"
             android:summary="@string/pref_key_post_type_hide_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_tags_list"
             android:title="@string/pref_key_tags_list_title"
             android:summary="@string/pref_key_tags_list_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_location_label"
             android:title="@string/pref_key_location_label_title"
             android:summary="@string/pref_key_location_label_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_location_visibility"
             android:title="@string/pref_key_location_visibility_title"
             android:summary="@string/pref_key_location_visibility_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_location_label_query"
             android:title="@string/pref_key_location_label_query_title"
             android:summary="@string/pref_key_location_label_query_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_access_token_body"
             android:title="@string/pref_key_access_token_body_title"
             android:summary="@string/pref_key_access_token_body_summary"
             android:defaultValue="false" />
-
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:layout="@layout/preference_category"
+        android:layout="@layout/preference_category_custom"
         android:title="@string/pref_category_reader_title"
         android:summary="@string/pref_category_reader_summary">
-
         <ListPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_mark_read"
             android:title="@string/pref_key_mark_read_title"
             android:summary="@string/pref_key_mark_read_summary"
@@ -116,60 +127,72 @@
             android:entryValues="@array/mark_read_array_values"
             android:defaultValue="1" />
         <EditTextPreference
+            app:iconSpaceReserved="false"
             android:inputType="text"
             android:key="pref_key_read_later"
             android:title="@string/pref_key_read_later_title"
             android:summary="@string/pref_key_read_later_summary" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_move_item"
             android:title="@string/pref_key_move_item_title"
             android:summary="@string/pref_key_move_item_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_timeline_autoload_more"
             android:title="@string/pref_key_timeline_autoload_more_title"
             android:summary="@string/pref_key_timeline_autoload_more_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_timeline_summary_detail_click"
             android:title="@string/pref_key_timeline_summary_detail_click_title"
             android:summary="@string/pref_key_timeline_summary_detail_click_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_image_preview"
             android:title="@string/pref_key_image_preview_title"
             android:summary="@string/pref_key_image_preview_summary"
             android:defaultValue="true" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_image_preview_compact"
             android:title="@string/pref_key_image_preview_compact_title"
             android:summary="@string/pref_key_image_preview_compact_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_video_autoplay"
             android:title="@string/pref_key_video_autoplay_title"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_static_map"
             android:title="@string/pref_key_static_map_title"
             android:summary="@string/pref_key_static_map_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_search_global"
             android:title="@string/pref_key_search_global_title"
             android:summary="@string/pref_key_search_global_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_search"
             android:title="@string/pref_key_search_title"
             android:summary="@string/pref_key_search_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_author_timeline"
             android:title="@string/pref_key_author_timeline_title"
             android:summary="@string/pref_key_author_timeline_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_unread_items_channel"
             android:title="@string/pref_key_unread_items_channel_title"
             android:summary="@string/pref_key_unread_items_channel_summary"
@@ -177,15 +200,17 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:layout="@layout/preference_category"
+        android:layout="@layout/preference_category_custom"
         android:title="@string/pref_category_media_title"
         android:summary="@string/pref_category_media_summary">
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_image_scale"
             android:title="@string/pref_key_image_scale_title"
             android:summary="@string/pref_key_image_scale_summary"
             android:defaultValue="true" />
         <EditTextPreference
+            app:iconSpaceReserved="false"
             android:inputType="number"
             android:dependency="pref_key_image_scale"
             android:key="pref_key_image_quality"
@@ -193,6 +218,7 @@
             android:summary="@string/pref_key_image_quality_summary"
             android:defaultValue="80" />
         <EditTextPreference
+            app:iconSpaceReserved="false"
             android:inputType="number"
             android:dependency="pref_key_image_scale"
             android:key="pref_key_image_size"
@@ -200,33 +226,37 @@
             android:summary="@string/pref_key_image_size_summary"
             android:defaultValue="1000" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_media_name"
             android:title="@string/pref_key_media_name_title"
             android:summary="@string/pref_key_media_name_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_upload_media_endpoint"
             android:title="@string/pref_key_upload_media_endpoint_title"
             android:summary="@string/pref_key_upload_media_endpoint_summary"
             android:defaultValue="false" />
-
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:layout="@layout/preference_category"
+        android:layout="@layout/preference_category_custom"
         android:title="@string/pref_category_contact_title"
         android:summary="@string/pref_category_contact_summary">
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_contact_manage"
             android:title="@string/pref_key_contact_manage_title"
             android:summary="@string/pref_key_contact_manage_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_contact_body_autocomplete"
             android:title="@string/pref_key_contact_body_autocomplete_title"
             android:summary="@string/pref_key_contact_body_autocomplete_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:dependency="pref_key_contact_body_autocomplete"
             android:key="pref_key_contact_body_autocomplete_value"
             android:title="@string/pref_key_contact_body_autocomplete_value_title"
@@ -236,30 +266,34 @@
 
     <PreferenceCategory
         android:key="pref_key_category_tracker"
-        android:layout="@layout/preference_category"
+        android:layout="@layout/preference_category_custom"
         android:title="@string/pref_category_tracker_title"
         android:summary="@string/pref_category_tracker_summary">
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_tracker_enable"
             android:title="@string/pref_category_tracker_enable"
             android:defaultValue="false" />
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:layout="@layout/preference_category"
+        android:layout="@layout/preference_category_custom"
         android:title="@string/pref_category_experimental_title"
         android:summary="@string/pref_category_experimental_summary">
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_source_post_list"
             android:title="@string/pref_key_source_post_list_title"
             android:summary="@string/pref_key_source_post_list_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_source_update"
             android:title="@string/pref_key_source_update_title"
             android:summary="@string/pref_key_source_update_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_source_delete"
             android:title="@string/pref_key_source_delete_title"
             android:summary="@string/pref_key_source_delete_summary"
@@ -267,36 +301,39 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:layout="@layout/preference_category"
+        android:layout="@layout/preference_category_custom"
         android:title="@string/pref_category_debug_title"
         android:summary="@string/pref_category_debug_summary">
-
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_debug_microsub_channels"
             android:title="@string/pref_key_debug_microsub_channels_json_title"
             android:summary="@string/pref_key_debug_microsub_channels_json_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_debug_microsub_timeline"
             android:title="@string/pref_key_debug_microsub_timeline_json_title"
             android:summary="@string/pref_key_debug_microsub_timeline_json_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_debug_microsub_item_json"
             android:title="@string/pref_key_debug_microsub_item_json_title"
             android:summary="@string/pref_key_debug_microsub_item_json_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_debug_source_list"
             android:title="@string/pref_key_debug_source_list_title"
             android:summary="@string/pref_key_debug_source_list_summary"
             android:defaultValue="false" />
         <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_debug_contact_list"
             android:title="@string/pref_key_debug_contact_list_title"
             android:summary="@string/pref_key_debug_contact_list_summary"
             android:defaultValue="false" />
-
     </PreferenceCategory>
 
 </PreferenceScreen>

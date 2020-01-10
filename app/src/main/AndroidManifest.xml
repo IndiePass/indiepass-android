@@ -380,15 +380,6 @@
         </activity>
 
         <activity
-            android:name=".general.SettingsActivity"
-            android:label="@string/settings"
-            android:parentActivityName=".LaunchActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
-        </activity>
-
-        <activity
             android:name=".general.DebugActivity"
             android:label="@string/debug"
             android:parentActivityName=".LaunchActivity">
