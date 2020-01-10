@@ -1,5 +1,6 @@
 package com.indieweb.indigenous.micropub.contact;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -26,6 +28,8 @@ import com.indieweb.indigenous.model.User;
 
 import java.util.List;
 
+import static com.indieweb.indigenous.MainActivity.UPDATE_POST;
+
 /**
  * Contact list adapter.
  */
@@ -35,11 +39,13 @@ public class ContactListAdapter extends BaseAdapter implements OnClickListener {
     private final List<Contact> contacts;
     private LayoutInflater mInflater;
     private User user;
+    private RelativeLayout layout;
 
-    ContactListAdapter(Context context, List<Contact> contacts, User user) {
+    ContactListAdapter(Context context, List<Contact> contacts, User user, RelativeLayout layout) {
         this.context = context;
         this.contacts = contacts;
         this.user = user;
+        this.layout = layout;
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -159,7 +165,7 @@ public class ContactListAdapter extends BaseAdapter implements OnClickListener {
             app.setContact(contact);
             Intent startActivity =  new Intent(context, ContactActivity.class);
             startActivity.putExtra("updateContact", true);
-            context.startActivity(startActivity);
+            ((Activity) context).startActivityForResult(startActivity, UPDATE_POST);
         }
     }
 
@@ -180,7 +186,7 @@ public class ContactListAdapter extends BaseAdapter implements OnClickListener {
             builder.setTitle(context.getString(R.string.contact_delete_confirm));
             builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,int id) {
-                    new MicropubAction(context, user).deleteItem(contact.getInternalUrl());
+                    new MicropubAction(context, user, layout).deleteItem(contact.getInternalUrl());
                     contacts.remove(position);
                     notifyDataSetChanged();
                 }

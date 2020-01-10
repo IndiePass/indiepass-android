@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.indieweb.indigenous.Indigenous;
@@ -31,11 +32,13 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
     private final List<Feed> items;
     private LayoutInflater mInflater;
     private final User user;
+    private RelativeLayout layout;
 
-    ManageFeedsListAdapter(Context context, List<Feed> items, User user) {
+    ManageFeedsListAdapter(Context context, List<Feed> items, User user, RelativeLayout layout) {
         this.context = context;
         this.items = items;
         this.user = user;
+        this.layout = layout;
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -101,7 +104,7 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
             builder.setTitle(String.format(context.getString(R.string.delete_feed_confirm), feed.getUrl()));
             builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,int id) {
-                    new MicrosubAction(context, user).deleteFeed(feed.getUrl(), feed.getChannel());
+                    new MicrosubAction(context, user, layout).deleteFeed(feed.getUrl(), feed.getChannel());
                     items.remove(position);
                     notifyDataSetChanged();
                 }
@@ -150,7 +153,7 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
                     if (checkedItem != null) {
                         for (Channel channel : channels) {
                             if (channel.getName() == checkedItem) {
-                                new MicrosubAction(context, user).subscribe(feed.getUrl(), channel.getUid(), true);
+                                new MicrosubAction(context, user, layout).subscribe(feed.getUrl(), channel.getUid(), true);
                                 items.remove(position);
                                 notifyDataSetChanged();
                                 break;

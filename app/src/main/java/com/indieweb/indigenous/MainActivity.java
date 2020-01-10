@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.general.AboutFragment;
 import com.indieweb.indigenous.general.SettingsActivity;
@@ -42,7 +43,6 @@ import com.indieweb.indigenous.micropub.source.PostListFragment;
 import com.indieweb.indigenous.microsub.channel.ChannelFragment;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.tracker.TrackerFragment;
-import com.indieweb.indigenous.tracker.TrackerUtils;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Preferences;
 
@@ -58,11 +58,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     Menu menu;
     User user;
+    DrawerLayout drawer;
     NavigationView navigationView;
     public static final int CREATE_DRAFT = 1001;
     public static final int POST_DRAFT = 1002;
     public static final int CREATE_TRACK = 1003;
     public static final int UPDATE_TRACK = 1004;
+    public static final int RESULT_DRAFT_SAVED = 1005;
+    public static final int UPDATE_POST = 1006;
 
     @Override
     public void onAttachFragment(@NonNull Fragment fragment) {
@@ -77,11 +80,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == CREATE_DRAFT && resultCode == RESULT_OK) {
+            closeDrawer(true);
+            Snackbar.make(drawer, getString(R.string.post_success), Snackbar.LENGTH_SHORT).show();
+        }
+
+        if (requestCode == UPDATE_POST && resultCode == RESULT_OK) {
+            Snackbar.make(drawer, getString(R.string.post_update_success), Snackbar.LENGTH_SHORT).show();
+        }
+
+        if (requestCode == CREATE_DRAFT && resultCode == RESULT_DRAFT_SAVED) {
+            closeDrawer(true);
             updateDraftMenuItem(true);
+            Snackbar.make(drawer, getString(R.string.draft_saved), Snackbar.LENGTH_SHORT).show();
         }
 
         if (requestCode == POST_DRAFT && resultCode == RESULT_OK) {
             updateDraftMenuItem(true);
+            Snackbar.make(drawer, getString(R.string.post_success), Snackbar.LENGTH_SHORT).show();
             startFragment(new DraftFragment());
         }
 
@@ -115,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Pushy.listen(this);
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -255,9 +270,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+            closeDrawer(false);
         }
         else {
             super.onBackPressed();
@@ -268,7 +282,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         boolean close = false;
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         Menu drawerMenu = navigationView.getMenu();
 
         Fragment fragment = null;
@@ -392,7 +405,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         if (close) {
-            drawer.closeDrawer(GravityCompat.START);
+            closeDrawer(false);
         }
 
         // Update main content frame.
@@ -422,7 +435,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      *   The menu item id to perform an action on.
      */
     public void openDrawer(int id) {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer != null) {
             drawer.openDrawer(GravityCompat.START);
         }
@@ -431,6 +443,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(id);
             navigationView.getMenu().performIdentifierAction(id, 0);
         }
+    }
+
+    /**
+     * Close drawer.
+     */
+    public void closeDrawer(boolean checkIfOpened) {
+        if (drawer == null) {
+            return;
+        }
+
+        if (checkIfOpened && !drawer.isDrawerOpen(GravityCompat.START)) {
+            return;
+        }
+
+        drawer.closeDrawer(GravityCompat.START);
     }
 
     /**

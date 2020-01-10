@@ -5,13 +5,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
@@ -26,6 +26,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+
+import static com.indieweb.indigenous.MainActivity.RESULT_DRAFT_SAVED;
 
 @SuppressLint("Registered")
 abstract public class BaseCreate extends BasePlatformCreate {
@@ -71,8 +73,9 @@ abstract public class BaseCreate extends BasePlatformCreate {
                     syndicationLayout.addView(ch);
                 }
 
-            } catch (JSONException e) {
-                Toast.makeText(this, String.format(getString(R.string.syndication_targets_parse_error), e.getMessage()), Toast.LENGTH_LONG).show();
+            }
+            catch (JSONException e) {
+                Snackbar.make(layout, String.format(getString(R.string.syndication_targets_parse_error), e.getMessage()), Snackbar.LENGTH_LONG).show();
             }
         }
 
@@ -91,6 +94,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
         locationUrl = findViewById(R.id.locationUrl);
         locationQuery = findViewById(R.id.locationQuery);
         locationCoordinates = findViewById(R.id.locationCoordinates);
+        layout = findViewById(R.id.post_root);
 
         // Add listener on body.
         if (body != null) {
@@ -98,7 +102,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
 
             // Autocomplete of contacts.
             if (Preferences.getPreference(this, "pref_key_contact_body_autocomplete", false)) {
-                new MicropubAction(getApplicationContext(), user).prepareContactAutocomplete(body);
+                new MicropubAction(getApplicationContext(), user, null).prepareContactAutocomplete(body);
             }
 
         }
@@ -115,7 +119,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
 
         // Autocomplete of tags.
         if (tags != null && Preferences.getPreference(this, "pref_key_tags_list", false)) {
-            new MicropubAction(getApplicationContext(), user).prepareTagsAutocomplete(tags);
+            new MicropubAction(getApplicationContext(), user, null).prepareTagsAutocomplete(tags);
         }
 
         if (isMediaRequest) {
@@ -517,10 +521,8 @@ abstract public class BaseCreate extends BasePlatformCreate {
         db = new DatabaseHelper(this);
         db.saveDraft(draft);
 
-        Toast.makeText(this, getString(R.string.draft_saved), Toast.LENGTH_SHORT).show();
-
         Intent returnIntent = new Intent();
-        setResult(RESULT_OK, returnIntent);
+        setResult(RESULT_DRAFT_SAVED, returnIntent);
         finish();
     }
 

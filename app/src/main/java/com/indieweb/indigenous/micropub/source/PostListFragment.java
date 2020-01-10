@@ -16,8 +16,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -26,6 +27,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.general.DebugActivity;
@@ -49,16 +51,18 @@ import static android.app.Activity.RESULT_OK;
 
 public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    boolean showRefreshMessage = false;
+    private boolean showRefreshMessage = false;
     private PostListAdapter adapter;
     private List<PostListItem> PostListItems = new ArrayList<>();
-    SwipeRefreshLayout refreshLayout;
-    ListView listView;
-    User user;
-    Button loadMoreButton;
-    boolean loadMoreButtonAdded = false;
-    String[] olderItems;
-    String debugResponse;
+    private SwipeRefreshLayout refreshLayout;
+    private ListView listView;
+    private User user;
+    private Button loadMoreButton;
+    private boolean loadMoreButtonAdded = false;
+    private String[] olderItems;
+    private String debugResponse;
+    private LinearLayout noConnection;
+    private RelativeLayout layout;
 
     @Nullable
     @Override
@@ -71,6 +75,8 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
 
+        noConnection = view.findViewById(R.id.noConnection);
+        layout = view.findViewById(R.id.source_post_list_root);
         listView = view.findViewById(R.id.source_post_list);
         refreshLayout = view.findViewById(R.id.refreshSourcePostList);
         refreshLayout.setOnRefreshListener(this);
@@ -136,6 +142,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
                 boolean refresh = data.getBooleanExtra("refresh", false);
                 if (refresh) {
                     refreshLayout.setRefreshing(true);
+                    Snackbar.make(layout, getString(R.string.applying_filter), Snackbar.LENGTH_SHORT).show();
                     startPostList();
                 }
             }
@@ -145,10 +152,10 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
     /**
      * Checks the state of the pull to refresh.
      */
-    public void checkRefreshingStatus() {
+    private void checkRefreshingStatus() {
         if (refreshLayout.isRefreshing()) {
             if (showRefreshMessage) {
-                Toast.makeText(getContext(), getString(R.string.source_post_list_items_refreshed), Toast.LENGTH_SHORT).show();
+                Snackbar.make(layout, getString(R.string.source_post_list_items_refreshed), Snackbar.LENGTH_SHORT).show();
             }
             refreshLayout.setRefreshing(false);
         }
@@ -157,11 +164,12 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
     /**
      * Start with post list.
      */
-    public void startPostList() {
+    private void startPostList() {
+        noConnection.setVisibility(View.GONE);
         boolean updateEnabled = Preferences.getPreference(getContext(), "pref_key_source_update", false);
         boolean deleteEnabled = Preferences.getPreference(getContext(), "pref_key_source_delete", false);
         PostListItems = new ArrayList<>();
-        adapter = new PostListAdapter(requireContext(), PostListItems, user, updateEnabled, deleteEnabled);
+        adapter = new PostListAdapter(requireContext(), PostListItems, user, updateEnabled, deleteEnabled, layout);
         listView.setAdapter(adapter);
         getSourcePostListItems("");
     }
@@ -169,12 +177,12 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
     /**
      * Get items in channel.
      */
-    public void getSourcePostListItems(String pagerAfter) {
+    private void getSourcePostListItems(String pagerAfter) {
 
         if (!new Connection(requireContext()).hasConnection()) {
             showRefreshMessage = false;
             checkRefreshingStatus();
-            Toast.makeText(requireContext(), requireContext().getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            noConnection.setVisibility(View.VISIBLE);
             return;
         }
 
@@ -289,7 +297,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
                         }
                         catch (JSONException e) {
                             showRefreshMessage = false;
-                            Toast.makeText(getContext(), String.format(getString(R.string.post_list_parse_error), e.getMessage()), Toast.LENGTH_LONG).show();
+                            Snackbar.make(layout, String.format(getString(R.string.post_list_parse_error), e.getMessage()), Snackbar.LENGTH_SHORT).show();
                         }
 
                         checkRefreshingStatus();

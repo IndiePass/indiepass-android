@@ -6,8 +6,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -16,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Feed;
 import com.indieweb.indigenous.model.User;
@@ -41,12 +44,16 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
     ListView listView;
     User user;
     boolean showRefreshMessage;
+    private RelativeLayout layout;
+    private LinearLayout noConnection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_feed);
 
+        layout = findViewById(R.id.feed_manage_root);
+        noConnection = findViewById(R.id.noConnection);
         listView = findViewById(R.id.feed_list);
 
         Bundle extras = getIntent().getExtras();
@@ -60,7 +67,7 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
             startFeed();
         }
         else {
-            Toast.makeText(this, getString(R.string.channel_not_found), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, getString(R.string.channel_not_found), Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -100,7 +107,7 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
     public void checkRefreshingStatus() {
         if (refreshLayout.isRefreshing()) {
             if (showRefreshMessage) {
-                Toast.makeText(getApplicationContext(), getString(R.string.feed_items_refreshed), Toast.LENGTH_SHORT).show();
+                Snackbar.make(layout, getString(R.string.feed_items_refreshed), Snackbar.LENGTH_SHORT).show();
             }
             refreshLayout.setRefreshing(false);
         }
@@ -110,8 +117,9 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
      * Start with the feed.
      */
     public void startFeed() {
+        noConnection.setVisibility(View.GONE);
         FeedItems = new ArrayList<>();
-        adapter = new ManageFeedsListAdapter(this, FeedItems, user);
+        adapter = new ManageFeedsListAdapter(this, FeedItems, user, layout);
         listView.setAdapter(adapter);
         getFeeds();
     }
@@ -124,7 +132,8 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
         if (!new Connection(getApplicationContext()).hasConnection()) {
             showRefreshMessage = false;
             checkRefreshingStatus();
-            Toast.makeText(getApplicationContext(), getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
+            noConnection.setVisibility(View.VISIBLE);
             return;
         }
 
@@ -155,7 +164,7 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
                         }
                         catch (JSONException e) {
                             showRefreshMessage = false;
-                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.feed_parse_error), e.getMessage()), Toast.LENGTH_LONG).show();
+                            Snackbar.make(layout, String.format(getString(R.string.feed_parse_error), e.getMessage()), Snackbar.LENGTH_LONG).show();
                         }
 
                         checkRefreshingStatus();
@@ -165,7 +174,7 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         showRefreshMessage = false;
-                        Toast.makeText(getApplicationContext(), getString(R.string.no_feeds_found), Toast.LENGTH_SHORT).show();
+                        Snackbar.make(layout, getString(R.string.no_feeds_found), Snackbar.LENGTH_SHORT).show();
                         checkRefreshingStatus();
                     }
                 }

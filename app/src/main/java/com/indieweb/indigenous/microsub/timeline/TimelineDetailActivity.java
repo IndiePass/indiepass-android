@@ -14,8 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -27,6 +28,7 @@ import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.general.DebugActivity;
@@ -57,6 +59,7 @@ import static com.indieweb.indigenous.util.Utility.dateFormatStrings;
 
 public class TimelineDetailActivity extends AppCompatActivity {
 
+    RelativeLayout layout;
     protected TimelineItem item;
     User user;
 
@@ -65,10 +68,12 @@ public class TimelineDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline_detail);
 
+        layout = findViewById(R.id.timeline_detail_root);
+
         Indigenous app = Indigenous.getInstance();
         item = app.getTimelineItem();
         if (item == null) {
-            Toast.makeText(TimelineDetailActivity.this, getString(R.string.no_item_found), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, getString(R.string.no_item_found), Snackbar.LENGTH_SHORT).show();
             finish();
         }
         else {
@@ -539,7 +544,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             else {
-                Toast.makeText(TimelineDetailActivity.this, getString(R.string.maps_info), Toast.LENGTH_SHORT).show();
+                Snackbar.make(layout, getString(R.string.maps_info), Snackbar.LENGTH_SHORT).show();
             }
 
         }
@@ -596,7 +601,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
                             builder.setTitle(getString(R.string.delete_post_confirm));
                             builder.setPositiveButton(getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,int id) {
-                                    new MicrosubAction(TimelineDetailActivity.this, user).deletePost(entry.getChannelId(), entry.getId());
+                                    new MicrosubAction(TimelineDetailActivity.this, user, layout).deletePost(entry.getChannelId(), entry.getId());
                                 }
                             });
                             builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -610,14 +615,14 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
                         case R.id.timeline_entry_mark_unread:
                             List<String> unreadEntries = new ArrayList<>();
-                            new MicrosubAction(TimelineDetailActivity.this, user).markUnread(entry.getChannelId(), unreadEntries);
-                            Toast.makeText(TimelineDetailActivity.this, R.string.item_marked_unread, Toast.LENGTH_SHORT).show();
+                            new MicrosubAction(TimelineDetailActivity.this, user, layout).markUnread(entry.getChannelId(), unreadEntries);
+                            Snackbar.make(layout, getString(R.string.item_marked_unread), Snackbar.LENGTH_SHORT).show();
                             break;
 
                         case R.id.timeline_entry_mark_read:
                             List<String> readEntries = new ArrayList<>();
-                            new MicrosubAction(TimelineDetailActivity.this, user).markRead(entry.getChannelId(), readEntries, false);
-                            Toast.makeText(TimelineDetailActivity.this, R.string.item_marked_read, Toast.LENGTH_SHORT).show();
+                            new MicrosubAction(TimelineDetailActivity.this, user, layout).markRead(entry.getChannelId(), readEntries, false);
+                            Snackbar.make(layout, getString(R.string.item_marked_read), Snackbar.LENGTH_SHORT).show();
                             break;
 
                         case R.id.timeline_entry_debug:
@@ -647,7 +652,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
                                 startActivity(startActivity);
                             }
                             else {
-                                Toast.makeText(getApplicationContext(), getString(R.string.contact_no_name), Toast.LENGTH_SHORT).show();
+                                Snackbar.make(layout, getString(R.string.contact_no_name), Snackbar.LENGTH_SHORT).show();
                             }
                             break;
 

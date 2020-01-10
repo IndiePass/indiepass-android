@@ -1,3 +1,7 @@
+<h4>xx/xx/2020 - 0.55</h4>
+<ul>
+    <li>Cleaner no connection notifications and use of snackbar messages where possible</li>
+</ul>
 <h4>06/01/2020 - 0.54</h4>
 <ul>
     <li>Allow to attach video or audio to posts. This updates the drafts database, so you will lose any existing drafts.</li>

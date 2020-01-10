@@ -12,17 +12,16 @@
     <ImageView
         android:contentDescription="@string/no_connection"
         android:background="@drawable/no_connection"
-        android:layout_width="60dp"
-        android:layout_height="60dp" />
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
 
     <TextView
         android:paddingTop="10dp"
         android:gravity="center"
         android:text="@string/no_connection_info"
         android:textColor="@color/textColor"
-        android:textSize="@dimen/big_text"
+        android:textSize="@dimen/info_text"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/no_connection" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

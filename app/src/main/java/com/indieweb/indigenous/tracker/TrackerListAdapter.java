@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -23,6 +23,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.model.Point;
@@ -53,12 +54,14 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
     private LayoutInflater mInflater;
     private DatabaseHelper db;
     private User user;
+    private RelativeLayout layout;
 
-    TrackerListAdapter(Context context, List<Track> tracks, User user) {
+    TrackerListAdapter(Context context, List<Track> tracks, User user, RelativeLayout layout) {
         this.context = context;
         this.tracks = tracks;
         this.db = new DatabaseHelper(context);
         this.user = user;
+        this.layout = layout;
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -275,7 +278,7 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
                     db.deleteTrack(track.getId());
                     tracks.remove(position);
                     notifyDataSetChanged();
-                    Toast.makeText(context, context.getString(R.string.track_deleted), Toast.LENGTH_SHORT).show();
+                    Snackbar.make(layout, context.getString(R.string.track_deleted), Snackbar.LENGTH_SHORT).show();
                 }
             });
             builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -299,22 +302,22 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
         final Collection<Point> values = points.values();
 
         if (!new Connection(context).hasConnection()) {
-            Toast.makeText(context, context.getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
-        Toast.makeText(context, R.string.sending_please_wait, Toast.LENGTH_SHORT).show();
         String MicropubEndpoint = user.getMicropubEndpoint();
         if (MicropubEndpoint.length() == 0) {
-            Toast.makeText(context, context.getString(R.string.no_micropub_endpoint), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, context.getString(R.string.no_micropub_endpoint), Snackbar.LENGTH_LONG).show();
             return;
         }
 
+        Snackbar.make(layout, context.getString(R.string.sending_please_wait), Snackbar.LENGTH_SHORT).show();
         VolleyMultipartRequest getRequest = new VolleyMultipartRequest(Request.Method.POST, MicropubEndpoint,
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
-                        Toast.makeText(context, R.string.post_track_success, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(layout, context.getString(R.string.post_track_success), Snackbar.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {

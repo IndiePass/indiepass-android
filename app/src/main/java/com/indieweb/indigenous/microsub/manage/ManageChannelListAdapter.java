@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.indieweb.indigenous.R;
@@ -36,6 +37,7 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
     private final Context context;
     private final List<Channel> channels;
     private final User user;
+    private final RelativeLayout layout;
     private final StartDragListener mStartDragListener;
 
     @Override
@@ -69,19 +71,20 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
 
         // Only send request when an item has moved.
         if (moved) {
-            new MicrosubAction(context, user).orderChannels(channels);
+            new MicrosubAction(context, user, layout).orderChannels(channels);
         }
 
         moved = false;
 
     }
 
-    ManageChannelListAdapter(Context context, List<Channel> channels, User user, StartDragListener startDragListener, boolean isShare, String url) {
+    ManageChannelListAdapter(Context context, List<Channel> channels, User user, StartDragListener startDragListener, boolean isShare, String url, RelativeLayout layout) {
         this.context = context;
         this.channels = channels;
         this.user = user;
         this.isShare = isShare;
         this.url = url;
+        this.layout = layout;
         this.mStartDragListener = startDragListener;
     }
 
@@ -224,7 +227,7 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
                     dialog.dismiss();
                     String channelName = input.getText().toString();
                     if (!channelName.equals(channel.getName())) {
-                        new MicrosubAction(context, user).updateChannel(channelName, channel.getUid());
+                        new MicrosubAction(context, user, layout).updateChannel(channelName, channel.getUid());
                         channels.get(position).setName(channelName);
                         notifyDataSetChanged();
                     }
@@ -259,7 +262,7 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
             builder.setTitle(String.format(context.getString(R.string.channel_delete_confirm), channel.getName()));
             builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,int id) {
-                    new MicrosubAction(context, user).deleteChannel(channel.getUid());
+                    new MicrosubAction(context, user, layout).deleteChannel(channel.getUid());
                     channels.remove(position);
                     notifyDataSetChanged();
                 }

@@ -7,6 +7,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.widget.ArrayAdapter;
 import android.widget.MultiAutoCompleteTextView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -15,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Contact;
 import com.indieweb.indigenous.model.User;
@@ -35,10 +37,12 @@ public class MicropubAction {
 
     private final Context context;
     private final User user;
+    private RelativeLayout layout;
 
-    public MicropubAction(Context context, User user) {
+    public MicropubAction(Context context, User user, RelativeLayout layout) {
         this.context = context;
         this.user = user;
+        this.layout = layout;
     }
 
     /**
@@ -50,17 +54,17 @@ public class MicropubAction {
     public void deleteItem(final String url) {
 
         if (!new Connection(context).hasConnection()) {
-            Toast.makeText(context, context.getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
-        Toast.makeText(context, R.string.sending_please_wait, Toast.LENGTH_SHORT).show();
+        Snackbar.make(layout, context.getString(R.string.sending_please_wait), Snackbar.LENGTH_SHORT).show();
         String MicropubEndpoint = user.getMicropubEndpoint();
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicropubEndpoint,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(context, R.string.delete_item_success, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(layout, context.getString(R.string.delete_item_success), Snackbar.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {

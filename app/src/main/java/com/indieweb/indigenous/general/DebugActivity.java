@@ -4,9 +4,10 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.util.Utility;
@@ -15,12 +16,15 @@ import org.json.JSONObject;
 
 public class DebugActivity extends AppCompatActivity {
 
+    ScrollView layout;
     String debugString = "No debugging info found";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debug);
+
+        layout = findViewById(R.id.debug_root);
 
         Indigenous app = Indigenous.getInstance();
         String appDebug = app.getDebug();
@@ -50,10 +54,10 @@ public class DebugActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.clipboard) {
             try {
                 Utility.copyToClipboard(debugString, getString(R.string.clipboard_label), getApplicationContext());
-                Toast.makeText(getApplicationContext(), R.string.clipboard_success, Toast.LENGTH_SHORT).show();
+                Snackbar.make(layout, getString(R.string.clipboard_success), Snackbar.LENGTH_SHORT).show();
             }
             catch (Exception ignored) {
-                Toast.makeText(getApplicationContext(), R.string.clipboard_error, Toast.LENGTH_SHORT).show();
+                Snackbar.make(layout, getString(R.string.clipboard_error), Snackbar.LENGTH_SHORT).show();
             }
 
             return true;

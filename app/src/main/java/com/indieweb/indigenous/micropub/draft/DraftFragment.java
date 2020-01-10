@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -42,6 +43,7 @@ public class DraftFragment extends Fragment {
 
         requireActivity().setTitle(R.string.drafts);
 
+        LinearLayout layout = view.findViewById(R.id.draft_root);
         ListView listDraft = view.findViewById(R.id.draft_list);
         TextView empty = view.findViewById(R.id.noDrafts);
 
@@ -54,7 +56,7 @@ public class DraftFragment extends Fragment {
             empty.setVisibility(View.VISIBLE);
         }
         else {
-            DraftListAdapter adapter = new DraftListAdapter(requireContext(), drafts, callback);
+            DraftListAdapter adapter = new DraftListAdapter(requireContext(), drafts, callback, layout);
             listDraft.setAdapter(adapter);
             adapter.notifyDataSetChanged();
         }

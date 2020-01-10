@@ -15,9 +15,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
@@ -57,6 +59,8 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
     private User user;
     private String debugResponse;
     private String readLater;
+    private LinearLayout noConnection;
+    private RelativeLayout layout;
 
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
@@ -74,6 +78,8 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
         view.findViewById(R.id.actionButton).setOnClickListener(this);
         listChannel = view.findViewById(R.id.channel_list);
         refreshLayout = view.findViewById(R.id.refreshChannels);
+        noConnection = view.findViewById(R.id.noConnection);
+        layout = view.findViewById(R.id.channel_root);
 
         user = new Accounts(getContext()).getCurrentUser();
         requireActivity().setTitle(getString(R.string.nav_reader));
@@ -99,6 +105,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
      * Start channels.
      */
     private void startChannels() {
+        noConnection.setVisibility(View.GONE);
         Channels = new ArrayList<>();
         listChannel.setVisibility(View.VISIBLE);
         adapter = new ChannelListAdapter(requireContext(), Channels, readLater);
@@ -120,7 +127,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
         if (!new Connection(requireContext()).hasConnection()) {
             showRefreshMessage = false;
             checkRefreshingStatus();
-            Toast.makeText(requireContext(), requireContext().getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            noConnection.setVisibility(View.VISIBLE);
             return;
         }
 
@@ -191,7 +198,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
                         }
                         catch (JSONException e) {
                             showRefreshMessage = false;
-                            Toast.makeText(getContext(), String.format(getString(R.string.channel_list_parse_error), e.getMessage()), Toast.LENGTH_LONG).show();
+                            Snackbar.make(layout, String.format(getString(R.string.channel_list_parse_error), e.getMessage()), Snackbar.LENGTH_SHORT).show();
                             checkRefreshingStatus();
                         }
 
@@ -227,7 +234,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
     private void checkRefreshingStatus() {
         if (refreshLayout.isRefreshing()) {
             if (showRefreshMessage) {
-                Toast.makeText(getContext(), getString(R.string.channels_refreshed), Toast.LENGTH_SHORT).show();
+                Snackbar.make(layout, getString(R.string.channels_refreshed), Snackbar.LENGTH_SHORT).show();
             }
             refreshLayout.setRefreshing(false);
         }

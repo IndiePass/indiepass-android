@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
@@ -46,12 +47,14 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
     private final Context context;
     private final List<Draft> drafts;
     private LayoutInflater mInflater;
+    private LinearLayout layout;
     private DraftFragment.OnDraftChangedListener callback;
 
-    DraftListAdapter(Context context, List<Draft> drafts, DraftFragment.OnDraftChangedListener callback) {
+    DraftListAdapter(Context context, List<Draft> drafts, DraftFragment.OnDraftChangedListener callback, LinearLayout layout) {
         this.context = context;
         this.drafts = drafts;
         this.callback = callback;
+        this.layout = layout;
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -228,7 +231,7 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
                     drafts.remove(position);
                     notifyDataSetChanged();
                     callback.onDraftChanged();
-                    Toast.makeText(context, context.getString(R.string.draft_deleted), Toast.LENGTH_SHORT).show();
+                    Snackbar.make(layout, context.getString(R.string.draft_deleted), Snackbar.LENGTH_SHORT).show();
                 }
             });
             builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {

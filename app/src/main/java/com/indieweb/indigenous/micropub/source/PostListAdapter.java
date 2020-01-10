@@ -1,5 +1,6 @@
 package com.indieweb.indigenous.micropub.source;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.indieweb.indigenous.R;
@@ -30,6 +32,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static com.indieweb.indigenous.MainActivity.POST_DRAFT;
+import static com.indieweb.indigenous.MainActivity.UPDATE_POST;
+
 /**
  * Source post list items list adapter.
  */
@@ -41,11 +46,13 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
     private final boolean showUpdateButton;
     private final boolean showDeleteButton;
     private final User user;
+    private final RelativeLayout layout;
 
-    PostListAdapter(Context context, List<PostListItem> items, User user, boolean showUpdateButton, boolean showDeleteButton) {
+    PostListAdapter(Context context, List<PostListItem> items, User user, boolean showUpdateButton, boolean showDeleteButton, RelativeLayout layout) {
         this.context = context;
         this.items = items;
         this.user = user;
+        this.layout = layout;
         this.showUpdateButton = showUpdateButton;
         this.showDeleteButton = showDeleteButton;
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -229,7 +236,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             Intent i = new Intent(context, UpdateActivity.class);
             PostListItem item = items.get(this.position);
             i.putExtra("incomingText", item.getUrl());
-            context.startActivity(i);
+            ((Activity) context).startActivityForResult(i, UPDATE_POST);
         }
     }
 
@@ -277,7 +284,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             builder.setTitle(context.getString(R.string.post_delete_confirm));
             builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,int id) {
-                    new MicropubAction(context, user).deleteItem(item.getUrl());
+                    new MicropubAction(context, user, layout).deleteItem(item.getUrl());
                     items.remove(position);
                     notifyDataSetChanged();
                 }

@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.LaunchActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.MicropubAction;
@@ -41,12 +42,14 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
     private LayoutInflater mInflater;
     private final User currentUser;
     private final Activity activity;
+    private final RelativeLayout layout;
 
-    UsersListAdapter(Context context, Activity activity, List<User> items, User currentUser) {
+    UsersListAdapter(Context context, Activity activity, List<User> items, User currentUser, RelativeLayout layout) {
         this.context = context;
         this.items = items;
         this.currentUser = currentUser;
         this.activity = activity;
+        this.layout = layout;
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -187,9 +190,9 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
         @Override
         public void onClick(View v) {
             final User user = items.get(this.position);
-            Toast.makeText(context, String.format(context.getString(R.string.account_sync), user.getMe()), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, String.format(context.getString(R.string.account_sync), user.getMe()), Snackbar.LENGTH_SHORT).show();
             new Endpoints(context, user).refresh();
-            new MicropubAction(context, user).refreshConfig();
+            new MicropubAction(context, user, null).refreshConfig();
         }
     }
 
@@ -223,7 +226,8 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
                                     }
                                 }
                                 catch (android.accounts.OperationCanceledException | IOException | AuthenticatorException e) {
-                                    Toast.makeText(context, R.string.account_delete_error, Toast.LENGTH_SHORT).show();
+                                    Snackbar.make(layout, context.getString(R.string.account_delete_error), Snackbar.LENGTH_SHORT).show();
+
                                 }
                             }
                         }, null);
@@ -238,7 +242,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
                                     }
                                 }
                                 catch (android.accounts.OperationCanceledException | AuthenticatorException | IOException e) {
-                                    Toast.makeText(context, R.string.account_delete_error, Toast.LENGTH_SHORT).show();
+                                    Snackbar.make(layout, context.getString(R.string.account_delete_error), Snackbar.LENGTH_SHORT).show();
                                 }
                             }
                         }, null);
@@ -260,7 +264,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
     }
 
     /**
-     * Handle success removal
+     * Handle success removal.
      *
      * @param user
      *   The user that was removed.
@@ -269,13 +273,14 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
      */
     private void handleSuccessRemoval(User user, int position) {
         new IndieAuthAction(context, user).revoke();
-        Toast.makeText(context, String.format(context.getString(R.string.account_removed), user.getMe()), Toast.LENGTH_SHORT).show();
         if (user.getMe().equals(currentUser.getMe())) {
+            Toast.makeText(context, String.format(context.getString(R.string.account_removed), user.getMe()), Toast.LENGTH_SHORT).show();
             Intent main = new Intent(context, LaunchActivity.class);
             context.startActivity(main);
             activity.finish();
         }
         else {
+            Snackbar.make(layout, String.format(context.getString(R.string.account_removed), user.getMe()), Snackbar.LENGTH_SHORT).show();
             items.remove(position);
             notifyDataSetChanged();
         }

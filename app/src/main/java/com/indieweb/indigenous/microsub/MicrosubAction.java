@@ -1,7 +1,7 @@
 package com.indieweb.indigenous.microsub;
 
 import android.content.Context;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -9,6 +9,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
@@ -22,10 +23,12 @@ public class MicrosubAction {
 
     private final Context context;
     private final User user;
+    private final RelativeLayout layout;
 
-    public MicrosubAction(Context context, User user) {
+    public MicrosubAction(Context context, User user, RelativeLayout layout) {
         this.context = context;
         this.user = user;
+        this.layout = layout;
     }
 
     /**
@@ -135,11 +138,11 @@ public class MicrosubAction {
     public void deletePost(final String channelId, final String postId) {
 
         if (!new Connection(context).hasConnection()) {
-            Toast.makeText(context, context.getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
-        Toast.makeText(context, context.getString(R.string.post_removed), Toast.LENGTH_SHORT).show();
+        Snackbar.make(layout, context.getString(R.string.post_removed), Snackbar.LENGTH_SHORT).show();
 
         String MicrosubEndpoint = user.getMicrosubEndpoint();
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
@@ -185,11 +188,11 @@ public class MicrosubAction {
     public void movePost(final String channelId, String channelName, final String postId) {
 
         if (!new Connection(context).hasConnection()) {
-            Toast.makeText(context, context.getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
-        Toast.makeText(context, String.format(context.getString(R.string.post_moved), channelName), Toast.LENGTH_SHORT).show();
+        Snackbar.make(layout, String.format(context.getString(R.string.post_moved), channelName), Snackbar.LENGTH_SHORT).show();
 
         String MicrosubEndpoint = user.getMicrosubEndpoint();
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
@@ -235,12 +238,11 @@ public class MicrosubAction {
     public void createChannel(final String channelName) {
 
         if (!new Connection(context).hasConnection()) {
-            Toast.makeText(context, context.getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
-        Toast.makeText(context, context.getString(R.string.channel_created), Toast.LENGTH_SHORT).show();
-
+        Snackbar.make(layout, context.getString(R.string.channel_created), Snackbar.LENGTH_SHORT).show();
         String MicrosubEndpoint = user.getMicrosubEndpoint();
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
                 new Response.Listener<String>() {
@@ -283,11 +285,11 @@ public class MicrosubAction {
     public void updateChannel(final String channelName, final String uid) {
 
         if (!new Connection(context).hasConnection()) {
-            Toast.makeText(context, context.getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
-        Toast.makeText(context, context.getString(R.string.channel_updated), Toast.LENGTH_SHORT).show();
+        Snackbar.make(layout, context.getString(R.string.channel_updated), Snackbar.LENGTH_SHORT).show();
 
         String MicrosubEndpoint = user.getMicrosubEndpoint();
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
@@ -332,11 +334,11 @@ public class MicrosubAction {
     public void deleteChannel(final String channelId) {
 
         if (!new Connection(context).hasConnection()) {
-            Toast.makeText(context, context.getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
-        Toast.makeText(context, context.getString(R.string.channel_deleted), Toast.LENGTH_SHORT).show();
+        Snackbar.make(layout, context.getString(R.string.channel_deleted), Snackbar.LENGTH_SHORT).show();
 
         String MicrosubEndpoint = user.getMicrosubEndpoint();
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
@@ -381,11 +383,11 @@ public class MicrosubAction {
     public void orderChannels(final List<Channel> Channels) {
 
         if (!new Connection(context).hasConnection()) {
-            Toast.makeText(context, context.getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
-        Toast.makeText(context, context.getString(R.string.channels_order_updated), Toast.LENGTH_SHORT).show();
+        Snackbar.make(layout, context.getString(R.string.channels_order_updated), Snackbar.LENGTH_SHORT).show();
 
         String MicrosubEndpoint = user.getMicrosubEndpoint();
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
@@ -435,11 +437,11 @@ public class MicrosubAction {
     public void deleteFeed(final String url, final String channelId) {
 
         if (!new Connection(context).hasConnection()) {
-            Toast.makeText(context, context.getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
-        Toast.makeText(context, context.getString(R.string.feed_deleted), Toast.LENGTH_SHORT).show();
+        Snackbar.make(layout, context.getString(R.string.feed_deleted), Snackbar.LENGTH_SHORT).show();
 
         String MicrosubEndpoint = user.getMicrosubEndpoint();
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
@@ -484,15 +486,15 @@ public class MicrosubAction {
     public void subscribe(final String url, final String channelId, final boolean update) {
 
         if (!new Connection(context).hasConnection()) {
-            Toast.makeText(context, context.getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
         if (update) {
-            Toast.makeText(context, context.getString(R.string.feed_updated), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, context.getString(R.string.feed_updated), Snackbar.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(context, context.getString(R.string.feed_subscribed), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, context.getString(R.string.feed_subscribed), Snackbar.LENGTH_SHORT).show();
         }
 
         String MicrosubEndpoint = user.getMicrosubEndpoint();

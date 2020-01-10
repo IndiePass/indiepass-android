@@ -9,6 +9,7 @@ import android.location.Location;
 import android.net.Uri;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -29,7 +30,6 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
@@ -41,6 +41,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.micropub.post.AudioGalleryAdapter;
@@ -123,6 +124,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public boolean canAddLocation = false;
     public boolean addCounter = false;
     public Map<String, String> bodyParams = new LinkedHashMap<>();
+    public RelativeLayout layout;
 
     public Integer draftId;
     String fileUrl;
@@ -456,12 +458,26 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         sendItem = item;
 
         if (!new Connection(this).hasConnection()) {
-            Toast.makeText(this, getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
-            return;
-        }
+            Snackbar snackbar = Snackbar.make(layout, getString(R.string.no_connection), Snackbar.LENGTH_LONG);
 
-        if (sendItem != null) {
-            sendItem.setEnabled(false);
+            if (saveAsDraft != null) {
+                 snackbar.setAction(getString(R.string.save_as_draft), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                saveAsDraft.setChecked(true);
+                                try {
+                                    findViewById(R.id.send).callOnClick();
+                                }
+                                catch (Exception ignored) {
+                                    Snackbar.make(layout, getString(R.string.draft_checked), Snackbar.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                );
+            }
+
+            snackbar.show();
+            return;
         }
 
         showProgressBar();
@@ -486,14 +502,14 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                     public void onResponse(NetworkResponse response) {
 
                         if (finishActivity) {
-                            Toast.makeText(getApplicationContext(), getString(R.string.post_success), Toast.LENGTH_SHORT).show();
+
+                            Intent returnIntent = new Intent();
+                            setResult(RESULT_OK, returnIntent);
 
                             // Remove draft if needed.
                             if (draftId != null && draftId > 0) {
                                 db = new DatabaseHelper(getApplicationContext());
                                 db.deleteDraft(draftId);
-                                Intent returnIntent = new Intent();
-                                setResult(RESULT_OK, returnIntent);
                             }
 
                             hideProgressBar();
@@ -503,17 +519,13 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                         if (isMediaRequest) {
                             fileUrl = response.headers.get("Location");
                             if (fileUrl != null && fileUrl.length() > 0) {
-                                Toast.makeText(getApplicationContext(), R.string.media_upload_success, Toast.LENGTH_SHORT).show();
+                                Snackbar.make(layout, getString(R.string.media_upload_success), Snackbar.LENGTH_SHORT).show();
                                 mediaUrl.setText(fileUrl);
                                 mediaUrl.setVisibility(View.VISIBLE);
                                 Utility.copyToClipboard(fileUrl, getString(R.string.clipboard_media_url), getApplicationContext());
                             }
                             else {
-                                Toast.makeText(getApplicationContext(), R.string.no_media_url_found, Toast.LENGTH_SHORT).show();
-                            }
-
-                            if (sendItem != null) {
-                                sendItem.setEnabled(true);
+                                Snackbar.make(layout, getString(R.string.no_media_url_found), Snackbar.LENGTH_SHORT).show();
                             }
 
                             hideProgressBar();
@@ -525,9 +537,6 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Utility.parseNetworkError(error, getApplicationContext(), R.string.post_network_fail, R.string.post_fail);
-                        if (sendItem != null) {
-                            sendItem.setEnabled(true);
-                        }
                         hideProgressBar();
                     }
                 }
@@ -803,10 +812,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
         String endpoint = user.getMicropubMediaEndpoint();
         if (endpoint.length() == 0) {
-            if (sendItem != null) {
-                sendItem.setEnabled(true);
-            }
-            Toast.makeText(getApplicationContext(), getString(R.string.no_micropub_media_endpoint), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, getString(R.string.no_micropub_media_endpoint), Snackbar.LENGTH_LONG).show();
             hideProgressBar();
             return;
         }
@@ -856,9 +862,8 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                         else {
                             uploadMediaError = true;
                             volleyMediaRequestListener.OnFailureRequest();
-                            Toast.makeText(getApplicationContext(), R.string.no_media_url_found, Toast.LENGTH_SHORT).show();
+                            Snackbar.make(layout, getString(R.string.no_media_url_found), Snackbar.LENGTH_SHORT).show();
                         }
-
 
                     }
                 },
@@ -927,7 +932,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
                         if (bitmap == null) {
                             uploadMediaError = true;
-                            Toast.makeText(getApplicationContext(), getString(R.string.bitmap_error), Toast.LENGTH_SHORT).show();
+                            Snackbar.make(layout, getString(R.string.bitmap_error), Snackbar.LENGTH_SHORT).show();
                         }
                     }
 
@@ -985,10 +990,6 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
         // There's a possibility no url was found, we need to stop then as well.
         if (uploadMediaError) {
-            if (sendItem != null) {
-                sendItem.setEnabled(true);
-            }
-
             hideProgressBar();
         }
 
@@ -996,10 +997,6 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
     @Override
     public void OnFailureRequest() {
-        if (sendItem != null) {
-            sendItem.setEnabled(true);
-        }
-
         hideProgressBar();
     }
 
@@ -1028,21 +1025,31 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     }
 
     /**
-     * Show progress bar.
+     * Show progress bar and disable send menu item.
      */
     public void showProgressBar() {
         if (progressBar != null && (progressBar.getVisibility() != View.VISIBLE)) {
             progressBar.setVisibility(View.VISIBLE);
         }
+
+        if (sendItem != null) {
+            sendItem.setEnabled(false);
+        }
     }
 
     /**
-     * Hide progress bar.
+     * Hide progress bar and enable send menu item.
      */
     public void hideProgressBar() {
+
         if (progressBar != null) {
             progressBar.setVisibility(View.GONE);
         }
+
+        if (sendItem != null) {
+            sendItem.setEnabled(true);
+        }
+
     }
 
     /**
@@ -1126,7 +1133,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 MicropubEndpoint += "&lat=" + latitude.toString() + "&lon=" + longitude.toString();
             }
 
-            Toast.makeText(getApplicationContext(), R.string.location_get, Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, getString(R.string.location_get), Snackbar.LENGTH_SHORT).show();
             StringRequest getRequest = new StringRequest(Request.Method.GET, MicropubEndpoint,
                     new Response.Listener<String>() {
                         @SuppressLint("ClickableViewAccessibility")
@@ -1182,12 +1189,12 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                                 }
                             }
                             catch (JSONException e) {
-                                Toast.makeText(getApplicationContext(), getString(R.string.location_error) + e.getMessage(), Toast.LENGTH_LONG).show();
+                                Snackbar.make(layout, getString(R.string.location_error) + e.getMessage(), Snackbar.LENGTH_SHORT).show();
                             }
 
                             if (label.length() > 0 || placeItems.size() > 0) {
                                 if (placeItems.size() > 0) {
-                                    Toast.makeText(getApplicationContext(), getString(R.string.places_found), Toast.LENGTH_SHORT).show();
+                                    Snackbar.make(layout, getString(R.string.places_found), Snackbar.LENGTH_SHORT).show();
 
                                     // Add default as a place as well.
                                     if (label.length() > 0) {
@@ -1243,7 +1250,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                                 }
                             }
                             else {
-                                Toast.makeText(getApplicationContext(), getString(R.string.location_no_results), Toast.LENGTH_SHORT).show();
+                                Snackbar.make(layout, getString(R.string.location_no_results), Snackbar.LENGTH_SHORT).show();
                             }
 
                         }

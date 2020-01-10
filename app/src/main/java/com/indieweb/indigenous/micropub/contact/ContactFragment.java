@@ -9,9 +9,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.general.DebugActivity;
@@ -53,6 +55,8 @@ public class ContactFragment extends Fragment implements View.OnClickListener, S
     private List<Contact> Contacts = new ArrayList<>();
     private User user;
     private String debugResponse;
+    private RelativeLayout layout;
+    private LinearLayout noConnection;
 
     @Nullable
     @Override
@@ -66,11 +70,13 @@ public class ContactFragment extends Fragment implements View.OnClickListener, S
 
         requireActivity().setTitle(R.string.contact_list_title);
 
+        noConnection = view.findViewById(R.id.noConnection);
         listContact = view.findViewById(R.id.contact_list);
         refreshLayout = view.findViewById(R.id.refreshContacts);
         TextView noMicropubEndpoint = view.findViewById(R.id.noMicropubEndpoint);
         user = new Accounts(getContext()).getCurrentUser();
         view.findViewById(R.id.actionButton).setOnClickListener(this);
+        layout = view.findViewById(R.id.contacts_root);
 
         if (user.getMicropubEndpoint().length() > 0) {
             setHasOptionsMenu(true);
@@ -90,9 +96,10 @@ public class ContactFragment extends Fragment implements View.OnClickListener, S
      * Start contacts.
      */
     private void startContacts() {
+        noConnection.setVisibility(View.GONE);
         Contacts = new ArrayList<>();
         listContact.setVisibility(View.VISIBLE);
-        adapter = new ContactListAdapter(requireContext(), Contacts, user);
+        adapter = new ContactListAdapter(requireContext(), Contacts, user, layout);
         listContact.setAdapter(adapter);
         loadContacts();
     }
@@ -105,7 +112,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener, S
         if (!new Connection(requireContext()).hasConnection()) {
             showRefreshMessage = false;
             checkRefreshingStatus();
-            Toast.makeText(requireContext(), requireContext().getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            noConnection.setVisibility(View.VISIBLE);
             return;
         }
 
@@ -163,7 +170,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener, S
                         }
                         catch (JSONException e) {
                             showRefreshMessage = false;
-                            Toast.makeText(getContext(), String.format(getString(R.string.contact_list_parse_error), e.getMessage()), Toast.LENGTH_LONG).show();
+                            Snackbar.make(layout, String.format(getString(R.string.contact_list_parse_error), e.getMessage()), Snackbar.LENGTH_LONG).show();
                             checkRefreshingStatus();
                         }
                     }
@@ -204,7 +211,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener, S
     private void checkRefreshingStatus() {
         if (refreshLayout.isRefreshing()) {
             if (showRefreshMessage) {
-                Toast.makeText(getContext(), getString(R.string.contacts_refreshed), Toast.LENGTH_SHORT).show();
+                Snackbar.make(layout, getString(R.string.contacts_refreshed), Snackbar.LENGTH_SHORT).show();
             }
             refreshLayout.setRefreshing(false);
         }

@@ -11,8 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +20,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.model.Track;
@@ -36,6 +37,7 @@ public class TrackerFragment extends Fragment implements View.OnClickListener, S
     private TextView empty;
     private boolean showRefreshMessage = false;
     private SwipeRefreshLayout refreshLayout;
+    private RelativeLayout layout;
 
     @Override
     public void onRefresh() {
@@ -62,6 +64,7 @@ public class TrackerFragment extends Fragment implements View.OnClickListener, S
         empty = view.findViewById(R.id.noTracks);
         refreshLayout = view.findViewById(R.id.refreshTracks);
         refreshLayout.setOnRefreshListener(this);
+        layout = view.findViewById(R.id.tracker_root);
 
         startTracks();
     }
@@ -74,7 +77,7 @@ public class TrackerFragment extends Fragment implements View.OnClickListener, S
                 ((Activity) requireContext()).startActivityForResult(CreateTrack, CREATE_TRACK);
             }
             else {
-                Toast.makeText(requireContext(), getString(R.string.tracker_running), Toast.LENGTH_SHORT).show();
+                Snackbar.make(layout, getString(R.string.tracker_running), Snackbar.LENGTH_SHORT).show();
             }
         }
     }
@@ -103,7 +106,7 @@ public class TrackerFragment extends Fragment implements View.OnClickListener, S
                         DatabaseHelper db = new DatabaseHelper(requireContext());
                         db.deleteAllTrackerData();
                         startTracks();
-                        Toast.makeText(requireContext(), getString(R.string.tracker_truncated), Toast.LENGTH_SHORT).show();
+                        Snackbar.make(layout, getString(R.string.tracker_truncated), Snackbar.LENGTH_SHORT).show();
                     }
                 });
                 builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -136,7 +139,7 @@ public class TrackerFragment extends Fragment implements View.OnClickListener, S
         else {
             refreshLayout.setVisibility(View.VISIBLE);
             refreshLayout.setRefreshing(true);
-            TrackerListAdapter adapter = new TrackerListAdapter(requireContext(), tracks, user);
+            TrackerListAdapter adapter = new TrackerListAdapter(requireContext(), tracks, user, layout);
             listTracker.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             checkRefreshingStatus();
@@ -149,7 +152,7 @@ public class TrackerFragment extends Fragment implements View.OnClickListener, S
     private void checkRefreshingStatus() {
         if (refreshLayout.isRefreshing()) {
             if (showRefreshMessage) {
-                Toast.makeText(getContext(), getString(R.string.tracker_refreshed), Toast.LENGTH_SHORT).show();
+                Snackbar.make(layout, getString(R.string.tracker_refreshed), Snackbar.LENGTH_SHORT).show();
             }
             refreshLayout.setRefreshing(false);
         }

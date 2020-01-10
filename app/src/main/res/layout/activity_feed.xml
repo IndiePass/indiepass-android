@@ -1,48 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout
+    android:id="@+id/feed_root"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/box_padding"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/url"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/url_hint"
-            android:inputType="textUri" />
+            android:layout_margin="@dimen/box_padding"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/search"
-            android:background="@color/buttonWhite"
-            android:textColor="@color/colorPrimary"
-            style="?android:attr/borderlessButtonStyle"
-            android:text="@string/search_feed"
+            <EditText
+                android:id="@+id/url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/url_hint"
+                android:inputType="textUri" />
+
+            <Button
+                android:id="@+id/search"
+                android:background="@color/buttonWhite"
+                android:textColor="@color/colorPrimary"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="@string/search_feed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/button_padding" />
+
+        </LinearLayout>
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/resultsTitle"
+            android:textColor="@color/textColor"
+            android:layout_marginBottom="@dimen/box_padding"
+            android:textSize="@dimen/big_list_title"
+            android:text="@string/results"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/button_padding" />
+            android:layout_marginStart="@dimen/box_padding" />
+
+        <ListView
+            android:id="@+id/feedResults"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent" />
 
     </LinearLayout>
 
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/resultsTitle"
-        android:textColor="@color/textColor"
-        android:layout_marginBottom="@dimen/box_padding"
-        android:textSize="@dimen/big_list_title"
-        android:text="@string/results"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/box_padding" />
-
-    <ListView
-        android:id="@+id/feedResults"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent" />
-
-</LinearLayout>
+</RelativeLayout>

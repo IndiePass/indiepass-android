@@ -14,8 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
@@ -33,6 +34,8 @@ public class UsersFragment extends Fragment {
 
     private User currentUser;
     private ListView listView;
+    private RelativeLayout layout;
+
 
     @Nullable
     @Override
@@ -47,6 +50,7 @@ public class UsersFragment extends Fragment {
         listView = view.findViewById(R.id.users_list);
         currentUser = new Accounts(getContext()).getCurrentUser();
         requireActivity().setTitle(R.string.accounts);
+        layout = view.findViewById(R.id.users_list_root);
 
         // This requires user permission from 22 on.
         Dexter.withActivity(requireActivity())
@@ -78,11 +82,11 @@ public class UsersFragment extends Fragment {
     private void startUsersList() {
         try {
             List<User> users = new Accounts(getContext()).getAllUsers();
-            UsersListAdapter adapter = new UsersListAdapter(requireContext(), getActivity(), users, currentUser);
+            UsersListAdapter adapter = new UsersListAdapter(requireContext(), getActivity(), users, currentUser, layout);
             listView.setAdapter(adapter);
         }
         catch (Exception e) {
-            Toast.makeText(requireContext(), getString(R.string.user_exception), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, getString(R.string.user_exception), Snackbar.LENGTH_LONG).show();
         }
     }
 

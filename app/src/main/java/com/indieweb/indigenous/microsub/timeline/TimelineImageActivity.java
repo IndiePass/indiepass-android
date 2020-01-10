@@ -9,11 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public class TimelineImageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline_image);
+
+        RelativeLayout layout = findViewById(R.id.image_root);
 
         // Get info text view.
         info = findViewById(R.id.timeline_image_info);
@@ -54,7 +57,7 @@ public class TimelineImageActivity extends AppCompatActivity {
             viewPager.setAdapter(adapter);
         }
         else {
-            Toast.makeText(TimelineImageActivity.this, getString(R.string.no_photos_found), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, getString(R.string.no_photos_found), Snackbar.LENGTH_SHORT).show();
         }
     }
 

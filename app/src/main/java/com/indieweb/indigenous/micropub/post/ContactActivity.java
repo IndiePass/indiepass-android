@@ -1,10 +1,10 @@
 package com.indieweb.indigenous.micropub.post;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -13,6 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.BaseCreate;
@@ -114,7 +115,7 @@ public class ContactActivity extends BaseCreate {
         sendItem = item;
 
         if (!new Connection(this).hasConnection()) {
-            Toast.makeText(this, getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, getString(R.string.no_connection), Snackbar.LENGTH_LONG).show();
             return;
         }
 
@@ -130,8 +131,9 @@ public class ContactActivity extends BaseCreate {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.post_update_success), Toast.LENGTH_SHORT).show();
                         hideProgressBar();
+                        Intent returnIntent = new Intent();
+                        setResult(RESULT_OK, returnIntent);
                         finish();
                     }
                 },

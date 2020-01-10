@@ -11,13 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.LaunchActivity;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.indieauth.IndieAuthActivity;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.CheckinActivity;
@@ -54,10 +54,8 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
 
         user = new Accounts(this).getCurrentUser();
         if (!user.isValid()) {
-            Toast.makeText(ShareActivity.this, getString(R.string.no_user), Toast.LENGTH_SHORT).show();
-            Intent a = new Intent(getBaseContext(), IndieAuthActivity.class);
-            startActivity(a);
-            finish();
+            ScrollView layout = findViewById(R.id.share_root);
+            Snackbar.make(layout, getString(R.string.no_user), Snackbar.LENGTH_LONG).show();
             return;
         }
 

@@ -21,13 +21,22 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <TextView
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_centerHorizontal="true"
         android:padding="@dimen/box_padding"
-        android:id="@+id/noMicrosubEndpoint"
         android:visibility="gone"
+        android:id="@+id/noMicrosubEndpoint"
         android:textColor="@color/textColor"
         android:text="@string/no_microsub_endpoint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <include layout="@layout/widget_no_connection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/actionButton"

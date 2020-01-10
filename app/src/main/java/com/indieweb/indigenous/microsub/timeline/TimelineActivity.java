@@ -18,8 +18,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -28,6 +29,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.Indigenous;
@@ -85,6 +87,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     User user;
     Integer style;
     private String readLater;
+    private LinearLayout noConnection;
+    private RelativeLayout layout;
 
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
@@ -97,12 +101,14 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
         listView = findViewById(R.id.timeline_list);
+        noConnection = findViewById(R.id.noConnection);
         refreshLayout = findViewById(R.id.refreshTimeline);
-        refreshLayout.setRefreshing(true);
+        layout = findViewById(R.id.timeline_root);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
 
+            refreshLayout.setRefreshing(true);
             readLater = Preferences.getPreference(TimelineActivity.this, "pref_key_read_later", "");
             channelId = extras.getString("channelId");
             channelName = extras.getString("channelName");
@@ -172,7 +178,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             startTimeline();
         }
         else {
-            Toast.makeText(this, getString(R.string.channel_not_found), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, getString(R.string.channel_not_found), Snackbar.LENGTH_SHORT).show();
         }
 
     }
@@ -256,8 +262,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     entries.clear();
                     entries.add(firstEntryId);
                 }
-                new MicrosubAction(getApplicationContext(), user).markRead(channelId, entries, clearAll);
-                Toast.makeText(getApplicationContext(), getString(R.string.marked_as_read), Toast.LENGTH_SHORT).show();
+                new MicrosubAction(getApplicationContext(), user, layout).markRead(channelId, entries, clearAll);
+                Snackbar.make(layout, getString(R.string.marked_as_read), Snackbar.LENGTH_SHORT).show();
                 return true;
 
             case R.id.timeline_style:
@@ -307,7 +313,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     public void checkRefreshingStatus() {
         if (refreshLayout.isRefreshing()) {
             if (showRefreshMessage) {
-                Toast.makeText(getApplicationContext(), getString(R.string.timeline_items_refreshed), Toast.LENGTH_SHORT).show();
+                Snackbar.make(layout, getString(R.string.timeline_items_refreshed), Snackbar.LENGTH_SHORT).show();
             }
             refreshLayout.setRefreshing(false);
 
@@ -321,8 +327,9 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
      * Start with the timeline.
      */
     public void startTimeline() {
+        noConnection.setVisibility(View.GONE);
         TimelineItems = new ArrayList<>();
-        adapter = new TimelineListAdapter(this, TimelineItems, user, channelId, channelName, listView, isSourceView, style);
+        adapter = new TimelineListAdapter(this, TimelineItems, user, channelId, channelName, listView, isSourceView, style, layout);
         listView.setAdapter(adapter);
         getTimeLineItems("");
     }
@@ -335,7 +342,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         if (!new Connection(getApplicationContext()).hasConnection()) {
             showRefreshMessage = false;
             checkRefreshingStatus();
-            Toast.makeText(getApplicationContext(), getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            noConnection.setVisibility(View.VISIBLE);
             return;
         }
 
@@ -692,7 +699,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                             if (!isGlobalUnread && !isSourceView && (unread > 0 || unread == -1) && entries.size() > 0
                                     && Preferences.getPreference(getApplicationContext(), "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_CHANNEL_CLICK
                                     && !readLater.equals(channelId)) {
-                                new MicrosubAction(TimelineActivity.this, user).markRead(channelId, entries, false);
+                                new MicrosubAction(TimelineActivity.this, user, layout).markRead(channelId, entries, false);
                             }
 
                             // Add mark read.
@@ -726,7 +733,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                         }
                         catch (JSONException e) {
                             showRefreshMessage = false;
-                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.timeline_parse_error), e.getMessage()), Toast.LENGTH_LONG).show();
+                            Snackbar.make(layout, String.format(getString(R.string.timeline_parse_error), e.getMessage()), Snackbar.LENGTH_LONG).show();
                         }
 
                         checkRefreshingStatus();

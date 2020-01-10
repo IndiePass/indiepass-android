@@ -3,11 +3,12 @@ package com.indieweb.indigenous.microsub.timeline;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.keenfin.audioview.AudioView;
 
@@ -19,6 +20,8 @@ public class TimelineAudioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline_audio);
+
+        LinearLayout layout = findViewById(R.id.audio_root);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -52,7 +55,7 @@ public class TimelineAudioActivity extends AppCompatActivity {
                 audioPlayer.setDataSource(audioUrl);
             }
             catch (Exception ignored) {
-                Toast.makeText(getApplicationContext(), getString(R.string.audio_not_loaded), Toast.LENGTH_SHORT).show();
+                Snackbar.make(layout, getString(R.string.audio_not_loaded), Snackbar.LENGTH_SHORT).show();
             }
 
         }

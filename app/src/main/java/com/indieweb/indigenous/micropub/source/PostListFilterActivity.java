@@ -7,9 +7,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.PostType;
 import com.indieweb.indigenous.model.User;
@@ -30,11 +31,14 @@ public class PostListFilterActivity extends AppCompatActivity {
     Spinner postTypesSpinner;
     Spinner postLimitSpinner;
     Button filterSourcePostListButton;
+    ScrollView layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_source_post_list_filter);
         super.onCreate(savedInstanceState);
+
+        layout = findViewById(R.id.source_post_filter_root);
 
         // Get current user.
         User user = new Accounts(this).getCurrentUser();
@@ -68,7 +72,7 @@ public class PostListFilterActivity extends AppCompatActivity {
 
             }
             catch (JSONException e) {
-                Toast.makeText(this, String.format(getString(R.string.post_types_parse_error), e.getMessage()), Toast.LENGTH_LONG).show();
+                Snackbar.make(layout, String.format(getString(R.string.post_types_parse_error), e.getMessage()), Snackbar.LENGTH_LONG).show();
             }
         }
 
@@ -98,7 +102,6 @@ public class PostListFilterActivity extends AppCompatActivity {
     class filterSourcePostListOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Toast.makeText(getApplicationContext(), "Applying filter", Toast.LENGTH_SHORT).show();
             Preferences.setPreference(PostListFilterActivity.this, "source_post_list_filter_post_type", selectedPostType);
             Preferences.setPreference(PostListFilterActivity.this, "source_post_list_filter_post_limit", postLimitSpinner.getSelectedItem().toString());
             Intent returnIntent = new Intent();

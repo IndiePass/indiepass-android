@@ -1,5 +1,6 @@
 package com.indieweb.indigenous.micropub.post;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -10,7 +11,6 @@ import android.webkit.URLUtil;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -19,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
@@ -41,6 +42,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
     private MenuItem sendItem;
     private User user;
     public RelativeLayout progressBar;
+    private RelativeLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
         // Get current user.
         user = new Accounts(this).getCurrentUser();
 
+        layout = findViewById(R.id.update_root);
         url = findViewById(R.id.url);
         postStatus = findViewById(R.id.postStatus);
         title = findViewById(R.id.title);
@@ -93,15 +96,11 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
         sendItem = item;
 
         if (!new Connection(this).hasConnection()) {
-            Toast.makeText(this, getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
         showProgressBar();
-
-        if (sendItem != null) {
-            sendItem.setEnabled(false);
-        }
 
         String endpoint = user.getMicropubEndpoint();
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
@@ -109,8 +108,9 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(getApplicationContext(), getString(R.string.post_update_success), Toast.LENGTH_SHORT).show();
                         hideProgressBar();
+                        Intent returnIntent = new Intent();
+                        setResult(RESULT_OK, returnIntent);
                         finish();
                     }
                 },
@@ -118,9 +118,6 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Utility.parseNetworkError(error, getApplicationContext(), R.string.post_update_network_fail, R.string.post_update_fail);
-                        if (sendItem != null) {
-                            sendItem.setEnabled(true);
-                        }
                         hideProgressBar();
                     }
                 }
@@ -187,21 +184,31 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
     }
 
     /**
-     * Show progress bar.
+     * Show progress bar and disable send menu item.
      */
     public void showProgressBar() {
         if (progressBar != null) {
             progressBar.setVisibility(View.VISIBLE);
         }
+
+        if (sendItem != null) {
+            sendItem.setEnabled(false);
+        }
+
     }
 
     /**
-     * Hide progress bar.
+     * Hide progress bar and enable send menu item.
      */
     public void hideProgressBar() {
         if (progressBar != null) {
             progressBar.setVisibility(View.GONE);
         }
+
+        if (sendItem != null) {
+            sendItem.setEnabled(true);
+        }
+
     }
 
 }

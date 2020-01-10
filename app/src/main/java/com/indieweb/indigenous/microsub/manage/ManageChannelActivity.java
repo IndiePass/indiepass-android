@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.Channel;
@@ -53,6 +56,8 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
     String incomingText = "";
     boolean isShare = false;
     boolean showRefreshMessage;
+    private RelativeLayout layout;
+    private LinearLayout noConnection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,8 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
         listChannel = findViewById(R.id.channel_list);
         user = new Accounts(this).getCurrentUser();
 
+        layout = findViewById(R.id.channel_manage_root);
+        noConnection = findViewById(R.id.noConnection);
         refreshLayout = findViewById(R.id.refreshChannels);
         refreshLayout.setOnRefreshListener(this);
 
@@ -103,7 +110,7 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
      */
     public void checkRefreshingStatus() {
         if (refreshLayout.isRefreshing()) {
-            Toast.makeText(getApplicationContext(), getString(R.string.channels_refreshed), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, getString(R.string.channels_refreshed), Snackbar.LENGTH_SHORT).show();
             refreshLayout.setRefreshing(false);
         }
     }
@@ -112,8 +119,10 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
      * Start channels.
      */
     public void startChannels() {
+        noConnection.setVisibility(View.GONE);
+
         Channels = new ArrayList<>();
-        adapter = new ManageChannelListAdapter(this, Channels, user, this, isShare, incomingText);
+        adapter = new ManageChannelListAdapter(this, Channels, user, this, isShare, incomingText, layout);
 
         ItemTouchHelper.Callback callback = new ItemMoveCallback(adapter);
         touchHelper = new ItemTouchHelper(callback);
@@ -131,7 +140,7 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
         if (!new Connection(getApplicationContext()).hasConnection()) {
             showRefreshMessage = false;
             checkRefreshingStatus();
-            Toast.makeText(getApplicationContext(), getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            noConnection.setVisibility(View.VISIBLE);
             return;
         }
 
@@ -169,7 +178,7 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
                         }
                         catch (JSONException e) {
                             showRefreshMessage = false;
-                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.channel_list_parse_error), e.getMessage()), Toast.LENGTH_LONG).show();
+                            Snackbar.make(layout, String.format(getString(R.string.channel_list_parse_error), e.getMessage()), Snackbar.LENGTH_LONG).show();
                             checkRefreshingStatus();
                         }
 
@@ -255,7 +264,7 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
             public void onClick(DialogInterface dialog, int which) {
                 if (!TextUtils.isEmpty(input.getText())) {
                     String channelName = input.getText().toString();
-                    new MicrosubAction(getApplicationContext(), user).createChannel(channelName);
+                    new MicrosubAction(getApplicationContext(), user, layout).createChannel(channelName);
                 }
                 dialog.dismiss();
             }

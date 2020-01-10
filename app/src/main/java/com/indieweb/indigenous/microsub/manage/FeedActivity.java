@@ -13,9 +13,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.microsub.MicrosubAction;
 import com.indieweb.indigenous.microsub.timeline.TimelineActivity;
@@ -52,11 +54,14 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
     ListView feedResults;
     private List<Feed> Feeds = new ArrayList<>();
     private FeedsResultAdapter adapter;
+    RelativeLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
+
+        layout = findViewById(R.id.feed_root);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -82,7 +87,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
             feedResults.setAdapter(adapter);
         }
         else {
-            Toast.makeText(this, "Channel not found", Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, getString(R.string.channel_not_found), Snackbar.LENGTH_SHORT).show();
         }
 
     }
@@ -92,7 +97,8 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.search) {
             if (!TextUtils.isEmpty(url.getText())) {
                 searchFeeds(url.getText().toString());
-            } else {
+            }
+            else {
                 url.setError(getString(R.string.required_field));
             }
         }
@@ -104,12 +110,11 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
     public void searchFeeds(final String url) {
 
         if (!new Connection(getApplicationContext()).hasConnection()) {
-            Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
-        Toast.makeText(getApplicationContext(), getString(R.string.feed_searching), Toast.LENGTH_LONG).show();
-
+        Snackbar.make(layout, getString(R.string.feed_searching), Snackbar.LENGTH_LONG).show();
         String MicrosubEndpoint = user.getMicrosubEndpoint();
         StringRequest getRequest = new StringRequest(Request.Method.POST, MicrosubEndpoint,
                 new Response.Listener<String>() {
@@ -136,11 +141,11 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
                                 adapter.notifyDataSetChanged();
                             }
                             else {
-                                Toast.makeText(getApplicationContext(), getString(R.string.feed_no_results), Toast.LENGTH_SHORT).show();
+                                Snackbar.make(layout, getString(R.string.feed_no_results), Snackbar.LENGTH_SHORT).show();
                             }
                         }
                         catch (JSONException e) {
-                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.feed_parse_error), e.getMessage()), Toast.LENGTH_LONG).show();
+                            Snackbar.make(layout, String.format(getString(R.string.feed_parse_error), e.getMessage()), Snackbar.LENGTH_LONG).show();
                         }
 
                     }
@@ -148,7 +153,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), R.string.feed_search_error, Toast.LENGTH_LONG).show();
+                        Snackbar.make(layout, getString(R.string.feed_search_error), Snackbar.LENGTH_SHORT).show();
                     }
                 }
         )
@@ -253,7 +258,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
                 builder.setTitle(String.format(getString(R.string.feed_subscribe), feed.getUrl()));
                 builder.setPositiveButton(context.getString(R.string.subscribe),new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
-                        new MicrosubAction(context, user).subscribe(feed.getUrl(), feed.getChannel(), false);
+                        new MicrosubAction(context, user, layout).subscribe(feed.getUrl(), feed.getChannel(), false);
                         finish();
                     }
                 });

@@ -5,6 +5,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.BaseCreate;
 import com.indieweb.indigenous.util.Preferences;
@@ -31,7 +32,7 @@ public class UploadActivity extends BaseCreate {
             sendBasePost(item);
         }
         else {
-            Toast.makeText(getApplicationContext(), getString(R.string.required_select_media), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, getString(R.string.required_select_media), Snackbar.LENGTH_SHORT).show();
         }
     }
 

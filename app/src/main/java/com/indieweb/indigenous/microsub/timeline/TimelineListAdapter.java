@@ -28,11 +28,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
@@ -80,8 +81,9 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     private final String channelName;
     private final ListView listView;
     private final int Style;
+    private final RelativeLayout layout;
 
-    TimelineListAdapter(Context context, List<TimelineItem> items, User user, String channelId, String channelName, ListView listView, boolean isSourceView, int style) {
+    TimelineListAdapter(Context context, List<TimelineItem> items, User user, String channelId, String channelName, ListView listView, boolean isSourceView, int style, RelativeLayout layout) {
         this.context = context;
         this.items = items;
         this.user = user;
@@ -90,6 +92,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         this.listView = listView;
         this.isSourceView = isSourceView;
         this.Style = style;
+        this.layout = layout;
         this.staticMap = Preferences.getPreference(context, "pref_key_static_map", true);
         this.debugItemJSON = Preferences.getPreference(context, "pref_key_debug_microsub_item_json", false);
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -928,7 +931,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 context.startActivity(intent);
             }
             else {
-                Toast.makeText(context, context.getString(R.string.install_map_app), Toast.LENGTH_SHORT).show();
+                Snackbar.make(layout, context.getString(R.string.install_map_app), Snackbar.LENGTH_SHORT).show();
             }
         }
     }
@@ -1020,7 +1023,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             builder.setTitle(context.getString(R.string.delete_post_confirm));
                             builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,int id) {
-                                    new MicrosubAction(context, user).deletePost(channelId, entry.getId());
+                                    new MicrosubAction(context, user, layout).deletePost(channelId, entry.getId());
                                     items.remove(position);
                                     notifyDataSetChanged();
                                 }
@@ -1062,7 +1065,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                                     if (checkedItem != null) {
                                         for (Channel channel : channels) {
                                             if (channel.getName() == checkedItem) {
-                                                new MicrosubAction(context, user).movePost(channel.getUid(), channel.getName(), entry.getId());
+                                                new MicrosubAction(context, user, layout).movePost(channel.getUid(), channel.getName(), entry.getId());
                                                 items.remove(position);
                                                 notifyDataSetChanged();
                                                 break;
@@ -1078,16 +1081,16 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             List<String> unreadEntries = new ArrayList<>();
                             unreadEntries.add(entry.getId());
                             entry.setRead(false);
-                            new MicrosubAction(context, user).markUnread(channelId, unreadEntries);
-                            Toast.makeText(context, context.getString(R.string.item_marked_unread), Toast.LENGTH_SHORT).show();
+                            new MicrosubAction(context, user, layout).markUnread(channelId, unreadEntries);
+                            Snackbar.make(layout, context.getString(R.string.item_marked_unread), Snackbar.LENGTH_SHORT).show();
                             break;
 
                         case R.id.timeline_entry_mark_read:
                             List<String> readEntries = new ArrayList<>();
                             readEntries.add(entry.getId());
                             entry.setRead(true);
-                            new MicrosubAction(context, user).markRead(channelId, readEntries, false);
-                            Toast.makeText(context, context.getString(R.string.item_marked_read), Toast.LENGTH_SHORT).show();
+                            new MicrosubAction(context, user, layout).markRead(channelId, readEntries, false);
+                            Snackbar.make(layout, context.getString(R.string.item_marked_read), Snackbar.LENGTH_SHORT).show();
                             break;
 
                         case R.id.timeline_entry_debug:
@@ -1116,7 +1119,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                                 context.startActivity(startActivity);
                             }
                             else {
-                                Toast.makeText(context, context.getString(R.string.contact_no_name), Toast.LENGTH_SHORT).show();
+                                Snackbar.make(layout, context.getString(R.string.contact_no_name), Snackbar.LENGTH_SHORT).show();
                             }
 
                             break;

@@ -15,8 +15,8 @@ import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.LaunchActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.MicropubAction;
@@ -75,6 +76,8 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
     String authorAvatar;
     String authorName;
     String codeVerifier = "";
+    ScrollView layout;
+
     String ClientId = "https://indigenous.realize.be";
     String RedirectUri = "https://indigenous.realize.be/indigenous-callback.php";
 
@@ -82,6 +85,8 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_indieauth);
+
+        layout = findViewById(R.id.indieauth_root);
 
         // This requires user permission from 22 on.
         Dexter.withActivity(IndieAuthActivity.this)
@@ -135,7 +140,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
 
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 
-            Toast.makeText(getApplicationContext(), R.string.validating_code, Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, getString(R.string.validating_code), Snackbar.LENGTH_SHORT).show();
 
             // Get the code and state.
             String code = intent.getData().getQueryParameter("code");
@@ -144,7 +149,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                 validateCode(code, returnedState);
             }
             else {
-                Toast.makeText(getApplicationContext(), R.string.no_code_found, Toast.LENGTH_SHORT).show();
+                Snackbar.make(layout, getString(R.string.no_code_found), Snackbar.LENGTH_LONG).show();
             }
         }
     }
@@ -165,7 +170,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
         public void onClick(View v) {
 
             if (!new Connection(getApplicationContext()).hasConnection()) {
-                Toast.makeText(getApplicationContext(), getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+                Snackbar.make(layout, getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
                 return;
             }
 
@@ -203,7 +208,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
             }
             else {
                 changeSignInButton(R.string.sign_in_with_domain);
-                Toast.makeText(getApplicationContext(), R.string.missing_rel_links, Toast.LENGTH_LONG).show();
+                Snackbar.make(layout, getString(R.string.missing_rel_links), Snackbar.LENGTH_LONG).show();
             }
 
         }
@@ -230,7 +235,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
 
         // This crashes on 7.1.
         if (android.os.Build.VERSION.SDK_INT != 25) {
-            Toast.makeText(getApplicationContext(), "Connecting to domain, one moment", Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, getString(R.string.connection_to_domain), Snackbar.LENGTH_SHORT).show();
         }
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -307,7 +312,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
 
         }
         catch (IllegalArgumentException | IOException e) {
-            Toast.makeText(getApplicationContext(), String.format(getString(R.string.domain_connect_error), e.getMessage()), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, String.format(getString(R.string.domain_connect_error), e.getMessage()), Snackbar.LENGTH_LONG).show();
         }
         catch (Exception ignored) { }
 
@@ -433,9 +438,9 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                         user.setMicropubEndpoint(micropubEndpoint);
                         user.setAccessToken(accessToken);
                         user.setAccount(account);
-                        new MicropubAction(getApplicationContext(), user).refreshConfig();
+                        new MicropubAction(getApplicationContext(), user, null).refreshConfig();
 
-                        Toast.makeText(getApplicationContext(), R.string.authentication_success, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(layout, getString(R.string.authentication_success), Snackbar.LENGTH_SHORT).show();
 
                         // Start launch activity which will determine where it will go.
                         Intent launch = new Intent(getBaseContext(), LaunchActivity.class);
@@ -443,7 +448,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                         finish();
                     }
                     else {
-                        Toast.makeText(getApplicationContext(), String.format(getString(R.string.authentication_fail_token), errorMessage), Toast.LENGTH_LONG).show();
+                        Snackbar.make(layout, String.format(getString(R.string.authentication_fail_token), errorMessage), Snackbar.LENGTH_LONG).show();
                         showForm();
                     }
                 }

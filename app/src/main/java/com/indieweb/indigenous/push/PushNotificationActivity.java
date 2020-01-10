@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.BuildConfig;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
@@ -40,6 +41,7 @@ public class PushNotificationActivity extends AppCompatActivity {
     TextView info;
     TextView siteApiToken;
     Button buttonPushyMe;
+    ScrollView layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class PushNotificationActivity extends AppCompatActivity {
         info = findViewById(R.id.pushNotificationsInfo);
         siteApiToken = findViewById(R.id.siteApiToken);
         buttonPushyMe = findViewById(R.id.buttonPushyMe);
+        layout = findViewById(R.id.push_notification_root);
 
         setConfigurationInfo(Preferences.getPreference(getApplicationContext(), "push_notification_type", "none"));
     }
@@ -111,11 +114,11 @@ public class PushNotificationActivity extends AppCompatActivity {
             }
 
             if (!new Connection(getApplicationContext()).hasConnection()) {
-                Toast.makeText(getApplicationContext(), getString(R.string.no_connection), Toast.LENGTH_SHORT).show();
+                Snackbar.make(layout, getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
                 return;
             }
 
-            Toast.makeText(getApplicationContext(), R.string.push_notifications_registering, Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, getString(R.string.push_notifications_registering), Snackbar.LENGTH_SHORT).show();
             if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 // Request both READ_EXTERNAL_STORAGE and WRITE_EXTERNAL_STORAGE so that the
                 // Pushy SDK will be able to persist the device token in the external storage
@@ -134,7 +137,7 @@ public class PushNotificationActivity extends AppCompatActivity {
                     storePushyMeTokenOnBackend(credentials.token);
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), R.string.pushy_me_token_not_found, Toast.LENGTH_SHORT).show();
+                    Snackbar.make(layout, getString(R.string.pushy_me_token_not_found), Snackbar.LENGTH_SHORT).show();
                 }
             }
         }
@@ -190,7 +193,7 @@ public class PushNotificationActivity extends AppCompatActivity {
                                 break;
                         }
 
-                        Toast.makeText(getApplicationContext(), String.format(getString(R.string.indigenous_account_error), message), Toast.LENGTH_LONG).show();
+                        Snackbar.make(layout, String.format(getString(R.string.indigenous_account_error), message), Snackbar.LENGTH_LONG).show();
                     }
                 }
         )
@@ -247,7 +250,7 @@ public class PushNotificationActivity extends AppCompatActivity {
             // Failed?
             if (exc != null) {
                 // Show error as toast message.
-                Toast.makeText(getApplicationContext(), exc.toString(), Toast.LENGTH_LONG).show();
+                Snackbar.make(layout, exc.toString(), Snackbar.LENGTH_LONG).show();
             }
         }
     }
@@ -271,7 +274,8 @@ public class PushNotificationActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         enablePushyMe();
-                        Toast.makeText(getApplicationContext(), R.string.indigenous_registration_success, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(layout, getString(R.string.indigenous_registration_success), Snackbar.LENGTH_SHORT).show();
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -287,7 +291,7 @@ public class PushNotificationActivity extends AppCompatActivity {
                                 message = getString(R.string.indigenous_account_blocked);
                                 break;
                         }
-                        Toast.makeText(getApplicationContext(), String.format(getString(R.string.indigenous_device_store_error), message), Toast.LENGTH_LONG).show();
+                        Snackbar.make(layout, String.format(getString(R.string.indigenous_device_store_error), message), Snackbar.LENGTH_LONG).show();
                     }
                 }
         )
