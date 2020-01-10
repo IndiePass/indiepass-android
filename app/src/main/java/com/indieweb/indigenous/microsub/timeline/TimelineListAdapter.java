@@ -284,14 +284,23 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.name.setText(item.getName());
             }
             else if (Style == TIMELINE_STYLE_COMPACT && item.getTextContent().length() > 0) {
-                holder.name.setVisibility(View.VISIBLE);
                 int length = item.getTextContent().length();
                 String elipsis = "";
+                // Replace first. Newlines are counted as a character too, so we could end up with
+                // an exception. Let's still use a try/catch block though to be sure.
+                String shortText = item.getTextContent().replace("\n", "").replace("\r", "").replace("\r\n", "");
                 if (length > 100) {
                     length = 100;
                     elipsis = " ...";
                 }
-                holder.name.setText(item.getTextContent().replace("\n", "").replace("\r", "").replace("\r\n", "").substring(0, length) + elipsis);
+                shortText = shortText.substring(0, length) + elipsis;
+                try {
+                    holder.name.setVisibility(View.VISIBLE);
+                    holder.name.setText(shortText);
+                }
+                catch (Exception ignored) {
+                    holder.name.setVisibility(View.GONE);
+                }
             }
             else {
                 holder.name.setVisibility(View.GONE);

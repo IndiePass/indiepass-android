@@ -234,7 +234,12 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
     private void checkRefreshingStatus() {
         if (refreshLayout.isRefreshing()) {
             if (showRefreshMessage) {
-                Snackbar.make(layout, getString(R.string.channels_refreshed), Snackbar.LENGTH_SHORT).show();
+                // For some reason, this throws an exception sometimes, so let's protect it.
+                // (java.lang.IllegalStateException)
+                try {
+                    Snackbar.make(layout, getString(R.string.channels_refreshed), Snackbar.LENGTH_SHORT).show();
+                }
+                catch (Exception ignored) {}
             }
             refreshLayout.setRefreshing(false);
         }
