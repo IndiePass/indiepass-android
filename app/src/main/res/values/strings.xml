@@ -382,14 +382,14 @@
     <string name="pref_key_search_global_summary">Allows to search for posts across all channels</string>
     <string name="pref_key_author_timeline_title">Timeline per author</string>
     <string name="pref_key_author_timeline_summary">Makes the author avatar clickable to see all posts by this author</string>
-    <string name="pref_key_unread_items_channel_title">Enable unread items channel</string>
+    <string name="pref_key_unread_items_channel_title">Unread items channel</string>
     <string name="pref_key_unread_items_channel_summary">Adds a channel at the top of the list which allows you to view all unread items across all channels at once. Will not show up if there are no unread items or only within one channel. Marking items as read needs to happen manually.</string>
     <string name="pref_key_timeline_autoload_more_title">Autoload more posts</string>
     <string name="pref_key_timeline_autoload_more_summary">When the \'Load more\' button comes into view, autoload more posts instead of having to click manually.</string>
     <string name="pref_key_move_item_title">Move items</string>
     <string name="pref_key_move_item_summary">Allows moving posts from one channel to another.</string>
     <string name="pref_key_read_later_title">Read later channel</string>
-    <string name="pref_key_read_later_summary">Enter the id of the channel you use as a \'Read later\' channel. Marking items as read needs to happen manually in case you configured to mark items automatically as read.</string>
+    <string name="pref_key_read_later_summary">Enter the id of the channel you use as a \'Read later\' channel. Marking items as read needs to happen manually.</string>
 
     <!-- Preferences: Media handling -->
     <string name="pref_category_media_title">Media</string>

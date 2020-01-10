@@ -52,7 +52,7 @@
         android:title="@string/add_checkin" />
 
     <item
-        android:id="@+id/createVenu"
+        android:id="@+id/createVenue"
         android:icon="@drawable/button_venue_idle"
         android:title="@string/add_venue" />
 

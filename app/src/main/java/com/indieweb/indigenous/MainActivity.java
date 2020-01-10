@@ -54,10 +54,10 @@ import java.util.ArrayList;
 
 import me.pushy.sdk.Pushy;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DraftFragment.OnDraftChangedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DraftFragment.OnDraftChangedListener, SettingsFragment.onPreferenceChangeListener {
 
-    Menu menu;
     User user;
+    Menu drawerMenu;
     DrawerLayout drawer;
     NavigationView navigationView;
     public static final int CREATE_DRAFT = 1001;
@@ -69,9 +69,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onAttachFragment(@NonNull Fragment fragment) {
+
         if (fragment instanceof DraftFragment) {
             DraftFragment draftFragment = (DraftFragment) fragment;
             draftFragment.OnDraftChangedListener(this);
+        }
+
+        if (fragment instanceof SettingsFragment) {
+            SettingsFragment settingsFragment = (SettingsFragment) fragment;
+            settingsFragment.OnPreferenceChangeListener(this);
         }
     }
 
@@ -90,12 +96,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (requestCode == CREATE_DRAFT && resultCode == RESULT_DRAFT_SAVED) {
             closeDrawer(true);
-            updateDraftMenuItem(true);
+            setDraftMenuItemTitle(true);
             Snackbar.make(drawer, getString(R.string.draft_saved), Snackbar.LENGTH_SHORT).show();
         }
 
         if (requestCode == POST_DRAFT && resultCode == RESULT_OK) {
-            updateDraftMenuItem(true);
+            setDraftMenuItemTitle(true);
             Snackbar.make(drawer, getString(R.string.post_success), Snackbar.LENGTH_SHORT).show();
             startFragment(new DraftFragment());
         }
@@ -110,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private void setFirstItemNavigationView() {
         navigationView.setCheckedItem(R.id.nav_reader);
-        navigationView.getMenu().performIdentifierAction(R.id.nav_reader, 0);
+        drawerMenu.performIdentifierAction(R.id.nav_reader, 0);
     }
 
     @Override
@@ -139,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        drawerMenu = navigationView.getMenu();
         setFirstItemNavigationView();
 
         // Set user information.
@@ -168,104 +175,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
 
-        // Hide Media if micropub media endpoint is empty.
-        menu = navigationView.getMenu();
-        String micropubMediaEndpoint = user.getMicropubMediaEndpoint();
-        if (micropubMediaEndpoint == null || micropubMediaEndpoint.length() == 0) {
-            menu.removeItem(R.id.nav_upload);
-            menu.removeItem(R.id.nav_upload2);
-        }
-
-        // Hide Tracker if setting is not enabled.
-        if (!Preferences.getPreference(this, "pref_key_tracker_enable", false)) {
-            menu.removeItem(R.id.nav_tracker);
-        }
-
-        // Hide Posts if setting is not enabled.
-        if (!Preferences.getPreference(this, "pref_key_source_post_list", false)) {
-            menu.removeItem(R.id.nav_posts);
-        }
-
-        // Hide Contacts if setting is not enabled.
-        if (!Preferences.getPreference(this, "pref_key_contact_manage", false)) {
-            menu.removeItem(R.id.nav_contacts);
-        }
-
-        // Update draft menu item.
-        updateDraftMenuItem(false);
-
-        // Hide post types if configured.
-        if (Preferences.getPreference(this, "pref_key_post_type_hide", false)) {
-
-            String postTypes = user.getPostTypes();
-            ArrayList<String> postTypeList = new ArrayList<>();
-            if (postTypes != null && postTypes.length() > 0) {
-                try {
-                    JSONObject object;
-                    JSONArray itemList = new JSONArray(postTypes);
-
-                    for (int i = 0; i < itemList.length(); i++) {
-                        object = itemList.getJSONObject(i);
-                        String type = object.getString("type");
-                        postTypeList.add(type);
-                    }
-
-                }
-                catch (JSONException ignored) { }
-            }
-
-            // Loop over menu items.
-            String menuType = null;
-            for (int i = 0; i < menu.size(); i++) {
-                int id = menu.getItem(i).getItemId();
-                switch (id) {
-                    case R.id.createNote:
-                        menuType = "note";
-                        break;
-                    case R.id.createArticle:
-                        menuType = "article";
-                        break;
-                    case R.id.createLike:
-                        menuType = "like";
-                        break;
-                    case R.id.createBookmark:
-                        menuType = "bookmark";
-                        break;
-                    case R.id.createReply:
-                        menuType = "reply";
-                        break;
-                    case R.id.createRepost:
-                        menuType = "repost";
-                        break;
-                    case R.id.createEvent:
-                        menuType = "event";
-                        break;
-                    case R.id.createRSVP:
-                        menuType = "rsvp";
-                        break;
-                    case R.id.createIssue:
-                        menuType = "issue";
-                        break;
-                    case R.id.createCheckin:
-                        menuType = "checkin";
-                        break;
-                    case R.id.createVenu:
-                        menuType = "venue";
-                        break;
-                    case R.id.createGeocache:
-                        menuType = "geocache";
-                        break;
-                }
-
-                if (menuType != null && !postTypeList.contains(menuType)) {
-                    menu.removeItem(id);
-                }
-
-                // Reset.
-                menuType = null;
-            }
-        }
-
+        hideItemsInDrawerMenu();
+        setDraftMenuItemTitle(false);
     }
 
     @Override
@@ -282,7 +193,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         boolean close = false;
-        Menu drawerMenu = navigationView.getMenu();
 
         Fragment fragment = null;
         switch (item.getItemId()) {
@@ -293,13 +203,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_create:
-                drawerMenu.setGroupVisible(R.id.navMainGroup, false);
-                drawerMenu.setGroupVisible(R.id.navPostGroup, true);
+                toggleGroupItems(false);
                 break;
 
             case R.id.nav_main_menu:
-                drawerMenu.setGroupVisible(R.id.navMainGroup, true);
-                drawerMenu.setGroupVisible(R.id.navPostGroup, false);
+                toggleGroupItems(true);
                 break;
 
             case R.id.nav_drafts:
@@ -387,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivityForResult(CreateCheckin, CREATE_DRAFT);
                 break;
 
-            case R.id.createVenu:
+            case R.id.createVenue:
                 Intent CreateVenue = new Intent(getBaseContext(), VenueActivity.class);
                 startActivityForResult(CreateVenue, CREATE_DRAFT);
                 break;
@@ -441,7 +349,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id > 0) {
             navigationView.setCheckedItem(id);
-            navigationView.getMenu().performIdentifierAction(id, 0);
+            drawerMenu.performIdentifierAction(id, 0);
         }
     }
 
@@ -461,26 +369,172 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
-     * Updates the Draft menu item.
+     * Sets the Draft menu item.
      */
-    public void updateDraftMenuItem(boolean callbackOrPost) {
+    public void setDraftMenuItemTitle(boolean callbackOrPost) {
         DatabaseHelper db = new DatabaseHelper(getApplicationContext());
         int draftCount = db.getDraftCount();
         if (draftCount > 0) {
-            MenuItem draftItem = menu.findItem(R.id.nav_drafts);
+            MenuItem draftItem = drawerMenu.findItem(R.id.nav_drafts);
             if (draftItem != null) {
                 draftItem.setTitle(getString(R.string.drafts) + " (" + draftCount + ")");
             }
         }
         else if (callbackOrPost) {
-            MenuItem draftItem = menu.findItem(R.id.nav_drafts);
+            MenuItem draftItem = drawerMenu.findItem(R.id.nav_drafts);
             draftItem.setTitle(getString(R.string.drafts));
+        }
+    }
+
+    /**
+     * Toggle the visibility of the drawer menu groups.
+     *
+     * @param mainGroupVisibility
+     *  Whether the main group is visible or not.
+     */
+    public void toggleGroupItems(boolean mainGroupVisibility) {
+        drawerMenu.setGroupVisible(R.id.navMainGroup, mainGroupVisibility);
+        drawerMenu.setGroupVisible(R.id.navPostGroup, !mainGroupVisibility);
+
+        // setGroupVisible sets all menu items to visible, so we need to check whether some need to
+        // be invisible.
+        if (!mainGroupVisibility) {
+            if (Preferences.getPreference(this, "pref_key_post_type_hide", false)) {
+                hidePostTypes();
+            }
+        }
+        else {
+            hideItemsInDrawerMenu();
+        }
+    }
+
+    /**
+     * Hide items in the drawer menu.
+     */
+    public void hideItemsInDrawerMenu() {
+
+        // Hide Media if micropub media endpoint is empty.
+        String micropubMediaEndpoint = user.getMicropubMediaEndpoint();
+        if (micropubMediaEndpoint == null || micropubMediaEndpoint.length() == 0) {
+            setMenuItemVisibility(R.id.nav_upload, false);
+            setMenuItemVisibility(R.id.nav_upload2, false);
+        }
+
+        // Hide Tracker if setting is not enabled.
+        if (!Preferences.getPreference(this, "pref_key_tracker_enable", false)) {
+            setMenuItemVisibility(R.id.nav_tracker, false);
+        }
+
+        // Hide Posts if setting is not enabled.
+        if (!Preferences.getPreference(this, "pref_key_source_post_list", false)) {
+            setMenuItemVisibility(R.id.nav_posts, false);
+        }
+
+        // Hide Contacts if setting is not enabled.
+        if (!Preferences.getPreference(this, "pref_key_contact_manage", false)) {
+            setMenuItemVisibility(R.id.nav_contacts, false);
+        }
+
+    }
+
+    /**
+     * Sets the visibility of a menu item.
+     *
+     * @param id
+     *   The menu item id
+     */
+    public void setMenuItemVisibility(int id, boolean visibility) {
+        MenuItem target = drawerMenu.findItem(id);
+        target.setVisible(visibility);
+    }
+
+    /**
+     * Hide post type menu items.
+     */
+    public void hidePostTypes() {
+        String postTypes = user.getPostTypes();
+        ArrayList<String> postTypeList = new ArrayList<>();
+        if (postTypes != null && postTypes.length() > 0) {
+            try {
+                JSONObject object;
+                JSONArray itemList = new JSONArray(postTypes);
+
+                for (int i = 0; i < itemList.length(); i++) {
+                    object = itemList.getJSONObject(i);
+                    String type = object.getString("type");
+                    postTypeList.add(type);
+                }
+
+            }
+            catch (JSONException ignored) { }
+        }
+
+        if (postTypeList.size() == 0) {
+            return;
+        }
+
+        // Loop over menu items.
+        MenuItem item;
+        String menuType = null;
+        for (int i = 0; i < drawerMenu.size(); i++) {
+            item = drawerMenu.getItem(i);
+            int id = item.getItemId();
+            switch (id) {
+                case R.id.createNote:
+                    menuType = "note";
+                    break;
+                case R.id.createArticle:
+                    menuType = "article";
+                    break;
+                case R.id.createLike:
+                    menuType = "like";
+                    break;
+                case R.id.createBookmark:
+                    menuType = "bookmark";
+                    break;
+                case R.id.createReply:
+                    menuType = "reply";
+                    break;
+                case R.id.createRepost:
+                    menuType = "repost";
+                    break;
+                case R.id.createEvent:
+                    menuType = "event";
+                    break;
+                case R.id.createRSVP:
+                    menuType = "rsvp";
+                    break;
+                case R.id.createIssue:
+                    menuType = "issue";
+                    break;
+                case R.id.createCheckin:
+                    menuType = "checkin";
+                    break;
+                case R.id.createVenue:
+                    menuType = "venue";
+                    break;
+                case R.id.createGeocache:
+                    menuType = "geocache";
+                    break;
+            }
+
+            if (menuType != null && !postTypeList.contains(menuType)) {
+                setMenuItemVisibility(id, false);
+            }
+
+            // Reset.
+            menuType = null;
         }
     }
 
     @Override
     public void onDraftChanged() {
-        updateDraftMenuItem(true);
+        setDraftMenuItemTitle(true);
+    }
+
+    @Override
+    public void onPreferenceChanged(int id, boolean enabled) {
+        drawerMenu.findItem(id).setVisible(enabled);
     }
 
 }

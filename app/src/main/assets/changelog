@@ -2,6 +2,7 @@
 <ul>
     <li>Fix crash in the length of the title in compact style</li>
     <li>Cleaner no connection notifications and use of snackbar messages where possible</li>
+    <li>Updates in settings (e.g. enable contacts/tracker/posts, hide/show post types) have immediate effect in the menu without having to restart the app</li>
 </ul>
 <h4>06/01/2020 - 0.54</h4>
 <ul>

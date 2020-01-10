@@ -17,6 +17,16 @@ import com.indieweb.indigenous.tracker.TrackerUtils;
 @SuppressWarnings("ConstantConditions")
 public class SettingsFragment extends PreferenceFragmentCompat {
 
+    private SettingsFragment.onPreferenceChangeListener callback;
+
+    public void OnPreferenceChangeListener(SettingsFragment.onPreferenceChangeListener callback) {
+        this.callback = callback;
+    }
+
+    public interface onPreferenceChangeListener {
+        void onPreferenceChanged(int id, boolean visible);
+    }
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
@@ -104,12 +114,40 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
+        Preference contact = findPreference("pref_key_contact_manage");
+        contact.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                callback.onPreferenceChanged(R.id.nav_contacts, Boolean.valueOf(newValue.toString()));
+                return true;
+            }
+        });
+
+        Preference posts = findPreference("pref_key_source_post_list");
+        posts.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                callback.onPreferenceChanged(R.id.nav_posts, Boolean.valueOf(newValue.toString()));
+                return true;
+            }
+        });
+
         if (!TrackerUtils.supportsTracker()) {
             PreferenceScreen preferenceScreen = findPreference("preferenceScreen");
             PreferenceCategory tracker = findPreference("pref_key_category_tracker");
             if (tracker != null) {
                 preferenceScreen.removePreference(tracker);
             }
+        }
+        else {
+            Preference tracker = findPreference("pref_key_tracker_enable");
+            tracker.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    callback.onPreferenceChanged(R.id.nav_tracker, Boolean.valueOf(newValue.toString()));
+                    return true;
+                }
+            });
         }
     }
 

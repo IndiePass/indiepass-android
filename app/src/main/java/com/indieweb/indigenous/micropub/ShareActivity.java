@@ -176,7 +176,7 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                         case R.id.createCheckin:
                             menuType = "checkin";
                             break;
-                        case R.id.createVenu:
+                        case R.id.createVenue:
                             menuType = "venue";
                             break;
                         case R.id.createGeocache:
@@ -288,7 +288,7 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                 }
                 startActivity(CreateCheckin);
                 break;
-            case R.id.createVenu:
+            case R.id.createVenue:
                 Intent CreateVenue = new Intent(getBaseContext(), VenueActivity.class);
                 if (incomingText.length() > 0) {
                     CreateVenue.putExtra("incomingText", incomingText);
