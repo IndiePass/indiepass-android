@@ -258,6 +258,7 @@
     <string name="contact_nickname">Nickname</string>
     <string name="contact_website">Website</string>
     <string name="contact_photo_hint">Photo URL</string>
+    <string name="contacts_offline">Showing contacts stored offline</string>
 
     <!-- Tracker -->
     <string name="tracker">Tracker</string>
