@@ -1,7 +1,7 @@
 # Indigenous for Android
 
-An app with extensions for sharing information to micropub endpoints and
-reading from microsub endpoints.
+An IndieWeb app with extensions for sharing information to micropub endpoints
+and reading from microsub endpoints.
 
 Install from Google Play:
 https://play.google.com/store/apps/details?id=com.indieweb.indigenous  

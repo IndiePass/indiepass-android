@@ -1,12 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/timeline_root"
+    android:id="@+id/timeline_detail_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="fill_parent"
-        android:id="@+id/timeline_detail_root"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_height="wrap_content">
 
