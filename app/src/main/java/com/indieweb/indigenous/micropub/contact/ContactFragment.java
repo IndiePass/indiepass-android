@@ -30,6 +30,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.general.DebugActivity;
+import com.indieweb.indigenous.micropub.MicropubAction;
 import com.indieweb.indigenous.micropub.post.ContactActivity;
 import com.indieweb.indigenous.model.Contact;
 import com.indieweb.indigenous.model.User;
@@ -53,8 +54,8 @@ public class ContactFragment extends Fragment implements View.OnClickListener, S
     private ListView listContact;
     private SwipeRefreshLayout refreshLayout;
     private ContactListAdapter adapter;
-    private List<Contact> Contacts = new ArrayList<>();
     private User user;
+    private List<Contact> Contacts = new ArrayList<>();
     private String debugResponse;
     private RelativeLayout layout;
     private LinearLayout noConnection;
@@ -98,7 +99,6 @@ public class ContactFragment extends Fragment implements View.OnClickListener, S
      */
     private void startContacts() {
         noConnection.setVisibility(View.GONE);
-        Contacts = new ArrayList<>();
         listContact.setVisibility(View.VISIBLE);
         adapter = new ContactListAdapter(requireContext(), Contacts, user, layout);
         listContact.setAdapter(adapter);
@@ -109,25 +109,29 @@ public class ContactFragment extends Fragment implements View.OnClickListener, S
      * Load contacts.
      */
     private void loadContacts() {
+        Contacts.clear();
 
         if (!new Connection(requireContext()).hasConnection()) {
             showRefreshMessage = false;
 
+            List<Contact> ContactsOffline = new ArrayList<>();
             AccountManager am = AccountManager.get(requireContext());
             String response = am.getUserData(user.getAccount(), "contact_list");
             if (response != null && response.length() > 0) {
                 debugResponse = response;
-                parseResponse(response);
+                ContactsOffline = MicropubAction.parseContactsResponse(response, requireContext(), false);
             }
 
-            if (Contacts.size() > 0) {
+            if (ContactsOffline.size() > 0) {
+                Contacts.addAll(ContactsOffline);
+                adapter.notifyDataSetChanged();
                 Snackbar.make(layout, getString(R.string.contacts_offline), Snackbar.LENGTH_SHORT).show();
             }
             else {
-                checkRefreshingStatus();
                 noConnection.setVisibility(View.VISIBLE);
             }
 
+            checkRefreshingStatus();
             return;
         }
 
@@ -144,7 +148,12 @@ public class ContactFragment extends Fragment implements View.OnClickListener, S
                     @Override
                     public void onResponse(String response) {
                         debugResponse = response;
-                        parseResponse(response);
+                        List<Contact> ContactsLive = MicropubAction.parseContactsResponse(response, requireContext(), false);
+                        if (ContactsLive.size() > 0) {
+                            Contacts.addAll(ContactsLive);
+                            adapter.notifyDataSetChanged();
+                        }
+                        checkRefreshingStatus();
                     }
                 },
                 new Response.ErrorListener() {
@@ -231,57 +240,6 @@ public class ContactFragment extends Fragment implements View.OnClickListener, S
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Parse contacts response.
-     *
-     * @param response
-     *   The response.
-     */
-    private void parseResponse(String response) {
-        try {
-            JSONObject categoryResponse = new JSONObject(response);
-            if (categoryResponse.has("contacts")) {
-                JSONObject contactObject;
-                JSONArray contactList = categoryResponse.getJSONArray("contacts");
-                if (contactList.length() > 0) {
-                    for (int i = 0; i < contactList.length(); i++) {
-                        contactObject = contactList.getJSONObject(i);
-                        if (contactObject.has("name")) {
-                            Contact contact = new Contact();
-                            contact.setName(contactObject.getString("name"));
-
-                            if (contactObject.has("nickname")) {
-                                contact.setNickname(contactObject.getString("nickname"));
-                            }
-
-                            if (contactObject.has("url")) {
-                                contact.setUrl(contactObject.getString("url"));
-                            }
-
-                            if (contactObject.has("photo")) {
-                                contact.setPhoto(contactObject.getString("photo"));
-                            }
-
-                            if (contactObject.has("_internal_url")) {
-                                contact.setInternalUrl(contactObject.getString("_internal_url"));
-                            }
-
-                            Contacts.add(contact);
-                        }
-                    }
-                }
-            }
-
-            adapter.notifyDataSetChanged();
-            checkRefreshingStatus();
-        }
-        catch (JSONException e) {
-            showRefreshMessage = false;
-            Snackbar.make(layout, String.format(getString(R.string.contact_list_parse_error), e.getMessage()), Snackbar.LENGTH_LONG).show();
-            checkRefreshingStatus();
-        }
     }
 
 }

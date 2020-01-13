@@ -5,6 +5,7 @@ import android.content.Context;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RelativeLayout;
@@ -220,7 +221,8 @@ public class MicropubAction {
         if (!new Connection(context).hasConnection()) {
             AccountManager am = AccountManager.get(context);
             String response = am.getUserData(user.getAccount(), "contact_list");
-            parseContactsResponse(response, body, false, null);
+            List<Contact> contactItemsOffline = parseContactsResponse(response, context, true);
+            setContactsAutocomplete(body, contactItemsOffline);
             return;
         }
 
@@ -237,7 +239,12 @@ public class MicropubAction {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        parseContactsResponse(response, body, true, user);
+                        List<Contact> contactItems = parseContactsResponse(response, context, true);
+                        if (contactItems.size() > 0) {
+                            setContactsAutocomplete(body, contactItems);
+                            AccountManager am = AccountManager.get(context);
+                            am.setUserData(user.getAccount(), "contact_list", response);
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -264,21 +271,19 @@ public class MicropubAction {
      *
      * @param response
      *   Parse tags response.
-     * @param body
-     *   The autocomplete field
-     * @param saveInAccount
-     *   Whether to set the tags list or not.
-     * @param user
-     *   The user.
+     * @param context
+     *   The current context.
+     * @param postContext
+     *   Whether this is for posting or not.
      */
-    private void parseContactsResponse(String response, MultiAutoCompleteTextView body, boolean saveInAccount, User user) {
-        ArrayList<Contact> contactItems = new ArrayList<>();
+    public static List<Contact> parseContactsResponse(String response, Context context, boolean postContext) {
+        List<Contact> contactItems = new ArrayList<>();
 
         try {
-            JSONObject categoryResponse = new JSONObject(response);
-            if (categoryResponse.has("contacts")) {
+            JSONObject contactsResponse = new JSONObject(response);
+            if (contactsResponse.has("contacts")) {
                 JSONObject contactObject;
-                JSONArray contactList = categoryResponse.getJSONArray("contacts");
+                JSONArray contactList = contactsResponse.getJSONArray("contacts");
                 if (contactList.length() > 0) {
                     for (int i = 0; i < contactList.length(); i++) {
                         contactObject = contactList.getJSONObject(i);
@@ -287,7 +292,7 @@ public class MicropubAction {
                             contact.setName(contactObject.getString("name"));
 
                             if (contactObject.has("nickname")) {
-                                if (Preferences.getPreference(context, "pref_key_contact_body_autocomplete_value", false)) {
+                                if (postContext && Preferences.getPreference(context, "pref_key_contact_body_autocomplete_value", false)) {
                                     contact.setName(contactObject.getString("nickname"));
                                 }
                                 contact.setNickname(contactObject.getString("nickname"));
@@ -311,19 +316,10 @@ public class MicropubAction {
                 }
             }
         }
-        catch (JSONException ignored) {}
+        catch (JSONException ignored) { }
 
-        if (contactItems.size() > 0) {
-            setContactsAutocomplete(body, contactItems);
-
-            if (saveInAccount) {
-                AccountManager am = AccountManager.get(context);
-                am.setUserData(user.getAccount(), "contact_list", response);
-            }
-        }
-
+        return contactItems;
     }
-
 
     /**
      * Sets contact autocomplete.
