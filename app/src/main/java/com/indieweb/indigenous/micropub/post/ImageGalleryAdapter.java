@@ -6,8 +6,11 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -79,45 +82,76 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
         @Override
         public void onClick(View v) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle(context.getString(R.string.set_caption_or_remove));
 
-            View view = LayoutInflater.from(context).inflate(R.layout.dialog_single_input, null);
-            final EditText input = view.findViewById(R.id.editText);
-            String defaultCaption = captions.get(position);
-            if (defaultCaption.length() > 0) {
-                input.setText(defaultCaption);
-            }
-            input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    input.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                            inputMethodManager.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
-                        }
-                    });
-                }
-            });
-            builder.setView(view);
+            PopupMenu popup = new PopupMenu(context, v);
+            Menu menu = popup.getMenu();
+            popup.getMenuInflater().inflate(R.menu.image_list_item_menu, menu);
+            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(final MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.image_caption:
+                            builder.setTitle(context.getString(R.string.set_caption));
+                            View view = LayoutInflater.from(context).inflate(R.layout.dialog_single_input, null);
+                            final EditText input = view.findViewById(R.id.editText);
+                            String defaultCaption = captions.get(position);
+                            if (defaultCaption.length() > 0) {
+                                input.setText(defaultCaption);
+                            }
+                            input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                                @Override
+                                public void onFocusChange(View v, boolean hasFocus) {
+                                    input.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                            inputMethodManager.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
+                                        }
+                                    });
+                                }
+                            });
+                            builder.setView(view);
+                            builder.setPositiveButton(context.getString(R.string.save), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    String caption = input.getText().toString();
+                                    captions.set(position, caption);
+                                    dialog.dismiss();
+                                }
+                            });
+                            builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            builder.show();
+                            break;
+                        case R.id.image_delete:
+                            builder.setTitle(context.getString(R.string.delete_image_confirm));
+                            builder.setPositiveButton(context.getString(R.string.delete), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    image.remove(position);
+                                    captions.remove(position);
+                                    notifyDataSetChanged();
+                                }
+                            });
+                            builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            builder.show();
+                            break;
+                    }
 
-            builder.setPositiveButton(context.getString(R.string.save_and_close), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    String caption = input.getText().toString();
-                    captions.set(position, caption);
-                    dialog.dismiss();
+                    return true;
                 }
             });
-            builder.setNegativeButton(context.getString(R.string.delete_image), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    image.remove(position);
-                    captions.remove(position);
-                    notifyDataSetChanged();
-                }
-            });
-            builder.show();
+            popup.show();
+
+
         }
     }
 

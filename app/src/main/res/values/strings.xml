@@ -186,6 +186,7 @@
     <string name="delete_image">Remove image</string>
     <string name="delete_video_confirm">Remove video?</string>
     <string name="delete_audio_confirm">Remove audio?</string>
+    <string name="delete_image_confirm">Remove image?</string>
     <string name="media_preview_help">Click on a thumbnail to delete the media item. You can also set captions for images.</string>
     <string name="keep_editing">Keep editing</string>
     <string name="confirm_close">You have unsaved changes, are you sure you want to leave ?</string>
@@ -227,8 +228,7 @@
     <string name="post_update_network_fail">Update failed. Status code: %d; message: %s</string>
     <string name="post_update_fail">Failed updating post</string>
     <string name="post_update_success">Update success</string>
-    <string name="set_caption_or_remove">Set caption or remove image</string>
-    <string name="save_and_close">Save and close</string>
+    <string name="set_caption">Caption</string>
     <string name="draft_last_edit">%s - last edit on %s</string>
     <string name="draft_delete_confirm">Are you sure you want to delete this draft ?</string>
     <string name="post_delete_confirm">Are you sure you want to delete this post ?</string>

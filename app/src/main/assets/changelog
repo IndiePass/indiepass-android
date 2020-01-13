@@ -1,5 +1,6 @@
 <h4>xx/xx/2020 - 0.55</h4>
 <ul>
+    <li>Use a popup menu in the image preview widget</li>
     <li>Fix crash in the length of the title in compact style</li>
     <li>Cleaner no connection notifications and use of snackbar messages where possible</li>
     <li>Updates in settings (e.g. enable contacts/tracker/posts, hide/show post types) have immediate effect in the menu without having to restart the app</li>
