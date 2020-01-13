@@ -32,23 +32,9 @@
 
             <include layout="@layout/widget_body" />
 
-            <MultiAutoCompleteTextView
-                android:id="@+id/tags"
-                android:textColor="@color/textColor"
-                android:textSize="@dimen/inputText"
-                android:hint="@string/tags"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+            <include layout="@layout/widget_category" />
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:id="@+id/syndicationTargets"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </LinearLayout>
+            <include layout="@layout/widget_targets" />
 
             <include layout="@layout/widget_media_preview" />
 
