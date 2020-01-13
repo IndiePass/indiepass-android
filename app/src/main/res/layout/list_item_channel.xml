@@ -9,8 +9,8 @@
     <TextView
         android:id="@+id/channel_name"
         android:textColor="@color/textColor"
-        android:padding="@dimen/channel_list_item_padding"
-        android:textSize="@dimen/channel_list_item_text_size"
+        android:padding="@dimen/list_item_padding"
+        android:textSize="@dimen/list_item_text_size"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:layout_width="0dp" />
@@ -18,8 +18,8 @@
     <TextView
         android:id="@+id/channel_unread"
         android:textColor="@color/textColor"
-        android:padding="@dimen/channel_list_item_padding"
-        android:textSize="@dimen/channel_list_item_text_size"
+        android:padding="@dimen/list_item_padding"
+        android:textSize="@dimen/list_item_text_size"
         android:gravity="end"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content" />

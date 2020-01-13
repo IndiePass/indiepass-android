@@ -70,7 +70,7 @@
             android:background="@color/buttonWhite"
             android:id="@+id/startNewTrack"
             android:text="@string/start_track"
-            android:padding="@dimen/channel_list_item_padding"
+            android:padding="@dimen/list_item_padding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

@@ -3,7 +3,7 @@
     android:id="@+id/user_list_row"
     android:layout_height="wrap_content"
     android:background="@color/listRowBackgroundColor"
-    android:padding="@dimen/user_list_item_padding">
+    android:padding="@dimen/list_item_padding">
 
     <TextView
         android:id="@+id/user_list_current"
@@ -61,24 +61,24 @@
         android:layout_below="@+id/user_list_endpoints"
         android:background="@drawable/button_sync"
         android:id="@+id/itemSync"
-        android:layout_width="@dimen/user_list_item_icon_size"
-        android:layout_height="@dimen/user_list_item_icon_size" />
+        android:layout_width="@dimen/list_item_icon_size"
+        android:layout_height="@dimen/list_item_icon_size" />
 
     <Button
         android:layout_below="@+id/user_list_endpoints"
         android:background="@drawable/button_swap"
         android:id="@+id/itemSwitch"
-        android:layout_width="@dimen/user_list_item_icon_size"
-        android:layout_height="@dimen/user_list_item_icon_size"
+        android:layout_width="@dimen/list_item_icon_size"
+        android:layout_height="@dimen/list_item_icon_size"
         android:layout_toEndOf="@+id/itemSync"
-        android:layout_marginStart="@dimen/user_list_item_icon_margin_left" />
+        android:layout_marginStart="@dimen/list_item_icon_margin_left" />
 
     <Button
         android:layout_below="@+id/user_list_endpoints"
         android:background="@drawable/button_delete"
         android:id="@+id/itemDelete"
-        android:layout_width="@dimen/user_list_item_icon_size"
-        android:layout_height="@dimen/user_list_item_icon_size"
+        android:layout_width="@dimen/list_item_icon_size"
+        android:layout_height="@dimen/list_item_icon_size"
         android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

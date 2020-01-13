@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="@dimen/timeline_list_item_padding"
+    android:padding="@dimen/list_item_padding"
     android:id="@+id/audio_root"
     android:orientation="horizontal"
     android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             android:textColor="@color/textColor"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:textSize="@dimen/timeline_list_item_author_size"
+            android:textSize="@dimen/list_item_author_size"
             android:layout_width="fill_parent" />
 
         <TextView

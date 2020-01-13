@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/timeline_item_row"
     android:layout_height="wrap_content"
-    android:padding="@dimen/timeline_list_item_padding"
+    android:padding="@dimen/list_item_padding"
     android:orientation="vertical">
 
     <LinearLayout
@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/textColor"
-                android:textSize="@dimen/timeline_list_item_global" />
+                android:textSize="@dimen/list_item_global" />
 
         </LinearLayout>
 
@@ -64,80 +64,80 @@
             android:hint="@string/add_reply"
             android:textColorHint="@android:color/transparent"
             android:id="@+id/itemReply"
-            android:layout_width="@dimen/timeline_list_item_icon_size"
-            android:layout_height="@dimen/timeline_list_item_icon_size" />
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size" />
 
         <Button
-            android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
+            android:layout_marginStart="@dimen/list_item_icon_margin_left"
             android:background="@drawable/button_like"
             android:hint="@string/add_like"
             android:textColorHint="@android:color/transparent"
             android:id="@+id/itemLike"
-            android:layout_width="@dimen/timeline_list_item_icon_size"
-            android:layout_height="@dimen/timeline_list_item_icon_size" />
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size" />
 
         <Button
-            android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
+            android:layout_marginStart="@dimen/list_item_icon_margin_left"
             android:background="@drawable/button_repost"
             android:id="@+id/itemRepost"
             android:hint="@string/add_repost"
             android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/timeline_list_item_icon_size"
-            android:layout_height="@dimen/timeline_list_item_icon_size" />
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size" />
 
         <Button
-            android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
+            android:layout_marginStart="@dimen/list_item_icon_margin_left"
             android:background="@drawable/button_bookmark"
             android:id="@+id/itemBookmark"
             android:hint="@string/add_bookmark"
             android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/timeline_list_item_icon_size"
-            android:layout_height="@dimen/timeline_list_item_icon_size" />
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size" />
 
         <Button
-            android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
+            android:layout_marginStart="@dimen/list_item_icon_margin_left"
             android:background="@drawable/button_external"
             android:id="@+id/itemExternal"
             android:hint="@string/external_link"
             android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/timeline_list_item_icon_size"
-            android:layout_height="@dimen/timeline_list_item_icon_size" />
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size" />
 
         <Button
-            android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
+            android:layout_marginStart="@dimen/list_item_icon_margin_left"
             android:background="@drawable/button_audio"
             android:hint="@string/audio"
             android:textColorHint="@android:color/transparent"
             android:id="@+id/itemAudio"
-            android:layout_width="@dimen/timeline_list_item_icon_size"
-            android:layout_height="@dimen/timeline_list_item_icon_size" />
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size" />
 
         <Button
-            android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
+            android:layout_marginStart="@dimen/list_item_icon_margin_left"
             android:background="@drawable/button_video"
             android:id="@+id/itemVideo"
             android:hint="@string/video"
             android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/timeline_list_item_icon_size"
-            android:layout_height="@dimen/timeline_list_item_icon_size" />
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size" />
 
         <Button
-            android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
+            android:layout_marginStart="@dimen/list_item_icon_margin_left"
             android:background="@drawable/button_rsvp"
             android:id="@+id/itemRSVP"
             android:hint="@string/add_rsvp"
             android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/timeline_list_item_icon_size"
-            android:layout_height="@dimen/timeline_list_item_icon_size" />
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size" />
 
         <Button
-            android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
+            android:layout_marginStart="@dimen/list_item_icon_margin_left"
             android:background="@drawable/button_map"
             android:id="@+id/itemMap"
             android:hint="@string/map"
             android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/timeline_list_item_icon_size"
-            android:layout_height="@dimen/timeline_list_item_icon_size" />
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size" />
 
         <Space
             android:layout_width="0dp"
@@ -145,13 +145,13 @@
             android:layout_weight="1" />
 
         <Button
-            android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
+            android:layout_marginStart="@dimen/list_item_icon_margin_left"
             android:background="@drawable/button_menu"
             android:id="@+id/itemMenu"
             android:hint="@string/item_menu"
             android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/timeline_list_item_icon_size"
-            android:layout_height="@dimen/timeline_list_item_icon_size" />
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size" />
 
     </LinearLayout>
 

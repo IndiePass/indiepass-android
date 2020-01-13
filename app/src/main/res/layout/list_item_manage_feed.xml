@@ -16,8 +16,8 @@
         <TextView
             android:id="@+id/url"
             android:textColor="@color/textColor"
-            android:padding="@dimen/channel_list_item_padding"
-            android:textSize="@dimen/channel_list_item_text_size"
+            android:padding="@dimen/list_item_padding"
+            android:textSize="@dimen/list_item_text_size"
             android:layout_weight="0.98"
             android:layout_height="wrap_content"
             android:layout_width="0dp" />
@@ -27,18 +27,18 @@
             android:id="@+id/feedMove"
             android:hint="@string/move_item"
             android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/manage_channel_list_item_icon_size"
-            android:layout_height="@dimen/manage_channel_list_item_icon_size"
-            android:layout_marginStart="@dimen/manage_channel_list_item_icon_margin_left" />
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size"
+            android:layout_marginStart="@dimen/list_item_icon_margin_left" />
 
         <Button
             android:background="@drawable/button_delete"
             android:id="@+id/feedDelete"
             android:hint="@string/delete"
             android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/manage_channel_list_item_icon_size"
-            android:layout_height="@dimen/manage_channel_list_item_icon_size"
-            android:layout_marginStart="@dimen/manage_channel_list_item_icon_margin_left" />
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size"
+            android:layout_marginStart="@dimen/list_item_icon_margin_left" />
 
     </LinearLayout>
 

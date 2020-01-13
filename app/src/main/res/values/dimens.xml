@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="design_navigation_icon_padding" tools:override="true">14dp</dimen>
-    <dimen name="list_divider_height">2px</dimen>
-    <dimen name="channel_list_item_padding">15sp</dimen>
-    <dimen name="channel_list_item_text_size">16sp</dimen>
     <dimen name="big_list_title">18sp</dimen>
     <dimen name="compact_list_title">16sp</dimen>
     <dimen name="info_text">16sp</dimen>
@@ -12,34 +9,20 @@
     <dimen name="inputText">15sp</dimen>
     <dimen name="popupItemPadding">10sp</dimen>
     <dimen name="preview_text_size">15sp</dimen>
-    <dimen name="channel_list_divider_height">2px</dimen>
-    <dimen name="timeline_list_item_padding">15dp</dimen>
-    <dimen name="timeline_list_item_text_margin_left">15dp</dimen>
-    <dimen name="timeline_list_item_text_compact_margin_left">7dp</dimen>
-    <dimen name="timeline_list_item_text_size">15sp</dimen>
-    <dimen name="timeline_list_item_author_size">16sp</dimen>
-    <dimen name="timeline_list_item_global">14sp</dimen>
-    <dimen name="timeline_list_divider_height">2px</dimen>
-    <dimen name="timeline_list_item_icon_size">25dp</dimen>
-    <dimen name="timeline_list_item_icon_margin_left">10dp</dimen>
-    <dimen name="source_post_list_item_padding">15dp</dimen>
-    <dimen name="source_post_list_item_icon_size">25dp</dimen>
-    <dimen name="source_post_list_divider_height">2px</dimen>
-    <dimen name="source_post_list_item_global">14sp</dimen>
-    <dimen name="source_post_list_item_icon_margin_left">10dp</dimen>
-    <dimen name="manage_channel_list_item_icon_size">25dp</dimen>
-    <dimen name="manage_channel_list_item_icon_margin_left">10dp</dimen>
-    <dimen name="draft_list_divider_height">2px</dimen>
+    <dimen name="list_item_padding">15sp</dimen>
+    <dimen name="list_item_text_size">16sp</dimen>
+    <dimen name="list_divider_height">2px</dimen>
+    <dimen name="list_item_text_margin_left">15dp</dimen>
+    <dimen name="list_item_text_compact_margin_left">7dp</dimen>
+    <dimen name="list_item_author_size">16sp</dimen>
+    <dimen name="list_item_global">14sp</dimen>
+    <dimen name="list_item_icon_size">25dp</dimen>
+    <dimen name="list_item_icon_margin_left">10dp</dimen>
     <dimen name="box_padding">10dp</dimen>
     <dimen name="button_padding">5dp</dimen>
     <dimen name="progressBarTop">100dp</dimen>
     <dimen name="track_list_item_icon_margin_left_small">15dp</dimen>
     <dimen name="track_list_item_icon_margin_left">20dp</dimen>
-
-    <dimen name="user_list_item_icon_size">25dp</dimen>
-    <dimen name="user_list_item_padding">15dp</dimen>
-    <dimen name="user_list_item_icon_margin_left">10dp</dimen>
-
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="nav_header_image_vertical_spacing">16dp</dimen>

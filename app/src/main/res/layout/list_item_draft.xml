@@ -2,13 +2,13 @@
     android:layout_width="fill_parent"
     android:id="@+id/draft_list_item_row"
     android:layout_height="wrap_content"
-    android:padding="@dimen/timeline_list_item_padding"
+    android:padding="@dimen/list_item_padding"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/draft_list_type_published"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/source_post_list_item_global"
+        android:textSize="@dimen/list_item_global"
         android:textColor="@color/textColor"
         android:layout_width="fill_parent" />
 
@@ -18,7 +18,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:textColor="@color/textColor"
-        android:textSize="@dimen/timeline_list_item_text_size"
+        android:textSize="@dimen/list_item_text_size"
         android:layout_width="fill_parent" />
 
     <LinearLayout
@@ -31,17 +31,17 @@
             android:id="@+id/draftUpdate"
             android:hint="@string/update_post"
             android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/source_post_list_item_icon_size"
-            android:layout_height="@dimen/source_post_list_item_icon_size" />
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size" />
 
         <Button
             android:background="@drawable/button_delete"
             android:id="@+id/draftDelete"
             android:hint="@string/delete_post"
             android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/source_post_list_item_icon_size"
-            android:layout_height="@dimen/source_post_list_item_icon_size"
-            android:layout_marginStart="@dimen/source_post_list_item_icon_margin_left" />
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size"
+            android:layout_marginStart="@dimen/list_item_icon_margin_left" />
 
     </LinearLayout>
 

@@ -2,7 +2,7 @@
     android:layout_width="fill_parent"
     android:id="@+id/contact_list_item_row"
     android:layout_height="wrap_content"
-    android:padding="@dimen/timeline_list_item_padding"
+    android:padding="@dimen/list_item_padding"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -23,13 +23,13 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/timeline_list_item_text_margin_left">
+        android:layout_marginStart="@dimen/list_item_text_margin_left">
 
         <TextView
             android:id="@+id/contact_name"
             android:layout_height="wrap_content"
             android:textColor="@color/textColor"
-            android:textSize="@dimen/timeline_list_item_text_size"
+            android:textSize="@dimen/list_item_text_size"
             android:layout_width="fill_parent" />
 
         <TextView
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:textColor="@color/textColor"
-            android:textSize="@dimen/timeline_list_item_text_size"
+            android:textSize="@dimen/list_item_text_size"
             android:layout_width="fill_parent" />
 
         <TextView
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:textColor="@color/textColor"
-            android:textSize="@dimen/timeline_list_item_text_size"
+            android:textSize="@dimen/list_item_text_size"
             android:layout_width="fill_parent" />
 
 
@@ -60,17 +60,17 @@
                 android:id="@+id/contactUpdate"
                 android:hint="@string/update_post"
                 android:textColorHint="@android:color/transparent"
-                android:layout_width="@dimen/source_post_list_item_icon_size"
-                android:layout_height="@dimen/source_post_list_item_icon_size" />
+                android:layout_width="@dimen/list_item_icon_size"
+                android:layout_height="@dimen/list_item_icon_size" />
 
             <Button
                 android:background="@drawable/button_delete"
                 android:id="@+id/contactDelete"
                 android:hint="@string/delete_post"
                 android:textColorHint="@android:color/transparent"
-                android:layout_width="@dimen/source_post_list_item_icon_size"
-                android:layout_height="@dimen/source_post_list_item_icon_size"
-                android:layout_marginStart="@dimen/source_post_list_item_icon_margin_left" />
+                android:layout_width="@dimen/list_item_icon_size"
+                android:layout_height="@dimen/list_item_icon_size"
+                android:layout_marginStart="@dimen/list_item_icon_margin_left" />
 
         </LinearLayout>
 

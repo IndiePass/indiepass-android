@@ -7,7 +7,7 @@
 
     <ListView
         android:divider="@color/listDividerColor"
-        android:dividerHeight="@dimen/draft_list_divider_height"
+        android:dividerHeight="@dimen/list_divider_height"
         android:background="@color/listBackgroundColor"
         android:id="@+id/draft_list"
         android:layout_width="fill_parent"
@@ -16,7 +16,7 @@
     <TextView
         android:padding="20dp"
         android:textColor="@color/textColor"
-        android:textSize="@dimen/timeline_list_item_text_size"
+        android:textSize="@dimen/list_item_text_size"
         android:id="@+id/noDrafts"
         android:text="@string/no_drafts"
         android:visibility="gone"

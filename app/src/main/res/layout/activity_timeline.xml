@@ -11,7 +11,7 @@
 
         <ListView
             android:divider="@color/listDividerColor"
-            android:dividerHeight="@dimen/timeline_list_divider_height"
+            android:dividerHeight="@dimen/list_divider_height"
             android:background="@color/listBackgroundColor"
             android:id="@+id/timeline_list"
             android:layout_width="fill_parent"

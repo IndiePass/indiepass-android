@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/timeline_item_row"
     android:layout_height="wrap_content"
-    android:padding="@dimen/timeline_list_item_padding"
+    android:padding="@dimen/list_item_padding"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -26,7 +26,7 @@
             android:layout_gravity="center|center_horizontal"
             android:layout_weight="1"
             android:textColor="@color/textColor"
-            android:textSize="@dimen/timeline_list_item_global" />
+            android:textSize="@dimen/list_item_global" />
 
     </LinearLayout>
 
@@ -34,26 +34,26 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/timeline_list_item_text_margin_left">
+        android:layout_marginStart="@dimen/list_item_text_margin_left">
 
         <TextView
             android:id="@+id/timeline_channel"
             android:textColor="@color/textColor"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/timeline_list_item_author_size"
+            android:textSize="@dimen/list_item_author_size"
             android:layout_width="fill_parent" />
 
         <TextView
             android:id="@+id/timeline_author"
             android:textColor="@color/textColor"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/timeline_list_item_author_size"
+            android:textSize="@dimen/list_item_author_size"
             android:layout_width="fill_parent" />
 
         <TextView
             android:id="@+id/timeline_published"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/timeline_list_item_global"
+            android:textSize="@dimen/list_item_global"
             android:textColor="@color/textColor"
             android:layout_width="fill_parent" />
 
@@ -64,7 +64,7 @@
             android:layout_marginTop="5dp"
             android:textIsSelectable="true"
             android:layout_marginBottom="5dp"
-            android:textSize="@dimen/timeline_list_item_text_size"
+            android:textSize="@dimen/list_item_text_size"
             android:layout_width="fill_parent" />
 
         <TextView
@@ -74,7 +74,7 @@
             android:layout_marginBottom="5dp"
             android:textIsSelectable="true"
             android:textColor="@color/textColor"
-            android:textSize="@dimen/timeline_list_item_text_size"
+            android:textSize="@dimen/list_item_text_size"
             android:layout_width="fill_parent" />
 
         <TextView
@@ -83,7 +83,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:textColor="@color/textColor"
-            android:textSize="@dimen/timeline_list_item_text_size"
+            android:textSize="@dimen/list_item_text_size"
             android:layout_width="fill_parent" />
 
         <TextView
@@ -92,7 +92,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:textColor="@color/textColor"
-            android:textSize="@dimen/timeline_list_item_text_size"
+            android:textSize="@dimen/list_item_text_size"
             android:layout_width="fill_parent" />
 
         <TextView
@@ -101,7 +101,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:textColor="@color/textColor"
-            android:textSize="@dimen/timeline_list_item_text_size"
+            android:textSize="@dimen/list_item_text_size"
             android:layout_width="fill_parent" />
 
         <com.indieweb.indigenous.widget.ExpandableTextView
@@ -115,7 +115,7 @@
             android:clickable="true"
             android:focusable="true"
             android:textColor="@color/textColor"
-            android:textSize="@dimen/timeline_list_item_text_size"
+            android:textSize="@dimen/list_item_text_size"
             android:lineSpacingExtra="5dp"
             android:ellipsize="end" />
 
@@ -129,7 +129,7 @@
             android:lineSpacingExtra="5dp"
             android:background="@drawable/border_box"
             android:textColor="@color/textColor"
-            android:textSize="@dimen/timeline_list_item_text_size"
+            android:textSize="@dimen/list_item_text_size"
             android:layout_width="fill_parent" />
 
         <Button
@@ -176,80 +176,80 @@
                 android:hint="@string/add_reply"
                 android:textColorHint="@android:color/transparent"
                 android:id="@+id/itemReply"
-                android:layout_width="@dimen/timeline_list_item_icon_size"
-                android:layout_height="@dimen/timeline_list_item_icon_size" />
+                android:layout_width="@dimen/list_item_icon_size"
+                android:layout_height="@dimen/list_item_icon_size" />
 
             <Button
-                android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
+                android:layout_marginStart="@dimen/list_item_icon_margin_left"
                 android:background="@drawable/button_like"
                 android:hint="@string/add_like"
                 android:textColorHint="@android:color/transparent"
                 android:id="@+id/itemLike"
-                android:layout_width="@dimen/timeline_list_item_icon_size"
-                android:layout_height="@dimen/timeline_list_item_icon_size" />
+                android:layout_width="@dimen/list_item_icon_size"
+                android:layout_height="@dimen/list_item_icon_size" />
 
             <Button
-                android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
+                android:layout_marginStart="@dimen/list_item_icon_margin_left"
                 android:background="@drawable/button_repost"
                 android:id="@+id/itemRepost"
                 android:hint="@string/add_repost"
                 android:textColorHint="@android:color/transparent"
-                android:layout_width="@dimen/timeline_list_item_icon_size"
-                android:layout_height="@dimen/timeline_list_item_icon_size" />
+                android:layout_width="@dimen/list_item_icon_size"
+                android:layout_height="@dimen/list_item_icon_size" />
 
             <Button
-                android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
+                android:layout_marginStart="@dimen/list_item_icon_margin_left"
                 android:background="@drawable/button_bookmark"
                 android:id="@+id/itemBookmark"
                 android:hint="@string/add_bookmark"
                 android:textColorHint="@android:color/transparent"
-                android:layout_width="@dimen/timeline_list_item_icon_size"
-                android:layout_height="@dimen/timeline_list_item_icon_size" />
+                android:layout_width="@dimen/list_item_icon_size"
+                android:layout_height="@dimen/list_item_icon_size" />
 
             <Button
-                android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
+                android:layout_marginStart="@dimen/list_item_icon_margin_left"
                 android:background="@drawable/button_external"
                 android:id="@+id/itemExternal"
                 android:hint="@string/external_link"
                 android:textColorHint="@android:color/transparent"
-                android:layout_width="@dimen/timeline_list_item_icon_size"
-                android:layout_height="@dimen/timeline_list_item_icon_size" />
+                android:layout_width="@dimen/list_item_icon_size"
+                android:layout_height="@dimen/list_item_icon_size" />
 
             <Button
-                android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
+                android:layout_marginStart="@dimen/list_item_icon_margin_left"
                 android:background="@drawable/button_audio"
                 android:hint="@string/audio"
                 android:textColorHint="@android:color/transparent"
                 android:id="@+id/itemAudio"
-                android:layout_width="@dimen/timeline_list_item_icon_size"
-                android:layout_height="@dimen/timeline_list_item_icon_size" />
+                android:layout_width="@dimen/list_item_icon_size"
+                android:layout_height="@dimen/list_item_icon_size" />
 
             <Button
-                android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
+                android:layout_marginStart="@dimen/list_item_icon_margin_left"
                 android:background="@drawable/button_video"
                 android:id="@+id/itemVideo"
                 android:hint="@string/video"
                 android:textColorHint="@android:color/transparent"
-                android:layout_width="@dimen/timeline_list_item_icon_size"
-                android:layout_height="@dimen/timeline_list_item_icon_size" />
+                android:layout_width="@dimen/list_item_icon_size"
+                android:layout_height="@dimen/list_item_icon_size" />
 
             <Button
-                android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
+                android:layout_marginStart="@dimen/list_item_icon_margin_left"
                 android:background="@drawable/button_rsvp"
                 android:id="@+id/itemRSVP"
                 android:hint="@string/add_rsvp"
                 android:textColorHint="@android:color/transparent"
-                android:layout_width="@dimen/timeline_list_item_icon_size"
-                android:layout_height="@dimen/timeline_list_item_icon_size" />
+                android:layout_width="@dimen/list_item_icon_size"
+                android:layout_height="@dimen/list_item_icon_size" />
 
             <Button
-                android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
+                android:layout_marginStart="@dimen/list_item_icon_margin_left"
                 android:background="@drawable/button_map"
                 android:id="@+id/itemMap"
                 android:hint="@string/map"
                 android:textColorHint="@android:color/transparent"
-                android:layout_width="@dimen/timeline_list_item_icon_size"
-                android:layout_height="@dimen/timeline_list_item_icon_size" />
+                android:layout_width="@dimen/list_item_icon_size"
+                android:layout_height="@dimen/list_item_icon_size" />
 
             <Space
                 android:layout_width="0dp"
@@ -257,13 +257,13 @@
                 android:layout_weight="1" />
 
             <Button
-                android:layout_marginStart="@dimen/timeline_list_item_icon_margin_left"
+                android:layout_marginStart="@dimen/list_item_icon_margin_left"
                 android:background="@drawable/button_menu"
                 android:id="@+id/itemMenu"
                 android:hint="@string/item_menu"
                 android:textColorHint="@android:color/transparent"
-                android:layout_width="@dimen/timeline_list_item_icon_size"
-                android:layout_height="@dimen/timeline_list_item_icon_size" />
+                android:layout_width="@dimen/list_item_icon_size"
+                android:layout_height="@dimen/list_item_icon_size" />
 
         </LinearLayout>
 

@@ -18,14 +18,14 @@
             android:id="@+id/channelDrag"
             android:hint="@string/move_item"
             android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/manage_channel_list_item_icon_size"
-            android:layout_height="@dimen/manage_channel_list_item_icon_size" />
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size" />
 
         <TextView
             android:id="@+id/channel_name"
             android:textColor="@color/textColor"
-            android:padding="@dimen/channel_list_item_padding"
-            android:textSize="@dimen/channel_list_item_text_size"
+            android:padding="@dimen/list_item_padding"
+            android:textSize="@dimen/list_item_text_size"
             android:layout_weight="0.98"
             android:layout_height="wrap_content"
             android:layout_width="0dp" />
@@ -35,17 +35,17 @@
             android:id="@+id/channelUpdate"
             android:hint="@string/update_post"
             android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/manage_channel_list_item_icon_size"
-            android:layout_height="@dimen/manage_channel_list_item_icon_size" />
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size" />
 
         <Button
             android:background="@drawable/button_delete"
             android:id="@+id/channelDelete"
             android:hint="@string/delete_post"
             android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/manage_channel_list_item_icon_size"
-            android:layout_height="@dimen/manage_channel_list_item_icon_size"
-            android:layout_marginStart="@dimen/manage_channel_list_item_icon_margin_left" />
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size"
+            android:layout_marginStart="@dimen/list_item_icon_margin_left" />
 
     </LinearLayout>
 
