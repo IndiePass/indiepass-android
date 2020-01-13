@@ -150,7 +150,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         getMenuInflater().inflate(R.menu.post_create_menu, menu);
 
         if (!canAddMedia) {
-            MenuItem item = menu.findItem(R.id.addImage);
+            MenuItem item = menu.findItem(R.id.addFile);
             item.setVisible(false);
         }
 
