@@ -34,7 +34,6 @@ import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.model.PostListItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
-import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
 
@@ -179,7 +178,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
      */
     private void getSourcePostListItems(String pagerAfter) {
 
-        if (!new Connection(requireContext()).hasConnection()) {
+        if (!Utility.hasConnection(requireContext())) {
             showRefreshMessage = false;
             checkRefreshingStatus();
             noConnection.setVisibility(View.VISIBLE);

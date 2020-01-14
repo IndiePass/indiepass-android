@@ -51,7 +51,6 @@ import com.indieweb.indigenous.micropub.post.VideoGalleryAdapter;
 import com.indieweb.indigenous.model.Place;
 import com.indieweb.indigenous.model.Syndication;
 import com.indieweb.indigenous.model.User;
-import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
 import com.indieweb.indigenous.util.VolleyMediaRequest;
@@ -457,7 +456,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public void sendBasePost(MenuItem item) {
         sendItem = item;
 
-        if (!new Connection(this).hasConnection()) {
+        if (!Utility.hasConnection(getApplicationContext())) {
             Snackbar snackbar = Snackbar.make(layout, getString(R.string.no_connection), Snackbar.LENGTH_LONG);
 
             if (saveAsDraft != null) {

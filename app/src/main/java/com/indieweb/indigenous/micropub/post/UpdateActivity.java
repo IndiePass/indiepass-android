@@ -23,7 +23,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
-import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Utility;
 
 import org.json.JSONArray;
@@ -95,7 +94,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
     public void updatePost(MenuItem item) {
         sendItem = item;
 
-        if (!new Connection(this).hasConnection()) {
+        if (!Utility.hasConnection(getApplicationContext())) {
             Snackbar.make(layout, getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }

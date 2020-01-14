@@ -18,7 +18,6 @@ import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.BaseCreate;
 import com.indieweb.indigenous.model.Contact;
-import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Utility;
 
 import org.json.JSONArray;
@@ -114,7 +113,7 @@ public class ContactActivity extends BaseCreate {
     public void updateContact(MenuItem item) {
         sendItem = item;
 
-        if (!new Connection(this).hasConnection()) {
+        if (!Utility.hasConnection(getApplicationContext())) {
             Snackbar.make(layout, getString(R.string.no_connection), Snackbar.LENGTH_LONG).show();
             return;
         }

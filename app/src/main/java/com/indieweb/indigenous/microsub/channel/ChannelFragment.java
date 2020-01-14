@@ -36,7 +36,6 @@ import com.indieweb.indigenous.microsub.timeline.TimelineActivity;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
-import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
 
@@ -124,7 +123,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
      */
     private void loadChannels() {
 
-        if (!new Connection(requireContext()).hasConnection()) {
+        if (!Utility.hasConnection(requireContext())) {
             showRefreshMessage = false;
             checkRefreshingStatus();
             noConnection.setVisibility(View.VISIBLE);

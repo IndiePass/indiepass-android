@@ -31,7 +31,7 @@ import com.indieweb.indigenous.microsub.timeline.TimelineActivity;
 import com.indieweb.indigenous.model.Feed;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
-import com.indieweb.indigenous.util.Connection;
+import com.indieweb.indigenous.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -109,7 +109,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
      */
     public void searchFeeds(final String url) {
 
-        if (!new Connection(getApplicationContext()).hasConnection()) {
+        if (!Utility.hasConnection(getApplicationContext())) {
             Snackbar.make(layout, getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }

@@ -20,7 +20,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Contact;
 import com.indieweb.indigenous.model.User;
-import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
 
@@ -53,7 +52,7 @@ public class MicropubAction {
      */
     public void deleteItem(final String url) {
 
-        if (!new Connection(context).hasConnection()) {
+        if (!Utility.hasConnection(context)) {
             Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
@@ -118,7 +117,7 @@ public class MicropubAction {
     void prepareTagsAutocomplete(final MultiAutoCompleteTextView tags) {
 
         // If there's no connection, get it from local.
-        if (!new Connection(context).hasConnection()) {
+        if (!Utility.hasConnection(context)) {
             AccountManager am = AccountManager.get(context);
             String response = am.getUserData(user.getAccount(), "tags_list");
             parseTagsResponse(response, tags, false, null);
@@ -217,7 +216,7 @@ public class MicropubAction {
     void prepareContactAutocomplete(final MultiAutoCompleteTextView body) {
 
         // If there's no connection, get it from local.
-        if (!new Connection(context).hasConnection()) {
+        if (!Utility.hasConnection(context)) {
             AccountManager am = AccountManager.get(context);
             String response = am.getUserData(user.getAccount(), "contact_list");
             List<Contact> contactItemsOffline = parseContactsResponse(response, context, true);

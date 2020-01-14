@@ -13,7 +13,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
-import com.indieweb.indigenous.util.Connection;
+import com.indieweb.indigenous.util.Utility;
 
 import java.util.HashMap;
 import java.util.List;
@@ -137,7 +137,7 @@ public class MicrosubAction {
      */
     public void deletePost(final String channelId, final String postId) {
 
-        if (!new Connection(context).hasConnection()) {
+        if (!Utility.hasConnection(context)) {
             Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
@@ -187,7 +187,7 @@ public class MicrosubAction {
      */
     public void movePost(final String channelId, String channelName, final String postId) {
 
-        if (!new Connection(context).hasConnection()) {
+        if (!Utility.hasConnection(context)) {
             Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
@@ -237,7 +237,7 @@ public class MicrosubAction {
      */
     public void createChannel(final String channelName) {
 
-        if (!new Connection(context).hasConnection()) {
+        if (!Utility.hasConnection(context)) {
             Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
@@ -284,7 +284,7 @@ public class MicrosubAction {
      */
     public void updateChannel(final String channelName, final String uid) {
 
-        if (!new Connection(context).hasConnection()) {
+        if (!Utility.hasConnection(context)) {
             Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
@@ -333,7 +333,7 @@ public class MicrosubAction {
      */
     public void deleteChannel(final String channelId) {
 
-        if (!new Connection(context).hasConnection()) {
+        if (!Utility.hasConnection(context)) {
             Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
@@ -382,7 +382,7 @@ public class MicrosubAction {
      */
     public void orderChannels(final List<Channel> Channels) {
 
-        if (!new Connection(context).hasConnection()) {
+        if (!Utility.hasConnection(context)) {
             Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
@@ -436,7 +436,7 @@ public class MicrosubAction {
      */
     public void deleteFeed(final String url, final String channelId) {
 
-        if (!new Connection(context).hasConnection()) {
+        if (!Utility.hasConnection(context)) {
             Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
@@ -485,7 +485,7 @@ public class MicrosubAction {
      */
     public void subscribe(final String url, final String channelId, final boolean update) {
 
-        if (!new Connection(context).hasConnection()) {
+        if (!Utility.hasConnection(context)) {
             Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }

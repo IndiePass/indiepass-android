@@ -33,7 +33,6 @@ import com.indieweb.indigenous.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
-import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Utility;
 
 import org.json.JSONArray;
@@ -137,7 +136,7 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
      */
     public void loadChannels() {
 
-        if (!new Connection(getApplicationContext()).hasConnection()) {
+        if (!Utility.hasConnection(getApplicationContext())) {
             showRefreshMessage = false;
             checkRefreshingStatus();
             noConnection.setVisibility(View.VISIBLE);

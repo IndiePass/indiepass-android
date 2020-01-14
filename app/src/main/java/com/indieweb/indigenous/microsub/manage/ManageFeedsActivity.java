@@ -23,7 +23,7 @@ import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Feed;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
-import com.indieweb.indigenous.util.Connection;
+import com.indieweb.indigenous.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -129,7 +129,7 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
      */
     public void getFeeds() {
 
-        if (!new Connection(getApplicationContext()).hasConnection()) {
+        if (!Utility.hasConnection(getApplicationContext())) {
             showRefreshMessage = false;
             checkRefreshingStatus();
             Snackbar.make(layout, getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();

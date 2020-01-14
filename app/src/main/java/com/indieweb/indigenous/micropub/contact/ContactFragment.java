@@ -35,13 +35,8 @@ import com.indieweb.indigenous.micropub.post.ContactActivity;
 import com.indieweb.indigenous.model.Contact;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
-import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,7 +106,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener, S
     private void loadContacts() {
         Contacts.clear();
 
-        if (!new Connection(requireContext()).hasConnection()) {
+        if (!Utility.hasConnection(requireContext())) {
             showRefreshMessage = false;
 
             List<Contact> ContactsOffline = new ArrayList<>();

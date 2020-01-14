@@ -31,7 +31,6 @@ import com.indieweb.indigenous.micropub.MicropubAction;
 import com.indieweb.indigenous.model.HCard;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
-import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Utility;
 import com.indieweb.indigenous.util.mf2.Mf2Parser;
 import com.karumi.dexter.Dexter;
@@ -169,7 +168,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
     private final View.OnClickListener doSignIn = new View.OnClickListener() {
         public void onClick(View v) {
 
-            if (!new Connection(getApplicationContext()).hasConnection()) {
+            if (!Utility.hasConnection(getApplicationContext())) {
                 Snackbar.make(layout, getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
                 return;
             }

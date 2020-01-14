@@ -39,7 +39,6 @@ import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.TimelineStyle;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
-import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
 
@@ -339,7 +338,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
      */
     public void getTimeLineItems(String pagerAfter) {
 
-        if (!new Connection(getApplicationContext()).hasConnection()) {
+        if (!Utility.hasConnection(getApplicationContext())) {
             showRefreshMessage = false;
             checkRefreshingStatus();
             noConnection.setVisibility(View.VISIBLE);

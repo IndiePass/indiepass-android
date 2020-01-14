@@ -29,7 +29,6 @@ import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.model.Point;
 import com.indieweb.indigenous.model.Track;
 import com.indieweb.indigenous.model.User;
-import com.indieweb.indigenous.util.Connection;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
 import com.indieweb.indigenous.util.VolleyMultipartRequest;
@@ -301,7 +300,7 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
         Map<Integer, Point> points = db.getPoints(track.getId());
         final Collection<Point> values = points.values();
 
-        if (!new Connection(context).hasConnection()) {
+        if (!Utility.hasConnection(context)) {
             Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
             return;
         }
