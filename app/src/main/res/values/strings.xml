@@ -30,6 +30,9 @@
     <string name="no_micropub_endpoint">We did not find your micropub endpoint. In the accounts section, you can synchronize your account to add it.</string>
     <string name="no_micropub_media_endpoint">We did not find your media endpoint. In the accounts section, you can synchronize your account to add it.</string>
     <string name="install_map_app">Install a maps application to view this location</string>
+    <string name="items_refreshed">Items refreshed</string>
+    <string name="network_fail">Getting data failed. Status code: %d; message: %s</string>
+    <string name="unknown_network_fail">Failed getting data, unknown error</string>
 
     <!-- Authentication and accounts -->
     <string name="account_type">IndieAuth</string>

@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,27 +13,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.microsub.manage.ManageChannelActivity;
 import com.indieweb.indigenous.microsub.timeline.TimelineActivity;
 import com.indieweb.indigenous.model.Channel;
-import com.indieweb.indigenous.model.User;
-import com.indieweb.indigenous.util.Accounts;
+import com.indieweb.indigenous.general.BaseFragment;
+import com.indieweb.indigenous.util.HTTPRequest;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
 
@@ -44,22 +33,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class ChannelFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class ChannelFragment extends BaseFragment implements View.OnClickListener {
 
-    private boolean showRefreshMessage = false;
     private ListView listChannel;
-    private SwipeRefreshLayout refreshLayout;
     private ChannelListAdapter adapter;
     private List<Channel> Channels = new ArrayList<>();
-    private User user;
-    private String debugResponse;
     private String readLater;
-    private LinearLayout noConnection;
-    private RelativeLayout layout;
 
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
@@ -76,35 +57,40 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
 
         view.findViewById(R.id.actionButton).setOnClickListener(this);
         listChannel = view.findViewById(R.id.channel_list);
-        refreshLayout = view.findViewById(R.id.refreshChannels);
-        noConnection = view.findViewById(R.id.noConnection);
         layout = view.findViewById(R.id.channel_root);
+        setRefreshedMessage(R.string.channels_refreshed);
 
-        user = new Accounts(getContext()).getCurrentUser();
         requireActivity().setTitle(getString(R.string.nav_reader));
 
         if (user.getMicrosubEndpoint().length() > 0) {
             setHasOptionsMenu(true);
-            refreshLayout.setOnRefreshListener(this);
-            refreshLayout.setRefreshing(true);
+            setLayoutRefreshing(true);
+            setOnRefreshListener();
+            showRefreshLayout();
             readLater = Preferences.getPreference(requireContext(), "pref_key_read_later", "");
-            refreshLayout.setVisibility(View.VISIBLE);
             listChannel.setVisibility(View.VISIBLE);
             startChannels();
         }
         else {
-            refreshLayout.setVisibility(View.GONE);
             listChannel.setVisibility(View.GONE);
+            hideRefreshLayout();
             TextView noMicrosubEndpoint = view.findViewById(R.id.noMicrosubEndpoint);
             noMicrosubEndpoint.setVisibility(View.VISIBLE);
         }
+    }
+
+
+    @Override
+    public void onRefresh() {
+        setShowRefreshedMessage(true);
+        startChannels();
     }
 
     /**
      * Start channels.
      */
     private void startChannels() {
-        noConnection.setVisibility(View.GONE);
+        hideNoConnection();
         Channels = new ArrayList<>();
         listChannel.setVisibility(View.VISIBLE);
         adapter = new ChannelListAdapter(requireContext(), Channels, readLater);
@@ -112,21 +98,15 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
         loadChannels();
     }
 
-    @Override
-    public void onRefresh() {
-        showRefreshMessage = true;
-        startChannels();
-    }
-
     /**
-     * Get channels.
+     * Load channels.
      */
     private void loadChannels() {
 
         if (!Utility.hasConnection(requireContext())) {
-            showRefreshMessage = false;
+            setShowRefreshedMessage(false);
             checkRefreshingStatus();
-            noConnection.setVisibility(View.VISIBLE);
+            showNoConnection();
             return;
         }
 
@@ -138,109 +118,78 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
             microsubEndpoint += "?action=channels";
         }
 
-        StringRequest getRequest = new StringRequest(Request.Method.GET, microsubEndpoint,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+        HTTPRequest r = new HTTPRequest(this.volleyRequestListener, user, requireContext());
+        r.doGetRequest(microsubEndpoint);
+    }
 
-                        try {
-                            JSONObject object;
-                            debugResponse = response;
-                            JSONObject microsubResponse = new JSONObject(response);
-                            JSONArray channelList = microsubResponse.getJSONArray("channels");
-
-                            int index = 0;
-                            int unreadChannels = 0;
-                            int totalUnread = 0;
-                            for (int i = 0; i < channelList.length(); i++) {
-                                object = channelList.getJSONObject(i);
-                                Channel channel = new Channel();
-                                channel.setUid(object.getString("uid"));
-                                channel.setName(object.getString("name"));
-
-                                Integer unread = 0;
-                                if (object.has("unread")) {
-                                    Object unreadCheck = object.get("unread");
-                                    if (unreadCheck instanceof Integer) {
-                                        unread = (Integer) unreadCheck;
-                                        totalUnread += unread;
-                                        if (unread > 0) {
-                                            unreadChannels++;
-                                        }
-                                    }
-                                    if (unreadCheck instanceof Boolean) {
-                                        if ((Boolean) unreadCheck) {
-                                            unread = -1;
-                                        }
-                                    }
-                                }
-
-                                channel.setUnread(unread);
-                                Channels.add(index++, channel);
-                            }
-
-                            try {
-                                if (Preferences.getPreference(getContext(), "pref_key_unread_items_channel", false) && unreadChannels > 1 && totalUnread > 0) {
-                                    Channel channel = new Channel();
-                                    channel.setUid("global");
-                                    channel.setName("Unread items");
-                                    channel.setUnread(totalUnread);
-                                    Channels.add(0, channel);
-                                }
-                            }
-                            catch (Exception ignored) {}
-
-                            adapter.notifyDataSetChanged();
-                            checkRefreshingStatus();
-                            Indigenous app = Indigenous.getInstance();
-                            app.setChannels(Channels);
-                        }
-                        catch (JSONException e) {
-                            showRefreshMessage = false;
-                            Snackbar.make(layout, String.format(getString(R.string.channel_list_parse_error), e.getMessage()), Snackbar.LENGTH_SHORT).show();
-                            checkRefreshingStatus();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Context context = getContext();
-                        Utility.parseNetworkError(error, context, R.string.channel_network_fail, R.string.channel_fail);
-                        showRefreshMessage = false;
-                        checkRefreshingStatus();
-                    }
-                }
-        )
-        {
-            @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Accept", "application/json");
-                headers.put("Authorization", "Bearer " + user.getAccessToken());
-                return headers;
-            }
-        };
-
-        RequestQueue queue = Volley.newRequestQueue(requireContext());
-        queue.add(getRequest);
+    @Override
+    public void OnSuccessRequest(String response) {
+        parseChannelResponse(response);
     }
 
     /**
-     * Checks the state of the pull to refresh.
+     * Parse the channel data.
+     *
+     * @param data
+     *   The data to parse.
      */
-    private void checkRefreshingStatus() {
-        if (refreshLayout.isRefreshing()) {
-            if (showRefreshMessage) {
-                // For some reason, this throws an exception sometimes, so let's protect it.
-                // (java.lang.IllegalStateException)
-                try {
-                    Snackbar.make(layout, getString(R.string.channels_refreshed), Snackbar.LENGTH_SHORT).show();
+    private void parseChannelResponse(String data) {
+        try {
+            JSONObject object;
+            debugResponse = data;
+            JSONObject microsubResponse = new JSONObject(data);
+            JSONArray channelList = microsubResponse.getJSONArray("channels");
+
+            int index = 0;
+            int unreadChannels = 0;
+            int totalUnread = 0;
+            for (int i = 0; i < channelList.length(); i++) {
+                object = channelList.getJSONObject(i);
+                Channel channel = new Channel();
+                channel.setUid(object.getString("uid"));
+                channel.setName(object.getString("name"));
+
+                Integer unread = 0;
+                if (object.has("unread")) {
+                    Object unreadCheck = object.get("unread");
+                    if (unreadCheck instanceof Integer) {
+                        unread = (Integer) unreadCheck;
+                        totalUnread += unread;
+                        if (unread > 0) {
+                            unreadChannels++;
+                        }
+                    }
+                    if (unreadCheck instanceof Boolean) {
+                        if ((Boolean) unreadCheck) {
+                            unread = -1;
+                        }
+                    }
                 }
-                catch (Exception ignored) {}
+
+                channel.setUnread(unread);
+                Channels.add(index++, channel);
             }
-            refreshLayout.setRefreshing(false);
+
+            try {
+                if (Preferences.getPreference(getContext(), "pref_key_unread_items_channel", false) && unreadChannels > 1 && totalUnread > 0) {
+                    Channel channel = new Channel();
+                    channel.setUid("global");
+                    channel.setName("Unread items");
+                    channel.setUnread(totalUnread);
+                    Channels.add(0, channel);
+                }
+            }
+            catch (Exception ignored) {}
+
+            adapter.notifyDataSetChanged();
+            checkRefreshingStatus();
+            Indigenous app = Indigenous.getInstance();
+            app.setChannels(Channels);
+        }
+        catch (JSONException e) {
+            setShowRefreshedMessage(false);
+            Snackbar.make(layout, String.format(getString(R.string.channel_list_parse_error), e.getMessage()), Snackbar.LENGTH_SHORT).show();
+            checkRefreshingStatus();
         }
     }
 
@@ -293,7 +242,6 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
                     };
                     searchView.setOnQueryTextListener(queryTextListener);
                 }
-
             }
         }
 
@@ -310,16 +258,13 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, S
                 return true;
 
             case R.id.channel_list_refresh:
-                showRefreshMessage = true;
-                refreshLayout.setRefreshing(true);
+                setShowRefreshedMessage(true);
+                setLayoutRefreshing(true);
                 startChannels();
                 return true;
 
             case R.id.channels_debug:
-                Intent i = new Intent(getContext(), DebugActivity.class);
-                Indigenous app = Indigenous.getInstance();
-                app.setDebug(debugResponse);
-                startActivity(i);
+                Utility.showDebugInfo(getContext(), debugResponse);
                 return true;
         }
 

@@ -1,7 +1,6 @@
 package com.indieweb.indigenous.micropub.contact;
 
 import android.accounts.AccountManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,50 +9,30 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
-import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.general.DebugActivity;
+import com.indieweb.indigenous.general.BaseFragment;
 import com.indieweb.indigenous.micropub.MicropubAction;
 import com.indieweb.indigenous.micropub.post.ContactActivity;
 import com.indieweb.indigenous.model.Contact;
-import com.indieweb.indigenous.model.User;
-import com.indieweb.indigenous.util.Accounts;
+import com.indieweb.indigenous.util.HTTPRequest;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class ContactFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class ContactFragment extends BaseFragment implements View.OnClickListener {
 
-    private boolean showRefreshMessage = false;
     private ListView listContact;
-    private SwipeRefreshLayout refreshLayout;
     private ContactListAdapter adapter;
-    private User user;
     private List<Contact> Contacts = new ArrayList<>();
-    private String debugResponse;
-    private RelativeLayout layout;
-    private LinearLayout noConnection;
 
     @Nullable
     @Override
@@ -67,19 +46,18 @@ public class ContactFragment extends Fragment implements View.OnClickListener, S
 
         requireActivity().setTitle(R.string.contact_list_title);
 
-        noConnection = view.findViewById(R.id.noConnection);
         listContact = view.findViewById(R.id.contact_list);
-        refreshLayout = view.findViewById(R.id.refreshContacts);
-        TextView noMicropubEndpoint = view.findViewById(R.id.noMicropubEndpoint);
-        user = new Accounts(getContext()).getCurrentUser();
-        view.findViewById(R.id.actionButton).setOnClickListener(this);
         layout = view.findViewById(R.id.contacts_root);
+
+        setRefreshedMessage(R.string.contacts_refreshed);
+        TextView noMicropubEndpoint = view.findViewById(R.id.noMicropubEndpoint);
+        view.findViewById(R.id.actionButton).setOnClickListener(this);
 
         if (user.getMicropubEndpoint().length() > 0) {
             setHasOptionsMenu(true);
-            refreshLayout.setOnRefreshListener(this);
-            refreshLayout.setRefreshing(true);
-            refreshLayout.setVisibility(View.VISIBLE);
+            setOnRefreshListener();
+            setLayoutRefreshing(true);
+            showRefreshLayout();
             listContact.setVisibility(View.VISIBLE);
             startContacts();
         }
@@ -89,11 +67,21 @@ public class ContactFragment extends Fragment implements View.OnClickListener, S
         }
     }
 
+    @Override
+    public void OnSuccessRequest(String response) {
+        List<Contact> ContactsLive = MicropubAction.parseContactsResponse(response, requireContext(), false);
+        if (ContactsLive.size() > 0) {
+            Contacts.addAll(ContactsLive);
+            adapter.notifyDataSetChanged();
+        }
+        checkRefreshingStatus();
+    }
+
     /**
      * Start contacts.
      */
     private void startContacts() {
-        noConnection.setVisibility(View.GONE);
+        hideNoConnection();
         listContact.setVisibility(View.VISIBLE);
         adapter = new ContactListAdapter(requireContext(), Contacts, user, layout);
         listContact.setAdapter(adapter);
@@ -107,7 +95,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener, S
         Contacts.clear();
 
         if (!Utility.hasConnection(requireContext())) {
-            showRefreshMessage = false;
+            setShowRefreshedMessage(false);
 
             List<Contact> ContactsOffline = new ArrayList<>();
             AccountManager am = AccountManager.get(requireContext());
@@ -123,7 +111,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener, S
                 Snackbar.make(layout, getString(R.string.contacts_offline), Snackbar.LENGTH_SHORT).show();
             }
             else {
-                noConnection.setVisibility(View.VISIBLE);
+                showNoConnection();
             }
 
             checkRefreshingStatus();
@@ -138,59 +126,14 @@ public class ContactFragment extends Fragment implements View.OnClickListener, S
             MicropubEndpoint += "?q=contact";
         }
 
-        StringRequest getRequest = new StringRequest(Request.Method.GET, MicropubEndpoint,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        debugResponse = response;
-                        List<Contact> ContactsLive = MicropubAction.parseContactsResponse(response, requireContext(), false);
-                        if (ContactsLive.size() > 0) {
-                            Contacts.addAll(ContactsLive);
-                            adapter.notifyDataSetChanged();
-                        }
-                        checkRefreshingStatus();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Context context = getContext();
-                        Utility.parseNetworkError(error, context, R.string.contact_network_fail, R.string.contact_fail);
-                        showRefreshMessage = false;
-                        checkRefreshingStatus();
-                    }
-                }
-        )
-        {
-            @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Accept", "application/json");
-                headers.put("Authorization", "Bearer " + user.getAccessToken());
-                return headers;
-            }
-        };
-
-        RequestQueue queue = Volley.newRequestQueue(requireContext());
-        queue.add(getRequest);
+        HTTPRequest r = new HTTPRequest(this.volleyRequestListener, user, requireContext());
+        r.doGetRequest(MicropubEndpoint);
     }
 
     @Override
     public void onRefresh() {
-        showRefreshMessage = true;
+        setShowRefreshedMessage(true);
         startContacts();
-    }
-
-    /**
-     * Checks the state of the pull to refresh.
-     */
-    private void checkRefreshingStatus() {
-        if (refreshLayout.isRefreshing()) {
-            if (showRefreshMessage) {
-                Snackbar.make(layout, getString(R.string.contacts_refreshed), Snackbar.LENGTH_SHORT).show();
-            }
-            refreshLayout.setRefreshing(false);
-        }
     }
 
     @Override
@@ -221,16 +164,13 @@ public class ContactFragment extends Fragment implements View.OnClickListener, S
 
         switch (item.getItemId()) {
             case R.id.contact_list_refresh:
-                showRefreshMessage = true;
-                refreshLayout.setRefreshing(true);
+                setShowRefreshedMessage(true);
+                setLayoutRefreshing(true);
                 startContacts();
                 return true;
 
             case R.id.contact_debug:
-                Intent i = new Intent(getContext(), DebugActivity.class);
-                Indigenous app = Indigenous.getInstance();
-                app.setDebug(debugResponse);
-                startActivity(i);
+                Utility.showDebugInfo(getContext(), debugResponse);
                 return true;
         }
 

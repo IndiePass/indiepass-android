@@ -9,7 +9,6 @@ import android.location.Location;
 import android.net.Uri;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -53,8 +52,7 @@ import com.indieweb.indigenous.model.Syndication;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
-import com.indieweb.indigenous.util.VolleyMediaRequest;
-import com.indieweb.indigenous.util.VolleyMediaRequestListener;
+import com.indieweb.indigenous.util.VolleyRequestListener;
 import com.indieweb.indigenous.util.VolleyMultipartRequest;
 
 import org.json.JSONArray;
@@ -78,7 +76,7 @@ import java.util.TimeZone;
 import static java.lang.Integer.parseInt;
 
 @SuppressLint("Registered")
-abstract public class Base extends AppCompatActivity implements SendPostInterface, TextWatcher, VolleyMediaRequestListener {
+abstract public class Base extends AppCompatActivity implements SendPostInterface, TextWatcher, VolleyRequestListener {
 
     public boolean isTesting = false;
     boolean hasChanges = false;
@@ -106,7 +104,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     private int PICK_IMAGE_REQUEST = 1;
     private int PICK_VIDEO_REQUEST = 2;
     private int PICK_AUDIO_REQUEST = 3;
-    private VolleyMediaRequestListener volleyMediaRequestListener;
+    private VolleyRequestListener volleyRequestListener;
 
     public EditText url;
     public Spinner rsvp;
@@ -817,7 +815,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         }
 
         // Set listener.
-        VolleyMediaRequestListener(this);
+        VolleyRequestListener(this);
 
         for (Uri u : image) {
             sendMediaRequest(u, endpoint, true, false);
@@ -847,7 +845,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
      */
     public void sendMediaRequest(final Uri u, String endpoint, final boolean image, final boolean video) {
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        VolleyMediaRequest request = new VolleyMediaRequest(Request.Method.POST, endpoint,
+        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, endpoint,
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
@@ -856,11 +854,11 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                         if (fileUrl != null && fileUrl.length() > 0) {
                             mediaUrls.put(u, fileUrl);
                             mediaUploadedCount++;
-                            volleyMediaRequestListener.OnSuccessRequest();
+                            volleyRequestListener.OnSuccessRequest(null);
                         }
                         else {
                             uploadMediaError = true;
-                            volleyMediaRequestListener.OnFailureRequest();
+                            volleyRequestListener.OnFailureRequest();
                             Snackbar.make(layout, getString(R.string.no_media_url_found), Snackbar.LENGTH_SHORT).show();
                         }
 
@@ -870,7 +868,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         uploadMediaError = true;
-                        volleyMediaRequestListener.OnFailureRequest();
+                        volleyRequestListener.OnFailureRequest();
                         Utility.parseNetworkError(error, getApplicationContext(), R.string.media_network_fail, R.string.media_fail);
                     }
                 }
@@ -970,16 +968,16 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     /**
      * Set listener.
      *
-     * @param volleyMediaRequestListener
-     *   The volley media request listener.
+     * @param volleyRequestListener
+     *   The volley request listener.
      */
-    public void VolleyMediaRequestListener(VolleyMediaRequestListener volleyMediaRequestListener) {
-        this.volleyMediaRequestListener = volleyMediaRequestListener;
+    public void VolleyRequestListener(VolleyRequestListener volleyRequestListener) {
+        this.volleyRequestListener = volleyRequestListener;
     }
 
 
     @Override
-    public void OnSuccessRequest() {
+    public void OnSuccessRequest(String response) {
 
         // In case everything is fine, send base post.
         if (mediaUploadedCount == mediaCount && !uploadMediaError) {

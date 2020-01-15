@@ -1,13 +1,10 @@
 package com.indieweb.indigenous.micropub.source;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,24 +13,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
-import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.general.DebugActivity;
+import com.indieweb.indigenous.general.BaseFragment;
 import com.indieweb.indigenous.model.PostListItem;
-import com.indieweb.indigenous.model.User;
-import com.indieweb.indigenous.util.Accounts;
+import com.indieweb.indigenous.util.HTTPRequest;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
 
@@ -42,26 +28,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
-public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class PostListFragment extends BaseFragment {
 
-    private boolean showRefreshMessage = false;
     private PostListAdapter adapter;
     private List<PostListItem> PostListItems = new ArrayList<>();
-    private SwipeRefreshLayout refreshLayout;
     private ListView listView;
-    private User user;
     private Button loadMoreButton;
     private boolean loadMoreButtonAdded = false;
     private String[] olderItems;
-    private String debugResponse;
-    private LinearLayout noConnection;
-    private RelativeLayout layout;
 
     @Nullable
     @Override
@@ -74,24 +52,21 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
 
-        noConnection = view.findViewById(R.id.noConnection);
         layout = view.findViewById(R.id.source_post_list_root);
         listView = view.findViewById(R.id.source_post_list);
-        refreshLayout = view.findViewById(R.id.refreshSourcePostList);
-        refreshLayout.setOnRefreshListener(this);
-        refreshLayout.setRefreshing(true);
+        setRefreshedMessage(R.string.source_post_list_items_refreshed);
+        setOnRefreshListener();
+        setLayoutRefreshing(true);
         loadMoreButton = new Button(getContext());
         loadMoreButton.setText(R.string.load_more);
         loadMoreButton.setTextColor(getResources().getColor(R.color.textColor));
         loadMoreButton.setBackgroundColor(getResources().getColor(R.color.loadMoreButtonBackgroundColor));
-        user = new Accounts(getContext()).getCurrentUser();
         requireActivity().setTitle(R.string.source_post_list);
         startPostList();
-
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.source_list_menu, menu);
 
         boolean debugJson = Preferences.getPreference(getActivity(), "pref_key_debug_source_list", false);
@@ -109,8 +84,8 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.source_post_list_refresh:
-                showRefreshMessage = true;
-                refreshLayout.setRefreshing(true);
+                setShowRefreshedMessage(false);
+                setLayoutRefreshing(true);
                 startPostList();
                 return true;
             case R.id.source_post_list_filter:
@@ -118,10 +93,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
                 startActivityForResult(PostListFilter, 1);
                 return true;
             case R.id.source_list_debug:
-                Intent i = new Intent(getActivity(), DebugActivity.class);
-                Indigenous app = Indigenous.getInstance();
-                app.setDebug(debugResponse);
-                startActivity(i);
+                Utility.showDebugInfo(requireContext(), debugResponse);
                 return true;
         }
 
@@ -130,7 +102,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh() {
-        showRefreshMessage = true;
+        setShowRefreshedMessage(true);
         startPostList();
     }
 
@@ -140,7 +112,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
             if (resultCode == RESULT_OK) {
                 boolean refresh = data.getBooleanExtra("refresh", false);
                 if (refresh) {
-                    refreshLayout.setRefreshing(true);
+                    setLayoutRefreshing(true);
                     Snackbar.make(layout, getString(R.string.applying_filter), Snackbar.LENGTH_SHORT).show();
                     startPostList();
                 }
@@ -148,15 +120,21 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
         }
     }
 
+    @Override
+    public void OnSuccessRequest(String response) {
+        parseSourceResponse(response);
+    }
+
     /**
-     * Checks the state of the pull to refresh.
+     * Hide footer view.
      */
-    private void checkRefreshingStatus() {
-        if (refreshLayout.isRefreshing()) {
-            if (showRefreshMessage) {
-                Snackbar.make(layout, getString(R.string.source_post_list_items_refreshed), Snackbar.LENGTH_SHORT).show();
-            }
-            refreshLayout.setRefreshing(false);
+    private void hideFooterView(boolean resetLoadMoreButtonAdded) {
+        if (loadMoreButtonAdded) {
+            listView.removeFooterView(loadMoreButton);
+        }
+
+        if (resetLoadMoreButtonAdded) {
+            loadMoreButtonAdded = false;
         }
     }
 
@@ -164,7 +142,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
      * Start with post list.
      */
     private void startPostList() {
-        noConnection.setVisibility(View.GONE);
+        hideNoConnection();
         boolean updateEnabled = Preferences.getPreference(getContext(), "pref_key_source_update", false);
         boolean deleteEnabled = Preferences.getPreference(getContext(), "pref_key_source_delete", false);
         PostListItems = new ArrayList<>();
@@ -174,14 +152,15 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     /**
-     * Get items in channel.
+     * Get source items.
      */
     private void getSourcePostListItems(String pagerAfter) {
 
         if (!Utility.hasConnection(requireContext())) {
-            showRefreshMessage = false;
+            setShowRefreshedMessage(false);
             checkRefreshingStatus();
-            noConnection.setVisibility(View.VISIBLE);
+            showNoConnection();
+            hideFooterView(true);
             return;
         }
 
@@ -210,121 +189,98 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
         String limit = Preferences.getPreference(getContext(), "source_post_list_filter_post_limit", "10");
         MicropubEndpoint += "&limit=" + limit;
 
-        RequestQueue queue = Volley.newRequestQueue(requireContext());
-        StringRequest getRequest = new StringRequest(Request.Method.GET, MicropubEndpoint,
-                new Response.Listener<String>() {
-                    @SuppressLint("ClickableViewAccessibility")
-                    @Override
-                    public void onResponse(String response) {
+        HTTPRequest r = new HTTPRequest(this.volleyRequestListener, user, requireContext());
+        r.doGetRequest(MicropubEndpoint);
+    }
 
-                        try {
-                            JSONObject object;
-                            debugResponse = response;
-                            JSONObject micropubResponse = new JSONObject(response);
-                            JSONArray itemList = micropubResponse.getJSONArray("items");
+    /**
+     * Parse source response.
+     *
+     * @param data
+     *   The data to parse.
+     */
+    private void parseSourceResponse(String data) {
+        try {
+            JSONObject object;
+            debugResponse = data;
+            JSONObject root = new JSONObject(data);
+            JSONArray itemList = root.getJSONArray("items");
 
-                            // Paging. Can be empty.
-                            if (micropubResponse.has("paging")) {
-                                try {
-                                    if (micropubResponse.getJSONObject("paging").has("after")) {
-                                        olderItems[0] = micropubResponse.getJSONObject("paging").getString("after");
-                                    }
-                                }
-                                catch (JSONException ignored) {}
-                            }
-
-                            for (int i = 0; i < itemList.length(); i++) {
-                                object = itemList.getJSONObject(i).getJSONObject("properties");
-                                PostListItem item = new PostListItem();
-
-                                String url = "";
-                                String name = "";
-                                String content = "";
-                                String published = "";
-                                String postStatus = "";
-
-                                // url.
-                                if (object.has("url")) {
-                                    url = object.getJSONArray("url").get(0).toString();
-                                }
-                                item.setUrl(url);
-
-                                // post status.
-                                if (object.has("post-status")) {
-                                    postStatus = object.getJSONArray("post-status").get(0).toString();
-                                }
-                                item.setPostStatus(postStatus);
-
-                                // published.
-                                if (object.has("published")) {
-                                    published = object.getJSONArray("published").get(0).toString();
-                                }
-                                item.setPublished(published);
-
-                                // content.
-                                if (object.has("content")) {
-                                    content = object.getJSONArray("content").get(0).toString();
-                                }
-                                item.setContent(content);
-
-                                // name.
-                                if (object.has("name")) {
-                                    name = object.getJSONArray("name").get(0).toString();
-                                }
-                                item.setName(name);
-
-                                PostListItems.add(item);
-                            }
-
-                            adapter.notifyDataSetChanged();
-
-                            if (olderItems[0] != null && olderItems[0].length() > 0) {
-
-                                if (!loadMoreButtonAdded) {
-                                    loadMoreButtonAdded = true;
-                                    listView.addFooterView(loadMoreButton);
-                                }
-
-                                loadMoreButton.setOnTouchListener(loadMoreTouch);
-                            }
-                            else {
-                                if (loadMoreButtonAdded) {
-                                    listView.removeFooterView(loadMoreButton);
-                                }
-                            }
-
-                        }
-                        catch (JSONException e) {
-                            showRefreshMessage = false;
-                            Snackbar.make(layout, String.format(getString(R.string.post_list_parse_error), e.getMessage()), Snackbar.LENGTH_SHORT).show();
-                        }
-
-                        checkRefreshingStatus();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Context context = getContext();
-                        Utility.parseNetworkError(error, context, R.string.posts_network_fail, R.string.posts_fail);
-                        showRefreshMessage = false;
-                        checkRefreshingStatus();
+            // Paging. Can be empty.
+            if (root.has("paging")) {
+                try {
+                    if (root.getJSONObject("paging").has("after")) {
+                        olderItems[0] = root.getJSONObject("paging").getString("after");
                     }
                 }
-        )
-        {
-            @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Accept", "application/json");
-                headers.put("Authorization", "Bearer " + user.getAccessToken());
-                return headers;
+                catch (JSONException ignored) {}
             }
 
-        };
+            for (int i = 0; i < itemList.length(); i++) {
+                object = itemList.getJSONObject(i).getJSONObject("properties");
+                PostListItem item = new PostListItem();
 
-        getRequest.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        queue.add(getRequest);
+                String url = "";
+                String name = "";
+                String content = "";
+                String published = "";
+                String postStatus = "";
+
+                // url.
+                if (object.has("url")) {
+                    url = object.getJSONArray("url").get(0).toString();
+                }
+                item.setUrl(url);
+
+                // post status.
+                if (object.has("post-status")) {
+                    postStatus = object.getJSONArray("post-status").get(0).toString();
+                }
+                item.setPostStatus(postStatus);
+
+                // published.
+                if (object.has("published")) {
+                    published = object.getJSONArray("published").get(0).toString();
+                }
+                item.setPublished(published);
+
+                // content.
+                if (object.has("content")) {
+                    content = object.getJSONArray("content").get(0).toString();
+                }
+                item.setContent(content);
+
+                // name.
+                if (object.has("name")) {
+                    name = object.getJSONArray("name").get(0).toString();
+                }
+                item.setName(name);
+
+                PostListItems.add(item);
+            }
+
+            adapter.notifyDataSetChanged();
+
+            if (olderItems[0] != null && olderItems[0].length() > 0) {
+
+                if (!loadMoreButtonAdded) {
+                    loadMoreButtonAdded = true;
+                    listView.addFooterView(loadMoreButton);
+                }
+
+                loadMoreButton.setOnTouchListener(loadMoreTouch);
+            }
+            else {
+                hideFooterView(false);
+            }
+
+        }
+        catch (JSONException e) {
+            setShowRefreshedMessage(false);
+            Snackbar.make(layout, String.format(getString(R.string.post_list_parse_error), e.getMessage()), Snackbar.LENGTH_SHORT).show();
+        }
+
+        checkRefreshingStatus();
     }
 
     /**

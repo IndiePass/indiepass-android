@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.indieweb.indigenous.BuildConfig;
+import com.indieweb.indigenous.Indigenous;
+import com.indieweb.indigenous.general.DebugActivity;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -57,6 +59,21 @@ public class Utility {
         intent.setData(uri);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+    }
+
+    /**
+     * Show debug info activity.
+     *
+     * @param context
+     *   The current context.
+     * @param debug
+     *   The debug string.
+     */
+    public static void showDebugInfo(Context context, String debug) {
+        Intent i = new Intent(context, DebugActivity.class);
+        Indigenous app = Indigenous.getInstance();
+        app.setDebug(debug);
+        context.startActivity(i);
     }
 
     /**

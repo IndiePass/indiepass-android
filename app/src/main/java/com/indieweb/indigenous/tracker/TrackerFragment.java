@@ -11,18 +11,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
+import com.indieweb.indigenous.general.BaseFragment;
 import com.indieweb.indigenous.model.Track;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
@@ -31,17 +29,14 @@ import java.util.List;
 
 import static com.indieweb.indigenous.MainActivity.CREATE_TRACK;
 
-public class TrackerFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class TrackerFragment extends BaseFragment implements View.OnClickListener {
 
     private ListView listTracker;
     private TextView empty;
-    private boolean showRefreshMessage = false;
-    private SwipeRefreshLayout refreshLayout;
-    private RelativeLayout layout;
 
     @Override
     public void onRefresh() {
-        showRefreshMessage = true;
+        setShowRefreshedMessage(true);
         startTracks();
     }
 
@@ -60,12 +55,13 @@ public class TrackerFragment extends Fragment implements View.OnClickListener, S
         view.findViewById(R.id.actionButton).setOnClickListener(this);
         requireActivity().setTitle(R.string.tracker);
 
+        setRefreshedMessage(R.string.tracker_refreshed);
         listTracker = view.findViewById(R.id.tracker_list);
         empty = view.findViewById(R.id.noTracks);
-        refreshLayout = view.findViewById(R.id.refreshTracks);
-        refreshLayout.setOnRefreshListener(this);
         layout = view.findViewById(R.id.tracker_root);
-
+        setOnRefreshListener();
+        setLayoutRefreshing(true);
+        showRefreshLayout();
         startTracks();
     }
 
@@ -93,8 +89,8 @@ public class TrackerFragment extends Fragment implements View.OnClickListener, S
 
         switch (item.getItemId()) {
             case R.id.tracker_refresh:
-                showRefreshMessage = true;
-                refreshLayout.setRefreshing(true);
+                setShowRefreshedMessage(true);
+                setLayoutRefreshing(true);
                 startTracks();
                 return true;
 
@@ -134,27 +130,15 @@ public class TrackerFragment extends Fragment implements View.OnClickListener, S
         if (tracks.size() == 0) {
             listTracker.setVisibility(View.GONE);
             empty.setVisibility(View.VISIBLE);
-            refreshLayout.setVisibility(View.GONE);
+            hideRefreshLayout();
         }
         else {
-            refreshLayout.setVisibility(View.VISIBLE);
-            refreshLayout.setRefreshing(true);
+            showRefreshLayout();
+            setLayoutRefreshing(true);
             TrackerListAdapter adapter = new TrackerListAdapter(requireContext(), tracks, user, layout);
             listTracker.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             checkRefreshingStatus();
-        }
-    }
-
-    /**
-     * Checks the state of the pull to refresh.
-     */
-    private void checkRefreshingStatus() {
-        if (refreshLayout.isRefreshing()) {
-            if (showRefreshMessage) {
-                Snackbar.make(layout, getString(R.string.tracker_refreshed), Snackbar.LENGTH_SHORT).show();
-            }
-            refreshLayout.setRefreshing(false);
         }
     }
 
