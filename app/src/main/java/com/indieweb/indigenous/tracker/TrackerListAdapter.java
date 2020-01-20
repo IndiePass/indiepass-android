@@ -322,7 +322,8 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Utility.parseNetworkError(error, context, R.string.post_track_network_error, R.string.post_track_error);
+                        String message = Utility.parseNetworkError(error, context, R.string.request_failed, R.string.request_failed_unknown);
+                        Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
                     }
                 }
         )

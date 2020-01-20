@@ -10,10 +10,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
+import com.indieweb.indigenous.util.Utility;
 import com.indieweb.indigenous.util.VolleyRequestListener;
 
 abstract public class BaseFragment extends Fragment implements VolleyRequestListener, SwipeRefreshLayout.OnRefreshListener {
@@ -53,9 +55,11 @@ abstract public class BaseFragment extends Fragment implements VolleyRequestList
     public void OnSuccessRequest(String response) { }
 
     @Override
-    public void OnFailureRequest() {
+    public void OnFailureRequest(VolleyError error) {
         setShowRefreshedMessage(false);
         checkRefreshingStatus();
+        String message = Utility.parseNetworkError(error, requireContext(), R.string.request_failed, R.string.request_failed_unknown);
+        Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
     }
 
     /**

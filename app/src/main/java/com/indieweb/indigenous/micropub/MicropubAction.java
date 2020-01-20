@@ -69,7 +69,8 @@ public class MicropubAction {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Utility.parseNetworkError(error, context, R.string.delete_item_network_error, R.string.delete_item_error);
+                        String message = Utility.parseNetworkError(error, context, R.string.request_failed, R.string.request_failed_unknown);
+                        Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
                     }
                 }
         )

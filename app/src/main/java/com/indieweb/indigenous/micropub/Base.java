@@ -533,8 +533,10 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Utility.parseNetworkError(error, getApplicationContext(), R.string.post_network_fail, R.string.post_fail);
                         hideProgressBar();
+                        String message = Utility.parseNetworkError(error, getApplicationContext(), R.string.post_network_fail, R.string.post_fail);
+                        Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
+
                     }
                 }
         )
@@ -858,7 +860,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                         }
                         else {
                             uploadMediaError = true;
-                            volleyRequestListener.OnFailureRequest();
+                            volleyRequestListener.OnFailureRequest(null);
                             Snackbar.make(layout, getString(R.string.no_media_url_found), Snackbar.LENGTH_SHORT).show();
                         }
 
@@ -868,8 +870,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         uploadMediaError = true;
-                        volleyRequestListener.OnFailureRequest();
-                        Utility.parseNetworkError(error, getApplicationContext(), R.string.media_network_fail, R.string.media_fail);
+                        volleyRequestListener.OnFailureRequest(error);
                     }
                 }
         )
@@ -993,8 +994,10 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     }
 
     @Override
-    public void OnFailureRequest() {
+    public void OnFailureRequest(VolleyError error) {
         hideProgressBar();
+        String message = Utility.parseNetworkError(error, getApplicationContext(), R.string.media_network_fail, R.string.media_fail);
+        Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
     }
 
     /**

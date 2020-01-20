@@ -186,9 +186,10 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Utility.parseNetworkError(error, getApplicationContext(), R.string.channel_network_fail, R.string.channel_fail);
                         showRefreshMessage = false;
                         checkRefreshingStatus();
+                        String message = Utility.parseNetworkError(error, getApplicationContext(), R.string.request_failed, R.string.request_failed_unknown);
+                        Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
                     }
                 }
         )

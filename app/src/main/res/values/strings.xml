@@ -31,8 +31,8 @@
     <string name="no_micropub_media_endpoint">We did not find your media endpoint. In the accounts section, you can synchronize your account to add it.</string>
     <string name="install_map_app">Install a maps application to view this location</string>
     <string name="items_refreshed">Items refreshed</string>
-    <string name="network_fail">Getting data failed. Status code: %d; message: %s</string>
-    <string name="unknown_network_fail">Failed getting data, unknown error</string>
+    <string name="request_failed">Request failed. Status code: %d; message: %s</string>
+    <string name="request_failed_unknown">Request failed, unknown error</string>
 
     <!-- Authentication and accounts -->
     <string name="account_type">IndieAuth</string>
@@ -131,7 +131,6 @@
     <string name="channel_updated">Channel updated</string>
     <string name="channel_created">Channel created, reload the list</string>
     <string name="post_moved">Post moved to %s</string>
-    <string name="post_removed">Post deleted</string>
     <string name="marked_as_read">Marked all as read</string>
     <string name="select_style">Select style</string>
     <string name="no_item_found">No item found</string>
@@ -155,12 +154,6 @@
     <string name="feed_parse_error">Error: %s</string>
     <string name="feed_search_error">Something went wrong, please try again.</string>
     <string name="feed_subscribe">Subscribe to feed \'%s\' ?</string>
-    <string name="channel_network_fail">Getting channels failed. Status code: %d; message: %s</string>
-    <string name="channel_fail">Failed getting channels, unknown error</string>
-    <string name="timeline_network_fail">Getting timeline failed. Status code: %d; message: %s</string>
-    <string name="timeline_fail">Failed getting timeline, unknown error</string>
-    <string name="posts_network_fail">Getting posts failed. Status code: %d; message: %s</string>
-    <string name="posts_fail">Failed getting posts, unknown error</string>
 
     <!-- Micropub -->
     <string name="tags">Tags - separate with comma</string>
@@ -186,7 +179,6 @@
     <string name="add_venue">Venue</string>
     <string name="add_geocache">Geocache</string>
     <string name="discard_post">Discard</string>
-    <string name="delete_image">Remove image</string>
     <string name="delete_video_confirm">Remove video?</string>
     <string name="delete_audio_confirm">Remove audio?</string>
     <string name="delete_image_confirm">Remove image?</string>
@@ -216,8 +208,6 @@
     <string name="micropub_config_updated">Micropub configuration updated</string>
     <string name="micropub_config_network_error">Error getting configuration. Status code: %d; message: %s</string>
     <string name="micropub_config_error">Error getting configuration</string>
-    <string name="delete_item_network_error">Error deleting item. Status code: %d; message: %s</string>
-    <string name="delete_item_error">Error deleting item</string>
     <string name="delete_item_success">Delete success</string>
     <string name="sending_please_wait">Sending, please wait</string>
     <string name="select_picture">Select picture</string>
@@ -247,10 +237,7 @@
     <!-- Contacts -->
     <string name="contact">Contact</string>
     <string name="contact_list_title">Contacts</string>
-    <string name="no_contacts">No contacts found</string>
     <string name="contacts_refreshed">Contacts refreshed</string>
-    <string name="contact_network_fail">Getting contacts failed. Status code: %d; message: %s</string>
-    <string name="contact_fail">Failed getting contacts, unknown error</string>
     <string name="contact_delete_confirm">Are you sure you want to delete this contact ?</string>
     <string name="contact_list_refresh">Refresh contacts</string>
     <string name="save_author">Save author</string>

@@ -8,7 +8,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 
 import java.util.HashMap;
@@ -43,8 +42,7 @@ public class HTTPRequest {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        volleyRequestListener.OnFailureRequest();
-                        Utility.parseNetworkError(error, context, R.string.network_fail, R.string.unknown_network_fail);
+                        volleyRequestListener.OnFailureRequest(error);
                     }
                 }
         )
@@ -84,9 +82,8 @@ public class HTTPRequest {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         if (volleyRequestListener != null) {
-                            volleyRequestListener.OnFailureRequest();
+                            volleyRequestListener.OnFailureRequest(error);
                         }
-                        Utility.parseNetworkError(error, context, R.string.network_fail, R.string.unknown_network_fail);
                     }
                 }
         )

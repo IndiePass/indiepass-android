@@ -738,9 +738,10 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Utility.parseNetworkError(error, getApplicationContext(), R.string.timeline_network_fail, R.string.timeline_fail);
                         showRefreshMessage = false;
                         checkRefreshingStatus();
+                        String message = Utility.parseNetworkError(error, getApplicationContext(), R.string.request_failed, R.string.request_failed_unknown);
+                        Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
                     }
                 }
         )
