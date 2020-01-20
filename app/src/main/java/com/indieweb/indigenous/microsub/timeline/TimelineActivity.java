@@ -248,10 +248,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 return true;
 
             case R.id.timeline_debug:
-                Intent i = new Intent(this, DebugActivity.class);
-                Indigenous app = Indigenous.getInstance();
-                app.setDebug(debugResponse);
-                startActivity(i);
+                Utility.showDebugInfo(getApplicationContext(), debugResponse);
                 return true;
 
             case R.id.timeline_mark_all_read:
