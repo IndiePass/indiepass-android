@@ -235,7 +235,8 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
         public void onClick(View v) {
             Intent i = new Intent(context, UpdateActivity.class);
             PostListItem item = items.get(this.position);
-            i.putExtra("incomingText", item.getUrl());
+            i.putExtra("url", item.getUrl());
+            i.putExtra("status", item.getPostStatus());
             ((Activity) context).startActivityForResult(i, UPDATE_POST);
         }
     }

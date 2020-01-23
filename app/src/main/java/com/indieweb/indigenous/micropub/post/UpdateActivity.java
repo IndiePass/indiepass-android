@@ -11,6 +11,7 @@ import android.webkit.URLUtil;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -34,7 +35,7 @@ import java.util.Map;
 
 public class UpdateActivity extends AppCompatActivity implements SendPostInterface {
 
-    private EditText url;
+    private TextView url;
     private Switch postStatus;
     private EditText title;
     private EditText body;
@@ -60,14 +61,16 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String incomingText = extras.getString("incomingText");
-            if (incomingText != null && incomingText.length() > 0) {
-                if (URLUtil.isValidUrl(incomingText)) {
-                    url.setText(incomingText);
+            String urlToUpdate = extras.getString("url");
+            if (urlToUpdate != null && urlToUpdate.length() > 0) {
+                if (URLUtil.isValidUrl(urlToUpdate)) {
+                    url.setText(urlToUpdate);
                 }
-                else {
-                    body.setText(incomingText);
-                }
+            }
+
+            String status = extras.getString("status");
+            if (status != null && status.equals("draft")) {
+                postStatus.setChecked(false);
             }
         }
     }

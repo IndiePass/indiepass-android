@@ -229,6 +229,8 @@
     <string name="post_types_all">All post types</string>
     <string name="post_types_parse_error">Error parsing post types: %s</string>
     <string name="post_list_parse_error">Error: %s</string>
+    <string name="url_update_info_label">Url to update:</string>
+    <string name="update_info">Elements left empty will not be send to the server</string>
     <string name="channel_list_parse_error">Error: %s</string>
     <string name="bitmap_error">Error generating bitmap from image</string>
     <string name="media_network_fail">Uploading media failed. Status code: %d; message: %s</string>
