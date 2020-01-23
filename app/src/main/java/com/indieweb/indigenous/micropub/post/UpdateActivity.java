@@ -11,7 +11,6 @@ import android.webkit.URLUtil;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -118,7 +117,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         String message = Utility.parseNetworkError(error, getApplicationContext(), R.string.post_update_network_fail, R.string.post_update_fail);
-                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
                         hideProgressBar();
                     }
                 }

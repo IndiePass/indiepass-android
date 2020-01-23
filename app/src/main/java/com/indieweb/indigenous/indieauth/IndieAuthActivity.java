@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -457,7 +456,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     String message = Utility.parseNetworkError(error, getApplicationContext(), R.string.authentication_fail, R.string.network_error);
-                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                    Snackbar.make(layout, message, Snackbar.LENGTH_LONG).show();
                     showForm();
                 }
             }

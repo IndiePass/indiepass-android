@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -37,6 +37,7 @@ public class ContactActivity extends BaseCreate {
     boolean update = false;
     protected Contact contact;
     private MenuItem sendItem;
+    RelativeLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class ContactActivity extends BaseCreate {
         contactNickname = findViewById(R.id.contactNickname);
         contactUrl = findViewById(R.id.contactUrl);
         contactPhoto = findViewById(R.id.contactPhoto);
+        layout = findViewById(R.id.contact_root);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -145,7 +147,7 @@ public class ContactActivity extends BaseCreate {
                         }
                         hideProgressBar();
                         String message = Utility.parseNetworkError(error, getApplicationContext(), R.string.post_update_network_fail, R.string.post_update_fail);
-                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
                     }
                 }
         )

@@ -252,7 +252,7 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
                 context.startActivity(intent);
             }
             else {
-                Toast.makeText(context, context.getString(R.string.install_map_app), Toast.LENGTH_SHORT).show();
+                Snackbar.make(layout, context.getString(R.string.install_map_app), Snackbar.LENGTH_SHORT).show();
             }
 
         }
