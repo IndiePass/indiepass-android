@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
+
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -274,9 +276,14 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
         new IndieAuthAction(context, user).revoke();
         if (user.getMe().equals(currentUser.getMe())) {
             Snackbar.make(layout, String.format(context.getString(R.string.account_removed), user.getMe()), Snackbar.LENGTH_SHORT).show();
-            Intent main = new Intent(context, LaunchActivity.class);
-            context.startActivity(main);
-            activity.finish();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent main = new Intent(context, LaunchActivity.class);
+                    context.startActivity(main);
+                    activity.finish();
+                }
+            }, 700);
         }
         else {
             Snackbar.make(layout, String.format(context.getString(R.string.account_removed), user.getMe()), Snackbar.LENGTH_SHORT).show();

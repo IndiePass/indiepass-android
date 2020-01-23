@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
@@ -442,9 +443,14 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                         Snackbar.make(layout, getString(R.string.authentication_success), Snackbar.LENGTH_SHORT).show();
 
                         // Start launch activity which will determine where it will go.
-                        Intent launch = new Intent(getBaseContext(), LaunchActivity.class);
-                        startActivity(launch);
-                        finish();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent launch = new Intent(getBaseContext(), LaunchActivity.class);
+                                startActivity(launch);
+                                finish();
+                            }
+                        }, 700);
                     }
                     else {
                         Snackbar.make(layout, String.format(getString(R.string.authentication_fail_token), errorMessage), Snackbar.LENGTH_LONG).show();

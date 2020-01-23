@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import androidx.appcompat.app.AlertDialog;
 
+import android.os.Handler;
 import android.widget.RelativeLayout;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -92,9 +93,14 @@ public class Accounts {
                 SharedPreferences.Editor editor = context.getSharedPreferences("indigenous", MODE_PRIVATE).edit();
                 editor.putString("account", user.getAccount().name);
                 editor.apply();
-                Intent Main = new Intent(context, LaunchActivity.class);
-                context.startActivity(Main);
-                activity.finish();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent Main = new Intent(context, LaunchActivity.class);
+                        context.startActivity(Main);
+                        activity.finish();
+                    }
+                }, 700);
 
             }
         });
@@ -135,9 +141,14 @@ public class Accounts {
                 SharedPreferences.Editor editor = context.getSharedPreferences("indigenous", MODE_PRIVATE).edit();
                 editor.putString("account", accounts.get(index));
                 editor.apply();
-                Intent Main = new Intent(context, LaunchActivity.class);
-                context.startActivity(Main);
-                activity.finish();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent Main = new Intent(context, LaunchActivity.class);
+                        context.startActivity(Main);
+                        activity.finish();
+                    }
+                }, 700);
             }
         });
         builder.show();
