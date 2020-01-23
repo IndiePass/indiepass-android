@@ -3,7 +3,6 @@ package com.indieweb.indigenous.micropub.post;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;

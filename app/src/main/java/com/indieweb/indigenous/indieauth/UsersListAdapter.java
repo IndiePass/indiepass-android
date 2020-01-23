@@ -21,7 +21,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -174,7 +173,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
         @Override
         public void onClick(View v) {
             final User user = items.get(this.position);
-            new Accounts(context).switchAccount(activity, user);
+            new Accounts(context).switchAccount(activity, user, layout);
         }
     }
 
@@ -191,8 +190,8 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
         public void onClick(View v) {
             final User user = items.get(this.position);
             Snackbar.make(layout, String.format(context.getString(R.string.account_sync), user.getMe()), Snackbar.LENGTH_SHORT).show();
-            new Endpoints(context, user).refresh();
-            new MicropubAction(context, user, null).refreshConfig();
+            new Endpoints(context, user, layout).refresh();
+            new MicropubAction(context, user, layout).refreshConfig();
         }
     }
 
@@ -274,7 +273,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
     private void handleSuccessRemoval(User user, int position) {
         new IndieAuthAction(context, user).revoke();
         if (user.getMe().equals(currentUser.getMe())) {
-            Toast.makeText(context, String.format(context.getString(R.string.account_removed), user.getMe()), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, String.format(context.getString(R.string.account_removed), user.getMe()), Snackbar.LENGTH_SHORT).show();
             Intent main = new Intent(context, LaunchActivity.class);
             context.startActivity(main);
             activity.finish();

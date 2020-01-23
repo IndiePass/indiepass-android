@@ -8,8 +8,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import androidx.appcompat.app.AlertDialog;
-import android.widget.Toast;
 
+import android.widget.RelativeLayout;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.LaunchActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.indieauth.IndieAuthActivity;
@@ -76,13 +78,17 @@ public class Accounts {
      *
      * @param activity
      *   The current activity
+     * @param user
+     *   The user to switch to.
+     * @param layout
+     *   The current layout.
      */
-    public void switchAccount(final Activity activity, final User user) {
+    public void switchAccount(final Activity activity, final User user, final RelativeLayout layout) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(String.format(context.getString(R.string.account_switch), user.getMe()));
         builder.setPositiveButton(context.getString(R.string.switch_account),new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int id) {
-                Toast.makeText(context, String.format(context.getString(R.string.account_selected), user.getMe()), Toast.LENGTH_SHORT).show();
+                Snackbar.make(layout, String.format(context.getString(R.string.account_selected), user.getMe()), Snackbar.LENGTH_SHORT).show();
                 SharedPreferences.Editor editor = context.getSharedPreferences("indigenous", MODE_PRIVATE).edit();
                 editor.putString("account", user.getAccount().name);
                 editor.apply();
@@ -106,8 +112,10 @@ public class Accounts {
      *
      * @param activity
      *   The current activity
+     * @param layout
+     *   The current layout
      */
-    public void selectAccount(final Activity activity) {
+    public void selectAccount(final Activity activity, final RelativeLayout layout) {
         final List<String> accounts = new ArrayList<>();
 
         final Account[] AllAccounts = this.getAllAccounts();
@@ -123,7 +131,7 @@ public class Accounts {
         builder.setItems(accountItems, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int index) {
-                Toast.makeText(context, String.format(context.getString(R.string.account_selected), accounts.get(index)), Toast.LENGTH_SHORT).show();
+                Snackbar.make(layout, String.format(context.getString(R.string.account_selected), accounts.get(index)), Snackbar.LENGTH_SHORT).show();
                 SharedPreferences.Editor editor = context.getSharedPreferences("indigenous", MODE_PRIVATE).edit();
                 editor.putString("account", accounts.get(index));
                 editor.apply();

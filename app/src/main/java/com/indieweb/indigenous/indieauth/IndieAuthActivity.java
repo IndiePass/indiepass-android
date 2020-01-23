@@ -15,7 +15,7 @@ import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ScrollView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -75,7 +75,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
     String authorAvatar;
     String authorName;
     String codeVerifier = "";
-    ScrollView layout;
+    RelativeLayout layout;
 
     String ClientId = "https://indigenous.realize.be";
     String RedirectUri = "https://indigenous.realize.be/indigenous-callback.php";
@@ -158,7 +158,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
      */
     public final View.OnClickListener selectAccountListener = new View.OnClickListener() {
         public void onClick(View v) {
-            new Accounts(IndieAuthActivity.this).selectAccount(IndieAuthActivity.this);
+            new Accounts(IndieAuthActivity.this).selectAccount(IndieAuthActivity.this, layout);
         }
     };
 
@@ -437,7 +437,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                         user.setMicropubEndpoint(micropubEndpoint);
                         user.setAccessToken(accessToken);
                         user.setAccount(account);
-                        new MicropubAction(getApplicationContext(), user, null).refreshConfig();
+                        new MicropubAction(getApplicationContext(), user, layout).refreshConfig();
 
                         Snackbar.make(layout, getString(R.string.authentication_success), Snackbar.LENGTH_SHORT).show();
 

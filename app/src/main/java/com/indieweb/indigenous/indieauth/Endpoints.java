@@ -4,7 +4,7 @@ import android.accounts.AccountManager;
 import android.content.Context;
 import android.os.StrictMode;
 
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -12,6 +12,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.HCard;
 import com.indieweb.indigenous.model.User;
@@ -37,12 +38,17 @@ public class Endpoints {
     private Context context;
     private Document doc;
     private String url;
+    private RelativeLayout layout;
 
-    public Endpoints(Context context, User user) {
+    public Endpoints(Context context, User user, RelativeLayout layout) {
         this.context = context;
         this.user = user;
+        this.layout = layout;
     }
 
+    /**
+     * Refresh configuration.
+     */
     public void refresh() {
 
         String micropubEndpoint = "";
@@ -112,7 +118,7 @@ public class Endpoints {
                 am.setUserData(user.getAccount(), "micropub_endpoint", micropubEndpoint);
                 am.setUserData(user.getAccount(), "microsub_endpoint", microsubEndpoint);
                 am.setUserData(user.getAccount(), "micropub_media_endpoint", micropubMediaEndpoint);
-                Toast.makeText(context, R.string.account_sync_done, Toast.LENGTH_SHORT).show();
+                Snackbar.make(layout, R.string.account_sync_done, Snackbar.LENGTH_SHORT).show();
             }
 
             // Get token endpoint call to update avatar or name.
@@ -120,10 +126,10 @@ public class Endpoints {
 
         }
         catch (IllegalArgumentException e) {
-            Toast.makeText(context, String.format(context.getString(R.string.account_sync_error), e.getMessage()), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, String.format(context.getString(R.string.account_sync_error), e.getMessage()), Snackbar.LENGTH_SHORT).show();
         }
         catch (IOException e) {
-            Toast.makeText(context, String.format(context.getString(R.string.domain_connect_error), e.getMessage()), Toast.LENGTH_SHORT).show();
+            Snackbar.make(layout, String.format(context.getString(R.string.domain_connect_error), e.getMessage()), Snackbar.LENGTH_SHORT).show();
         }
     }
 

@@ -249,7 +249,6 @@ public class PushNotificationActivity extends AppCompatActivity {
         protected void onPostExecute(Exception exc) {
             // Failed?
             if (exc != null) {
-                // Show error as toast message.
                 Snackbar.make(layout, exc.toString(), Snackbar.LENGTH_LONG).show();
             }
         }

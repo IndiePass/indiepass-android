@@ -1,68 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/indieauth_root"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="10dp"
-    tools:context="com.indieweb.indigenous.LaunchActivity">
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        tools:ignore="ScrollViewSize">
+        android:padding="10dp"
+        tools:ignore="UselessParent">
 
-        <TextView
-            android:id="@+id/info"
-            android:text="@string/sign_in_info"
-            android:layout_marginTop="25dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:id="@+id/domain"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_width="fill_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/url_hint"
-            android:inputType="textUri" />
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <Button
-            android:background="@color/buttonWhite"
-            android:textColor="@color/colorPrimary"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_marginTop="10dp"
-            android:id="@+id/signInButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sign_in_with_domain" />
+            <TextView
+                android:id="@+id/info"
+                android:text="@string/sign_in_info"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-        <TextView
-            android:visibility="gone"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="50dp"
-            android:id="@+id/selectAccountButtonInfo"
-            android:text="@string/select_account_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/domain"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/url_hint"
+                android:inputType="textUri" />
 
-        <Button
-            android:visibility="gone"
-            android:background="@color/buttonWhite"
-            android:textColor="@color/colorPrimary"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_marginTop="10dp"
-            android:id="@+id/selectAccountButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/select_account" />
+            <Button
+                android:background="@color/buttonWhite"
+                android:textColor="@color/colorPrimary"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_marginTop="10dp"
+                android:id="@+id/signInButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sign_in_with_domain" />
 
-    </LinearLayout>
+            <TextView
+                android:visibility="gone"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="50dp"
+                android:id="@+id/selectAccountButtonInfo"
+                android:text="@string/select_account_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-</ScrollView>
+            <Button
+                android:visibility="gone"
+                android:background="@color/buttonWhite"
+                android:textColor="@color/colorPrimary"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_marginTop="10dp"
+                android:id="@+id/selectAccountButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/select_account" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

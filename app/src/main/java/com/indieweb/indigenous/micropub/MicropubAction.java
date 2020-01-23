@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.widget.ArrayAdapter;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -412,9 +411,7 @@ public class MicropubAction {
                                 am.setUserData(user.getAccount(), "syndication_targets", itemList.toString());
                             }
                         }
-                        catch (JSONException e) {
-                            Toast.makeText(context, String.format(context.getString(R.string.syndication_targets_error), e.getMessage()), Toast.LENGTH_LONG).show();
-                        }
+                        catch (JSONException ignored) { }
 
                         // Media endpoint.
                         try {
@@ -427,9 +424,7 @@ public class MicropubAction {
                                 }
                             }
                         }
-                        catch (JSONException e) {
-                            Toast.makeText(context, String.format(context.getString(R.string.media_endpoint_error), e.getMessage()), Toast.LENGTH_LONG).show();
-                        }
+                        catch (JSONException ignored) { }
 
                         // Post types.
                         try {
@@ -442,18 +437,14 @@ public class MicropubAction {
                                 }
                             }
                         }
-                        catch (JSONException e) {
-                            Toast.makeText(context, String.format(context.getString(R.string.post_types_error), e.getMessage()), Toast.LENGTH_LONG).show();
-                        }
-
-                        Toast.makeText(context, R.string.micropub_config_updated, Toast.LENGTH_SHORT).show();
+                        catch (JSONException ignored) { }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         String message = Utility.parseNetworkError(error, context, R.string.micropub_config_network_error, R.string.micropub_config_error);
-                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
                     }
                 }
         )
