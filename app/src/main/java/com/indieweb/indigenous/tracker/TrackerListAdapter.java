@@ -26,7 +26,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
-import com.indieweb.indigenous.model.Point;
+import com.indieweb.indigenous.model.TrackerPoint;
 import com.indieweb.indigenous.model.Track;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Preferences;
@@ -84,11 +84,12 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
         TextView meta;
         Button post;
         Button edit;
-        //Button map;
+        Button map;
         Button delete;
         LinearLayout row;
     }
 
+    @SuppressLint("InflateParams")
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
 
@@ -100,7 +101,7 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
             holder.meta = convertView.findViewById(R.id.track_list_meta);
             holder.edit = convertView.findViewById(R.id.trackEdit);
             holder.post = convertView.findViewById(R.id.trackPost);
-            //holder.map = convertView.findViewById(R.id.trackMap);
+            holder.map = convertView.findViewById(R.id.trackMap);
             holder.delete = convertView.findViewById(R.id.trackDelete);
             convertView.setTag(holder);
         }
@@ -129,6 +130,7 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
             SimpleDateFormat formatOut = new SimpleDateFormat("dd MM yyyy HH:mm");
             try {
                 Date result = formatIn.parse(track.getStartTime());
+                assert result != null;
                 started = formatOut.format(result);
             }
             catch (ParseException ignored) {
@@ -139,6 +141,7 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
             if (!track.getStartTime().equals(track.getEndTime())) {
                 try {
                     Date result = formatIn.parse(track.getEndTime());
+                    assert result != null;
                     ended = formatOut.format(result);
                 }
                 catch (ParseException e) {
@@ -152,7 +155,7 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
 
             holder.post.setOnClickListener(new OnPostClickListener(position));
             holder.edit.setOnClickListener(new OnEditClickListener(position));
-            //holder.map.setOnClickListener(new OnMapClickListener(position));
+            holder.map.setOnClickListener(new OnMapClickListener(position));
             holder.delete.setOnClickListener(new OnDeleteClickListener(position));
         }
 
@@ -207,7 +210,7 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
     }
 
     // Map listener.
-    /*class OnMapClickListener implements OnClickListener {
+    class OnMapClickListener implements OnClickListener {
 
         int position;
 
@@ -218,45 +221,16 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
         @Override
         public void onClick(View v) {
             Track track = tracks.get(this.position);
-            Map<Integer, Point> points = db.getPoints(track.getId());
-            Collection<Point> values = points.values();
-            String geo = "";
-            int i = 0;
-            for (Point p: values) {
-                String[] coordinates = p.getPoint().replace("geo:", "").split(",");
-                if (i > 0) {
-                    geo += ",";
-                }
-                geo += "[" + coordinates[0] + "," + coordinates[1] + "]";
-                i++;
-            }
-
-            // Google maps version - bit annoying as it opens navigation.
-            //String[] coordinates = p.getPoint().replace("geo:", "").split(",");
-            //geo += "/" + coordinates[0] + "," + coordinates[1]; // (i > 0)
-            //geo = coordinates[0] + "," + coordinates[1];
-            //Uri geoLocation = Uri.parse("https://www.google.com/maps/dir/" + geo);
-
-            // Atlas from Aaron - doesn't seem to have Belgium maps
-            //String[] coordinates = p.getPoint().replace("geo:", "").split(",");
-            //geo += ","; // (i > )
-            //geo += "[" + coordinates[0] + "," + coordinates[1] + "]";
-            //String mapUrl = "http://atlas.p3k.io/map/img?path[]=" + geo + ";icon:small-blue-cutout&basemap=gray&width=460&height=460&zoom=11";
-
-            String mapUrl = "http://atlas.p3k.io/map/img?path[]=" + geo + ";icon:small-blue-cutout&basemap=gray&width=460&height=460";
-            Uri geoLocation = Uri.parse(mapUrl);
-
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(geoLocation);
-            if (intent.resolveActivity(context.getPackageManager()) != null) {
-                context.startActivity(intent);
+            if (track.getPointCount() > 0) {
+                Intent i = new Intent(context, TrackerMapActivity.class);
+                i.putExtra("trackId", track.getId());
+                context.startActivity(i);
             }
             else {
-                Snackbar.make(layout, context.getString(R.string.install_map_app), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(layout, context.getString(R.string.track_no_points), Snackbar.LENGTH_SHORT).show();
             }
-
         }
-    }*/
+    }
 
     // Delete listener.
     class OnDeleteClickListener implements OnClickListener {
@@ -297,8 +271,8 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
      *   The track to send.
      */
     private void sendTrack(final Track track) {
-        Map<Integer, Point> points = db.getPoints(track.getId());
-        final Collection<Point> values = points.values();
+        Map<Integer, TrackerPoint> points = db.getPoints(track.getId());
+        final Collection<TrackerPoint> values = points.values();
 
         if (!Utility.hasConnection(context)) {
             Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
@@ -342,7 +316,7 @@ public class TrackerListAdapter extends BaseAdapter implements OnClickListener {
                 params.put("h", "entry");
 
                 int i = 0;
-                for (Point p : values) {
+                for (TrackerPoint p : values) {
                     params.put("route_multiple_["+ i +"]", p.getPoint());
                     i++;
                 }

@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.indieweb.indigenous.model.Draft;
-import com.indieweb.indigenous.model.Point;
+import com.indieweb.indigenous.model.TrackerPoint;
 import com.indieweb.indigenous.model.TimelineStyle;
 import com.indieweb.indigenous.model.Track;
 
@@ -34,12 +34,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(Draft.CREATE_TABLE);
         db.execSQL(TimelineStyle.CREATE_TABLE);
         db.execSQL(Track.CREATE_TABLE);
-        db.execSQL(Point.CREATE_TABLE);
+        db.execSQL(TrackerPoint.CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(Point.CREATE_TABLE);
+        db.execSQL(TrackerPoint.CREATE_TABLE);
         db.execSQL(Track.CREATE_TABLE);
         db.execSQL(TimelineStyle.CREATE_TABLE);
         db.execSQL("drop table " + Draft.TABLE_NAME);
@@ -124,14 +124,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param point
      *   The point to save.
      */
-    public void savePoint(Point point) {
+    public void savePoint(TrackerPoint point) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(Point.COLUMN_POINT, point.getPoint());
-        values.put(Point.COLUMN_TRACK_ID, point.getTrackId());
+        values.put(TrackerPoint.COLUMN_POINT, point.getPoint());
+        values.put(TrackerPoint.COLUMN_TRACK_ID, point.getTrackId());
 
-        db.insert(Point.TABLE_NAME, null, values);
+        db.insert(TrackerPoint.TABLE_NAME, null, values);
         db.close();
     }
 
@@ -143,13 +143,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      *
      * @return points
      */
-    public Map<Integer, Point> getPoints(int trackId) {
+    public Map<Integer, TrackerPoint> getPoints(int trackId) {
         @SuppressLint("UseSparseArrays")
-        Map<Integer, Point> points = new LinkedHashMap<>();
+        Map<Integer, TrackerPoint> points = new LinkedHashMap<>();
 
         // Select query
-        String selectQuery = "SELECT * FROM " + Point.TABLE_NAME + " WHERE " + Point.COLUMN_TRACK_ID + "=" + trackId + " " +
-                "ORDER BY " + Point.COLUMN_ID + " ASC";
+        String selectQuery = "SELECT * FROM " + TrackerPoint.TABLE_NAME + " WHERE " + TrackerPoint.COLUMN_TRACK_ID + "=" + trackId + " " +
+                "ORDER BY " + TrackerPoint.COLUMN_ID + " ASC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -157,9 +157,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                Point point = new Point();
-                point.setId(cursor.getInt(cursor.getColumnIndex(Point.COLUMN_ID)));
-                point.setPoint(cursor.getString(cursor.getColumnIndex(Point.COLUMN_POINT)));
+                TrackerPoint point = new TrackerPoint();
+                point.setId(cursor.getInt(cursor.getColumnIndex(TrackerPoint.COLUMN_ID)));
+                point.setPoint(cursor.getString(cursor.getColumnIndex(TrackerPoint.COLUMN_POINT)));
                 points.put(point.getId(), point);
             } while (cursor.moveToNext());
         }
@@ -272,7 +272,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteAllTrackerData() {
         SQLiteDatabase db = this.getReadableDatabase();
         db.execSQL("delete from " + Track.TABLE_NAME);
-        db.execSQL("delete from " + Point.TABLE_NAME);
+        db.execSQL("delete from " + TrackerPoint.TABLE_NAME);
     }
 
     /**
@@ -305,7 +305,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteTrack(Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(Track.TABLE_NAME, Track.COLUMN_ID + "=" + id, null);
-        db.delete(Point.TABLE_NAME, Point.COLUMN_TRACK_ID + "=" + id, null);
+        db.delete(TrackerPoint.TABLE_NAME, TrackerPoint.COLUMN_TRACK_ID + "=" + id, null);
         db.close();
     }
 
@@ -323,7 +323,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor dataCount;
         if (db != null) {
-            dataCount = db.rawQuery("select " + Point.COLUMN_ID + " from " + Point.TABLE_NAME + " where " + Point.COLUMN_TRACK_ID + "=" + trackId, null);
+            dataCount = db.rawQuery("select " + TrackerPoint.COLUMN_ID + " from " + TrackerPoint.TABLE_NAME + " where " + TrackerPoint.COLUMN_TRACK_ID + "=" + trackId, null);
             count = dataCount.getCount();
             //Log.d("indigenous_debug", "Points for " + trackId + ": " + count);
             //dataCount = db.rawQuery("select " + Point.COLUMN_ID + " from " + Point.TABLE_NAME, null);

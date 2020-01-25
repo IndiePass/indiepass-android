@@ -1,6 +1,6 @@
 package com.indieweb.indigenous.model;
 
-public class Point {
+public class TrackerPoint {
 
     public static final String TABLE_NAME = "points";
     public static final String COLUMN_ID = "id";

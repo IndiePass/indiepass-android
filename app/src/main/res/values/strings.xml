@@ -29,7 +29,6 @@
     <string name="no_microsub_endpoint">We did not find your reader endpoint. In the accounts section, you can synchronize your account to add it. You can also just use the app for posting only.</string>
     <string name="no_micropub_endpoint">We did not find your micropub endpoint. In the accounts section, you can synchronize your account to add it.</string>
     <string name="no_micropub_media_endpoint">We did not find your media endpoint. In the accounts section, you can synchronize your account to add it.</string>
-    <string name="install_map_app">Install a maps application to view this location</string>
     <string name="items_refreshed">Items refreshed</string>
     <string name="request_failed">Request failed. Status code: %d; message: %s</string>
     <string name="request_failed_unknown">Request failed, unknown error</string>
@@ -105,7 +104,7 @@
     <string name="title_activity_share">Share</string>
     <string name="audio">Listen to audio</string>
     <string name="video">Watch video</string>
-    <string name="map">View map</string>
+    <string name="map">Map view</string>
     <string name="audio_not_loaded">Audio could not be loaded</string>
     <string name="channel_not_found">Channel not found</string>
     <string name="load_more">Load More</string>
@@ -236,6 +235,14 @@
     <string name="media_network_fail">Uploading media failed. Status code: %d; message: %s</string>
     <string name="media_fail">Failed uploading media, unknown error</string>
 
+    <!-- map -->
+    <string name="menu_map_style_streets">Streets</string>
+    <string name="menu_map_style_dark">Dark</string>
+    <string name="menu_map_style_light">Light</string>
+    <string name="menu_map_style_outdoors">Outdoors</string>
+    <string name="menu_map_style_satellite">Satellite</string>
+    <string name="menu_map_style_satellite_streets">Satellite streets</string>
+
     <!-- Contacts -->
     <string name="contact">Contact</string>
     <string name="contact_list_title">Contacts</string>
@@ -252,6 +259,8 @@
     <string name="contacts_offline">Showing contacts stored offline</string>
 
     <!-- Tracker -->
+    <string name="track_not_found">Track not found</string>
+    <string name="tracker_map">Tracker map</string>
     <string name="tracker">Tracker</string>
     <string name="no_tracks">No tracks were found for this account.</string>
     <string name="track_delete_confirm">Are you sure you want to delete this track ?</string>
@@ -288,6 +297,7 @@
     <string name="interval_negative">Interval must be a positive number</string>
     <string name="tracker_refresh">Refresh tracks</string>
     <string name="tracker_refreshed">Tracks refreshed</string>
+    <string name="track_no_points">No points for this track</string>
 
     <!-- Source lists -->
     <string name="source_post_list_refresh">Refresh posts</string>
@@ -441,6 +451,7 @@
     <string name="end_date">End date</string>
     <string name="start_date">Start date</string>
     <string name="add_location">Add location</string>
+    <string name="coordinates_not_found">Coordinates not found</string>
     <string name="getting_coordinates">Getting coordinates …</string>
     <string name="location_visibility_select">Location visibility</string>
     <string name="location">Location</string>

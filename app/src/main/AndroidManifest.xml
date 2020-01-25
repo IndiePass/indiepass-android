@@ -165,6 +165,15 @@
         </activity>
 
         <activity
+            android:name=".microsub.timeline.TimelineMapActivity"
+            android:label="@string/map"
+            android:parentActivityName=".LaunchActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.LaunchActivity" />
+        </activity>
+
+        <activity
             android:name=".micropub.ShareActivity"
             android:label="@string/title_activity_share">
             <intent-filter android:label="@string/app_name">
@@ -391,6 +400,15 @@
         <activity
             android:name=".tracker.TrackActivity"
             android:label="@string/new_track"
+            android:parentActivityName=".LaunchActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.LaunchActivity" />
+        </activity>
+
+        <activity
+            android:name=".tracker.TrackerMapActivity"
+            android:label="@string/tracker_map"
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

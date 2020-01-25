@@ -74,7 +74,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     private final List<TimelineItem> items;
     private LayoutInflater mInflater;
     private boolean debugItemJSON;
-    private boolean staticMap;
     private boolean isSourceView;
     private final User user;
     private final String channelId;
@@ -93,7 +92,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         this.isSourceView = isSourceView;
         this.Style = style;
         this.layout = layout;
-        this.staticMap = Preferences.getPreference(context, "pref_key_static_map", true);
         this.debugItemJSON = Preferences.getPreference(context, "pref_key_debug_microsub_item_json", false);
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -658,14 +656,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                         holder.imageCount.setVisibility(View.GONE);
                     }
                 }
-                else if (staticMap && item.getLongitude().length() > 0 && item.getLatitude().length() > 0) {
-                    holder.image.setVisibility(View.VISIBLE);
-                    holder.card.setVisibility(View.VISIBLE);
-                    String mapUrl = "http://atlas.p3k.io/map/img?marker[]=lat:" + item.getLatitude() + ";lng:" + item.getLongitude() + ";icon:small-blue-cutout&basemap=gray&width=460&height=460&zoom=14";
-                    Glide.with(context)
-                            .load(mapUrl)
-                            .into(holder.image);
-                }
                 else {
                     holder.image.setVisibility(View.GONE);
                     holder.card.setVisibility(View.GONE);
@@ -933,15 +923,10 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         @Override
         public void onClick(View v) {
             TimelineItem item = items.get(this.position);
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            Uri geoLocation = Uri.parse("geo:" + item.getLatitude() + "," + item.getLongitude());
-            intent.setData(geoLocation);
-            if (intent.resolveActivity(context.getPackageManager()) != null) {
-                context.startActivity(intent);
-            }
-            else {
-                Snackbar.make(layout, context.getString(R.string.install_map_app), Snackbar.LENGTH_SHORT).show();
-            }
+            Intent i = new Intent(context, TimelineMapActivity.class);
+            i.putExtra("latitude", item.getLatitude());
+            i.putExtra("longitude", item.getLongitude());
+            context.startActivity(i);
         }
     }
 

@@ -31,7 +31,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
-import com.indieweb.indigenous.model.Point;
+import com.indieweb.indigenous.model.TrackerPoint;
 import com.indieweb.indigenous.model.Track;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
@@ -328,7 +328,7 @@ public class TrackerService extends Service {
             int trackerId = db.getLatestTrackId(user.getMeWithoutProtocol());
             if (trackerId > 0) {
                 String coordinates = String.format("%s,%s,%s", mLocation.getLatitude(), mLocation.getLongitude(), mLocation.getAltitude());
-                Point p = new Point();
+                TrackerPoint p = new TrackerPoint();
                 String geo = "geo:" + coordinates;
                 p.setTrackId(trackerId);
                 p.setPoint(geo);

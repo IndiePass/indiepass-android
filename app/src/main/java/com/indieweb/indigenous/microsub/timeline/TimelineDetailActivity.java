@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -319,7 +318,6 @@ public class TimelineDetailActivity extends AppCompatActivity {
             }
 
             // Image or map.
-            boolean staticMap = Preferences.getPreference(TimelineDetailActivity.this, "pref_key_static_map", true);
             ImageView image = findViewById(R.id.timeline_image);
             TextView imageCount = findViewById(R.id.timeline_image_count);
             CardView card = findViewById(R.id.timeline_card);
@@ -341,12 +339,6 @@ public class TimelineDetailActivity extends AppCompatActivity {
                 else {
                     imageCount.setVisibility(View.GONE);
                 }
-            }
-            else if (staticMap && item.getLongitude().length() > 0 && item.getLatitude().length() > 0) {
-                String mapUrl = "http://atlas.p3k.io/map/img?marker[]=lat:" + item.getLatitude() + ";lng:" + item.getLongitude() + ";icon:small-blue-cutout&basemap=gray&width=460&height=460&zoom=14";
-                Glide.with(TimelineDetailActivity.this)
-                        .load(mapUrl)
-                        .into(image);
             }
             else {
                 image.setVisibility(View.GONE);
@@ -537,16 +529,10 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            Uri geoLocation = Uri.parse("geo:" + item.getLatitude() + "," + item.getLongitude());
-            intent.setData(geoLocation);
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                startActivity(intent);
-            }
-            else {
-                Snackbar.make(layout, getString(R.string.maps_info), Snackbar.LENGTH_SHORT).show();
-            }
-
+            Intent i = new Intent(getApplicationContext(), TimelineMapActivity.class);
+            i.putExtra("latitude", item.getLatitude());
+            i.putExtra("longitude", item.getLongitude());
+            startActivity(i);
         }
     }
 

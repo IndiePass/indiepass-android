@@ -169,12 +169,6 @@
             android:defaultValue="false" />
         <SwitchPreference
             app:iconSpaceReserved="false"
-            android:key="pref_key_static_map"
-            android:title="@string/pref_key_static_map_title"
-            android:summary="@string/pref_key_static_map_summary"
-            android:defaultValue="false" />
-        <SwitchPreference
-            app:iconSpaceReserved="false"
             android:key="pref_key_search_global"
             android:title="@string/pref_key_search_global_title"
             android:summary="@string/pref_key_search_global_summary"

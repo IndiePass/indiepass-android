@@ -12,13 +12,16 @@ android {
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    // Define MAPBOX_ACCESS_TOKEN_GRADLE_HOME_USER in ~/.gradle/gradle.properties
     buildTypes {
         debug {
+            buildConfigField "String", 'MAPBOX_ACCESS_TOKEN', MAPBOX_ACCESS_TOKEN_GRADLE_HOME_USER
             buildConfigField "String", 'SITE_ACCOUNT_CHECK_ENDPOINT', '"https://indigenous.realize.be/check-account"'
             buildConfigField "String", 'SITE_DEVICE_REGISTRATION_ENDPOINT', '"https://indigenous.realize.be/register-device"'
         }
         release {
             minifyEnabled false
+            buildConfigField "String", 'MAPBOX_ACCESS_TOKEN', MAPBOX_ACCESS_TOKEN_GRADLE_HOME_USER
             buildConfigField "String", 'SITE_ACCOUNT_CHECK_ENDPOINT', '"https://indigenous.realize.be/check-account"'
             buildConfigField "String", 'SITE_DEVICE_REGISTRATION_ENDPOINT', '"https://indigenous.realize.be/register-device"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -55,6 +58,7 @@ dependencies {
     implementation 'com.4ert:audioview:0.4.2'
     implementation 'me.pushy:sdk:1.0.44'
     implementation 'com.karumi:dexter:4.2.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.6.2'
 
     // Specific to Google Playstore
     playstoreImplementation 'com.google.android.gms:play-services-location:17.0.0'
