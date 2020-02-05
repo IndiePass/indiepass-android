@@ -19,7 +19,9 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.indieweb.indigenous.BuildConfig;
 import com.indieweb.indigenous.Indigenous;
+import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.general.DebugActivity;
+import com.indieweb.indigenous.model.Cache;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -46,6 +48,42 @@ public class Utility {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         assert cm != null;
         return (cm.getActiveNetworkInfo() != null) && cm.getActiveNetworkInfo().isAvailable() && cm.getActiveNetworkInfo().isConnected();
+    }
+
+    /**
+     * Get cache item.
+     *
+     * @return String|null
+     */
+    public static String getCache(Context context, String account, String type, String channelId, String page) {
+        String data = null;
+
+        if (Preferences.getPreference(context, "pref_key_reader_cache", false)) {
+            DatabaseHelper db = new DatabaseHelper(context);
+            Cache cache = db.getCache(account, type, channelId, page);
+            if (cache != null && cache.getData().length() > 0) {
+                data = cache.getData();
+            }
+        }
+
+        return data;
+    }
+
+    /**
+     * Save cache.
+     *
+     * @param data
+     *   The data to cache.
+     */
+    public static void saveCache(Context context, String account, String type, String data, String channel_id, String page) {
+        Cache cache = new Cache();
+        cache.setAccount(account);
+        cache.setType(type);
+        cache.setChannelId(channel_id);
+        cache.setPage(page);
+        cache.setData(data);
+        DatabaseHelper db = new DatabaseHelper(context);
+        db.saveCache(cache);
     }
 
     /**

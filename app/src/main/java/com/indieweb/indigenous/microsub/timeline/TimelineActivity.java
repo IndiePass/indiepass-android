@@ -331,19 +331,28 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     /**
      * Get items.
      */
-    public void getTimeLineItems(String pagerAfter) {
+    public void getTimeLineItems(final String pagerAfter) {
+
+        olderItems = new String[1];
 
         if (!Utility.hasConnection(getApplicationContext())) {
             showRefreshMessage = false;
-            checkRefreshingStatus();
-            noConnection.setVisibility(View.VISIBLE);
+
+            String cache = Utility.getCache(getApplicationContext(), user.getMeWithoutProtocol(), "timeline", channelId, pagerAfter);
+            if (cache != null) {
+                parseTimelineResponse(cache, true, pagerAfter);
+            }
+            else {
+                checkRefreshingStatus();
+                noConnection.setVisibility(View.VISIBLE);
+            }
+
             return;
         }
 
         entries.clear();
         int method = Request.Method.GET;
         String MicrosubEndpoint = user.getMicrosubEndpoint();
-        olderItems = new String[1];
 
         if (preview || isSearch) {
             method = Request.Method.POST;
@@ -373,364 +382,10 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
-                        try {
-                            JSONObject object;
-                            debugResponse = response;
-                            JSONObject microsubResponse = new JSONObject(response);
-                            JSONArray itemList = microsubResponse.getJSONArray("items");
-
-                            // Paging. Can be empty.
-                            if (microsubResponse.has("paging")) {
-                                try {
-                                    if (microsubResponse.getJSONObject("paging").has("after")) {
-                                        olderItems[0] = microsubResponse.getJSONObject("paging").getString("after");
-                                    }
-                                    else {
-                                        olderItems[0] = "";
-                                    }
-                                }
-                                catch (JSONException ignored) {
-                                    olderItems[0] = "";
-                                }
-                            }
-
-                            for (int i = 0; i < itemList.length(); i++) {
-                                object = itemList.getJSONObject(i);
-                                TimelineItem item = new TimelineItem();
-                                item.setJson(itemList.getString(i));
-
-                                boolean addContent = true;
-                                boolean isRead = false;
-                                String type = "entry";
-                                String url = "";
-                                String name = "";
-                                String textContent = "";
-                                String htmlContent = "";
-                                String authorName = "";
-
-                                // Type.
-                                if (object.has("type")) {
-                                    type = object.getString("type");
-                                }
-
-                                // Ignore 'card' type.
-                                if (type.equals("card")) {
-                                    continue;
-                                }
-
-                                // It's possible that _id is empty. Don't let readers choke on it.
-                                try {
-                                    item.setId(object.getString("_id"));
-                                } catch (Exception ignored) {}
-
-                                // Source id is experimental.
-                                if (object.has("_source")) {
-                                    try {
-                                        item.setSourceId(object.getString("_source"));
-                                    } catch (Exception ignored) {}
-                                }
-
-                                // Is read.
-                                if (object.has("_is_read")) {
-                                    isRead = object.getBoolean("_is_read");
-                                }
-                                item.setRead(isRead);
-                                if (!item.isRead() && item.getId() != null) {
-                                    entries.add(item.getId());
-
-                                    if (firstEntryId == null) {
-                                        firstEntryId = item.getId();
-                                    }
-
-                                }
-
-                                // Channel name and id.
-                                item.setChannelId(channelId);
-                                if (object.has("_channel") && isGlobalUnread) {
-                                    try {
-                                        String itemChannelName = object.getJSONObject("_channel").getString("name");
-                                        item.setChannelName(itemChannelName);
-                                    }
-                                    catch (Exception ignored) {}
-                                }
-                                else if (channelName != null && channelName.length() > 0) {
-                                    item.setChannelName(channelName);
-                                }
-
-                                // In reply to.
-                                if (object.has("in-reply-to")) {
-                                    type = "in-reply-to";
-                                    String value = getSingleJsonValueFromArrayOrString(type, object);
-                                    if (value.length() > 0) {
-                                        item.addToResponseType(type, value);
-                                        checkReference(object, value, item);
-                                    }
-                                }
-
-                                // Follow-of.
-                                if (object.has("follow-of")) {
-                                    type = "follow-of";
-                                    textContent = "Started following you!";
-                                }
-
-                                // Repost.
-                                if (object.has("repost-of")) {
-                                    type = "repost-of";
-                                    addContent = false;
-                                    String value = getSingleJsonValueFromArrayOrString(type, object);
-                                    if (value.length() > 0) {
-                                        item.addToResponseType(type, value);
-                                        checkReference(object, value, item);
-                                    }
-                                }
-
-                                // Quotation of.
-                                if (object.has("quotation-of")) {
-                                    type = "quotation-of";
-                                    String value = getSingleJsonValueFromArrayOrString(type, object);
-                                    if (value.length() > 0) {
-                                        item.addToResponseType(type, value);
-                                        checkReference(object, value, item);
-                                    }
-                                }
-
-                                // Like.
-                                if (object.has("like-of")) {
-                                    type = "like-of";
-                                    addContent = false;
-                                    String value = getSingleJsonValueFromArrayOrString(type, object);
-                                    if (value.length() > 0) {
-                                        item.addToResponseType(type, value);
-                                        checkReference(object, value, item);
-                                    }
-                                }
-
-                                // Bookmark.
-                                if (object.has("bookmark-of")) {
-                                    type = "bookmark-of";
-                                    addContent = false;
-                                    String value = getSingleJsonValueFromArrayOrString(type, object);
-                                    if (value.length() > 0) {
-                                        item.addToResponseType(type, value);
-                                        checkReference(object, value, item);
-                                    }
-                                }
-
-                                // A checkin.
-                                if (object.has("checkin")) {
-                                    type = "checkin";
-                                    item.addToResponseType(type, object.getJSONObject("checkin").getString("name"));
-                                    String checkinUrl = "";
-                                    try {
-                                        checkinUrl = object.getJSONObject("checkin").getString("url");
-                                    }
-                                    catch (Exception ignored) {}
-                                    item.addToResponseType("checkin-url", checkinUrl);
-
-                                    try {
-                                        item.setLatitude(object.getJSONObject("checkin").getString("latitude"));
-                                        item.setLongitude(object.getJSONObject("checkin").getString("longitude"));
-                                    }
-                                    catch (Exception ignored) {}
-
-                                }
-
-                                // Location.
-                                if (object.has("location")) {
-                                    String location = getSingleJsonValueFromArrayOrString("location", object);
-                                    item.setLocation(location);
-                                }
-
-                                // Set type.
-                                item.setType(type);
-
-                                // Url.
-                                if (object.has("url")) {
-                                    url = object.getString("url");
-                                }
-                                item.setUrl(url);
-
-                                // Published
-                                String published = "";
-                                if (object.has("published")) {
-                                    published = object.getString("published");
-                                }
-                                item.setPublished(published);
-
-                                // Start
-                                String start = "";
-                                if (object.has("start")) {
-                                    start = object.getString("start");
-                                }
-                                item.setStart(start);
-
-                                // End
-                                String end = "";
-                                if (object.has("end")) {
-                                    end = object.getString("end");
-                                }
-                                item.setEnd(end);
-
-                                // Author.
-                                if (object.has("author")) {
-
-                                    JSONObject author = object.getJSONObject("author");
-                                    if (author.has("name")) {
-                                        authorName = author.getString("name");
-                                    }
-                                    String authorUrl = "";
-                                    if (author.has("url")) {
-                                        authorUrl = author.getString("url");
-                                        item.setAuthorUrl(authorUrl);
-                                    }
-                                    if (authorName.equals("null") && authorUrl.length() > 0) {
-                                        authorName = authorUrl;
-                                    }
-
-                                    if (author.has("photo")) {
-                                        String authorPhoto = author.getString("photo");
-                                        if (!authorPhoto.equals("null") && authorPhoto.length() > 0) {
-                                            item.setAuthorPhoto(authorPhoto);
-                                        }
-                                    }
-                                }
-                                item.setAuthorName(authorName);
-
-                                // Content.
-                                if (object.has("content") && addContent) {
-                                    JSONObject content = object.getJSONObject("content");
-
-                                    if (content.has("text")) {
-                                        addContent = false;
-                                        textContent = content.getString("text");
-                                    }
-
-                                    if (content.has("html")) {
-                                        addContent = false;
-                                        htmlContent = content.getString("html");
-
-                                        // Clean html, remove images and put them in photo.
-                                        try {
-                                            Document doc = Jsoup.parse(htmlContent);
-                                            Elements imgs = doc.select("img");
-                                            for (Element img : imgs) {
-                                                String photoUrl = img.absUrl("src");
-                                                if (!photoUrl.contains("spacer.gif") && !photoUrl.contains("spacer.png")) {
-                                                    item.addPhoto(photoUrl);
-                                                }
-                                            }
-                                            htmlContent = Jsoup.clean(htmlContent, Whitelist.basic());
-                                        }
-                                        catch (Exception ignored) {}
-                                    }
-
-                                }
-                                else if (object.has("summary") && addContent) {
-                                    addContent = false;
-                                    textContent = object.getString("summary");
-                                }
-
-                                // RSVP
-                                if (object.has("rsvp") && addContent) {
-                                    try {
-                                        textContent = "RSVP: " + object.getString("rsvp");
-                                    }
-                                    catch (JSONException ignored) {}
-                                }
-
-                                // Name.
-                                if (object.has("name")) {
-                                    name = object.getString("name").replace("\n", "").replace("\r", "");
-                                    if (name.equals(textContent)) {
-                                        name = "";
-                                    }
-                                }
-                                else if (object.has("summary") && addContent) {
-                                    name = object.getString("summary").replace("\n", "").replace("\r", "");
-                                }
-
-                                // Photos.
-                                if (object.has("photo")) {
-                                    try {
-                                        Object photoObject = object.get("photo");
-                                        if (photoObject instanceof JSONArray) {
-                                            JSONArray photos = object.getJSONArray("photo");
-                                            for (int p = 0; p < photos.length(); p++) {
-                                                item.addPhoto(photos.getString(p));
-                                            }
-                                        }
-                                        else {
-                                            item.addPhoto(object.getString("photo"));
-                                        }
-                                    }
-                                    catch (JSONException ignored) {}
-                                }
-
-                                // Audio.
-                                if (object.has("audio")) {
-                                    String audio = getSingleJsonValueFromArrayOrString("audio", object);
-                                    item.setAudio(audio);
-                                }
-
-                                // Video.
-                                if (object.has("video")) {
-                                    String video = getSingleJsonValueFromArrayOrString("video", object);
-                                    item.setVideo(video);
-                                }
-
-                                // Set values of name, text and html content.
-                                item.setName(name);
-                                item.setTextContent(textContent);
-                                item.setHtmlContent(htmlContent);
-
-                                TimelineItems.add(item);
-                            }
-
-                            adapter.notifyDataSetChanged();
-
-                            // Notify
-                            if (!isGlobalUnread && !isSourceView && (unread > 0 || unread == -1) && entries.size() > 0
-                                    && Preferences.getPreference(getApplicationContext(), "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_CHANNEL_CLICK
-                                    && !readLater.equals(channelId)) {
-                                new MicrosubAction(TimelineActivity.this, user, layout).markRead(channelId, entries, false);
-                            }
-
-                            // Add mark read.
-                            if ((!isSourceView && !allReadVisible && firstEntryId != null && entries.size() == 20) || (!allReadVisible && isGlobalUnread && entries.size() > 0)) {
-                                allReadVisible = true;
-                                MenuItem item = mainMenu.findItem(R.id.timeline_mark_all_read);
-                                if (item != null) {
-                                    item.setVisible(true);
-                                }
-                            }
-
-                            // Older items.
-                            if (olderItems != null && olderItems[0] != null && olderItems[0].length() > 0) {
-
-                                loadMoreClicked = false;
-                                loadMoreButton.setText(R.string.load_more);
-
-                                if (!loadMoreButtonAdded) {
-                                    loadMoreButtonAdded = true;
-                                    listView.addFooterView(loadMoreButton);
-                                    loadMoreButton.setOnTouchListener(loadMoreTouch);
-                                }
-
-                            }
-                            else {
-                                if (loadMoreButtonAdded) {
-                                    listView.removeFooterView(loadMoreButton);
-                                }
-                            }
-
+                        if (Preferences.getPreference(getApplicationContext(), "pref_key_reader_cache", false)) {
+                            Utility.saveCache(getApplicationContext(), user.getMeWithoutProtocol(), "timeline", response, channelId, pagerAfter);
                         }
-                        catch (JSONException e) {
-                            showRefreshMessage = false;
-                            Snackbar.make(layout, String.format(getString(R.string.timeline_parse_error), e.getMessage()), Snackbar.LENGTH_LONG).show();
-                        }
-
-                        checkRefreshingStatus();
+                        parseTimelineResponse(response, false, pagerAfter);
                     }
                 },
                 new Response.ErrorListener() {
@@ -776,6 +431,376 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         getRequest.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(getRequest);
 
+    }
+
+    /**
+     * Parse timeline response.
+     *
+     * @param response
+     *   The response
+     * @param fromCache
+     *   Whether it came from cache
+     * @param pagerAfter
+     *   The page
+     */
+    protected void parseTimelineResponse(String response, boolean fromCache, String pagerAfter) {
+        try {
+            JSONObject object;
+            debugResponse = response;
+            JSONObject microsubResponse = new JSONObject(response);
+            JSONArray itemList = microsubResponse.getJSONArray("items");
+
+            // Paging. Can be empty.
+            if (microsubResponse.has("paging")) {
+                try {
+                    if (microsubResponse.getJSONObject("paging").has("after")) {
+                        olderItems[0] = microsubResponse.getJSONObject("paging").getString("after");
+                    }
+                    else {
+                        olderItems[0] = "";
+                    }
+                }
+                catch (JSONException ignored) {
+                    olderItems[0] = "";
+                }
+            }
+
+            for (int i = 0; i < itemList.length(); i++) {
+                object = itemList.getJSONObject(i);
+                TimelineItem item = new TimelineItem();
+                item.setJson(itemList.getString(i));
+
+                boolean addContent = true;
+                boolean isRead = false;
+                String type = "entry";
+                String url = "";
+                String name = "";
+                String textContent = "";
+                String htmlContent = "";
+                String authorName = "";
+
+                // Type.
+                if (object.has("type")) {
+                    type = object.getString("type");
+                }
+
+                // Ignore 'card' type.
+                if (type.equals("card")) {
+                    continue;
+                }
+
+                // It's possible that _id is empty. Don't let readers choke on it.
+                try {
+                    item.setId(object.getString("_id"));
+                } catch (Exception ignored) {}
+
+                // Source id is experimental.
+                if (object.has("_source")) {
+                    try {
+                        item.setSourceId(object.getString("_source"));
+                    } catch (Exception ignored) {}
+                }
+
+                // Is read.
+                if (object.has("_is_read")) {
+                    isRead = object.getBoolean("_is_read");
+                }
+                item.setRead(isRead);
+                if (!item.isRead() && item.getId() != null) {
+                    entries.add(item.getId());
+
+                    if (firstEntryId == null) {
+                        firstEntryId = item.getId();
+                    }
+
+                }
+
+                // Channel name and id.
+                item.setChannelId(channelId);
+                if (object.has("_channel") && isGlobalUnread) {
+                    try {
+                        String itemChannelName = object.getJSONObject("_channel").getString("name");
+                        item.setChannelName(itemChannelName);
+                    }
+                    catch (Exception ignored) {}
+                }
+                else if (channelName != null && channelName.length() > 0) {
+                    item.setChannelName(channelName);
+                }
+
+                // In reply to.
+                if (object.has("in-reply-to")) {
+                    type = "in-reply-to";
+                    String value = getSingleJsonValueFromArrayOrString(type, object);
+                    if (value.length() > 0) {
+                        item.addToResponseType(type, value);
+                        checkReference(object, value, item);
+                    }
+                }
+
+                // Follow-of.
+                if (object.has("follow-of")) {
+                    type = "follow-of";
+                    textContent = "Started following you!";
+                }
+
+                // Repost.
+                if (object.has("repost-of")) {
+                    type = "repost-of";
+                    addContent = false;
+                    String value = getSingleJsonValueFromArrayOrString(type, object);
+                    if (value.length() > 0) {
+                        item.addToResponseType(type, value);
+                        checkReference(object, value, item);
+                    }
+                }
+
+                // Quotation of.
+                if (object.has("quotation-of")) {
+                    type = "quotation-of";
+                    String value = getSingleJsonValueFromArrayOrString(type, object);
+                    if (value.length() > 0) {
+                        item.addToResponseType(type, value);
+                        checkReference(object, value, item);
+                    }
+                }
+
+                // Like.
+                if (object.has("like-of")) {
+                    type = "like-of";
+                    addContent = false;
+                    String value = getSingleJsonValueFromArrayOrString(type, object);
+                    if (value.length() > 0) {
+                        item.addToResponseType(type, value);
+                        checkReference(object, value, item);
+                    }
+                }
+
+                // Bookmark.
+                if (object.has("bookmark-of")) {
+                    type = "bookmark-of";
+                    addContent = false;
+                    String value = getSingleJsonValueFromArrayOrString(type, object);
+                    if (value.length() > 0) {
+                        item.addToResponseType(type, value);
+                        checkReference(object, value, item);
+                    }
+                }
+
+                // A checkin.
+                if (object.has("checkin")) {
+                    type = "checkin";
+                    item.addToResponseType(type, object.getJSONObject("checkin").getString("name"));
+                    String checkinUrl = "";
+                    try {
+                        checkinUrl = object.getJSONObject("checkin").getString("url");
+                    }
+                    catch (Exception ignored) {}
+                    item.addToResponseType("checkin-url", checkinUrl);
+
+                    try {
+                        item.setLatitude(object.getJSONObject("checkin").getString("latitude"));
+                        item.setLongitude(object.getJSONObject("checkin").getString("longitude"));
+                    }
+                    catch (Exception ignored) {}
+
+                }
+
+                // Location.
+                if (object.has("location")) {
+                    String location = getSingleJsonValueFromArrayOrString("location", object);
+                    item.setLocation(location);
+                }
+
+                // Set type.
+                item.setType(type);
+
+                // Url.
+                if (object.has("url")) {
+                    url = object.getString("url");
+                }
+                item.setUrl(url);
+
+                // Published
+                String published = "";
+                if (object.has("published")) {
+                    published = object.getString("published");
+                }
+                item.setPublished(published);
+
+                // Start
+                String start = "";
+                if (object.has("start")) {
+                    start = object.getString("start");
+                }
+                item.setStart(start);
+
+                // End
+                String end = "";
+                if (object.has("end")) {
+                    end = object.getString("end");
+                }
+                item.setEnd(end);
+
+                // Author.
+                if (object.has("author")) {
+
+                    JSONObject author = object.getJSONObject("author");
+                    if (author.has("name")) {
+                        authorName = author.getString("name");
+                    }
+                    String authorUrl = "";
+                    if (author.has("url")) {
+                        authorUrl = author.getString("url");
+                        item.setAuthorUrl(authorUrl);
+                    }
+                    if (authorName.equals("null") && authorUrl.length() > 0) {
+                        authorName = authorUrl;
+                    }
+
+                    if (author.has("photo")) {
+                        String authorPhoto = author.getString("photo");
+                        if (!authorPhoto.equals("null") && authorPhoto.length() > 0) {
+                            item.setAuthorPhoto(authorPhoto);
+                        }
+                    }
+                }
+                item.setAuthorName(authorName);
+
+                // Content.
+                if (object.has("content") && addContent) {
+                    JSONObject content = object.getJSONObject("content");
+
+                    if (content.has("text")) {
+                        addContent = false;
+                        textContent = content.getString("text");
+                    }
+
+                    if (content.has("html")) {
+                        addContent = false;
+                        htmlContent = content.getString("html");
+
+                        // Clean html, remove images and put them in photo.
+                        try {
+                            Document doc = Jsoup.parse(htmlContent);
+                            Elements imgs = doc.select("img");
+                            for (Element img : imgs) {
+                                String photoUrl = img.absUrl("src");
+                                if (!photoUrl.contains("spacer.gif") && !photoUrl.contains("spacer.png")) {
+                                    item.addPhoto(photoUrl);
+                                }
+                            }
+                            htmlContent = Jsoup.clean(htmlContent, Whitelist.basic());
+                        }
+                        catch (Exception ignored) {}
+                    }
+
+                }
+                else if (object.has("summary") && addContent) {
+                    addContent = false;
+                    textContent = object.getString("summary");
+                }
+
+                // RSVP
+                if (object.has("rsvp") && addContent) {
+                    try {
+                        textContent = "RSVP: " + object.getString("rsvp");
+                    }
+                    catch (JSONException ignored) {}
+                }
+
+                // Name.
+                if (object.has("name")) {
+                    name = object.getString("name").replace("\n", "").replace("\r", "");
+                    if (name.equals(textContent)) {
+                        name = "";
+                    }
+                }
+                else if (object.has("summary") && addContent) {
+                    name = object.getString("summary").replace("\n", "").replace("\r", "");
+                }
+
+                // Photos.
+                if (object.has("photo")) {
+                    try {
+                        Object photoObject = object.get("photo");
+                        if (photoObject instanceof JSONArray) {
+                            JSONArray photos = object.getJSONArray("photo");
+                            for (int p = 0; p < photos.length(); p++) {
+                                item.addPhoto(photos.getString(p));
+                            }
+                        }
+                        else {
+                            item.addPhoto(object.getString("photo"));
+                        }
+                    }
+                    catch (JSONException ignored) {}
+                }
+
+                // Audio.
+                if (object.has("audio")) {
+                    String audio = getSingleJsonValueFromArrayOrString("audio", object);
+                    item.setAudio(audio);
+                }
+
+                // Video.
+                if (object.has("video")) {
+                    String video = getSingleJsonValueFromArrayOrString("video", object);
+                    item.setVideo(video);
+                }
+
+                // Set values of name, text and html content.
+                item.setName(name);
+                item.setTextContent(textContent);
+                item.setHtmlContent(htmlContent);
+
+                TimelineItems.add(item);
+            }
+
+            adapter.notifyDataSetChanged();
+
+            // Notify
+            if (!fromCache && !isGlobalUnread && !isSourceView && (unread > 0 || unread == -1) && entries.size() > 0
+                    && Preferences.getPreference(getApplicationContext(), "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_CHANNEL_CLICK
+                    && !readLater.equals(channelId)) {
+                new MicrosubAction(TimelineActivity.this, user, layout).markRead(channelId, entries, false);
+            }
+
+            // Add mark read.
+            if ((!isSourceView && !allReadVisible && firstEntryId != null && entries.size() == 20) || (!allReadVisible && isGlobalUnread && entries.size() > 0)) {
+                allReadVisible = true;
+                MenuItem item = mainMenu.findItem(R.id.timeline_mark_all_read);
+                if (item != null) {
+                    item.setVisible(true);
+                }
+            }
+
+            // Older items.
+            if (olderItems != null && olderItems[0] != null && olderItems[0].length() > 0) {
+
+                loadMoreClicked = false;
+                loadMoreButton.setText(R.string.load_more);
+
+                if (!loadMoreButtonAdded) {
+                    loadMoreButtonAdded = true;
+                    listView.addFooterView(loadMoreButton);
+                    loadMoreButton.setOnTouchListener(loadMoreTouch);
+                }
+
+            }
+            else {
+                if (loadMoreButtonAdded) {
+                    listView.removeFooterView(loadMoreButton);
+                }
+            }
+
+        }
+        catch (JSONException e) {
+            showRefreshMessage = false;
+            Snackbar.make(layout, String.format(getString(R.string.timeline_parse_error), e.getMessage()), Snackbar.LENGTH_LONG).show();
+        }
+
+        checkRefreshingStatus();
     }
 
     /**

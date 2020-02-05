@@ -40,6 +40,7 @@ https://indigenous.realize.be
   - listen to audio or watch video if available 
   - view fullscreen images, zoom and pinch
   - Manage channels and feeds
+  - Offline reading, optional via settings
 - Share intents: receive text or images to directly share
 - GPS tracker: log your itineraries when walking, running, flying and so on.
   When posting to your site, the data will be send using the micropub

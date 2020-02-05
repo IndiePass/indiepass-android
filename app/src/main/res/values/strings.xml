@@ -82,6 +82,11 @@
     <string name="draft_checked">Draft is enabled but not yet saved</string>
 
     <!-- Channels and timelines -->
+    <string name="clear">Clear</string>
+    <string name="clear_cache">Clear cache</string>
+    <string name="clear_cache_confirm">Clear reader cache?</string>
+    <string name="cache_cleared">Caches cleared</string>
+    <string name="reader_offline">Reading offline</string>
     <string name="channel_list_refresh">Refresh channels</string>
     <string name="channels_refreshed">Channels refreshed</string>
     <string name="feed_items_refreshed">Feeds refreshed</string>
@@ -367,6 +372,8 @@
     <!-- Preferences: Reader -->
     <string name="pref_category_reader_title">Reader</string>
     <string name="pref_category_reader_summary">Control reader settings</string>
+    <string name="pref_key_reader_cache_title">Offline reading</string>
+    <string name="pref_key_reader_cache_summary">Stores the list of channels and items offline so you can read without connection and a cache item is available. A "Clear cache" action will be available in the menu of the channel list.</string>
     <string name="pref_key_video_autoplay_title">Video autoplay</string>
     <string name="pref_key_timeline_summary_detail_click_title">Summary detail click</string>
     <string name="pref_key_timeline_summary_detail_click_summary">Clicking on an item in the summary style opens the full detail view of the post. In compact mode this is always the case.</string>

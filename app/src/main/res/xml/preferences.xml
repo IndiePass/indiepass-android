@@ -118,6 +118,12 @@
         android:layout="@layout/preference_category_custom"
         android:title="@string/pref_category_reader_title"
         android:summary="@string/pref_category_reader_summary">
+        <SwitchPreference
+            app:iconSpaceReserved="false"
+            android:key="pref_key_reader_cache"
+            android:title="@string/pref_key_reader_cache_title"
+            android:summary="@string/pref_key_reader_cache_summary"
+            android:defaultValue="false" />
         <ListPreference
             app:iconSpaceReserved="false"
             android:key="pref_key_mark_read"

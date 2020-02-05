@@ -2,10 +2,12 @@ package com.indieweb.indigenous.microsub.channel;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,10 +22,14 @@ import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.db.DatabaseHelper;
+import com.indieweb.indigenous.microsub.MicrosubAction;
 import com.indieweb.indigenous.microsub.manage.ManageChannelActivity;
 import com.indieweb.indigenous.microsub.timeline.TimelineActivity;
+import com.indieweb.indigenous.model.Cache;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.general.BaseFragment;
+import com.indieweb.indigenous.model.TimelineStyle;
 import com.indieweb.indigenous.util.HTTPRequest;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
@@ -105,8 +111,15 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
 
         if (!Utility.hasConnection(requireContext())) {
             setShowRefreshedMessage(false);
-            checkRefreshingStatus();
-            showNoConnection();
+            String cache = Utility.getCache(requireContext(), user.getMeWithoutProtocol(), "channels", "", "");
+            if (cache != null) {
+                parseChannelResponse(cache, true);
+                Snackbar.make(layout, getString(R.string.reader_offline), Snackbar.LENGTH_SHORT).show();
+            }
+            else {
+                checkRefreshingStatus();
+                showNoConnection();
+            }
             return;
         }
 
@@ -124,7 +137,10 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void OnSuccessRequest(String response) {
-        parseChannelResponse(response);
+        if (Preferences.getPreference(requireContext(), "pref_key_reader_cache", false)) {
+            Utility.saveCache(requireContext(), user.getMeWithoutProtocol(), "channels", response, "", "");
+        }
+        parseChannelResponse(response, false);
     }
 
     /**
@@ -132,8 +148,10 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
      *
      * @param data
      *   The data to parse.
+     * @param fromCache
+     *   Whether the response came from cache or not.
      */
-    private void parseChannelResponse(String data) {
+    private void parseChannelResponse(String data, boolean fromCache) {
         try {
             JSONObject object;
             debugResponse = data;
@@ -150,7 +168,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
                 channel.setName(object.getString("name"));
 
                 Integer unread = 0;
-                if (object.has("unread")) {
+                if (!fromCache && object.has("unread")) {
                     Object unreadCheck = object.get("unread");
                     if (unreadCheck instanceof Integer) {
                         unread = (Integer) unreadCheck;
@@ -212,6 +230,14 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
             }
         }
 
+        boolean clearCache = Preferences.getPreference(getActivity(), "pref_key_reader_cache", false);
+        if (clearCache) {
+            MenuItem item = menu.findItem(R.id.clear_cache);
+            if (item != null) {
+                item.setVisible(true);
+            }
+        }
+
         boolean search = Preferences.getPreference(getActivity(), "pref_key_search_global", false);
         if (search) {
             MenuItem item = menu.findItem(R.id.channel_search);
@@ -265,6 +291,28 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
 
             case R.id.channels_debug:
                 Utility.showDebugInfo(getContext(), debugResponse);
+                return true;
+
+            case R.id.clear_cache:
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                builder.setTitle(getString(R.string.clear_cache_confirm));
+                builder.setCancelable(true);
+                builder.setPositiveButton(getString(R.string.clear),new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        Snackbar.make(layout, getString(R.string.cache_cleared), Snackbar.LENGTH_SHORT).show();
+                        DatabaseHelper db = new DatabaseHelper(requireContext());
+                        db.clearCache();
+                    }
+                });
+
+                builder.setNegativeButton(requireContext().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int index) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+
                 return true;
         }
 

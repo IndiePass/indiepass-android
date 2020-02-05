@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.indieweb.indigenous.model.Cache;
 import com.indieweb.indigenous.model.Draft;
 import com.indieweb.indigenous.model.TrackerPoint;
 import com.indieweb.indigenous.model.TimelineStyle;
@@ -22,7 +23,7 @@ import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_SUMMARY
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 24;
+    private static final int DATABASE_VERSION = 25;
     private static final String DATABASE_NAME = "indigenous";
 
     public DatabaseHelper(Context context) {
@@ -35,6 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(TimelineStyle.CREATE_TABLE);
         db.execSQL(Track.CREATE_TABLE);
         db.execSQL(TrackerPoint.CREATE_TABLE);
+        db.execSQL(Cache.CREATE_TABLE);
     }
 
     @Override
@@ -44,6 +46,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(TimelineStyle.CREATE_TABLE);
         db.execSQL("drop table " + Draft.TABLE_NAME);
         db.execSQL(Draft.CREATE_TABLE);
+        db.execSQL(Cache.CREATE_TABLE);
     }
 
     /**
@@ -521,4 +524,84 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         draft.setSpinner(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_SPINNER)));
         draft.setTimestamp(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_TIMESTAMP)));
     }
+
+    /**
+     * Gets a cache item.
+     *
+     * @param account
+     *   The account to get the cache for
+     * @param type
+     *   Type of cache item
+     * @param channelId
+     *   The channel id
+     * @param page
+     *   The page to get from cache
+     *
+     * @return Cache
+     */
+    public Cache getCache(String account, String type, String channelId, String page) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(Cache.TABLE_NAME,
+                new String[]{
+                        Cache.COLUMN_ID,
+                        Cache.COLUMN_ACCOUNT,
+                        Cache.COLUMN_TYPE,
+                        Cache.COLUMN_CHANNEL_ID,
+                        Cache.COLUMN_PAGE,
+                        Cache.COLUMN_DATA,
+                },
+                Cache.COLUMN_ACCOUNT + "=? AND " + Cache.COLUMN_TYPE + "=? AND " + Cache.COLUMN_CHANNEL_ID + "=? AND " + Cache.COLUMN_PAGE + "=?",
+                new String[]{account, type, channelId, page}, null, null, null, null);
+
+        Cache cache = new Cache();
+        cache.setId(0);
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            cache.setId(cursor.getInt(cursor.getColumnIndex(Cache.COLUMN_ID)));
+            cache.setAccount(cursor.getString(cursor.getColumnIndex(Cache.COLUMN_ACCOUNT)));
+            cache.setType(cursor.getString(cursor.getColumnIndex(Cache.COLUMN_TYPE)));
+            cache.setChannelId(cursor.getString(cursor.getColumnIndex(Cache.COLUMN_CHANNEL_ID)));
+            cache.setPage(cursor.getString(cursor.getColumnIndex(Cache.COLUMN_PAGE)));
+            cache.setData(cursor.getString(cursor.getColumnIndex(Cache.COLUMN_DATA)));
+            cursor.close();
+        }
+
+        return cache;
+    }
+
+
+    /**
+     * Saves a cache.
+     *
+     * @param cache
+     *   A cache object.
+     */
+    public void saveCache(Cache cache) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(Cache.COLUMN_TYPE, cache.getType());
+        values.put(Draft.COLUMN_ACCOUNT, cache.getAccount());
+        values.put(Cache.COLUMN_CHANNEL_ID, cache.getChannelId());
+        values.put(Cache.COLUMN_PAGE, cache.getPage());
+        values.put(Cache.COLUMN_DATA, cache.getData());
+
+        if (cache.getId() > 0) {
+            db.update(Cache.TABLE_NAME, values, Draft.COLUMN_ID + "=" + cache.getId(), null);
+        }
+        else {
+            db.insert(Cache.TABLE_NAME, null, values);
+        }
+        db.close();
+    }
+
+    /**
+     * Deletes all cache.
+     */
+    public void clearCache() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL("delete from " + Cache.TABLE_NAME);
+    }
+
 }
