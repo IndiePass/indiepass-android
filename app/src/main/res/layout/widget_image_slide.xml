@@ -7,7 +7,7 @@
         android:id="@+id/timeline_image_fullscreen"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:scaleType="fitCenter"
+        android:scaleType="centerInside"
         android:contentDescription="@string/full_screen_image" />
 
 </RelativeLayout>
