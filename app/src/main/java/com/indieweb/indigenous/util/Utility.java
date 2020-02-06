@@ -53,20 +53,17 @@ public class Utility {
     /**
      * Get cache item.
      *
-     * @return String|null
+     * @return Cache|null
      */
-    public static String getCache(Context context, String account, String type, String channelId, String page) {
-        String data = null;
+    public static Cache getCache(Context context, String account, String type, String channelId, String page) {
+        Cache cache = null;
 
         if (Preferences.getPreference(context, "pref_key_reader_cache", false)) {
             DatabaseHelper db = new DatabaseHelper(context);
-            Cache cache = db.getCache(account, type, channelId, page);
-            if (cache != null && cache.getData().length() > 0) {
-                data = cache.getData();
-            }
+            cache = db.getCache(account, type, channelId, page);
         }
 
-        return data;
+        return cache;
     }
 
     /**
@@ -76,14 +73,19 @@ public class Utility {
      *   The data to cache.
      */
     public static void saveCache(Context context, String account, String type, String data, String channel_id, String page) {
-        Cache cache = new Cache();
-        cache.setAccount(account);
-        cache.setType(type);
-        cache.setChannelId(channel_id);
-        cache.setPage(page);
-        cache.setData(data);
-        DatabaseHelper db = new DatabaseHelper(context);
-        db.saveCache(cache);
+        if (Preferences.getPreference(context, "pref_key_reader_cache", false)) {
+            Cache cache = getCache(context, account, type, channel_id, page);
+            if (cache.getId() == 0) {
+                cache.setAccount(account);
+                cache.setType(type);
+                cache.setChannelId(channel_id);
+                cache.setPage(page);
+            }
+
+            cache.setData(data);
+            DatabaseHelper db = new DatabaseHelper(context);
+            db.saveCache(cache);
+        }
     }
 
     /**

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,13 +24,11 @@ import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
-import com.indieweb.indigenous.microsub.MicrosubAction;
 import com.indieweb.indigenous.microsub.manage.ManageChannelActivity;
 import com.indieweb.indigenous.microsub.timeline.TimelineActivity;
 import com.indieweb.indigenous.model.Cache;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.general.BaseFragment;
-import com.indieweb.indigenous.model.TimelineStyle;
 import com.indieweb.indigenous.util.HTTPRequest;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
@@ -111,9 +110,9 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
 
         if (!Utility.hasConnection(requireContext())) {
             setShowRefreshedMessage(false);
-            String cache = Utility.getCache(requireContext(), user.getMeWithoutProtocol(), "channels", "", "");
-            if (cache != null) {
-                parseChannelResponse(cache, true);
+            Cache cache = Utility.getCache(requireContext(), user.getMeWithoutProtocol(), "channels", "", "");
+            if (cache != null && cache.getData().length() > 0) {
+                parseChannelResponse(cache.getData(), true);
                 Snackbar.make(layout, getString(R.string.reader_offline), Snackbar.LENGTH_SHORT).show();
             }
             else {
@@ -137,9 +136,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void OnSuccessRequest(String response) {
-        if (Preferences.getPreference(requireContext(), "pref_key_reader_cache", false)) {
-            Utility.saveCache(requireContext(), user.getMeWithoutProtocol(), "channels", response, "", "");
-        }
+        Utility.saveCache(requireContext(), user.getMeWithoutProtocol(), "channels", response, "", "");
         parseChannelResponse(response, false);
     }
 

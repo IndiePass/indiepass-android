@@ -33,6 +33,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.microsub.MicrosubAction;
+import com.indieweb.indigenous.model.Cache;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.TimelineStyle;
 import com.indieweb.indigenous.model.User;
@@ -338,9 +339,9 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         if (!Utility.hasConnection(getApplicationContext())) {
             showRefreshMessage = false;
 
-            String cache = Utility.getCache(getApplicationContext(), user.getMeWithoutProtocol(), "timeline", channelId, pagerAfter);
-            if (cache != null) {
-                parseTimelineResponse(cache, true, pagerAfter);
+            Cache cache = Utility.getCache(getApplicationContext(), user.getMeWithoutProtocol(), "timeline", channelId, pagerAfter);
+            if (cache != null && cache.getData().length() > 0) {
+                parseTimelineResponse(cache.getData(), true, pagerAfter);
             }
             else {
                 checkRefreshingStatus();
@@ -382,9 +383,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if (Preferences.getPreference(getApplicationContext(), "pref_key_reader_cache", false)) {
-                            Utility.saveCache(getApplicationContext(), user.getMeWithoutProtocol(), "timeline", response, channelId, pagerAfter);
-                        }
+                        Utility.saveCache(getApplicationContext(), user.getMeWithoutProtocol(), "timeline", response, channelId, pagerAfter);
                         parseTimelineResponse(response, false, pagerAfter);
                     }
                 },

@@ -542,6 +542,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cache getCache(String account, String type, String channelId, String page) {
         SQLiteDatabase db = this.getReadableDatabase();
 
+        /*Cursor dataCount = db.rawQuery("select " + Cache.COLUMN_ID + " from " + Cache.TABLE_NAME, null);
+        int count = dataCount.getCount();
+        Log.d("indigenous_debug", "All caches: " + count);
+        String selectQuery = "SELECT * FROM " + Cache.TABLE_NAME;
+        Cursor all = db.rawQuery(selectQuery, null);
+        if (all.moveToFirst()) {
+            do {
+                Log.d("indigenous_debug", "Cache: " + all.getInt(all.getColumnIndex(Cache.COLUMN_ID)) + " - " + all.getString(all.getColumnIndex(Cache.COLUMN_TYPE)));
+            } while (all.moveToNext());
+        }*/
+
         Cursor cursor = db.query(Cache.TABLE_NAME,
                 new String[]{
                         Cache.COLUMN_ID,
