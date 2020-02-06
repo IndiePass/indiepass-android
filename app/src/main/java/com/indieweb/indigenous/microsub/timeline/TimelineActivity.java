@@ -342,7 +342,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
             Cache cache = Utility.getCache(getApplicationContext(), user.getMeWithoutProtocol(), "timeline", channelId, pagerAfter);
             if (cache != null && cache.getData().length() > 0) {
-                parseTimelineResponse(cache.getData(), true, pagerAfter);
+                parseTimelineResponse(cache.getData(), true);
             }
             else {
                 if (hasCache) {
@@ -392,7 +392,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     @Override
                     public void onResponse(String response) {
                         Utility.saveCache(getApplicationContext(), user.getMeWithoutProtocol(), "timeline", response, channelId, pagerAfter);
-                        parseTimelineResponse(response, false, pagerAfter);
+                        parseTimelineResponse(response, false);
                     }
                 },
                 new Response.ErrorListener() {
@@ -447,10 +447,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
      *   The response
      * @param fromCache
      *   Whether it came from cache
-     * @param pagerAfter
-     *   The page
      */
-    protected void parseTimelineResponse(String response, boolean fromCache, String pagerAfter) {
+    protected void parseTimelineResponse(String response, boolean fromCache) {
         try {
 
             if (fromCache) {
