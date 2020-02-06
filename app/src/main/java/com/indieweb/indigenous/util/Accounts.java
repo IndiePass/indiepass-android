@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.indieweb.indigenous.indieauth.IndieAuthActivity.ACCOUNT_TYPE;
 
 public class Accounts {
 
@@ -42,7 +43,7 @@ public class Accounts {
         SharedPreferences preferences = context.getSharedPreferences("indigenous", MODE_PRIVATE);
         String accountName = preferences.getString("account", "");
         AccountManager accountManager = AccountManager.get(context);
-        Account[] accounts = accountManager.getAccounts();
+        Account[] accounts = accountManager.getAccountsByType(ACCOUNT_TYPE);
         if (accounts.length > 0) {
             for (Account account : accounts) {
                 if (account.name.equals(accountName)) {
@@ -161,7 +162,7 @@ public class Accounts {
      */
     private Account[] getAllAccounts() {
         AccountManager accountManager = AccountManager.get(context);
-        return accountManager.getAccounts();
+        return accountManager.getAccountsByType(ACCOUNT_TYPE);
     }
 
     /**
@@ -172,7 +173,7 @@ public class Accounts {
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         AccountManager accountManager = AccountManager.get(context);
-        for (Account a : accountManager.getAccounts()) {
+        for (Account a : accountManager.getAccountsByType(ACCOUNT_TYPE)) {
             User user = new User();
             user.setAccount(a);
             user.setMe(a.name);
