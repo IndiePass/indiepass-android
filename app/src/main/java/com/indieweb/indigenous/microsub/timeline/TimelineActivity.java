@@ -87,6 +87,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     private String readLater;
     private LinearLayout noConnection;
     private RelativeLayout layout;
+    private boolean hasCache = false;
 
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
@@ -344,8 +345,15 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 parseTimelineResponse(cache.getData(), true, pagerAfter);
             }
             else {
+                if (hasCache) {
+                    if (loadMoreButtonAdded) {
+                        listView.removeFooterView(loadMoreButton);
+                    }
+                }
+                else {
+                    noConnection.setVisibility(View.VISIBLE);
+                }
                 checkRefreshingStatus();
-                noConnection.setVisibility(View.VISIBLE);
             }
 
             return;
@@ -444,6 +452,11 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
      */
     protected void parseTimelineResponse(String response, boolean fromCache, String pagerAfter) {
         try {
+
+            if (fromCache) {
+                hasCache = true;
+            }
+
             JSONObject object;
             debugResponse = response;
             JSONObject microsubResponse = new JSONObject(response);
