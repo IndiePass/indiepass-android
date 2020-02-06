@@ -228,7 +228,6 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
                                 }
                                 catch (android.accounts.OperationCanceledException | IOException | AuthenticatorException e) {
                                     Snackbar.make(layout, context.getString(R.string.account_delete_error), Snackbar.LENGTH_SHORT).show();
-
                                 }
                             }
                         }, null);
@@ -248,10 +247,6 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
                             }
                         }, null);
                     }
-
-
-
-
                 }
             });
             builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
