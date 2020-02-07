@@ -3,13 +3,12 @@ package com.indieweb.indigenous.photoeditor;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.ImageView;
@@ -50,8 +49,8 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         EmojiBSFragment.EmojiListener,
         EditingToolsAdapter.OnItemSelected, FilterListener {
 
-    private static final String TAG = EditImageActivity.class.getSimpleName();
     PhotoEditor mPhotoEditor;
+    private int imagePosition = 0;
     private PhotoEditorView mPhotoEditorView;
     private PropertiesBSFragment mPropertiesBSFragment;
     private EmojiBSFragment mEmojiBSFragment;
@@ -74,7 +73,6 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         setContentView(R.layout.photoeditor_activity_edit_image);
 
         initViews();
-
         handleIntentImage();
 
         mPropertiesBSFragment = new PropertiesBSFragment();
@@ -107,6 +105,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 String uri = extras.getString("imageUri");
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(uri));
                 mPhotoEditorView.getSource().setImageBitmap(bitmap);
+                imagePosition = extras.getInt("imagePosition");
             }
         }
         catch (Exception ignored) { }
@@ -157,24 +156,16 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     }
 
     @Override
-    public void onAddViewListener(ViewType viewType, int numberOfAddedViews) {
-        Log.d(TAG, "onAddViewListener() called with: viewType = [" + viewType + "], numberOfAddedViews = [" + numberOfAddedViews + "]");
-    }
+    public void onAddViewListener(ViewType viewType, int numberOfAddedViews) { }
 
     @Override
-    public void onRemoveViewListener(ViewType viewType, int numberOfAddedViews) {
-        Log.d(TAG, "onRemoveViewListener() called with: viewType = [" + viewType + "], numberOfAddedViews = [" + numberOfAddedViews + "]");
-    }
+    public void onRemoveViewListener(ViewType viewType, int numberOfAddedViews) { }
 
     @Override
-    public void onStartViewChangeListener(ViewType viewType) {
-        Log.d(TAG, "onStartViewChangeListener() called with: viewType = [" + viewType + "]");
-    }
+    public void onStartViewChangeListener(ViewType viewType) { }
 
     @Override
-    public void onStopViewChangeListener(ViewType viewType) {
-        Log.d(TAG, "onStopViewChangeListener() called with: viewType = [" + viewType + "]");
-    }
+    public void onStopViewChangeListener(ViewType viewType) { }
 
     @Override
     public void onClick(View view) {
@@ -201,7 +192,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     @SuppressLint("MissingPermission")
     private void saveImage() {
         if (requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            showLoading("Saving...");
+            showLoading(getString(R.string.saving));
             File file = new File(Environment.getExternalStorageDirectory()
                     + File.separator + ""
                     + System.currentTimeMillis() + ".png");
@@ -217,7 +208,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                     @Override
                     public void onSuccess(@NonNull String imagePath) {
                         hideLoading();
-                        showSnackbar("Image Saved Successfully");
+                        showSnackbar(getString(R.string.save_success));
                         mSaveImageUri = Uri.fromFile(new File(imagePath));
                         mPhotoEditorView.getSource().setImageURI(mSaveImageUri);
                     }
@@ -225,12 +216,11 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                     @Override
                     public void onFailure(@NonNull Exception exception) {
                         hideLoading();
-                        showSnackbar("Failed to save Image");
+                        showSnackbar(getString(R.string.save_error));
                     }
                 });
             }
             catch (IOException e) {
-                e.printStackTrace();
                 hideLoading();
                 showSnackbar(e.getMessage());
             }
@@ -268,25 +258,29 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         }
     }
 
+    /**
+     * Show save dialog.
+     */
     private void showSaveDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(getString(R.string.msg_save_image));
-        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 saveImage();
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
 
-        builder.setNeutralButton("Discard", new DialogInterface.OnClickListener() {
+        builder.setNeutralButton(getString(R.string.discard), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                checkSavedImage();
                 finish();
             }
         });
@@ -363,11 +357,23 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     public void onBackPressed() {
         if (mIsFilterVisible) {
             showFilter(false);
-            mTxtCurrentTool.setText(R.string.app_name);
-        } else if (!mPhotoEditor.isCacheEmpty()) {
+            mTxtCurrentTool.setText(R.string.editor);
+        }
+        else if (!mPhotoEditor.isCacheEmpty()) {
             showSaveDialog();
-        } else {
-            super.onBackPressed();
+        }
+        else {
+            checkSavedImage();
+            finish();
+        }
+    }
+
+    private void checkSavedImage() {
+        if (mSaveImageUri != null) {
+            Intent returnIntent = new Intent();
+            setResult(RESULT_OK, returnIntent);
+            returnIntent.putExtra("imageEditedUri", mSaveImageUri.toString());
+            returnIntent.putExtra("imageEditedPosition", imagePosition);
         }
     }
 }

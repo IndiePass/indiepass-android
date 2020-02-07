@@ -32,7 +32,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static com.indieweb.indigenous.MainActivity.POST_DRAFT;
 import static com.indieweb.indigenous.MainActivity.UPDATE_POST;
 
 /**

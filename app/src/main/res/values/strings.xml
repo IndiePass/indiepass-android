@@ -13,6 +13,7 @@
     <string name="go_to_main_app">Go to main app</string>
     <string name="cancel">Cancel</string>
     <string name="close">Close</string>
+    <string name="discard">Discard</string>
     <string name="timeline">Timeline</string>
     <string name="nav_reader">Reader</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -182,11 +183,10 @@
     <string name="add_checkin">Checkin</string>
     <string name="add_venue">Venue</string>
     <string name="add_geocache">Geocache</string>
-    <string name="discard_post">Discard</string>
     <string name="delete_video_confirm">Remove video?</string>
     <string name="delete_audio_confirm">Remove audio?</string>
     <string name="delete_image_confirm">Remove image?</string>
-    <string name="media_preview_help">Click on a thumbnail to delete the media item. You can also set captions for images.</string>
+    <string name="media_preview_help">Click on a thumbnail to delete the media item. You can also apply filters or set captions for images.</string>
     <string name="keep_editing">Keep editing</string>
     <string name="confirm_close">You have unsaved changes, are you sure you want to leave ?</string>
     <string name="send">Send</string>
@@ -243,6 +243,10 @@
     <string name="media_fail">Failed uploading media, unknown error</string>
 
     <!-- Photoeditor -->
+    <string name="editor">Editor</string>
+    <string name="saving">Saving…</string>
+    <string name="save_success">Image Saved Successfully</string>
+    <string name="save_error">Failed to save Image</string>
     <string name="label_brush">Brush</string>
     <string name="label_emoji">Emoji</string>
     <string name="label_sticker">Sticker</string>

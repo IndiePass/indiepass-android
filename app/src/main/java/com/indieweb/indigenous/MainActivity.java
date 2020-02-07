@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final int UPDATE_TRACK = 1004;
     public static final int RESULT_DRAFT_SAVED = 1005;
     public static final int UPDATE_POST = 1006;
+    public static final int EDIT_IMAGE = 1007;
 
     @Override
     public void onAttachFragment(@NonNull Fragment fragment) {

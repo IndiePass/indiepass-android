@@ -136,7 +136,10 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void OnSuccessRequest(String response) {
-        Utility.saveCache(requireContext(), user.getMeWithoutProtocol(), "channels", response, "", "");
+        try {
+            Utility.saveCache(requireContext(), user.getMeWithoutProtocol(), "channels", response, "", "");
+        }
+        catch (Exception ignored) {}
         parseChannelResponse(response, false);
     }
 

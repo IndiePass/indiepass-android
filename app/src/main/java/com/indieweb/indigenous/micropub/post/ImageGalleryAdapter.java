@@ -24,6 +24,8 @@ import com.indieweb.indigenous.photoeditor.EditImageActivity;
 
 import java.util.List;
 
+import static com.indieweb.indigenous.MainActivity.EDIT_IMAGE;
+
 public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.MyViewHolder> {
 
     private List<Uri> image;
@@ -94,7 +96,8 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
                         case R.id.image_edit:
                             Intent imageEdit = new Intent(context, EditImageActivity.class);
                             imageEdit.putExtra("imageUri", image.get(position).toString());
-                            context.startActivity(imageEdit);
+                            imageEdit.putExtra("imagePosition", position);
+                            ((Activity) context).startActivityForResult(imageEdit, EDIT_IMAGE);
                             break;
                         case R.id.image_caption:
                             builder.setTitle(context.getString(R.string.set_caption));

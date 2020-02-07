@@ -10,6 +10,8 @@ import android.net.Uri;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -73,6 +75,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import static com.indieweb.indigenous.MainActivity.EDIT_IMAGE;
 import static java.lang.Integer.parseInt;
 
 @SuppressLint("Registered")
@@ -205,7 +208,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if ((requestCode == PICK_IMAGE_REQUEST || requestCode == PICK_VIDEO_REQUEST || requestCode == PICK_AUDIO_REQUEST) && resultCode == RESULT_OK) {
+        if ((requestCode == EDIT_IMAGE || requestCode == PICK_IMAGE_REQUEST || requestCode == PICK_VIDEO_REQUEST || requestCode == PICK_AUDIO_REQUEST) && resultCode == RESULT_OK) {
 
             if (isMediaRequest) {
                 if (requestCode == PICK_IMAGE_REQUEST) {
@@ -292,6 +295,15 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 prepareAudioPreview();
             }
 
+            if (requestCode == EDIT_IMAGE) {
+                Bundle extras = data.getExtras();
+                if (extras != null) {
+                    String uri = extras.getString("imageEditedUri");
+                    int index = extras.getInt("imageEditedPosition");
+                    image.set(index, Uri.parse(uri));
+                    prepareImagePreview();
+                }
+            }
         }
     }
 
@@ -310,7 +322,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         if (hasChanges) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.confirm_close);
-            builder.setPositiveButton(getApplicationContext().getString(R.string.discard_post),new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(getApplicationContext().getString(R.string.discard),new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,int id) {
                     setChanges(false);
 
