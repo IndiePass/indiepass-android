@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -34,6 +35,7 @@ import com.indieweb.indigenous.photoeditor.tools.ToolType;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 import ja.burhanrashid52.photoeditor.OnPhotoEditorListener;
 import ja.burhanrashid52.photoeditor.PhotoEditor;
@@ -218,6 +220,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                         .setTransparencyEnabled(true)
                         .build();
 
+                final File finalFile = file;
                 mPhotoEditor.saveAsFile(file.getAbsolutePath(), saveSettings, new PhotoEditor.OnSaveListener() {
                     @Override
                     public void onSuccess(@NonNull String imagePath) {
@@ -225,6 +228,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                         showSnackbar(getString(R.string.save_success));
                         mSaveImageUri = Uri.fromFile(new File(imagePath));
                         mPhotoEditorView.getSource().setImageURI(mSaveImageUri);
+                        MediaScannerConnection.scanFile(EditImageActivity.this, new String[] { finalFile.getAbsolutePath() }, null, null);
                     }
 
                     @Override
@@ -236,7 +240,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
             }
             catch (IOException e) {
                 hideLoading();
-                showSnackbar(e.getMessage());
+                showSnackbar(Objects.requireNonNull(e.getMessage()));
             }
         }
     }
