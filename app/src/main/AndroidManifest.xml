@@ -20,6 +20,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <!-- End Pushy permissions -->
 
     <application
@@ -343,6 +344,16 @@
         <activity
             android:name=".micropub.post.ContactActivity"
             android:label="@string/contact"
+            android:parentActivityName=".LaunchActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.LaunchActivity" />
+        </activity>
+
+        <activity
+            android:name=".photoeditor.EditImageActivity"
+            android:label="@string/image_edit"
+            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

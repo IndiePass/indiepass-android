@@ -3,6 +3,7 @@ package com.indieweb.indigenous.micropub.post;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.photoeditor.EditImageActivity;
 
 import java.util.List;
 
@@ -89,6 +91,11 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(final MenuItem item) {
                     switch (item.getItemId()) {
+                        case R.id.image_edit:
+                            Intent imageEdit = new Intent(context, EditImageActivity.class);
+                            imageEdit.putExtra("imageUri", image.get(position).toString());
+                            context.startActivity(imageEdit);
+                            break;
                         case R.id.image_caption:
                             builder.setTitle(context.getString(R.string.set_caption));
                             View view = LayoutInflater.from(context).inflate(R.layout.dialog_single_input, null);

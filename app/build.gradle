@@ -59,6 +59,7 @@ dependencies {
     implementation 'me.pushy:sdk:1.0.44'
     implementation 'com.karumi:dexter:4.2.0'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.6.2'
+    implementation 'ja.burhanrashid52:photoeditor:1.0.0'
 
     // Specific to Google Playstore
     playstoreImplementation 'com.google.android.gms:play-services-location:17.0.0'

@@ -25,6 +25,7 @@ https://indigenous.realize.be
   - add multiple images, videos, audio, tags, toggle syndication targets
   - share location on note, article, event, checkin, geocache and venue
   - send image to media endpoint
+  - apply filters, add text and emojis on images
   - Toggle post-status (published vs draft)
   - Save as local draft to finish later. This also includes coordinates,
     so you can finish later even when you are on a different location
@@ -98,6 +99,17 @@ request or open an issue with the file attached. Some strings contain '%s'.
 These are placeholders and should be kept.
 
 https://github.com/swentel/indigenous-android/blob/master/app/src/main/res/values/strings.xml
+
+## Credits
+
+This library uses following external libraries, thank you all!
+
+- https://github.com/burhanrashid52/PhotoEditor
+- https://github.com/chrisbanes/PhotoView
+- https://github.com/4eRTuk/audioview
+- https://github.com/Karumi/Dexter
+- https://github.com/bumptech/glide
+- https://jsoup.org/download
 
 ## iOS
 

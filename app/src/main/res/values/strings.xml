@@ -194,6 +194,8 @@
     <string name="add_image">Add image</string>
     <string name="add_video">Add video</string>
     <string name="add_audio">Add audio</string>
+    <string name="image_edit">Edit image</string>
+    <string name="no_image_found">No image found</string>
     <string name="full_screen_image">Full screen image</string>
     <string name="content">Content</string>
     <string name="repost">Repost</string>
@@ -225,7 +227,7 @@
     <string name="post_update_network_fail">Update failed. Status code: %d; message: %s</string>
     <string name="post_update_fail">Failed updating post</string>
     <string name="post_update_success">Update success</string>
-    <string name="set_caption">Caption</string>
+    <string name="set_caption">Set caption</string>
     <string name="draft_last_edit">%s - last edit on %s</string>
     <string name="draft_delete_confirm">Are you sure you want to delete this draft ?</string>
     <string name="post_delete_confirm">Are you sure you want to delete this post ?</string>
@@ -239,6 +241,19 @@
     <string name="bitmap_error">Error generating bitmap from image</string>
     <string name="media_network_fail">Uploading media failed. Status code: %d; message: %s</string>
     <string name="media_fail">Failed uploading media, unknown error</string>
+
+    <!-- Photoeditor -->
+    <string name="label_brush">Brush</string>
+    <string name="label_emoji">Emoji</string>
+    <string name="label_sticker">Sticker</string>
+    <string name="label_eraser">Eraser</string>
+    <string name="label_eraser_mode">Eraser Mode</string>
+    <string name="label_text">Text</string>
+    <string name="label_filter">Filter</string>
+    <string name="label_adjust">Adjust</string>
+    <string name="msg_save_image">Are you want to exit without saving image ?</string>
+    <string name="msg_save_image_to_share">Please save image to share</string>
+    <string name="msg_share_image">Share Image</string>>
 
     <!-- map -->
     <string name="menu_map_style_streets">Streets</string>
