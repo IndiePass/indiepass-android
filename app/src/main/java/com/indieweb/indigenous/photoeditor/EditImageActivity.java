@@ -63,7 +63,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     private ConstraintLayout mRootView;
     private ConstraintSet mConstraintSet = new ConstraintSet();
     private boolean mIsFilterVisible;
-    private String FOLDER_NAME = "Indigenous";
+    private boolean hasFilter = false;
 
     @Nullable
     @VisibleForTesting
@@ -198,6 +198,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
             showLoading(getString(R.string.saving));
 
             boolean exists = true;
+            String FOLDER_NAME = "Indigenous";
             File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), FOLDER_NAME);
             if (!directory.exists()) {
                 exists = directory.mkdirs();
@@ -308,6 +309,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
     @Override
     public void onFilterSelected(PhotoFilter photoFilter) {
+        hasFilter = photoFilter != PhotoFilter.NONE;
         mPhotoEditor.setFilterEffect(photoFilter);
     }
 
@@ -377,7 +379,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
             showFilter(false);
             mTxtCurrentTool.setText(R.string.editor);
         }
-        else if (!mPhotoEditor.isCacheEmpty()) {
+        else if (!mPhotoEditor.isCacheEmpty() || hasFilter) {
             showSaveDialog();
         }
         else {
@@ -386,6 +388,9 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         }
     }
 
+    /**
+     * Check if an image was saved to set the uri and position.
+     */
     private void checkSavedImage() {
         if (mSaveImageUri != null) {
             Intent returnIntent = new Intent();
