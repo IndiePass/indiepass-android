@@ -245,8 +245,8 @@
     <!-- Photoeditor -->
     <string name="editor">Editor</string>
     <string name="saving">Saving…</string>
-    <string name="save_success">Image Saved Successfully</string>
-    <string name="save_error">Failed to save Image</string>
+    <string name="save_success">Image saved successfully</string>
+    <string name="save_error">Failed to save image</string>
     <string name="label_brush">Brush</string>
     <string name="label_emoji">Emoji</string>
     <string name="label_sticker">Sticker</string>

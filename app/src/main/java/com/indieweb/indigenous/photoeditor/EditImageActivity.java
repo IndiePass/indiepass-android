@@ -61,6 +61,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     private ConstraintLayout mRootView;
     private ConstraintSet mConstraintSet = new ConstraintSet();
     private boolean mIsFilterVisible;
+    private String FOLDER_NAME = "Indigenous";
 
     @Nullable
     @VisibleForTesting
@@ -193,9 +194,22 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     private void saveImage() {
         if (requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             showLoading(getString(R.string.saving));
-            File file = new File(Environment.getExternalStorageDirectory()
-                    + File.separator + ""
-                    + System.currentTimeMillis() + ".png");
+
+            boolean exists = true;
+            File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), FOLDER_NAME);
+            if (!directory.exists()) {
+                exists = directory.mkdirs();
+            }
+
+            File file = null;
+            if (exists) {
+                file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
+                        + File.separator + ""
+                        + FOLDER_NAME
+                        + File.separator + ""
+                        + System.currentTimeMillis() + ".png");
+            }
+
             try {
                 file.createNewFile();
 

@@ -208,6 +208,11 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        final int takeFlags = data.getFlags()
+                & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
         if ((requestCode == EDIT_IMAGE || requestCode == PICK_IMAGE_REQUEST || requestCode == PICK_VIDEO_REQUEST || requestCode == PICK_AUDIO_REQUEST) && resultCode == RESULT_OK) {
 
             if (isMediaRequest) {
@@ -232,10 +237,6 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 int count = data.getClipData().getItemCount();
                 if (count > 0) {
                     setChanges(true);
-                    final int takeFlags = data.getFlags()
-                            & (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
                     for (int i = 0; i < count; i++) {
                         try {
                             getContentResolver().takePersistableUriPermission(data.getClipData().getItemAt(i).getUri(), takeFlags);
@@ -274,10 +275,10 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
                 try {
                     setChanges(true);
-                    final int takeFlags = data.getFlags()
-                            & (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                    getContentResolver().takePersistableUriPermission(data.getData(), takeFlags);
+                    try {
+                        getContentResolver().takePersistableUriPermission(data.getData(), takeFlags);
+                    }
+                    catch (Exception ignored) {}
                 }
                 catch (Exception ignored) {}
 
@@ -298,9 +299,13 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
             if (requestCode == EDIT_IMAGE) {
                 Bundle extras = data.getExtras();
                 if (extras != null) {
-                    String uri = extras.getString("imageEditedUri");
+                    Uri uri = Uri.parse(extras.getString("imageEditedUri"));
                     int index = extras.getInt("imageEditedPosition");
-                    image.set(index, Uri.parse(uri));
+                    image.set(index, uri);
+                    try {
+                        getContentResolver().takePersistableUriPermission(uri, takeFlags);
+                    }
+                    catch (Exception ignored) {}
                     prepareImagePreview();
                 }
             }
