@@ -209,11 +209,11 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        final int takeFlags = data.getFlags()
-                & (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
         if ((requestCode == EDIT_IMAGE || requestCode == PICK_IMAGE_REQUEST || requestCode == PICK_VIDEO_REQUEST || requestCode == PICK_AUDIO_REQUEST) && resultCode == RESULT_OK) {
+
+            final int takeFlags = data.getFlags()
+                    & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
             if (isMediaRequest) {
                 if (requestCode == PICK_IMAGE_REQUEST) {
@@ -755,6 +755,11 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                             if (mime.equals("image/png")) {
                                 extension = "png";
                             }
+                        }
+                        else {
+                            // Set to png. This is likely a picture coming from the photo editor.
+                            extension = "png";
+                            mime = "image/png";
                         }
 
                         String imagePostParam = "photo_multiple_[" + im + "]";
