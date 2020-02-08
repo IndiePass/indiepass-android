@@ -7,8 +7,8 @@ android {
         applicationId "com.indieweb.indigenous"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 55
-        versionName "0.55"
+        versionCode 56
+        versionName "0.56"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -21,7 +21,7 @@ android {
         }
         release {
             minifyEnabled false
-            buildConfigField "String", 'MAPBOX_ACCESS_TOKEN', MAPBOX_ACCESS_TOKEN_GRADLE_HOME_USER
+            buildConfigField "String", 'MAPBOX_ACCESS_TOKEN', '"pk.eyJ1Ijoic3dlbnRlbCIsImEiOiJjazV0ajNma2MwNXozM2ZvenVoY2gwcHliIn0.vgrB3fUXGVWixLszdRhqOA"'
             buildConfigField "String", 'SITE_ACCOUNT_CHECK_ENDPOINT', '"https://indigenous.realize.be/check-account"'
             buildConfigField "String", 'SITE_DEVICE_REGISTRATION_ENDPOINT', '"https://indigenous.realize.be/register-device"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
