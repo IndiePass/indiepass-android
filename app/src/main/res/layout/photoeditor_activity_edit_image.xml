@@ -32,7 +32,8 @@
         android:padding="8dp"
         app:srcCompat="@drawable/photoeditor_undo"
         app:layout_constraintBottom_toTopOf="@+id/rvConstraintTools"
-        app:layout_constraintEnd_toStartOf="@+id/imgRedo" />
+        app:layout_constraintEnd_toStartOf="@+id/imgRedo"
+        android:contentDescription="@string/label_undo" />
 
     <ImageView
         android:id="@+id/imgRedo"
@@ -42,18 +43,20 @@
         android:padding="8dp"
         app:srcCompat="@drawable/photoeditor_redo"
         app:layout_constraintBottom_toTopOf="@+id/rvConstraintTools"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/label_redo" />
 
     <ImageView
         android:id="@+id/imgClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_margin="8dp"
+        android:padding="10dp"
         app:srcCompat="@drawable/photoeditor_close"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guideline" />
+        app:layout_constraintTop_toBottomOf="@+id/guideline"
+        android:contentDescription="@string/close" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvConstraintTools"
@@ -98,10 +101,11 @@
         android:id="@+id/imgSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:padding="10dp"
         app:srcCompat="@drawable/photoeditor_save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guideline" />
+        app:layout_constraintTop_toBottomOf="@+id/guideline"
+        android:contentDescription="@string/save" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
