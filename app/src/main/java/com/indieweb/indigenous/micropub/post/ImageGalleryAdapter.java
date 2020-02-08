@@ -63,9 +63,7 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Uri uri = image.get(position);
-        if (!isMediaRequest) {
-            holder.thumbnail.setOnClickListener(new OnImageClickListener(position));
-        }
+        holder.thumbnail.setOnClickListener(new OnImageClickListener(position));
         Glide.with(context).load(uri).thumbnail(0.5f).into(holder.thumbnail);
     }
 
@@ -89,7 +87,12 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
 
             PopupMenu popup = new PopupMenu(context, v);
             Menu menu = popup.getMenu();
-            popup.getMenuInflater().inflate(R.menu.image_list_item_menu, menu);
+            if (isMediaRequest) {
+                popup.getMenuInflater().inflate(R.menu.image_list_item_media_menu, menu);
+            }
+            else {
+                popup.getMenuInflater().inflate(R.menu.image_list_item_menu, menu);
+            }
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(final MenuItem item) {
                     switch (item.getItemId()) {

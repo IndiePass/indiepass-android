@@ -215,6 +215,25 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                     & (Intent.FLAG_GRANT_READ_URI_PERMISSION
                     | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
+            if (requestCode == EDIT_IMAGE) {
+                Bundle extras = data.getExtras();
+                if (extras != null) {
+                    Uri uri = Uri.parse(extras.getString("imageEditedUri"));
+                    int index = extras.getInt("imageEditedPosition");
+                    image.set(index, uri);
+                    try {
+                        getContentResolver().takePersistableUriPermission(uri, takeFlags);
+                    }
+                    catch (Exception ignored) {}
+
+                    if (isMediaRequest) {
+                        hideMediaPreview(false, true, true);
+                    }
+
+                    prepareImagePreview();
+                }
+            }
+
             if (isMediaRequest) {
                 if (requestCode == PICK_IMAGE_REQUEST) {
                     caption.clear();
@@ -296,19 +315,6 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 prepareAudioPreview();
             }
 
-            if (requestCode == EDIT_IMAGE) {
-                Bundle extras = data.getExtras();
-                if (extras != null) {
-                    Uri uri = Uri.parse(extras.getString("imageEditedUri"));
-                    int index = extras.getInt("imageEditedPosition");
-                    image.set(index, uri);
-                    try {
-                        getContentResolver().takePersistableUriPermission(uri, takeFlags);
-                    }
-                    catch (Exception ignored) {}
-                    prepareImagePreview();
-                }
-            }
         }
     }
 
