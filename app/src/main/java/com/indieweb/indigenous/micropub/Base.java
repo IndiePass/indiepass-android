@@ -971,6 +971,11 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                             extension = "png";
                         }
                     }
+                    else {
+                        // Set to png. This is likely a picture coming from the photo editor.
+                        extension = "png";
+                        mime = "image/png";
+                    }
 
                     // Put image in body. Send along whether to scale or not.
                     params.put("file", new DataPart(imagename + "." + extension, getFileData(bitmap, scale, u, mime)));
