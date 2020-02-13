@@ -82,7 +82,7 @@ public class MicrosubAction {
     /**
      * Mark entries unread.
      */
-    public void markUnread(String channelId, List<String> entries) {
+    public void markUnread(String channelId, List<String> entries, boolean showMessage) {
         Map<String, String> params = new HashMap<>();
         params.put("action", "timeline");
         params.put("method", "mark_unread");
@@ -93,7 +93,7 @@ public class MicrosubAction {
             i++;
         }
         boolean success = doMicrosubRequest(params);
-        if (success) {
+        if (success && showMessage) {
             Snackbar.make(layout, context.getString(R.string.item_marked_unread), Snackbar.LENGTH_SHORT).show();
         }
     }
@@ -113,7 +113,7 @@ public class MicrosubAction {
     /**
      * Move post.
      */
-    public void movePost(String channelId, String channelName, String postId) {
+    public boolean movePost(String channelId, String channelName, String postId) {
         Map<String, String> params = new HashMap<>();
         params.put("action", "timeline");
         params.put("method", "move");
@@ -123,6 +123,8 @@ public class MicrosubAction {
         if (success) {
             Snackbar.make(layout, String.format(context.getString(R.string.post_moved), channelName), Snackbar.LENGTH_SHORT).show();
         }
+
+        return success;
     }
 
     /**

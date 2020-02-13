@@ -647,7 +647,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
                         case R.id.timeline_entry_mark_unread:
                             List<String> unreadEntries = new ArrayList<>();
-                            new MicrosubAction(TimelineDetailActivity.this, user, layout).markUnread(entry.getChannelId(), unreadEntries);
+                            new MicrosubAction(TimelineDetailActivity.this, user, layout).markUnread(entry.getChannelId(), unreadEntries, true);
                             break;
 
                         case R.id.timeline_entry_mark_read:

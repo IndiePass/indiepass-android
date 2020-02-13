@@ -1116,7 +1116,13 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                                     if (checkedItem != null) {
                                         for (Channel channel : channels) {
                                             if (channel.getName() == checkedItem) {
-                                                new MicrosubAction(context, user, layout).movePost(channel.getUid(), channel.getName(), entry.getId());
+                                                MicrosubAction ms = new MicrosubAction(context, user, layout);
+                                                boolean moved = ms.movePost(channel.getUid(), channel.getName(), entry.getId());
+                                                if (moved && channel.getUid().equals(Preferences.getPreference(context, "pref_key_read_later", ""))) {
+                                                    List<String> unreadEntries = new ArrayList<>();
+                                                    unreadEntries.add(entry.getId());
+                                                    ms.markUnread(channel.getUid(), unreadEntries, false);
+                                                }
                                                 items.remove(position);
                                                 notifyDataSetChanged();
                                                 break;
@@ -1132,7 +1138,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             List<String> unreadEntries = new ArrayList<>();
                             unreadEntries.add(entry.getId());
                             entry.setRead(false);
-                            new MicrosubAction(context, user, layout).markUnread(channelId, unreadEntries);
+                            new MicrosubAction(context, user, layout).markUnread(channelId, unreadEntries, true);
                             break;
 
                         case R.id.timeline_entry_mark_read:
