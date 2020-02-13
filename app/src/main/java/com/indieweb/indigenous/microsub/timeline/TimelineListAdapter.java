@@ -1133,7 +1133,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             unreadEntries.add(entry.getId());
                             entry.setRead(false);
                             new MicrosubAction(context, user, layout).markUnread(channelId, unreadEntries);
-                            Snackbar.make(layout, context.getString(R.string.item_marked_unread), Snackbar.LENGTH_SHORT).show();
                             break;
 
                         case R.id.timeline_entry_mark_read:
@@ -1141,7 +1140,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             readEntries.add(entry.getId());
                             entry.setRead(true);
                             new MicrosubAction(context, user, layout).markRead(channelId, readEntries, false);
-                            Snackbar.make(layout, context.getString(R.string.item_marked_read), Snackbar.LENGTH_SHORT).show();
                             break;
 
                         case R.id.timeline_entry_debug:

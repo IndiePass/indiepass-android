@@ -648,13 +648,11 @@ public class TimelineDetailActivity extends AppCompatActivity {
                         case R.id.timeline_entry_mark_unread:
                             List<String> unreadEntries = new ArrayList<>();
                             new MicrosubAction(TimelineDetailActivity.this, user, layout).markUnread(entry.getChannelId(), unreadEntries);
-                            Snackbar.make(layout, getString(R.string.item_marked_unread), Snackbar.LENGTH_SHORT).show();
                             break;
 
                         case R.id.timeline_entry_mark_read:
                             List<String> readEntries = new ArrayList<>();
                             new MicrosubAction(TimelineDetailActivity.this, user, layout).markRead(entry.getChannelId(), readEntries, false);
-                            Snackbar.make(layout, getString(R.string.item_marked_read), Snackbar.LENGTH_SHORT).show();
                             break;
 
                         case R.id.timeline_entry_debug:

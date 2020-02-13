@@ -259,7 +259,6 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     entries.add(firstEntryId);
                 }
                 new MicrosubAction(getApplicationContext(), user, layout).markRead(channelId, entries, clearAll);
-                Snackbar.make(layout, getString(R.string.marked_as_read), Snackbar.LENGTH_SHORT).show();
                 return true;
 
             case R.id.timeline_style:

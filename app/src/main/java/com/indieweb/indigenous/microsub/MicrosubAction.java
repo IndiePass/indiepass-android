@@ -31,6 +31,8 @@ public class MicrosubAction {
      *
      * @param params
      *   The params to send.
+     *
+     * @return boolean
      */
     private boolean doMicrosubRequest(Map<String, String> params) {
 
@@ -66,7 +68,15 @@ public class MicrosubAction {
                 i++;
             }
         }
-        doMicrosubRequest(params);
+        boolean success = doMicrosubRequest(params);
+        if (success) {
+            if (all) {
+                Snackbar.make(layout, context.getString(R.string.marked_as_read), Snackbar.LENGTH_SHORT).show();
+            }
+            else {
+                Snackbar.make(layout, context.getString(R.string.item_marked_read), Snackbar.LENGTH_SHORT).show();
+            }
+        }
     }
 
     /**
@@ -82,7 +92,10 @@ public class MicrosubAction {
             params.put("entry[" + i + "]", entry);
             i++;
         }
-        doMicrosubRequest(params);
+        boolean success = doMicrosubRequest(params);
+        if (success) {
+            Snackbar.make(layout, context.getString(R.string.item_marked_unread), Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     /**
