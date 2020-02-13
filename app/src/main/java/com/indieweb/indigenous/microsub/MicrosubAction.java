@@ -53,7 +53,7 @@ public class MicrosubAction {
     /**
      * Mark entries read.
      */
-    public void markRead(String channelId, List<String> entries, boolean all) {
+    public void markRead(String channelId, List<String> entries, boolean all, boolean showMessage) {
         Map<String, String> params = new HashMap<>();
         params.put("action", "timeline");
         params.put("method", "mark_read");
@@ -69,7 +69,7 @@ public class MicrosubAction {
             }
         }
         boolean success = doMicrosubRequest(params);
-        if (success) {
+        if (success && showMessage) {
             if (all) {
                 Snackbar.make(layout, context.getString(R.string.marked_as_read), Snackbar.LENGTH_SHORT).show();
             }

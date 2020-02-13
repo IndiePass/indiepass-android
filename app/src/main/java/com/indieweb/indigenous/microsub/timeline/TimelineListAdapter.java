@@ -1145,7 +1145,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             List<String> readEntries = new ArrayList<>();
                             readEntries.add(entry.getId());
                             entry.setRead(true);
-                            new MicrosubAction(context, user, layout).markRead(channelId, readEntries, false);
+                            new MicrosubAction(context, user, layout).markRead(channelId, readEntries, false, true);
                             break;
 
                         case R.id.timeline_entry_debug:

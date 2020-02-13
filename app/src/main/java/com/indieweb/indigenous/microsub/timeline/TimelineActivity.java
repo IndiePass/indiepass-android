@@ -258,7 +258,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     entries.clear();
                     entries.add(firstEntryId);
                 }
-                new MicrosubAction(getApplicationContext(), user, layout).markRead(channelId, entries, clearAll);
+                new MicrosubAction(getApplicationContext(), user, layout).markRead(channelId, entries, clearAll, true);
                 return true;
 
             case R.id.timeline_style:
@@ -772,7 +772,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             if (!fromCache && !isGlobalUnread && !isSourceView && (unread > 0 || unread == -1) && entries.size() > 0
                     && Preferences.getPreference(getApplicationContext(), "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_CHANNEL_CLICK
                     && !readLater.equals(channelId)) {
-                new MicrosubAction(TimelineActivity.this, user, layout).markRead(channelId, entries, false);
+                new MicrosubAction(TimelineActivity.this, user, layout).markRead(channelId, entries, false, false);
             }
 
             // Add mark read.
