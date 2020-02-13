@@ -1,6 +1,7 @@
 <h4>xx/xx/xxxx 0.58</h4>
 <ul>
-    <li>Add 'Read' response type and post option</li>
+    <li>Fix search per channel</li>
+    <li>Add 'Read' post and response type</li>
     <li>Mapbox is now optional and disabled by default</li>
     <li>Read and bookmark are now optional response types in the Reader. Enable them via settings</li>
 </ul>
