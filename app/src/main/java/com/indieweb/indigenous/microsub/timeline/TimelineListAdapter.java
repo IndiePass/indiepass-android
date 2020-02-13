@@ -1100,7 +1100,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             }
                             final CharSequence[] channelItems = displayValues.toArray(new CharSequence[displayValues.size()]);
 
-                            builder.setTitle(context.getString(R.string.select_channel));
+                            builder.setTitle(context.getString(R.string.select_channel_move));
                             builder.setSingleChoiceItems(channelItems, -1, null);
                             builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
                                 @Override

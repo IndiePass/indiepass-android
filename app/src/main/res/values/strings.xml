@@ -101,6 +101,7 @@
     <string name="no_feeds_found">No feeds found</string>
     <string name="search_feed">Search feeds</string>
     <string name="select_channel">Select channel to add the feed to</string>
+    <string name="select_channel_move">Select channel to move the item to</string>
     <string name="subscribe">Subscribe</string>
     <string name="preview">Preview</string>
     <string name="results">Results</string>
