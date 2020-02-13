@@ -333,6 +333,15 @@
         </activity>
 
         <activity
+            android:name=".micropub.post.ReadActivity"
+            android:label="@string/add_read"
+            android:parentActivityName=".LaunchActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.LaunchActivity" />
+        </activity>
+
+        <activity
             android:name=".micropub.post.IssueActivity"
             android:label="@string/add_issue"
             android:parentActivityName=".LaunchActivity">

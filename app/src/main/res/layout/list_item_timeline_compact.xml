@@ -96,6 +96,15 @@
 
         <Button
             android:layout_marginStart="@dimen/list_item_icon_margin_left"
+            android:background="@drawable/button_read"
+            android:id="@+id/itemRead"
+            android:hint="@string/add_read"
+            android:textColorHint="@android:color/transparent"
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size" />
+
+        <Button
+            android:layout_marginStart="@dimen/list_item_icon_margin_left"
             android:background="@drawable/button_external"
             android:id="@+id/itemExternal"
             android:hint="@string/external_link"

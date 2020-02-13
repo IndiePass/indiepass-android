@@ -34,6 +34,7 @@ import com.indieweb.indigenous.micropub.post.GeocacheActivity;
 import com.indieweb.indigenous.micropub.post.IssueActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
 import com.indieweb.indigenous.micropub.post.NoteActivity;
+import com.indieweb.indigenous.micropub.post.ReadActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
@@ -271,6 +272,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivityForResult(CreateBookmark, CREATE_DRAFT);
                 break;
 
+            case R.id.createRead:
+                Intent CreateRead = new Intent(getBaseContext(), ReadActivity.class);
+                startActivityForResult(CreateRead, CREATE_DRAFT);
+                break;
+
             case R.id.createRepost:
                 Intent CreateRepost = new Intent(getBaseContext(), RepostActivity.class);
                 startActivityForResult(CreateRepost, CREATE_DRAFT);
@@ -504,6 +510,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     break;
                 case R.id.createRSVP:
                     menuType = "rsvp";
+                    break;
+                case R.id.createRead:
+                    menuType = "read";
                     break;
                 case R.id.createIssue:
                     menuType = "issue";

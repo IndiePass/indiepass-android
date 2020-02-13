@@ -42,6 +42,7 @@
     <string name="select_account">Select account</string>
     <string name="select_account_info">Switch to an existing account underneath</string>
     <string name="url_hint">http://example.com</string>
+    <string name="url_or_text_hint">URL or title</string>
     <string name="url_repository_hint">http://example.com/repository</string>
     <string name="sign_in_with_domain">Sign in</string>
     <string name="sign_in_info">This login uses IndieAuth and requires you to have a website on your domain that supports IndieAuth.</string>
@@ -176,6 +177,7 @@
     <string name="add_repost">Repost</string>
     <string name="add_like">Like</string>
     <string name="add_bookmark">Bookmark</string>
+    <string name="add_read">Read</string>
     <string name="add_event">Event</string>
     <string name="add_issue">Issue</string>
     <string name="add_rsvp">RSVP</string>
@@ -202,6 +204,7 @@
     <string name="event">Event</string>
     <string name="rsvp">RSVP</string>
     <string name="rsvp_select">Select RSVP</string>
+    <string name="read_select">Select Read status</string>
     <string name="geocache_select">Select log type</string>
     <string name="upload">Upload</string>
     <string name="upload_description">Upload an image, video or audio to your media endpoint. On success, the file URL will be added to the clipboard automatically.</string>
@@ -521,6 +524,13 @@
         <item>no</item>
         <item>maybe</item>
         <item>interested</item>
+    </string-array>
+
+    <!-- These should not be translated -->
+    <string-array name="read_array">
+        <item>to-read</item>
+        <item>reading</item>
+        <item>finished</item>
     </string-array>
 
     <!-- These should not be translated -->

@@ -85,12 +85,6 @@
 
         <item
             android:checkable="false"
-            android:id="@+id/createBookmark"
-            android:icon="@drawable/button_bookmark_idle"
-            android:title="@string/add_bookmark" />
-
-        <item
-            android:checkable="false"
             android:id="@+id/createReply"
             android:icon="@drawable/button_reply_idle"
             android:title="@string/add_reply" />
@@ -100,6 +94,18 @@
             android:id="@+id/createRepost"
             android:icon="@drawable/button_repost_idle"
             android:title="@string/add_repost" />
+
+        <item
+            android:checkable="false"
+            android:id="@+id/createBookmark"
+            android:icon="@drawable/button_bookmark_idle"
+            android:title="@string/add_bookmark" />
+
+        <item
+            android:checkable="false"
+            android:id="@+id/createRead"
+            android:icon="@drawable/button_read_idle"
+            android:title="@string/add_read" />
 
         <item
             android:checkable="false"

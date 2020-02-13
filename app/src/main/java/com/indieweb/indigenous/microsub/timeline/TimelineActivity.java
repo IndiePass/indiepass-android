@@ -209,7 +209,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                         public boolean onQueryTextSubmit(String query) {
                             if (query.length() > 0) {
                                 Intent timelineActivity = new Intent(getApplicationContext(), TimelineActivity.class);
-                                timelineActivity.putExtra("channelId", "global");
+                                timelineActivity.putExtra("channelId", channelId);
                                 timelineActivity.putExtra("search", query);
                                 startActivity(timelineActivity);
                             }

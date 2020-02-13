@@ -40,6 +40,7 @@ import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.ContactActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
+import com.indieweb.indigenous.micropub.post.ReadActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
@@ -134,6 +135,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public Button like;
         public Button repost;
         public Button bookmark;
+        public Button read;
         public Button audio;
         public Button video;
         public Button external;
@@ -160,6 +162,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             holder.row = convertView.findViewById(R.id.timeline_item_row);
             holder.reply = convertView.findViewById(R.id.itemReply);
             holder.bookmark = convertView.findViewById(R.id.itemBookmark);
+            holder.read = convertView.findViewById(R.id.itemRead);
             holder.like = convertView.findViewById(R.id.itemLike);
             holder.repost = convertView.findViewById(R.id.itemRepost);
             holder.audio = convertView.findViewById(R.id.itemAudio);
@@ -305,14 +308,18 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
 
             // Button listeners.
+            holder.read.setOnClickListener(new OnReadClickListener(position));
+
             if (item.getUrl().length() > 0) {
+
                 holder.bookmark.setVisibility(View.VISIBLE);
+                holder.bookmark.setOnClickListener(new OnBookmarkClickListener(position));
+
                 holder.reply.setVisibility(View.VISIBLE);
                 holder.like.setVisibility(View.VISIBLE);
                 holder.repost.setVisibility(View.VISIBLE);
                 holder.external.setVisibility(View.VISIBLE);
 
-                holder.bookmark.setOnClickListener(new OnBookmarkClickListener(position));
                 holder.reply.setOnClickListener(new OnReplyClickListener(position));
                 holder.like.setOnClickListener(new OnLikeClickListener(position));
                 holder.repost.setOnClickListener(new OnRepostClickListener(position));
@@ -805,6 +812,31 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             Intent i = new Intent(context, BookmarkActivity.class);
             TimelineItem item = items.get(this.position);
             i.putExtra("incomingText", item.getUrl());
+            context.startActivity(i);
+        }
+    }
+
+    // Read listener.
+    class OnReadClickListener implements OnClickListener {
+
+        int position;
+
+        OnReadClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent i = new Intent(context, ReadActivity.class);
+            TimelineItem item = items.get(this.position);
+            String text = "";
+            if (item.getUrl().length() > 0) {
+                text = item.getUrl();
+            }
+            else if (item.getName().length() > 0) {
+                text = item.getName();
+            }
+            i.putExtra("incomingText", text);
             context.startActivity(i);
         }
     }

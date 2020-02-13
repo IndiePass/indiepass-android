@@ -111,6 +111,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
     public EditText url;
     public Spinner rsvp;
+    public Spinner read;
     public TextView publishDate;
     public String urlPostKey;
     public String autoSubmit = "";

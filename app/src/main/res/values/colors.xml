@@ -22,6 +22,10 @@
     <color name="transparentProgress">#80000000</color>
     <color name="progressWidget">#ffffff</color>
 
+    <!-- image buttons -->
+    <color name="idleColor">#666666</color>
+    <color name="pressedColor">#DD645E</color>
+
     <!-- photo editor -->
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>

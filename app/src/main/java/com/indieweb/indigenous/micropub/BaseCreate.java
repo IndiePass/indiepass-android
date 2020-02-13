@@ -296,6 +296,20 @@ abstract public class BaseCreate extends BasePlatformCreate {
                 rsvp.setSelection(rsvpSelection);
             }
 
+            // Read.
+            if (read != null && draft.getSpinner().length() > 0) {
+                int readSelection = 0;
+                switch (draft.getSpinner()) {
+                    case "reading":
+                        readSelection = 1;
+                        break;
+                    case "finished":
+                        readSelection = 2;
+                        break;
+                }
+                read.setSelection(readSelection);
+            }
+
             // Geocache log type.
             if (geocacheLogType != null && draft.getSpinner().length() > 0) {
                 int logType = draft.getSpinner().equals("found") ? 0 : 1;

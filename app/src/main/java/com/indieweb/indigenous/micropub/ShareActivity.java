@@ -26,6 +26,7 @@ import com.indieweb.indigenous.micropub.post.GeocacheActivity;
 import com.indieweb.indigenous.micropub.post.IssueActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
 import com.indieweb.indigenous.micropub.post.NoteActivity;
+import com.indieweb.indigenous.micropub.post.ReadActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
@@ -164,6 +165,9 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                         case R.id.createRepost:
                             menuType = "repost";
                             break;
+                        case R.id.createRead:
+                            menuType = "read";
+                            break;
                         case R.id.createEvent:
                             menuType = "event";
                             break;
@@ -266,6 +270,13 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                     CreateRSVP.putExtra("incomingText", incomingText);
                 }
                 startActivity(CreateRSVP);
+                break;
+            case R.id.createRead:
+                Intent CreateRead = new Intent(getBaseContext(), ReadActivity.class);
+                if (incomingText.length() > 0) {
+                    CreateRead.putExtra("incomingText", incomingText);
+                }
+                startActivity(CreateRead);
                 break;
             case R.id.createIssue:
                 Intent CreateIssue = new Intent(getBaseContext(), IssueActivity.class);

@@ -26,6 +26,7 @@ import com.indieweb.indigenous.micropub.post.GeocacheActivity;
 import com.indieweb.indigenous.micropub.post.IssueActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
 import com.indieweb.indigenous.micropub.post.NoteActivity;
+import com.indieweb.indigenous.micropub.post.ReadActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
@@ -186,6 +187,10 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
                     break;
                 case "rsvp":
                     startActivity = new Intent(context, RsvpActivity.class);
+                    startActivity.putExtra("draftId", draft.getId());
+                    break;
+                case "read":
+                    startActivity = new Intent(context, ReadActivity.class);
                     startActivity.putExtra("draftId", draft.getId());
                     break;
                 case "issue":

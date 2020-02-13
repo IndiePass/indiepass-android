@@ -34,6 +34,7 @@ import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.micropub.post.BookmarkActivity;
 import com.indieweb.indigenous.micropub.post.ContactActivity;
 import com.indieweb.indigenous.micropub.post.LikeActivity;
+import com.indieweb.indigenous.micropub.post.ReadActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
@@ -348,6 +349,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
             // Button listeners.
             Button bookmark = findViewById(R.id.itemBookmark);
+            Button read = findViewById(R.id.itemRead);
             Button reply = findViewById(R.id.itemReply);
             Button like = findViewById(R.id.itemLike);
             Button repost = findViewById(R.id.itemRepost);
@@ -357,6 +359,8 @@ public class TimelineDetailActivity extends AppCompatActivity {
             Button audio = findViewById(R.id.itemAudio);
             Button video = findViewById(R.id.itemVideo);
             Button map = findViewById(R.id.itemMap);
+
+            read.setOnClickListener(new OnReadClickListener());
 
             if (item.getUrl().length() > 0) {
                 bookmark.setOnClickListener(new OnBookmarkClickListener());
@@ -453,6 +457,23 @@ public class TimelineDetailActivity extends AppCompatActivity {
         public void onClick(View v) {
             Intent i = new Intent(TimelineDetailActivity.this, BookmarkActivity.class);
             i.putExtra("incomingText", item.getUrl());
+            startActivity(i);
+        }
+    }
+
+    // Read listener.
+    class OnReadClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Intent i = new Intent(TimelineDetailActivity.this, ReadActivity.class);
+            String text = "";
+            if (item.getUrl().length() > 0) {
+                text = item.getUrl();
+            }
+            else if (item.getName().length() > 0) {
+                text = item.getName();
+            }
+            i.putExtra("incomingText", text);
             startActivity(i);
         }
     }

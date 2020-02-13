@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/post_root"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <include layout="@layout/widget_post_status_date" />
+
+            <Spinner
+                android:id="@+id/read"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/read_array"
+                android:prompt="@string/read_select" />
+
+            <EditText
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/inputText"
+                android:id="@+id/url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:hint="@string/url_or_text_hint"
+                android:inputType="textUri|text" />
+
+            <include layout="@layout/widget_body" />
+
+            <include layout="@layout/widget_category" />
+
+            <include layout="@layout/widget_targets" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <include layout="@layout/widget_progress_bar" />
+
+</RelativeLayout>

@@ -1,5 +1,6 @@
 package com.indieweb.indigenous.photoeditor.base;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+@SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
 
     public static final int READ_WRITE_STORAGE = 52;
