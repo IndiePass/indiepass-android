@@ -142,7 +142,6 @@
     <string name="start_date_event">Start: %s</string>
     <string name="end_date_event">End: %s</string>
     <string name="number_of_images">%d images</string>
-    <string name="maps_info">Install a maps application to view this location</string>
     <string name="delete_post_confirm">Are you sure you want to delete this post ?</string>
     <string name="item_marked_unread">Item marked unread</string>
     <string name="item_marked_read">Item marked read</string>
@@ -283,6 +282,12 @@
     <string name="contact_website">Website</string>
     <string name="contact_photo_hint">Photo URL</string>
     <string name="contacts_offline">Showing contacts stored offline</string>
+
+    <!-- Maps -->
+    <string name="maps">Maps</string>
+    <string name="maps_text">Mapbox can be used to show the location of a post in the reader on a map or a complete trip from the tracker. If not enabled, the tracker trips can not be viewed and the map action in the reader will try and open an application on your device which receives the coordinates. If you decide to enable Mapbox, you can also opt out from the Mapbox telemetry settings by clicking on the info icon on a map so no usage information is send to their servers.</string>
+    <string name="pref_key_use_mapbox_title">Enable Mapbox</string>
+    <string name="maps_info">Install a maps application to view this location</string>
 
     <!-- Tracker -->
     <string name="track_not_found">Track not found</string>

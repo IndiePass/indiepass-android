@@ -922,11 +922,26 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
         @Override
         public void onClick(View v) {
+
             TimelineItem item = items.get(this.position);
-            Intent i = new Intent(context, TimelineMapActivity.class);
-            i.putExtra("latitude", item.getLatitude());
-            i.putExtra("longitude", item.getLongitude());
-            context.startActivity(i);
+
+            if (Preferences.getPreference(context, "pref_key_use_mapbox", false)) {
+                Intent i = new Intent(context, TimelineMapActivity.class);
+                i.putExtra("latitude", item.getLatitude());
+                i.putExtra("longitude", item.getLongitude());
+                context.startActivity(i);
+            }
+            else {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri geoLocation = Uri.parse("geo:" + item.getLatitude() + "," + item.getLongitude());
+                intent.setData(geoLocation);
+                if (intent.resolveActivity(context.getPackageManager()) != null) {
+                        context.startActivity(intent);
+                }
+                else {
+                    Snackbar.make(layout, context.getString(R.string.maps_info), Snackbar.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 

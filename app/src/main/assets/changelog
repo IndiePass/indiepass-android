@@ -1,4 +1,8 @@
-<h4>08/02/2020 - 0.55 / 0.56</h4>
+<h4>xx/xx/xxxx 0.58</h4>
+<ul>
+    <li>Mapbox is now optional and disabled by default</li>
+</ul>
+<h4>08/02/2020 - 0.55 / 0.56 / 0.57</h4>
 <ul>
     <li>Use Mapbox to render a location or track points on a map</li>
     <li>Apply filters and add text or emojis to images before posting</li>

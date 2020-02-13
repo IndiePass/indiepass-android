@@ -46,6 +46,7 @@
             android:layout_height="@dimen/list_item_icon_size" />
 
         <Button
+            android:visibility="gone"
             android:background="@drawable/button_map"
             android:id="@+id/trackMap"
             android:hint="@string/map_track"
