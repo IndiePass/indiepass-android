@@ -1052,7 +1052,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
 
             // Mark read menu item.
-            if (!entry.isRead() && (channelId.equals("global") || Preferences.getPreference(context, "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_MANUAL)) {
+            if (!entry.isRead() && (channelId.equals(Preferences.getPreference(context, "pref_key_read_later", "")) || channelId.equals("global") || Preferences.getPreference(context, "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_MANUAL)) {
                 MenuItem itemMarkRead = menu.findItem(R.id.timeline_entry_mark_read);
                 if (itemMarkRead != null) {
                     itemMarkRead.setVisible(true);

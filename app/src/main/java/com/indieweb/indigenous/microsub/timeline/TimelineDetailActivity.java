@@ -606,7 +606,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
                 }
             }
 
-            if (!entry.isRead() && (item.getChannelId().equals("global") || Preferences.getPreference(TimelineDetailActivity.this, "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_MANUAL)) {
+            if (!entry.isRead() && (item.getChannelId().equals(Preferences.getPreference(getApplicationContext(), "pref_key_read_later", "")) && item.getChannelId().equals("global") || Preferences.getPreference(TimelineDetailActivity.this, "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_MANUAL)) {
                 MenuItem itemMarkRead = menu.findItem(R.id.timeline_entry_mark_read);
                 if (itemMarkRead != null) {
                     itemMarkRead.setVisible(true);
