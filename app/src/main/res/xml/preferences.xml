@@ -197,6 +197,16 @@
             android:title="@string/pref_key_unread_items_channel_title"
             android:summary="@string/pref_key_unread_items_channel_summary"
             android:defaultValue="false" />
+        <SwitchPreference
+            app:iconSpaceReserved="false"
+            android:key="pref_key_response_bookmark"
+            android:title="@string/pref_key_response_bookmark_title"
+            android:defaultValue="false" />
+        <SwitchPreference
+            app:iconSpaceReserved="false"
+            android:key="pref_key_response_read"
+            android:title="@string/pref_key_response_read_title"
+            android:defaultValue="false" />
     </PreferenceCategory>
 
     <PreferenceCategory

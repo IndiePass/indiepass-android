@@ -308,12 +308,22 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
 
             // Button listeners.
-            holder.read.setOnClickListener(new OnReadClickListener(position));
+            if (Preferences.getPreference(context, "pref_key_response_read", false)) {
+                holder.read.setOnClickListener(new OnReadClickListener(position));
+            }
+            else {
+                holder.read.setVisibility(View.GONE);
+            }
 
             if (item.getUrl().length() > 0) {
 
-                holder.bookmark.setVisibility(View.VISIBLE);
-                holder.bookmark.setOnClickListener(new OnBookmarkClickListener(position));
+                if (Preferences.getPreference(context, "pref_key_response_bookmark", false)) {
+                    holder.bookmark.setVisibility(View.VISIBLE);
+                    holder.bookmark.setOnClickListener(new OnBookmarkClickListener(position));
+                }
+                else {
+                    holder.bookmark.setVisibility(View.GONE);
+                }
 
                 holder.reply.setVisibility(View.VISIBLE);
                 holder.like.setVisibility(View.VISIBLE);

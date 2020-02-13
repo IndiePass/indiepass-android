@@ -360,10 +360,22 @@ public class TimelineDetailActivity extends AppCompatActivity {
             Button video = findViewById(R.id.itemVideo);
             Button map = findViewById(R.id.itemMap);
 
-            read.setOnClickListener(new OnReadClickListener());
+            if (Preferences.getPreference(getApplicationContext(), "pref_key_response_read", false)) {
+                read.setOnClickListener(new OnReadClickListener());
+            }
+            else {
+                read.setVisibility(View.GONE);
+            }
 
             if (item.getUrl().length() > 0) {
-                bookmark.setOnClickListener(new OnBookmarkClickListener());
+
+                if (Preferences.getPreference(getApplicationContext(), "pref_key_response_bookmark", false)) {
+                    bookmark.setOnClickListener(new OnBookmarkClickListener());
+                }
+                else {
+                    bookmark.setVisibility(View.GONE);
+                }
+
                 reply.setOnClickListener(new OnReplyClickListener());
                 like.setOnClickListener(new OnLikeClickListener());
                 repost.setOnClickListener(new OnRepostClickListener());

@@ -1,6 +1,8 @@
 <h4>xx/xx/xxxx 0.58</h4>
 <ul>
+    <li>Add 'Read' response type and post option</li>
     <li>Mapbox is now optional and disabled by default</li>
+    <li>Read and bookmark are now optional response types in the Reader. Enable them via settings</li>
 </ul>
 <h4>08/02/2020 - 0.55 / 0.56 / 0.57</h4>
 <ul>

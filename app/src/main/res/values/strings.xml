@@ -428,6 +428,8 @@
     <string name="pref_key_move_item_summary">Allows moving posts from one channel to another.</string>
     <string name="pref_key_read_later_title">Read later channel</string>
     <string name="pref_key_read_later_summary">Enter the id of the channel you use as a \'Read later\' channel. Marking items as read needs to happen manually.</string>
+    <string name="pref_key_response_bookmark_title">Enable bookmark response</string>
+    <string name="pref_key_response_read_title">Enable read response</string>
 
     <!-- Preferences: Media handling -->
     <string name="pref_category_media_title">Media</string>
