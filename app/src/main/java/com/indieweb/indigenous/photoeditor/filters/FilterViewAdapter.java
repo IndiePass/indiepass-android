@@ -82,29 +82,29 @@ public class FilterViewAdapter extends RecyclerView.Adapter<FilterViewAdapter.Vi
     }
 
     private void setupFilters() {
-        mPairList.add(new Pair<>("filters/original.jpg", PhotoFilter.NONE));
-        mPairList.add(new Pair<>("filters/auto_fix.png", PhotoFilter.AUTO_FIX));
-        mPairList.add(new Pair<>("filters/brightness.png", PhotoFilter.BRIGHTNESS));
-        mPairList.add(new Pair<>("filters/contrast.png", PhotoFilter.CONTRAST));
-        mPairList.add(new Pair<>("filters/documentary.png", PhotoFilter.DOCUMENTARY));
-        mPairList.add(new Pair<>("filters/dual_tone.png", PhotoFilter.DUE_TONE));
-        mPairList.add(new Pair<>("filters/fill_light.png", PhotoFilter.FILL_LIGHT));
-        mPairList.add(new Pair<>("filters/fish_eye.png", PhotoFilter.FISH_EYE));
-        mPairList.add(new Pair<>("filters/grain.png", PhotoFilter.GRAIN));
-        mPairList.add(new Pair<>("filters/gray_scale.png", PhotoFilter.GRAY_SCALE));
-        mPairList.add(new Pair<>("filters/lomish.png", PhotoFilter.LOMISH));
-        mPairList.add(new Pair<>("filters/negative.png", PhotoFilter.NEGATIVE));
-        mPairList.add(new Pair<>("filters/posterize.png", PhotoFilter.POSTERIZE));
-        mPairList.add(new Pair<>("filters/saturate.png", PhotoFilter.SATURATE));
-        mPairList.add(new Pair<>("filters/sepia.png", PhotoFilter.SEPIA));
-        mPairList.add(new Pair<>("filters/sharpen.png", PhotoFilter.SHARPEN));
-        mPairList.add(new Pair<>("filters/temprature.png", PhotoFilter.TEMPERATURE));
-        mPairList.add(new Pair<>("filters/tint.png", PhotoFilter.TINT));
-        mPairList.add(new Pair<>("filters/vignette.png", PhotoFilter.VIGNETTE));
-        mPairList.add(new Pair<>("filters/cross_process.png", PhotoFilter.CROSS_PROCESS));
-        mPairList.add(new Pair<>("filters/b_n_w.png", PhotoFilter.BLACK_WHITE));
-        mPairList.add(new Pair<>("filters/flip_horizental.png", PhotoFilter.FLIP_HORIZONTAL));
-        mPairList.add(new Pair<>("filters/flip_vertical.png", PhotoFilter.FLIP_VERTICAL));
-        mPairList.add(new Pair<>("filters/rotate.png", PhotoFilter.ROTATE));
+        mPairList.add(new Pair<>("filters/original.webp", PhotoFilter.NONE));
+        mPairList.add(new Pair<>("filters/auto_fix.webp", PhotoFilter.AUTO_FIX));
+        mPairList.add(new Pair<>("filters/brightness.webp", PhotoFilter.BRIGHTNESS));
+        mPairList.add(new Pair<>("filters/contrast.webp", PhotoFilter.CONTRAST));
+        mPairList.add(new Pair<>("filters/documentary.webp", PhotoFilter.DOCUMENTARY));
+        mPairList.add(new Pair<>("filters/dual_tone.webp", PhotoFilter.DUE_TONE));
+        mPairList.add(new Pair<>("filters/fill_light.webp", PhotoFilter.FILL_LIGHT));
+        mPairList.add(new Pair<>("filters/fish_eye.webp", PhotoFilter.FISH_EYE));
+        mPairList.add(new Pair<>("filters/grain.webp", PhotoFilter.GRAIN));
+        mPairList.add(new Pair<>("filters/gray_scale.webp", PhotoFilter.GRAY_SCALE));
+        mPairList.add(new Pair<>("filters/lomish.webp", PhotoFilter.LOMISH));
+        mPairList.add(new Pair<>("filters/negative.webp", PhotoFilter.NEGATIVE));
+        mPairList.add(new Pair<>("filters/posterize.webp", PhotoFilter.POSTERIZE));
+        mPairList.add(new Pair<>("filters/saturate.webp", PhotoFilter.SATURATE));
+        mPairList.add(new Pair<>("filters/sepia.webp", PhotoFilter.SEPIA));
+        mPairList.add(new Pair<>("filters/sharpen.webp", PhotoFilter.SHARPEN));
+        mPairList.add(new Pair<>("filters/temperature.webp", PhotoFilter.TEMPERATURE));
+        mPairList.add(new Pair<>("filters/tint.webp", PhotoFilter.TINT));
+        mPairList.add(new Pair<>("filters/vignette.webp", PhotoFilter.VIGNETTE));
+        mPairList.add(new Pair<>("filters/cross_process.webp", PhotoFilter.CROSS_PROCESS));
+        mPairList.add(new Pair<>("filters/b_n_w.webp", PhotoFilter.BLACK_WHITE));
+        mPairList.add(new Pair<>("filters/flip_horizontal.webp", PhotoFilter.FLIP_HORIZONTAL));
+        mPairList.add(new Pair<>("filters/flip_vertical.webp", PhotoFilter.FLIP_VERTICAL));
+        mPairList.add(new Pair<>("filters/rotate.webp", PhotoFilter.ROTATE));
     }
 }
