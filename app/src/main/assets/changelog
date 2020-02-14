@@ -3,6 +3,7 @@
     <li>Fix search per channel</li>
     <li>Add 'Read' post and response type</li>
     <li>Mapbox is now optional and disabled by default</li>
+    <li>Allow to show unread items per channel only. Works great if you mark items read manually</li>
     <li>Read and bookmark are now optional response types in the Reader. Enable them via settings</li>
 </ul>
 <h4>08/02/2020 - 0.55 / 0.56 / 0.57</h4>

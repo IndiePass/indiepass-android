@@ -18,6 +18,11 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/timeline_item_status"
+        android:title="@string/timeline_item_status_unread"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/timeline_list_refresh"
         android:title="@string/timeline_list_refresh"
         app:showAsAction="never" />

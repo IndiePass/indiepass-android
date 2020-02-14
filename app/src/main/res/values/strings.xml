@@ -108,6 +108,8 @@
     <string name="mark_read">Mark read</string>
     <string name="mark_unread">Mark unread</string>
     <string name="mark_all_read">Mark all read</string>
+    <string name="timeline_item_status_unread">Show unread items only</string>
+    <string name="timeline_item_status_all">Show all items</string>
     <string name="move_item">Move</string>
     <string name="title_activity_share">Share</string>
     <string name="audio">Listen to audio</string>

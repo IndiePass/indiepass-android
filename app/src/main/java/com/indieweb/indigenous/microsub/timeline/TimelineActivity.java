@@ -67,6 +67,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     boolean allReadVisible = false;
     List<String> entries = new ArrayList<>();
     Integer unread;
+    boolean showUnread = false;
     Menu mainMenu;
     boolean isSourceView = false;
     boolean isGlobalUnread = false;
@@ -251,6 +252,18 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 Utility.showDebugInfo(getApplicationContext(), debugResponse);
                 return true;
 
+            case R.id.timeline_item_status:
+                showUnread = !showUnread;
+                if (showUnread) {
+                    item.setTitle(getString(R.string.timeline_item_status_all));
+                }
+                else {
+                    item.setTitle(getString(R.string.timeline_item_status_unread));
+                }
+                refreshLayout.setRefreshing(true);
+                startTimeline();
+                return true;
+
             case R.id.timeline_mark_all_read:
                 boolean clearAll = false;
                 if (!channelId.equals("global")) {
@@ -370,7 +383,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             MicrosubEndpoint += "?action=timeline&channel=" + channelId;
 
             // Global unread.
-            if (isGlobalUnread) {
+            if (isGlobalUnread || showUnread) {
                 MicrosubEndpoint += "&is_read=false";
             }
 
