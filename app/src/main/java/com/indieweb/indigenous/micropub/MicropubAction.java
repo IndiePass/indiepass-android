@@ -443,8 +443,11 @@ public class MicropubAction {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        String message = Utility.parseNetworkError(error, context, R.string.micropub_config_network_error, R.string.micropub_config_error);
-                        Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
+                        try {
+                            String message = Utility.parseNetworkError(error, context, R.string.micropub_config_network_error, R.string.micropub_config_error);
+                            Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
+                        }
+                        catch (Exception ignored) {}
                     }
                 }
         )

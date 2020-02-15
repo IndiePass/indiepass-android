@@ -58,7 +58,11 @@ abstract public class BaseFragment extends Fragment implements VolleyRequestList
     public void OnFailureRequest(VolleyError error) {
         setShowRefreshedMessage(false);
         checkRefreshingStatus();
-        String message = Utility.parseNetworkError(error, requireContext(), R.string.request_failed, R.string.request_failed_unknown);
+        String message = getString(R.string.request_failed_unknown);
+        try {
+            message = Utility.parseNetworkError(error, requireContext(), R.string.request_failed, R.string.request_failed_unknown);
+        }
+        catch (Exception ignored) {}
         Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
     }
 
