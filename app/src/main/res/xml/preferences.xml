@@ -251,29 +251,6 @@
 
     <PreferenceCategory
         android:layout="@layout/preference_category_custom"
-        android:title="@string/maps"
-        android:summary="@string/maps_text">
-        <SwitchPreference
-            app:iconSpaceReserved="false"
-            android:key="pref_key_use_mapbox"
-            android:title="@string/pref_key_use_mapbox_title"
-            android:defaultValue="false" />
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:key="pref_key_category_tracker"
-        android:layout="@layout/preference_category_custom"
-        android:title="@string/pref_category_tracker_title"
-        android:summary="@string/pref_category_tracker_summary">
-        <SwitchPreference
-            app:iconSpaceReserved="false"
-            android:key="pref_key_tracker_enable"
-            android:title="@string/pref_category_tracker_enable"
-            android:defaultValue="false" />
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:layout="@layout/preference_category_custom"
         android:title="@string/pref_category_contact_title"
         android:summary="@string/pref_category_contact_summary">
         <SwitchPreference

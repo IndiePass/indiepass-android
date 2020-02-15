@@ -6,13 +6,10 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.preference.Preference;
-import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceScreen;
 
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.push.PushNotificationActivity;
-import com.indieweb.indigenous.tracker.TrackerUtils;
 
 @SuppressWarnings("ConstantConditions")
 public class SettingsFragment extends PreferenceFragmentCompat {
@@ -132,23 +129,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
-        if (!TrackerUtils.supportsTracker()) {
-            PreferenceScreen preferenceScreen = findPreference("preferenceScreen");
-            PreferenceCategory tracker = findPreference("pref_key_category_tracker");
-            if (tracker != null) {
-                preferenceScreen.removePreference(tracker);
-            }
-        }
-        else {
-            Preference tracker = findPreference("pref_key_tracker_enable");
-            tracker.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    callback.onPreferenceChanged(R.id.nav_tracker, Boolean.valueOf(newValue.toString()));
-                    return true;
-                }
-            });
-        }
     }
 
     /**

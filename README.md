@@ -40,9 +40,6 @@ https://indigenous.realize.be
   - Manage channels and feeds
   - Offline reading, optional via settings
 - Share intents: receive text or images to directly share
-- GPS tracker: log your itineraries when walking, running, flying and so on.
-  When posting to your site, the data will be send using the micropub
-  endpoint as a trip.
 - Push notifications: receive push notifications if you have an account
   on https://indigenous.realize.be
 

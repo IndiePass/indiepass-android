@@ -318,7 +318,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
                 reference.setVisibility(View.GONE);
             }
 
-            // Image or map.
+            // Image.
             ImageView image = findViewById(R.id.timeline_image);
             TextView imageCount = findViewById(R.id.timeline_image_count);
             CardView card = findViewById(R.id.timeline_card);
@@ -562,22 +562,14 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            if (Preferences.getPreference(getApplicationContext(), "pref_key_use_mapbox", false)) {
-                Intent i = new Intent(getApplicationContext(), TimelineMapActivity.class);
-                i.putExtra("latitude", item.getLatitude());
-                i.putExtra("longitude", item.getLongitude());
-                startActivity(i);
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            Uri geoLocation = Uri.parse("geo:" + item.getLatitude() + "," + item.getLongitude());
+            intent.setData(geoLocation);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
             }
             else {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                Uri geoLocation = Uri.parse("geo:" + item.getLatitude() + "," + item.getLongitude());
-                intent.setData(geoLocation);
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                }
-                else {
-                    Snackbar.make(layout, getString(R.string.maps_info), Snackbar.LENGTH_SHORT).show();
-                }
+                Snackbar.make(layout, getString(R.string.maps_info), Snackbar.LENGTH_SHORT).show();
             }
         }
     }

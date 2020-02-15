@@ -43,7 +43,6 @@ import com.indieweb.indigenous.micropub.post.VenueActivity;
 import com.indieweb.indigenous.micropub.source.PostListFragment;
 import com.indieweb.indigenous.microsub.channel.ChannelFragment;
 import com.indieweb.indigenous.model.User;
-import com.indieweb.indigenous.tracker.TrackerFragment;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Preferences;
 
@@ -63,8 +62,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     public static final int CREATE_DRAFT = 1001;
     public static final int POST_DRAFT = 1002;
-    public static final int CREATE_TRACK = 1003;
-    public static final int UPDATE_TRACK = 1004;
     public static final int RESULT_DRAFT_SAVED = 1005;
     public static final int UPDATE_POST = 1006;
     public static final int EDIT_IMAGE = 1007;
@@ -106,10 +103,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             setDraftMenuItemTitle(true);
             Snackbar.make(drawer, getString(R.string.post_success), Snackbar.LENGTH_SHORT).show();
             startFragment(new DraftFragment());
-        }
-
-        if ((requestCode == CREATE_TRACK || requestCode == UPDATE_TRACK) && resultCode == RESULT_OK) {
-            startFragment(new TrackerFragment());
         }
     }
 
@@ -220,11 +213,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_contacts:
                 close = true;
                 fragment = new ContactFragment();
-                break;
-
-            case R.id.nav_tracker:
-                close = true;
-                fragment = new TrackerFragment();
                 break;
 
             case R.id.nav_posts:
@@ -425,11 +413,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (micropubMediaEndpoint == null || micropubMediaEndpoint.length() == 0) {
             setMenuItemVisibility(R.id.nav_upload, false);
             setMenuItemVisibility(R.id.nav_upload2, false);
-        }
-
-        // Hide Tracker if setting is not enabled.
-        if (!Preferences.getPreference(this, "pref_key_tracker_enable", false)) {
-            setMenuItemVisibility(R.id.nav_tracker, false);
         }
 
         // Hide Posts if setting is not enabled.

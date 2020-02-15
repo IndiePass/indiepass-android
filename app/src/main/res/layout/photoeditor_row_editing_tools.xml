@@ -17,7 +17,8 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:src="@drawable/photoeditor_brush" />
+        tools:src="@drawable/photoeditor_brush"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/txtTool"

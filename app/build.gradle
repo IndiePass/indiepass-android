@@ -14,13 +14,11 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField "String", 'MAPBOX_ACCESS_TOKEN', '"pk.eyJ1Ijoic3dlbnRlbCIsImEiOiJjazV0ajNma2MwNXozM2ZvenVoY2gwcHliIn0.vgrB3fUXGVWixLszdRhqOA"'
             buildConfigField "String", 'SITE_ACCOUNT_CHECK_ENDPOINT', '"https://indigenous.realize.be/check-account"'
             buildConfigField "String", 'SITE_DEVICE_REGISTRATION_ENDPOINT', '"https://indigenous.realize.be/register-device"'
         }
         release {
             minifyEnabled false
-            buildConfigField "String", 'MAPBOX_ACCESS_TOKEN', '"pk.eyJ1Ijoic3dlbnRlbCIsImEiOiJjazV0ajNma2MwNXozM2ZvenVoY2gwcHliIn0.vgrB3fUXGVWixLszdRhqOA"'
             buildConfigField "String", 'SITE_ACCOUNT_CHECK_ENDPOINT', '"https://indigenous.realize.be/check-account"'
             buildConfigField "String", 'SITE_DEVICE_REGISTRATION_ENDPOINT', '"https://indigenous.realize.be/register-device"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -57,7 +55,6 @@ dependencies {
     implementation 'com.4ert:audioview:0.4.2'
     implementation 'me.pushy:sdk:1.0.44'
     implementation 'com.karumi:dexter:4.2.0'
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.6.2'
     implementation 'ja.burhanrashid52:photoeditor:1.0.0'
 
     // Specific to Google Playstore

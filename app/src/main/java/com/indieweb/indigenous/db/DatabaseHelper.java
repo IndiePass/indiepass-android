@@ -1,6 +1,5 @@
 package com.indieweb.indigenous.db;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,21 +8,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.indieweb.indigenous.model.Cache;
 import com.indieweb.indigenous.model.Draft;
-import com.indieweb.indigenous.model.TrackerPoint;
 import com.indieweb.indigenous.model.TimelineStyle;
-import com.indieweb.indigenous.model.Track;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_SUMMARY;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 25;
+    private static final int DATABASE_VERSION = 27;
     private static final String DATABASE_NAME = "indigenous";
 
     public DatabaseHelper(Context context) {
@@ -34,19 +28,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(Draft.CREATE_TABLE);
         db.execSQL(TimelineStyle.CREATE_TABLE);
-        db.execSQL(Track.CREATE_TABLE);
-        db.execSQL(TrackerPoint.CREATE_TABLE);
         db.execSQL(Cache.CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(TrackerPoint.CREATE_TABLE);
-        db.execSQL(Track.CREATE_TABLE);
         db.execSQL(TimelineStyle.CREATE_TABLE);
-        db.execSQL("drop table " + Draft.TABLE_NAME);
         db.execSQL(Draft.CREATE_TABLE);
         db.execSQL(Cache.CREATE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS tracks");
+        db.execSQL("DROP TABLE IF EXISTS points");
     }
 
     /**
@@ -88,255 +79,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.close();
     }
-
-    /**
-     * Saves a track.
-     *
-     * @param track
-     *   The track to save.
-     */
-    public void saveTrack(Track track, boolean setEnd) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        // Values which will always be set.
-        values.put(Track.COLUMN_TITLE, track.getTitle());
-        values.put(Track.COLUMN_TRANSPORT, track.getTransport());
-
-        if (track.getId() > 0) {
-            if (setEnd) {
-                values.put(Track.COLUMN_END_TIME,dateFormat.format(System.currentTimeMillis()));
-            }
-            db.update(Track.TABLE_NAME, values, Track.COLUMN_ID + "=" + track.getId(), null);
-        }
-        else {
-            values.put(Track.COLUMN_INTERVAL, track.getInterval());
-            values.put(Track.COLUMN_ACCOUNT, track.getAccount());
-            values.put(Track.COLUMN_START_TIME,dateFormat.format(System.currentTimeMillis()));
-            values.put(Track.COLUMN_END_TIME,dateFormat.format(System.currentTimeMillis()));
-            db.insert(Track.TABLE_NAME, null, values);
-        }
-        db.close();
-    }
-
-    /**
-     * Saves a point.
-     *
-     * @param point
-     *   The point to save.
-     */
-    public void savePoint(TrackerPoint point) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(TrackerPoint.COLUMN_POINT, point.getPoint());
-        values.put(TrackerPoint.COLUMN_TRACK_ID, point.getTrackId());
-
-        db.insert(TrackerPoint.TABLE_NAME, null, values);
-        db.close();
-    }
-
-    /**
-     * Get points for a track.
-     *
-     * @param trackId
-     *   The track id.
-     *
-     * @return points
-     */
-    public Map<Integer, TrackerPoint> getPoints(int trackId) {
-        @SuppressLint("UseSparseArrays")
-        Map<Integer, TrackerPoint> points = new LinkedHashMap<>();
-
-        // Select query
-        String selectQuery = "SELECT * FROM " + TrackerPoint.TABLE_NAME + " WHERE " + TrackerPoint.COLUMN_TRACK_ID + "=" + trackId + " " +
-                "ORDER BY " + TrackerPoint.COLUMN_ID + " ASC";
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        // Looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                TrackerPoint point = new TrackerPoint();
-                point.setId(cursor.getInt(cursor.getColumnIndex(TrackerPoint.COLUMN_ID)));
-                point.setPoint(cursor.getString(cursor.getColumnIndex(TrackerPoint.COLUMN_POINT)));
-                points.put(point.getId(), point);
-            } while (cursor.moveToNext());
-        }
-
-        // close db connection
-        db.close();
-
-        return points;
-    }
-
-    /**
-     * Gets a single track.
-     *
-     * @param id
-     *   The track id.
-     *
-     * @return Track
-     */
-    public Track getTrack(long id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(Track.TABLE_NAME,
-                new String[]{
-                        Track.COLUMN_ID,
-                        Track.COLUMN_ACCOUNT,
-                        Track.COLUMN_TITLE,
-                        Track.COLUMN_START_LOCATION,
-                        Track.COLUMN_END_LOCATION,
-                        Track.COLUMN_INTERVAL,
-                        Track.COLUMN_TRANSPORT,
-                        Track.COLUMN_START_TIME,
-                        Track.COLUMN_END_TIME
-                },
-                Track.COLUMN_ID + "=?",
-                new String[]{String.valueOf(id)}, null, null, null, null);
-
-        Track track = new Track();
-        track.setId(0);
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            setTrackProperties(track, cursor);
-            cursor.close();
-        }
-
-        return track;
-    }
-
-
-    /**
-     * Get all tracks.
-     *
-     * @param account
-     *   The account to get the tracks for.
-     *
-     * @return <Track>
-     */
-    public List<Track> getTracks(String account) {
-        List<Track> tracks = new ArrayList<>();
-
-        // Select query
-        String selectQuery = "SELECT * FROM " + Track.TABLE_NAME + " WHERE " + Track.COLUMN_ACCOUNT + "='" + account + "' " +
-                "ORDER BY " + Track.COLUMN_START_TIME + " DESC";
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        // Looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                Track track = new Track();
-                setTrackProperties(track, cursor);
-                tracks.add(track);
-            } while (cursor.moveToNext());
-        }
-
-        // close db connection
-        db.close();
-
-        // return tracks list
-        return tracks;
-    }
-
-    /**
-     * Gets the latest track id.
-     *
-     * @return int id
-     */
-    public int getLatestTrackId(String account) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        // Select query
-        String selectQuery = "SELECT " + Track.COLUMN_ID + " FROM " + Track.TABLE_NAME + "" +
-                " WHERE " + Track.COLUMN_ACCOUNT + "='" + account + "' " +
-                "ORDER BY " + Track.COLUMN_START_TIME + " DESC LIMIT 1";
-
-        int id = 0;
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            id = cursor.getInt(cursor.getColumnIndex(Track.COLUMN_ID));
-            cursor.close();
-        }
-
-        return id;
-    }
-
-    /**
-     * Deletes all tracker data.
-     */
-    public void deleteAllTrackerData() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        db.execSQL("delete from " + Track.TABLE_NAME);
-        db.execSQL("delete from " + TrackerPoint.TABLE_NAME);
-    }
-
-    /**
-     * Set track properties.
-     *
-     * @param track
-     *   The track.
-     * @param cursor
-     *   The cursor
-     */
-    private void setTrackProperties(Track track, Cursor cursor) {
-        track.setId(cursor.getInt(cursor.getColumnIndex(Track.COLUMN_ID)));
-        track.setAccount(cursor.getString(cursor.getColumnIndex(Track.COLUMN_ACCOUNT)));
-        track.setTitle(cursor.getString(cursor.getColumnIndex(Track.COLUMN_TITLE)));
-        track.setStartTime(cursor.getString(cursor.getColumnIndex(Track.COLUMN_START_TIME)));
-        track.setEndTime(cursor.getString(cursor.getColumnIndex(Track.COLUMN_END_TIME)));
-        track.setInterval(cursor.getInt(cursor.getColumnIndex(Track.COLUMN_INTERVAL)));
-        track.setStartLocation(cursor.getString(cursor.getColumnIndex(Track.COLUMN_START_LOCATION)));
-        track.setEndLocation(cursor.getString(cursor.getColumnIndex(Track.COLUMN_END_LOCATION)));
-        track.setTransport(cursor.getString(cursor.getColumnIndex(Track.COLUMN_TRANSPORT)));
-        track.setPointCount(this.getPointCount(track.getId()));
-    }
-
-    /**
-     * Deletes a track.
-     *
-     * @param id
-     *   The track id to delete.
-     */
-    public void deleteTrack(Integer id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(Track.TABLE_NAME, Track.COLUMN_ID + "=" + id, null);
-        db.delete(TrackerPoint.TABLE_NAME, TrackerPoint.COLUMN_TRACK_ID + "=" + id, null);
-        db.close();
-    }
-
-    /**
-     * Get the number of points for a track.
-     *
-     * @param trackId
-     *   The track id.
-     *
-     * @return int
-     *   The number of drafts.
-     */
-    private int getPointCount(int trackId) {
-        int count = 0;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor dataCount;
-        if (db != null) {
-            dataCount = db.rawQuery("select " + TrackerPoint.COLUMN_ID + " from " + TrackerPoint.TABLE_NAME + " where " + TrackerPoint.COLUMN_TRACK_ID + "=" + trackId, null);
-            count = dataCount.getCount();
-            //Log.d("indigenous_debug", "Points for " + trackId + ": " + count);
-            //dataCount = db.rawQuery("select " + Point.COLUMN_ID + " from " + Point.TABLE_NAME, null);
-            //count = dataCount.getCount();
-            //Log.d("indigenous_debug", "All points: " + count);
-            db.close();
-        }
-        return count;
-    }
-
 
     /**
      * Saves a draft.
@@ -470,7 +212,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // close db connection
         db.close();
 
-        // return tracks list
+        // return drafts list
         return drafts;
     }
 

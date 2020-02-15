@@ -23,11 +23,6 @@
             android:title="@string/upload" />
 
         <item
-            android:id="@+id/nav_tracker"
-            android:icon="@drawable/button_location_idle"
-            android:title="@string/tracker" />
-
-        <item
             android:id="@+id/nav_drafts"
             android:icon="@drawable/nav_drafts"
             android:title="@string/drafts" />
