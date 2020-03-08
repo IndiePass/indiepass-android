@@ -114,4 +114,5 @@ https://github.com/EdwardHinkle/indigenous-ios
 
 ## Other clients
 
-https://github.com/pstuifzand/micropub-android
+- https://github.com/pstuifzand/micropub-android
+- https://gitlab.com/vikanezrimaya/kittybox-android (in development)
