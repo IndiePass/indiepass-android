@@ -114,5 +114,5 @@ https://github.com/EdwardHinkle/indigenous-ios
 
 ## Other Micropub and Microsub clients
 
-There are ton of other (mobile) Micropub clients, see https://indieweb.org/Micropub/Clients and
+There are ton of other (mobile) clients, see https://indieweb.org/Micropub/Clients and
 https://indieweb.org/Microsub
