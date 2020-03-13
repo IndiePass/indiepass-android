@@ -112,6 +112,7 @@ Deprecated - new apps are coming.
 https://indigenous.abode.pub/ios/  
 https://github.com/EdwardHinkle/indigenous-ios
 
-## Other Micropub clients
+## Other Micropub and Microsub clients
 
-There are ton of other (mobile) Micropub clients, see https://indieweb.org/Micropub/Clients
+There are ton of other (mobile) Micropub clients, see https://indieweb.org/Micropub/Clients and
+https://indieweb.org/Microsub
