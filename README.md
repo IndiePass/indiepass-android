@@ -105,13 +105,6 @@ This app uses following external libraries, thank you all!
 - https://github.com/bumptech/glide
 - https://jsoup.org/download
 
-## iOS
-
-Deprecated - new apps are coming.
-
-https://indigenous.abode.pub/ios/  
-https://github.com/EdwardHinkle/indigenous-ios
-
 ## Other Micropub and Microsub clients
 
 There are ton of other (mobile) clients, see https://indieweb.org/Micropub/Clients and
