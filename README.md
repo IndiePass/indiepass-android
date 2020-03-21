@@ -96,7 +96,7 @@ https://github.com/swentel/indigenous-android/blob/master/app/src/main/res/value
 
 ## Credits
 
-This app uses following external libraries, thank you all!
+This app uses following external libraries:
 
 - https://github.com/burhanrashid52/PhotoEditor
 - https://github.com/chrisbanes/PhotoView
