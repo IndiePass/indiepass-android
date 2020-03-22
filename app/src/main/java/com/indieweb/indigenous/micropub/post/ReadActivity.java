@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.BaseCreate;
 import com.indieweb.indigenous.model.Draft;
+import com.indieweb.indigenous.util.Preferences;
 
 public class ReadActivity extends BaseCreate {
 
@@ -18,6 +19,9 @@ public class ReadActivity extends BaseCreate {
         setContentView(R.layout.activity_read);
         read = findViewById(R.id.read);
         super.onCreate(savedInstanceState);
+        if (!preparedDraft) {
+            read.setSelection(Preferences.getPreference(getApplicationContext(), "pref_key_read_default", 1));
+        }
     }
 
     @Override
@@ -34,7 +38,9 @@ public class ReadActivity extends BaseCreate {
             url.setError(getString(R.string.required_field));
         }
         else {
-            bodyParams.put("read-status", read.getSelectedItem().toString());
+            if (!read.getSelectedItem().toString().equals("none")) {
+                bodyParams.put("read-status", read.getSelectedItem().toString());
+            }
             sendBasePost(item);
         }
     }

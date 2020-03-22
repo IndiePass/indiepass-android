@@ -300,11 +300,14 @@ abstract public class BaseCreate extends BasePlatformCreate {
             if (read != null && draft.getSpinner().length() > 0) {
                 int readSelection = 0;
                 switch (draft.getSpinner()) {
-                    case "reading":
+                    case "to-read":
                         readSelection = 1;
                         break;
-                    case "finished":
+                    case "reading":
                         readSelection = 2;
+                        break;
+                    case "finished":
+                        readSelection = 3;
                         break;
                 }
                 read.setSelection(readSelection);
