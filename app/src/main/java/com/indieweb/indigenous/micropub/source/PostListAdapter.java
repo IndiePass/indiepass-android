@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.MicropubAction;
+import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.UpdateActivity;
 import com.indieweb.indigenous.model.PostListItem;
 import com.indieweb.indigenous.model.User;
@@ -82,6 +83,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
         public Button update;
         public Button delete;
         public Button external;
+        public Button reply;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -99,6 +101,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             holder.update = convertView.findViewById(R.id.itemUpdate);
             holder.delete = convertView.findViewById(R.id.itemDelete);
             holder.external = convertView.findViewById(R.id.itemExternal);
+            holder.reply = convertView.findViewById(R.id.itemReply);
             holder.row = convertView.findViewById(R.id.source_post_list_item_row);
             convertView.setTag(holder);
         }
@@ -201,6 +204,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             // Button listeners.
             if (item.getUrl().length() > 0) {
                 holder.external.setOnClickListener(new OnExternalClickListener(position));
+                holder.reply.setOnClickListener(new OnReplyClickListener(position));
 
                 if (showUpdateButton) {
                     holder.update.setVisibility(View.VISIBLE);
@@ -215,6 +219,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             else {
                 holder.update.setVisibility(View.GONE);
                 holder.external.setVisibility(View.GONE);
+                holder.reply.setVisibility(View.GONE);
             }
         }
 
@@ -237,6 +242,24 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             i.putExtra("url", item.getUrl());
             i.putExtra("status", item.getPostStatus());
             ((Activity) context).startActivityForResult(i, UPDATE_POST);
+        }
+    }
+
+    // Reply listener.
+    class OnReplyClickListener implements OnClickListener {
+
+        int position;
+
+        OnReplyClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            final PostListItem item = items.get(this.position);
+            Intent CreateReply = new Intent(context, ReplyActivity.class);
+            CreateReply.putExtra("incomingText", item.getUrl());
+            context.startActivity(CreateReply);
         }
     }
 

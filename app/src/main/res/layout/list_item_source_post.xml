@@ -95,6 +95,15 @@
             android:layout_height="@dimen/list_item_icon_size"
             android:layout_marginStart="@dimen/list_item_icon_margin_left" />
 
+        <Button
+            android:background="@drawable/button_reply"
+            android:id="@+id/itemReply"
+            android:hint="@string/add_reply"
+            android:textColorHint="@android:color/transparent"
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size"
+            android:layout_marginStart="@dimen/list_item_icon_margin_left" />
+
     </LinearLayout>
 
 </LinearLayout>
