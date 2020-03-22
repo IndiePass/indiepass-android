@@ -336,6 +336,8 @@
     <string name="pref_category_posts_summary">Configure posts settings</string>
     <string name="pref_key_read_default_title">Default read status</string>
     <string name="pref_key_read_default_summary">Used for the read post. The read status will not be posted to the server when set to none.</string>
+    <string name="pref_key_visibility_title">Post visibility</string>
+    <string name="pref_key_visibility_summary">Allow setting a post to public, private or unlisted. This value is currently not stored when saving a draft.</string>
     <string name="pref_key_location_visibility_title">Location visibility</string>
     <string name="pref_key_location_visibility_summary">When location is found, show a select widget that allows you to send the location visibility.</string>
     <string name="pref_key_location_label_title">Location name</string>
@@ -501,21 +503,10 @@
         <item>protected</item>
     </string-array>
 
-    <!-- These should not be translated -->
-    <string-array name="transport_array">
-        <item>walk</item>
-        <item>run</item>
-        <item>bike</item>
-        <item>drive</item>
-        <item>train</item>
-        <item>flight</item>
-        <item>boat</item>
-        <item>other</item>
-    </string-array>
-
-    <string-array name="unit_array">
-        <item>second(s)</item>
-        <item>minute(s)</item>
+    <string-array name="visibility_array">
+        <item>public</item>
+        <item>private</item>
+        <item>unlisted</item>
     </string-array>
 
     <string-array name="filter_post_limit">

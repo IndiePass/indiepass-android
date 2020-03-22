@@ -25,6 +25,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <Spinner
+        android:visibility="gone"
+        android:entries="@array/visibility_array"
+        android:id="@+id/postVisibility"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <EditText
         android:textColor="@color/textColor"
         android:textSize="@dimen/inputText"

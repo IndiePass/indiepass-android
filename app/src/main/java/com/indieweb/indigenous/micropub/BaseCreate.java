@@ -9,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -84,6 +85,11 @@ abstract public class BaseCreate extends BasePlatformCreate {
         body = findViewById(R.id.body);
         url = findViewById(R.id.url);
         tags = findViewById(R.id.tags);
+        visibility = findViewById(R.id.postVisibility);
+        if (visibility != null && Preferences.getPreference(getApplicationContext(), "pref_key_post_visibility", false)) {
+            visibility.setVisibility(View.VISIBLE);
+        }
+
         progressBar = findViewById(R.id.progressBar);
         saveAsDraft = findViewById(R.id.saveAsDraft);
         publishDate = findViewById(R.id.publishDate);

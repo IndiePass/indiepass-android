@@ -112,6 +112,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public EditText url;
     public Spinner rsvp;
     public Spinner read;
+    public Spinner visibility;
     public TextView publishDate;
     public String urlPostKey;
     public String autoSubmit = "";
@@ -626,6 +627,11 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                         postStatusValue = "published";
                     }
                     bodyParams.put("post-status", postStatusValue);
+                }
+
+                // Post visibility.
+                if (visibility != null && visibility.getVisibility() == View.VISIBLE) {
+                    bodyParams.put("visibility", visibility.getSelectedItem().toString());
                 }
 
                 // Syndication targets.
