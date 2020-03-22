@@ -1,7 +1,7 @@
 <h4>xx/xx/xxxx 0.59</h4>
 <ul>
-    <li>Allow setting a default read status</li>
     <li>Allow setting the post visibility</li>
+    <li>Allow setting a default read status</li>
     <li>Add reply option in Posts list (?q=source)</li>
 </ul>
 <h4>15/02/2020 0.58</h4>
