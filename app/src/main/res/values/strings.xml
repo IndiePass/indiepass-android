@@ -335,7 +335,7 @@
     <string name="pref_category_posts_title">Posts</string>
     <string name="pref_category_posts_summary">Configure posts settings</string>
     <string name="pref_key_read_default_title">Default read status</string>
-    <string name="pref_key_read_default_summary">This can be set to empty too. The read status will not be posted then to the server.</string>
+    <string name="pref_key_read_default_summary">Used for the read post. The read status will not be posted to the server when set to none.</string>
     <string name="pref_key_location_visibility_title">Location visibility</string>
     <string name="pref_key_location_visibility_summary">When location is found, show a select widget that allows you to send the location visibility.</string>
     <string name="pref_key_location_label_title">Location name</string>
