@@ -166,6 +166,12 @@
             android:defaultValue="false" />
         <SwitchPreference
             app:iconSpaceReserved="false"
+            android:key="pref_key_timeline_author_original"
+            android:title="@string/pref_key_timeline_author_original_title"
+            android:summary="@string/pref_key_timeline_author_original_summary"
+            android:defaultValue="false" />
+        <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_timeline_summary_detail_click"
             android:title="@string/pref_key_timeline_summary_detail_click_title"
             android:summary="@string/pref_key_timeline_summary_detail_click_summary"

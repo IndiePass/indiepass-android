@@ -513,6 +513,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     String ResponseText = "";
                     String ResponseUrl = "";
                     String ResponseLinkText = "";
+                    String ResponseSuffix = "";
                     switch (item.getType()) {
                         case "in-reply-to":
                             ResponseText = "In reply to";
@@ -523,12 +524,18 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             ResponseText = "Like of";
                             ResponseUrl = item.getResponseType("like-of");
                             ResponseLinkText = ResponseUrl;
+                            if (item.getActor().length() > 0) {
+                                ResponseSuffix = " by " + item.getActor();
+                            }
                             break;
                         case "repost-of":
                         case "quotation-of":
                             ResponseText = "Repost of";
                             ResponseUrl = item.getResponseType(item.getType());
                             ResponseLinkText = ResponseUrl;
+                            if (item.getActor().length() > 0) {
+                                ResponseSuffix = " by " + item.getActor();
+                            }
                             break;
                         case "bookmark-of":
                             ResponseText = "Bookmark of";
@@ -545,6 +552,9 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     try {
                         if (ResponseText.length() > 0 && ResponseUrl.length() > 0) {
                             ResponseData = ResponseText + " <a href=\"" + ResponseUrl + "\">" + ResponseLinkText + "</a>";
+                            if (ResponseSuffix.length() > 0) {
+                                ResponseData += " " + ResponseSuffix;
+                            }
                         }
                     }
                     catch (Exception ignored) { }

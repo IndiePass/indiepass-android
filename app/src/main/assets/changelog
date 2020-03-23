@@ -4,6 +4,7 @@
     <li>Allow setting a default read status</li>
     <li>Add reply option in Posts list (?q=source)</li>
     <li>Allow to open audio in favorite player (e.g. VLC)</li>
+    <li>Better context of reposts, quotations and likes in timeline. Can be configured in settings.</li>
 </ul>
 <h4>15/02/2020 0.58</h4>
 <ul>

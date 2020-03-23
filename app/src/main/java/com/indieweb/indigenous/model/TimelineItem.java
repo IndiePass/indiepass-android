@@ -19,6 +19,7 @@ public class TimelineItem implements Serializable {
     private String authorName;
     private String authorPhoto = "";
     private String authorUrl = "";
+    private String actor = "";
     private String channelId = "";
     private String channelName = "";
     private String reference = "";
@@ -151,6 +152,14 @@ public class TimelineItem implements Serializable {
 
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
+    }
+
+    public String getActor() {
+        return actor;
+    }
+
+    public void setActor(String actor) {
+        this.actor = actor;
     }
 
     public String getAuthorPhoto() {

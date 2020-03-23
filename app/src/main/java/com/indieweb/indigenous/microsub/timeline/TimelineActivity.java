@@ -1,5 +1,6 @@
 package com.indieweb.indigenous.microsub.timeline;
 
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -460,6 +461,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
      * @param fromCache
      *   Whether it came from cache
      */
+    @SuppressLint("ClickableViewAccessibility")
     protected void parseTimelineResponse(String response, boolean fromCache) {
         try {
 
@@ -549,6 +551,31 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 else if (channelName != null && channelName.length() > 0) {
                     item.setChannelName(channelName);
                 }
+
+                // Author.
+                if (object.has("author")) {
+
+                    JSONObject author = object.getJSONObject("author");
+                    if (author.has("name")) {
+                        authorName = author.getString("name");
+                    }
+                    String authorUrl = "";
+                    if (author.has("url")) {
+                        authorUrl = author.getString("url");
+                        item.setAuthorUrl(authorUrl);
+                    }
+                    if (authorName.equals("null") && authorUrl.length() > 0) {
+                        authorName = authorUrl;
+                    }
+
+                    if (author.has("photo")) {
+                        String authorPhoto = author.getString("photo");
+                        if (!authorPhoto.equals("null") && authorPhoto.length() > 0) {
+                            item.setAuthorPhoto(authorPhoto);
+                        }
+                    }
+                }
+                item.setAuthorName(authorName);
 
                 // In reply to.
                 if (object.has("in-reply-to")) {
@@ -664,31 +691,6 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 }
                 item.setEnd(end);
 
-                // Author.
-                if (object.has("author")) {
-
-                    JSONObject author = object.getJSONObject("author");
-                    if (author.has("name")) {
-                        authorName = author.getString("name");
-                    }
-                    String authorUrl = "";
-                    if (author.has("url")) {
-                        authorUrl = author.getString("url");
-                        item.setAuthorUrl(authorUrl);
-                    }
-                    if (authorName.equals("null") && authorUrl.length() > 0) {
-                        authorName = authorUrl;
-                    }
-
-                    if (author.has("photo")) {
-                        String authorPhoto = author.getString("photo");
-                        if (!authorPhoto.equals("null") && authorPhoto.length() > 0) {
-                            item.setAuthorPhoto(authorPhoto);
-                        }
-                    }
-                }
-                item.setAuthorName(authorName);
-
                 // Content.
                 if (object.has("content") && addContent) {
                     JSONObject content = object.getJSONObject("content");
@@ -776,6 +778,12 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 item.setTextContent(textContent);
                 item.setHtmlContent(htmlContent);
 
+                // Swap reference and content if content is empty.
+                if (Preferences.getPreference(getApplicationContext(), "pref_key_timeline_author_original", false) && textContent.length() == 0 && htmlContent.length() == 0 && item.getReference().length() > 0) {
+                    item.setTextContent(item.getReference());
+                    item.setReference("");
+                }
+
                 TimelineItems.add(item);
             }
 
@@ -856,6 +864,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
      * Load more touch button.
      */
     private View.OnTouchListener loadMoreTouch = new View.OnTouchListener() {
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View v, MotionEvent motionEvent) {
             switch(motionEvent.getAction()) {
@@ -890,13 +899,12 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
     /**
      * Returns the reference content.
-     *
-     * @param object
+     *  @param object
      *   A JSON object.
      * @param url
      *   The url to find in references
      * @param item
-     *   The current timeline item.
+ *   The current timeline item.
      */
     private void checkReference(JSONObject object, String url, TimelineItem item) {
 
@@ -931,6 +939,34 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                         item.setVideo(video);
                     }
 
+                    // Swap actor and author for likes and reposts.
+                    if (Preferences.getPreference(getApplicationContext(), "pref_key_timeline_author_original", false) && ref.has("author")) {
+                        String authorName = "";
+                        JSONObject author = ref.getJSONObject("author");
+                        if (author.has("name")) {
+                            authorName = author.getString("name");
+                        }
+                        String authorUrl = "";
+                        if (author.has("url")) {
+                            authorUrl = author.getString("url");
+                            item.setAuthorUrl(authorUrl);
+                        }
+                        if (authorName.equals("null") && authorUrl.length() > 0) {
+                            authorName = authorUrl;
+                        }
+
+                        if (author.has("photo")) {
+                            String authorPhoto = author.getString("photo");
+                            if (!authorPhoto.equals("null") && authorPhoto.length() > 0) {
+                                item.setAuthorPhoto(authorPhoto);
+                            }
+                        }
+
+                        if (authorName.length() > 0) {
+                            item.setActor(item.getAuthorName());
+                            item.setAuthorName(authorName);
+                        }
+                    }
                 }
             }
             catch (JSONException ignored) { }
