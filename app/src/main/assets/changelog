@@ -3,6 +3,7 @@
     <li>Allow setting the post visibility</li>
     <li>Allow setting a default read status</li>
     <li>Add reply option in Posts list (?q=source)</li>
+    <li>Allow to open audio in favorite player (e.g. VLC)</li>
 </ul>
 <h4>15/02/2020 0.58</h4>
 <ul>

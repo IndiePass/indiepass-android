@@ -117,6 +117,8 @@
     <string name="video">Watch video</string>
     <string name="map">Map view</string>
     <string name="audio_not_loaded">Audio could not be loaded</string>
+    <string name="audio_open">Open audio in favorite player</string>
+    <string name="audio_no_app_found">No app found to handle audio</string>
     <string name="channel_not_found">Channel not found</string>
     <string name="load_more">Load More</string>
     <string name="loading">Loading…</string>

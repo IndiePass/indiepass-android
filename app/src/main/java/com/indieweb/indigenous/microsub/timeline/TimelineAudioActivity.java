@@ -1,7 +1,12 @@
 package com.indieweb.indigenous.microsub.timeline;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,15 +25,14 @@ public class TimelineAudioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline_audio);
-
-        LinearLayout layout = findViewById(R.id.audio_root);
+        final LinearLayout layout = findViewById(R.id.audio_root);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String title = extras.getString("title");
-            String audioUrl = extras.getString("audio");
             String authorName = extras.getString("authorName");
             String authorPhoto = extras.getString("authorPhoto");
+            final String audioUrl = extras.getString("audio");
 
             // Author photo.
             ImageView authorPhotoView = findViewById(R.id.timeline_audio_author_photo);
@@ -57,6 +61,22 @@ public class TimelineAudioActivity extends AppCompatActivity {
             catch (Exception ignored) {
                 Snackbar.make(layout, getString(R.string.audio_not_loaded), Snackbar.LENGTH_SHORT).show();
             }
+
+            // Allow to open in favorite intent.
+            Button open = findViewById(R.id.audioExternal);
+            open.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setDataAndTypeAndNormalize(Uri.parse(audioUrl), "audio/*");
+                        startActivity(intent);
+                    }
+                    catch (Exception ignored) {
+                        Snackbar.make(layout, getString(R.string.audio_no_app_found), Snackbar.LENGTH_SHORT).show();
+                    }
+                }
+            });
 
         }
     }
