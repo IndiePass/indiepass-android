@@ -8,6 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 
 import java.util.HashMap;
@@ -31,7 +32,7 @@ public class HTTPRequest {
      * @param endpoint
      *   The endpoint to query.
      */
-    public void doGetRequest(String endpoint) {
+    public void doGetRequest(final String endpoint) {
         StringRequest getRequest = new StringRequest(Request.Method.GET, endpoint,
                 new Response.Listener<String>() {
                     @Override
@@ -51,7 +52,16 @@ public class HTTPRequest {
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json");
-                headers.put("Authorization", "Bearer " + user.getAccessToken());
+
+                String accessToken = user.getAccessToken();
+
+                // Send empty access token in case the user is anonymous and the microsub endpoint
+                // is still set to the Indigenous site.
+                if (user.isAnonymous() && endpoint.contains(context.getString(R.string.anonymous_microsub_endpoint))) {
+                    accessToken = "";
+                }
+
+                headers.put("Authorization", "Bearer " + accessToken);
                 return headers;
             }
         };

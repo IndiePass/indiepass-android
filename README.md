@@ -16,6 +16,9 @@ https://indigenous.realize.be
   and media endpoints. The micropub and microsub endpoints are optional,
   but at least one should be available. Token revoke happens when deleting
   an account. PKCE support for additional security when authenticating.
+- There's also a built-in anonymous user which allows reading channels and
+  posts coming from https://indigenous.realize.be. Posts can be send to a
+  custom endpoint and token.
 - Micropub
   - post types: article, note, reply, repost, like, bookmark, event,
     issue, rsvp, geocache, read, checkin and venue (h-card).

@@ -110,7 +110,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
 
         if (!Utility.hasConnection(requireContext())) {
             setShowRefreshedMessage(false);
-            Cache cache = Utility.getCache(requireContext(), user.getMeWithoutProtocol(), "channels", "", "");
+            Cache cache = user.isAuthenticated() ? Utility.getCache(requireContext(), user.getMeWithoutProtocol(), "channels", "", "") : null;
             if (cache != null && cache.getData().length() > 0) {
                 parseChannelResponse(cache.getData(), true);
                 Snackbar.make(layout, getString(R.string.reader_offline), Snackbar.LENGTH_SHORT).show();
@@ -189,7 +189,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
             }
 
             try {
-                if (Preferences.getPreference(getContext(), "pref_key_unread_items_channel", false) && unreadChannels > 1 && totalUnread > 0) {
+                if (user.isAuthenticated() && Preferences.getPreference(getContext(), "pref_key_unread_items_channel", false) && unreadChannels > 1 && totalUnread > 0) {
                     Channel channel = new Channel();
                     channel.setUid("global");
                     channel.setName("Unread items");
@@ -222,8 +222,15 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
     public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.channel_menu, menu);
 
+        if (user.isAnonymous()) {
+            MenuItem item = menu.findItem(R.id.channels_manage);
+            if (item != null) {
+                item.setVisible(false);
+            }
+        }
+
         boolean debugJson = Preferences.getPreference(getActivity(), "pref_key_debug_microsub_channels", false);
-        if (debugJson) {
+        if (user.isAuthenticated() && debugJson) {
             MenuItem item = menu.findItem(R.id.channels_debug);
             if (item != null) {
                 item.setVisible(true);
@@ -231,7 +238,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
         }
 
         boolean clearCache = Preferences.getPreference(getActivity(), "pref_key_reader_cache", false);
-        if (clearCache) {
+        if (user.isAuthenticated() && clearCache) {
             MenuItem item = menu.findItem(R.id.clear_cache);
             if (item != null) {
                 item.setVisible(true);
@@ -239,7 +246,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
         }
 
         boolean search = Preferences.getPreference(getActivity(), "pref_key_search_global", false);
-        if (search) {
+        if (search && user.isAuthenticated()) {
             MenuItem item = menu.findItem(R.id.channel_search);
             if (item != null) {
                 item.setVisible(true);

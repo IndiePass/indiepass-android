@@ -107,7 +107,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
             body.addTextChangedListener(BaseCreate.this);
 
             // Autocomplete of contacts.
-            if (Preferences.getPreference(this, "pref_key_contact_body_autocomplete", false)) {
+            if (Preferences.getPreference(this, "pref_key_contact_body_autocomplete", false) && user.isAuthenticated()) {
                 new MicropubAction(getApplicationContext(), user, null).prepareContactAutocomplete(body);
             }
 
@@ -124,7 +124,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
         }
 
         // Autocomplete of tags.
-        if (tags != null && Preferences.getPreference(this, "pref_key_tags_list", false)) {
+        if (tags != null && Preferences.getPreference(this, "pref_key_tags_list", false) && user.isAuthenticated()) {
             new MicropubAction(getApplicationContext(), user, null).prepareTagsAutocomplete(tags);
         }
 

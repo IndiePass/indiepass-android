@@ -16,6 +16,7 @@ public class User {
     private String name;
     private String postTypes;
     private boolean valid = false;
+    private boolean anonymous = false;
     private Account account;
 
     public String getMe() {
@@ -84,6 +85,18 @@ public class User {
 
     public void setValid(boolean valid) {
         this.valid = valid;
+    }
+
+    public boolean isAnonymous() {
+        return anonymous;
+    }
+
+    public boolean isAuthenticated() {
+        return !anonymous;
+    }
+
+    public void setAnonymous(boolean anonymous) {
+        this.anonymous = anonymous;
     }
 
     public String getSyndicationTargets() {

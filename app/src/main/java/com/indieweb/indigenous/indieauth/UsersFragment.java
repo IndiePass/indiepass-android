@@ -36,7 +36,6 @@ public class UsersFragment extends Fragment {
     private ListView listView;
     private RelativeLayout layout;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

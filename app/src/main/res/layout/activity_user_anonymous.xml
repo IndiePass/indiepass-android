@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/anonymous_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/box_padding"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title"
+        android:textSize="@dimen/big_text"
+        android:textColor="@color/textColor"
+        android:text="@string/anonymous_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/info"
+        android:layout_marginTop="@dimen/box_padding"
+        android:textSize="@dimen/info_text"
+        android:layout_below="@+id/title"
+        android:text="@string/anonymous_info"
+        android:textColor="@color/textColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/reader"
+        android:layout_marginTop="@dimen/box_padding"
+        android:hint="@string/anonymous_reader_endpoint"
+        android:layout_below="@+id/info"
+        android:singleLine="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/post"
+        android:singleLine="true"
+        android:layout_marginTop="@dimen/box_padding"
+        android:hint="@string/anonymous_post_endpoint"
+        android:layout_below="@+id/reader"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/token"
+        android:singleLine="true"
+        android:layout_marginTop="@dimen/box_padding"
+        android:hint="@string/anonymous_token"
+        android:layout_below="@+id/post"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_marginStart="@dimen/button_padding"
+        android:id="@+id/save"
+        android:text="@string/save"
+        android:gravity="start|center_vertical"
+        android:background="@color/buttonWhite"
+        android:textColor="@color/colorPrimary"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_marginTop="@dimen/box_padding"
+        android:layout_below="@+id/token"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/reset"
+        android:text="@string/reset"
+        android:gravity="start|center_vertical"
+        android:background="@color/buttonWhite"
+        android:textColor="@color/colorPrimary"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_marginTop="@dimen/box_padding"
+        android:layout_below="@+id/token"
+        android:layout_toEndOf="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

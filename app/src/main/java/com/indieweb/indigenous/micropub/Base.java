@@ -502,10 +502,23 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
             return;
         }
 
+        if (user.isAnonymous() && user.getMicropubEndpoint().length() == 0) {
+            final Snackbar snackbar = Snackbar.make(layout, getString(R.string.no_micropub_endpoint_anonymous), Snackbar.LENGTH_INDEFINITE);
+            snackbar.setAction(getString(R.string.close), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            snackbar.dismiss();
+                        }
+                    }
+            );
+            snackbar.show();
+            return;
+        }
+
         showProgressBar();
 
         // Use media endpoint to upload media attached to the post.
-        if (Preferences.getPreference(getApplicationContext(), "pref_key_upload_media_endpoint", false) && image.size() > 0 && !uploadMediaDone) {
+        if (user.isAuthenticated() && Preferences.getPreference(getApplicationContext(), "pref_key_upload_media_endpoint", false) && image.size() > 0 && !uploadMediaDone) {
             mediaCount = image.size() + video.size() + audio.size();
             sendMediaPost();
             return;
@@ -570,7 +583,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
             protected Map<String, String> getParams() {
 
                 // Send along access token if configured.
-                if (Preferences.getPreference(getApplicationContext(), "pref_key_access_token_body", false)) {
+                if (user.isAuthenticated() && Preferences.getPreference(getApplicationContext(), "pref_key_access_token_body", false)) {
                     bodyParams.put("access_token", user.getAccessToken());
                 }
 
@@ -713,9 +726,17 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json");
 
+                String accessToken;
+                if (user.isAuthenticated()) {
+                    accessToken = user.getAccessToken();
+                }
+                else {
+                    accessToken = Preferences.getPreference(getApplicationContext(), "anonymous_micropub_token", "IndigenousAnonymous");
+                }
+
                 // Send access token in header by default.
                 if (!Preferences.getPreference(getApplicationContext(), "pref_key_access_token_body", false)) {
-                    headers.put("Authorization", "Bearer " + user.getAccessToken());
+                    headers.put("Authorization", "Bearer " + accessToken);
                 }
 
                 return headers;
@@ -1125,6 +1146,10 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
      * Toggle location visibilities.
      */
     public void toggleLocationVisibilities(Boolean toggleWrapper) {
+
+        if (user.isAnonymous()) {
+            return;
+        }
 
         if (toggleWrapper) {
             locationWrapper.setVisibility(View.VISIBLE);

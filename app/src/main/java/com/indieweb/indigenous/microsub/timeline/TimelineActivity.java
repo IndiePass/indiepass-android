@@ -191,7 +191,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         mainMenu = menu;
 
         boolean search = Preferences.getPreference(this, "pref_key_search", false);
-        if (search && !preview && !isSearch && !isSourceView && !isGlobalUnread) {
+        if (user.isAuthenticated() && search && !preview && !isSearch && !isSourceView && !isGlobalUnread) {
             MenuItem item = menu.findItem(R.id.timeline_search);
             if (item != null) {
                 item.setVisible(true);
@@ -223,7 +223,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             }
         }
 
-        if (search && isSearch) {
+        if (user.isAuthenticated() && search && isSearch) {
             MenuItem item = menu.findItem(R.id.timeline_list_refresh);
             if (item != null) {
                 item.setVisible(false);
@@ -231,7 +231,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         }
 
         boolean debugJson = Preferences.getPreference(this, "pref_key_debug_microsub_timeline", false);
-        if (debugJson && !preview) {
+        if (user.isAuthenticated() && debugJson && !preview) {
             MenuItem item = menu.findItem(R.id.timeline_debug);
             if (item != null) {
                 item.setVisible(true);
@@ -353,7 +353,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         if (!Utility.hasConnection(getApplicationContext())) {
             showRefreshMessage = false;
 
-            Cache cache = Utility.getCache(getApplicationContext(), user.getMeWithoutProtocol(), "timeline", channelId, pagerAfter);
+            Cache cache = user.isAuthenticated() ? Utility.getCache(getApplicationContext(), user.getMeWithoutProtocol(), "timeline", channelId, pagerAfter) : null;
             if (cache != null && cache.getData().length() > 0) {
                 parseTimelineResponse(cache.getData(), true);
             }
@@ -400,7 +400,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         }
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest getRequest = new StringRequest(method, MicrosubEndpoint,
+        final String finalMicrosubEndpoint = MicrosubEndpoint;
+        StringRequest getRequest = new StringRequest(method, finalMicrosubEndpoint,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -442,7 +443,16 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json");
-                headers.put("Authorization", "Bearer " + user.getAccessToken());
+
+                String accessToken = user.getAccessToken();
+
+                // Send empty access token in case the user is anonymous and the microsub endpoint
+                // is still set to the Indigenous site.
+                if (user.isAnonymous() && finalMicrosubEndpoint.contains(getString(R.string.anonymous_microsub_endpoint))) {
+                    accessToken = "";
+                }
+
+                headers.put("Authorization", "Bearer " + accessToken);
                 return headers;
             }
 

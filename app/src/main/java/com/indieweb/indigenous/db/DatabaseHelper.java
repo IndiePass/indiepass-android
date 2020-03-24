@@ -222,12 +222,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return int
      *   The number of drafts.
      */
-    public int getDraftCount() {
+    public int getDraftCount(String account) {
         int count = 0;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor dataCount;
         if (db != null) {
-            dataCount = db.rawQuery("select "+ Draft.COLUMN_ID + " from " + Draft.TABLE_NAME, null);
+            dataCount = db.rawQuery("select "+ Draft.COLUMN_ID + " from " + Draft.TABLE_NAME + " WHERE " + Draft.COLUMN_ACCOUNT + "='" + account + "'", null);
             count = dataCount.getCount();
             db.close();
         }

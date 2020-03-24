@@ -13,6 +13,7 @@
     <string name="go_to_main_app">Go to main app</string>
     <string name="cancel">Cancel</string>
     <string name="close">Close</string>
+    <string name="reset">Reset</string>
     <string name="discard">Discard</string>
     <string name="timeline">Timeline</string>
     <string name="nav_reader">Reader</string>
@@ -30,6 +31,8 @@
     <string name="no_microsub_endpoint">We did not find your reader endpoint. In the accounts section, you can synchronize your account to add it. You can also just use the app for posting only.</string>
     <string name="no_micropub_endpoint">We did not find your micropub endpoint. In the accounts section, you can synchronize your account to add it.</string>
     <string name="no_micropub_media_endpoint">We did not find your media endpoint. In the accounts section, you can synchronize your account to add it.</string>
+    <string name="no_micropub_endpoint_anonymous">You need to configure an endpoint in Accounts before Indigenous can post.</string>
+    <string name="anonymous_microsub_endpoint">https://indigenous.realize.be/indieweb/microsub</string>
     <string name="items_refreshed">Items refreshed</string>
     <string name="request_failed">Request failed. Status code: %d; message: %s</string>
     <string name="request_failed_unknown">Request failed, unknown error</string>
@@ -41,7 +44,7 @@
     <string name="add_new_account">Add new account</string>
     <string name="no_user">No account found</string>
     <string name="select_account">Select account</string>
-    <string name="select_account_info">Switch to an existing account underneath</string>
+    <string name="select_account_info">Switch to an existing account by pressing the \"Select account\" button.</string>
     <string name="url_hint">http://example.com</string>
     <string name="url_or_text_hint">URL or title</string>
     <string name="url_repository_hint">http://example.com/repository</string>
@@ -71,6 +74,14 @@
     <string name="account_selected">Account set to %s</string>
     <string name="account_switch">Switch to account %s ?</string>
     <string name="user_exception">We ran into an exception getting the accounts. Please manage the accounts from the device accounts section.</string>
+    <string name="anonymous_settings">Anonymous settings</string>
+    <string name="anonymous_info">You are using the anonymous account in Indigenous. The reader is connected by default to a server on https://indigenous.realize.be.\n\nYou can change both the reader and post endpoint to a custom location so you can test yourself and even save posts on your own server without needing an IndieAuth enabled website.\n\nThe token will be send in the authentication header for both endpoints.</string>
+    <string name="anonymous_reader_endpoint">Reader endpoint</string>
+    <string name="anonymous_post_endpoint">Post endpoint</string>
+    <string name="anonymous_token">Token</string>
+    <string name="anonymous_saved">Settings saved</string>
+    <string name="anonymous_reset">Settings reset</string>
+    <string name="reset_confirm">Reset settings?</string>
 
     <!-- About -->
     <string name="about_info"><![CDATA[Indigenous allows you to engage with the internet as you do on social media sites, but posts it all on your website. Use the built-in reader to read and respond to posts across the internet. Indigenous doesn\'t track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/swentel/indigenous-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a>, <a href="https://openclipart.org">Openclipart</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>

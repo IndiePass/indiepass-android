@@ -23,6 +23,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.general.AboutFragment;
 import com.indieweb.indigenous.general.SettingsFragment;
+import com.indieweb.indigenous.indieauth.AnonymousFragment;
 import com.indieweb.indigenous.indieauth.UsersFragment;
 import com.indieweb.indigenous.micropub.contact.ContactFragment;
 import com.indieweb.indigenous.micropub.draft.DraftFragment;
@@ -121,12 +122,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        user = new Accounts(this).getCurrentUser();
+
         // Let pushy listener restart if necessary, and if configured.
         //noinspection ConstantConditions
         if (
             BuildConfig.SITE_DEVICE_REGISTRATION_ENDPOINT.length() > 0 &&
             BuildConfig.SITE_ACCOUNT_CHECK_ENDPOINT.length() > 0 &&
-            Preferences.getPreference(getApplicationContext(), "push_notification_type", "none").equals("pushy")
+            Preferences.getPreference(getApplicationContext(), "push_notification_type", "none").equals("pushy") &&
+            user.isAuthenticated()
         ) {
             Pushy.listen(this);
         }
@@ -135,8 +139,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-        user = new Accounts(this).getCurrentUser();
 
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -222,7 +224,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.nav_accounts:
                 close = true;
-                fragment = new UsersFragment();
+                if (user.isAuthenticated()) {
+                    fragment = new UsersFragment();
+                }
+                else {
+                    fragment = new AnonymousFragment();
+                }
                 break;
 
             case R.id.nav_settings:
@@ -368,7 +375,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     public void setDraftMenuItemTitle(boolean callbackOrPost) {
         DatabaseHelper db = new DatabaseHelper(getApplicationContext());
-        int draftCount = db.getDraftCount();
+        int draftCount = db.getDraftCount(user.getMeWithoutProtocol());
         if (draftCount > 0) {
             MenuItem draftItem = drawerMenu.findItem(R.id.nav_drafts);
             if (draftItem != null) {
@@ -398,9 +405,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 hidePostTypes();
             }
         }
-        else {
-            hideItemsInDrawerMenu();
-        }
+
+        hideItemsInDrawerMenu();
     }
 
     /**
@@ -410,18 +416,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Hide Media if micropub media endpoint is empty.
         String micropubMediaEndpoint = user.getMicropubMediaEndpoint();
-        if (micropubMediaEndpoint == null || micropubMediaEndpoint.length() == 0) {
+        if (micropubMediaEndpoint == null || micropubMediaEndpoint.length() == 0 || user.isAnonymous()) {
             setMenuItemVisibility(R.id.nav_upload, false);
             setMenuItemVisibility(R.id.nav_upload2, false);
         }
 
+        if (user.isAnonymous()) {
+            setMenuItemVisibility(R.id.nav_settings, false);
+        }
+
         // Hide Posts if setting is not enabled.
-        if (!Preferences.getPreference(this, "pref_key_source_post_list", false)) {
+        if (!Preferences.getPreference(this, "pref_key_source_post_list", false) || user.isAnonymous()) {
             setMenuItemVisibility(R.id.nav_posts, false);
         }
 
         // Hide Contacts if setting is not enabled.
-        if (!Preferences.getPreference(this, "pref_key_contact_manage", false)) {
+        if (!Preferences.getPreference(this, "pref_key_contact_manage", false) || user.isAnonymous()) {
             setMenuItemVisibility(R.id.nav_contacts, false);
         }
 
@@ -442,6 +452,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * Hide post type menu items.
      */
     public void hidePostTypes() {
+
+        if (user.isAnonymous()) {
+            return;
+        }
+
         String postTypes = user.getPostTypes();
         ArrayList<String> postTypeList = new ArrayList<>();
         if (postTypes != null && postTypes.length() > 0) {

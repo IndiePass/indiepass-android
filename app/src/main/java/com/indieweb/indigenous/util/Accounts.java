@@ -71,6 +71,16 @@ public class Accounts {
                 }
             }
         }
+        // Anonymous user.
+        else {
+            user.setValid(true);
+            user.setAnonymous(true);
+            user.setMe("https://indigenous.realize.be");
+            user.setName("Anonymous");
+            user.setAccessToken(Preferences.getPreference(context, "anonymous_token", ""));
+            user.setMicrosubEndpoint(Preferences.getPreference(context, "anonymous_microsub_endpoint", context.getString(R.string.anonymous_microsub_endpoint)));
+            user.setMicropubEndpoint(Preferences.getPreference(context, "anonymous_micropub_endpoint", ""));
+        }
 
         return user;
     }

@@ -117,7 +117,7 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
         }
 
         // Hide post types if configured.
-        if (Preferences.getPreference(this, "pref_key_post_type_hide", false)) {
+        if (user.isAuthenticated() && Preferences.getPreference(this, "pref_key_post_type_hide", false)) {
 
             ArrayList<Integer> protectedTypes = new ArrayList<>();
             protectedTypes.add(R.id.createMedia);

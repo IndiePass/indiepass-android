@@ -1028,7 +1028,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             popup.getMenuInflater().inflate(R.menu.timeline_list_item_menu, menu);
 
             // Debug menu item.
-            if (this.debugJson) {
+            if (user.isAuthenticated() && this.debugJson) {
                 MenuItem itemDebug = menu.findItem(R.id.timeline_entry_debug);
                 if (itemDebug != null) {
                     itemDebug.setVisible(true);
@@ -1036,7 +1036,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
 
             // Move menu item.
-            if (Preferences.getPreference(context, "pref_key_move_item", false)) {
+            if (user.isAuthenticated() && Preferences.getPreference(context, "pref_key_move_item", false)) {
                 MenuItem itemMove = menu.findItem(R.id.timeline_entry_move);
                 if (itemMove != null) {
                     itemMove.setVisible(true);
@@ -1044,7 +1044,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
 
             // Save contact menu item.
-            if (Preferences.getPreference(context, "pref_key_contact_manage", false)) {
+            if (user.isAuthenticated() && Preferences.getPreference(context, "pref_key_contact_manage", false)) {
                 MenuItem itemContact = menu.findItem(R.id.timeline_save_author);
                 if (itemContact != null) {
                     itemContact.setVisible(true);
@@ -1057,6 +1057,18 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 if (itemMarkRead != null) {
                     itemMarkRead.setVisible(true);
                 }
+                MenuItem itemMarkUnread = menu.findItem(R.id.timeline_entry_mark_unread);
+                if (itemMarkUnread != null) {
+                    itemMarkUnread.setVisible(false);
+                }
+            }
+
+            if (user.isAnonymous()) {
+                MenuItem itemDelete = menu.findItem(R.id.timeline_entry_delete);
+                if (itemDelete != null) {
+                    itemDelete.setVisible(false);
+                }
+
                 MenuItem itemMarkUnread = menu.findItem(R.id.timeline_entry_mark_unread);
                 if (itemMarkUnread != null) {
                     itemMarkUnread.setVisible(false);
