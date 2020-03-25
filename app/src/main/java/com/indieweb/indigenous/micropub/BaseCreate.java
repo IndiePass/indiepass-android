@@ -63,6 +63,9 @@ abstract public class BaseCreate extends BasePlatformCreate {
                     Syndication syndication = new Syndication();
                     syndication.setUid(object.getString("uid"));
                     syndication.setName(object.getString("name"));
+                    if (object.has("checked")) {
+                        syndication.setChecked(object.getBoolean("checked"));
+                    }
                     syndicationTargets.add(syndication);
 
                     CheckBox ch = new CheckBox(this);
@@ -71,6 +74,9 @@ abstract public class BaseCreate extends BasePlatformCreate {
                     ch.setTextSize(15);
                     ch.setPadding(0, 10, 0, 10);
                     ch.setTextColor(getResources().getColor(R.color.textColor));
+                    if (syndication.isChecked()) {
+                        ch.setChecked(true);
+                    }
                     syndicationLayout.addView(ch);
                 }
 

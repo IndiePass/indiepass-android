@@ -4,6 +4,7 @@ public class Syndication {
 
     private String uid;
     private String name;
+    private boolean checked = false;
 
     public String getUid() {
         return uid;
@@ -19,5 +20,13 @@ public class Syndication {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }
