@@ -9,6 +9,13 @@
 
     <item
         android:visible="false"
+        android:id="@+id/user_add"
+        android:icon="@drawable/button_add_account"
+        app:showAsAction="always"
+        android:title="@string/add_new_account" />
+
+    <item
+        android:visible="false"
         android:id="@+id/channel_search"
         android:title="@string/search"
         android:icon="@drawable/search_white"

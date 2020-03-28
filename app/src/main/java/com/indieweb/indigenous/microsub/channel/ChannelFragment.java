@@ -24,6 +24,7 @@ import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
+import com.indieweb.indigenous.indieauth.IndieAuthActivity;
 import com.indieweb.indigenous.microsub.manage.ManageChannelActivity;
 import com.indieweb.indigenous.microsub.timeline.TimelineActivity;
 import com.indieweb.indigenous.model.Cache;
@@ -83,7 +84,6 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
             noMicrosubEndpoint.setVisibility(View.VISIBLE);
         }
     }
-
 
     @Override
     public void onRefresh() {
@@ -227,6 +227,11 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
             if (item != null) {
                 item.setVisible(false);
             }
+
+            MenuItem userAdd = menu.findItem(R.id.user_add);
+            if (userAdd != null) {
+                userAdd.setVisible(true);
+            }
         }
 
         boolean debugJson = Preferences.getPreference(getActivity(), "pref_key_debug_microsub_channels", false);
@@ -319,7 +324,11 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
                     }
                 });
                 builder.show();
+                return true;
 
+            case R.id.user_add:
+                Intent addUser = new Intent(getContext(), IndieAuthActivity.class);
+                startActivity(addUser);
                 return true;
         }
 

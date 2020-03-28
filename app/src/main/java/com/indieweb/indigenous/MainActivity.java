@@ -174,6 +174,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         hideItemsInDrawerMenu();
         setDraftMenuItemTitle(false);
+
+        if (user.isAnonymous()) {
+            Snackbar.make(drawer, getString(R.string.anonymous_info_snack), Snackbar.LENGTH_LONG).show();
+        }
     }
 
     @Override
