@@ -3,6 +3,7 @@ package com.indieweb.indigenous;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.navigation.NavigationView;
@@ -46,6 +47,7 @@ import com.indieweb.indigenous.microsub.channel.ChannelFragment;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Preferences;
+import com.indieweb.indigenous.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -174,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         hideItemsInDrawerMenu();
         setDraftMenuItemTitle(false);
+        Utility.setNightTheme(getApplicationContext());
 
         if (user.isAnonymous()) {
             Snackbar.make(drawer, getString(R.string.anonymous_info_snack), Snackbar.LENGTH_LONG).show();

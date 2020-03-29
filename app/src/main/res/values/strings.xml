@@ -307,6 +307,10 @@
     <string name="apply_filter">Apply</string>
     <string name="applying_filter">Applying filter</string>
 
+    <!-- Night mode -->
+    <string name="night_mode_title">Enable night theme</string>
+    <string name="night_mode_summary">If your device supports Night mode, this theme will be automatically used when enabling night time globally. But this toggle allows you to use the night theme as well. The app will restart when you enable or disable this feature.</string>
+
     <!-- Push notifications -->
     <string name="push_notifications">Push notifications</string>
     <string name="push_notifications_text">Receive push notifications via Pushy.me</string>

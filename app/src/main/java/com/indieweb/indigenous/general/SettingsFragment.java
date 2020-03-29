@@ -35,11 +35,20 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         requireActivity().setTitle(getString(R.string.settings));
 
+        Preference dark = findPreference("night_mode");
+        dark.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                restartApp();
+                return true;
+            }
+        });
+
         Preference like = findPreference("pref_key_share_expose_like");
         like.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                boolean checked = Boolean.valueOf(newValue.toString());
+                boolean checked = Boolean.parseBoolean(newValue.toString());
                 if (checked) toggleAliasSetting("LikeAlias", 1);
                 else toggleAliasSetting("LikeAlias", 2);
                 return true;
@@ -50,7 +59,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         repost.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                boolean checked = Boolean.valueOf(newValue.toString());
+                boolean checked = Boolean.parseBoolean(newValue.toString());
                 if (checked) toggleAliasSetting("RepostAlias", 1);
                 else toggleAliasSetting("RepostAlias", 2);
                 return true;
@@ -61,7 +70,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         bookmark.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                boolean checked = Boolean.valueOf(newValue.toString());
+                boolean checked = Boolean.parseBoolean(newValue.toString());
                 if (checked) toggleAliasSetting("BookmarkAlias", 1);
                 else toggleAliasSetting("BookmarkAlias", 2);
                 return true;
@@ -72,7 +81,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         reply.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                boolean checked = Boolean.valueOf(newValue.toString());
+                boolean checked = Boolean.parseBoolean(newValue.toString());
                 if (checked) toggleAliasSetting("ReplyAlias", 1);
                 else toggleAliasSetting("ReplyAlias", 2);
                 return true;
@@ -83,7 +92,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         upload.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                boolean checked = Boolean.valueOf(newValue.toString());
+                boolean checked = Boolean.parseBoolean(newValue.toString());
                 if (checked) toggleAliasSetting("UploadAlias", 1);
                 else toggleAliasSetting("UploadAlias", 2);
                 return true;
@@ -94,7 +103,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         feed.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                boolean checked = Boolean.valueOf(newValue.toString());
+                boolean checked = Boolean.parseBoolean(newValue.toString());
                 if (checked) toggleAliasSetting("FeedAlias", 1);
                 else toggleAliasSetting("FeedAlias", 2);
                 return true;
@@ -115,7 +124,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         contact.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                callback.onPreferenceChanged(R.id.nav_contacts, Boolean.valueOf(newValue.toString()));
+                callback.onPreferenceChanged(R.id.nav_contacts, Boolean.parseBoolean(newValue.toString()));
                 return true;
             }
         });
@@ -124,7 +133,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         posts.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                callback.onPreferenceChanged(R.id.nav_posts, Boolean.valueOf(newValue.toString()));
+                callback.onPreferenceChanged(R.id.nav_posts, Boolean.parseBoolean(newValue.toString()));
                 return true;
             }
         });
@@ -143,6 +152,16 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         PackageManager pm = requireContext().getPackageManager();
         ComponentName compName = new ComponentName(getContext().getPackageName(), getContext().getPackageName() + "." + alias);
         pm.setComponentEnabledSetting(compName, state, PackageManager.DONT_KILL_APP);
+    }
+
+    /**
+     * Restart the app.
+     */
+    private void restartApp() {
+        Intent intent = getActivity().getIntent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        getActivity().finish();
+        startActivity(intent);
     }
 
 }

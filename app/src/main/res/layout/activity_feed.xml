@@ -24,7 +24,7 @@
 
             <Button
                 android:id="@+id/search"
-                android:background="@color/buttonWhite"
+                android:background="@color/buttonBackground"
                 android:textColor="@color/colorPrimary"
                 style="?android:attr/borderlessButtonStyle"
                 android:text="@string/search_feed"

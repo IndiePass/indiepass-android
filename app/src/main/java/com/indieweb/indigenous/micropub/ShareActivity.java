@@ -35,6 +35,7 @@ import com.indieweb.indigenous.micropub.post.VenueActivity;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Preferences;
+import com.indieweb.indigenous.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -194,6 +195,8 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                 }
             }
         }
+
+        Utility.setNightTheme(getApplicationContext());
     }
 
     // Go to main app.

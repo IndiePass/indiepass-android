@@ -3,12 +3,12 @@
     android:id="@+id/indieauth_root"
     android:layout_height="wrap_content"
     android:layout_width="wrap_content"
+    android:padding="10dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
         tools:ignore="UselessParent">
 
         <LinearLayout
@@ -41,11 +41,10 @@
                 android:inputType="textUri" />
 
             <Button
-                android:background="@color/buttonWhite"
+                android:background="@color/buttonBackground"
                 android:textColor="@color/colorPrimary"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_marginTop="10dp"
-                android:gravity="start|center_vertical"
                 android:id="@+id/signInButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,8 +60,7 @@
 
             <Button
                 android:visibility="gone"
-                android:gravity="start|center_vertical"
-                android:background="@color/buttonWhite"
+                android:background="@color/buttonBackground"
                 android:textColor="@color/colorPrimary"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_marginTop="10dp"

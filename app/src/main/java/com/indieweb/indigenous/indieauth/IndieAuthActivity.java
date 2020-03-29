@@ -132,6 +132,8 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                     }
 
                 }).check();
+
+        Utility.setNightTheme(getApplicationContext());
     }
 
     @Override

@@ -58,7 +58,7 @@
 
         <Button
             android:padding="@dimen/box_padding"
-            android:background="@color/buttonWhite"
+            android:background="@color/buttonBackground"
             android:textColor="@color/colorPrimary"
             style="?android:attr/borderlessButtonStyle"
             android:text="@string/register_device"

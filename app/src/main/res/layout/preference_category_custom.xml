@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/big_text"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/categoryTitle"
         android:paddingStart="15dp"
         android:paddingBottom="8dip"
         android:paddingEnd="15dp"

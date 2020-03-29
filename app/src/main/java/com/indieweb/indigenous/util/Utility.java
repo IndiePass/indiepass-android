@@ -15,6 +15,8 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.indieweb.indigenous.BuildConfig;
@@ -64,6 +66,21 @@ public class Utility {
         }
 
         return cache;
+    }
+
+    /**
+     * Set the night theme.
+     *
+     * @param context
+     *   The current context.
+     */
+    public static void setNightTheme(Context context) {
+        if (Preferences.getPreference(context, "night_mode", false)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        }
     }
 
     /**
