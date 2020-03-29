@@ -12,6 +12,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -96,6 +97,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
     public static int MARK_READ_CHANNEL_CLICK = 1;
     public static int MARK_READ_MANUAL = 2;
+    public static int MARK_READ_SCROLL = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,23 +158,29 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             DatabaseHelper db = new DatabaseHelper(TimelineActivity.this);
             style = db.getTimelineStyle(channelId);
 
-            // Autoload more posts.
-            if (Preferences.getPreference(TimelineActivity.this, "pref_key_timeline_autoload_more", false)) {
+            // Autoload more posts or mark while scrolling.
+            final boolean autoload = Preferences.getPreference(TimelineActivity.this, "pref_key_timeline_autoload_more", false);
+            final boolean markReadScroll = Preferences.getPreference(getApplicationContext(), "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_SCROLL && !readLater.equals(channelId);
+            if (autoload || markReadScroll) {
                 listView.setOnScrollListener(new AbsListView.OnScrollListener() {
 
                     @Override
                     public void onScrollStateChanged(AbsListView view, int scrollState) {
-                        if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE
+                        if (autoload && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE
                                 && (listView.getLastVisiblePosition() - listView.getHeaderViewsCount() -
                                 listView.getFooterViewsCount()) >= (adapter.getCount() - 1)) {
                             if (!loadMoreClicked && loadMoreButtonAdded) {
                                 loadMoreItems();
                             }
                         }
+
+                        if (markReadScroll && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                            markItemsReadWhileScrolling();
+                         }
                     }
 
                     @Override
-                    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {}
+                    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) { }
                 });
             }
 
@@ -905,6 +913,50 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         loadMoreButton.setBackgroundColor(downColor);
         loadMoreButton.setText(R.string.loading);
         getTimeLineItems(olderItems[0]);
+    }
+
+    /**
+     * Mark items read while scrolling.
+     */
+    private void markItemsReadWhileScrolling() {
+        try {
+            // Determine the position to where we have to check. Switch to the last if the user has
+            // scrolled to the end.
+            int position = listView.getFirstVisiblePosition();
+            //Log.d("indigenous_debug", "First visible: " + position + " - last visible: " + listView.getLastVisiblePosition());
+            if (listView.getLastVisiblePosition() == (adapter.getCount() - 1)) {
+                position = listView.getLastVisiblePosition();
+                //Log.d("indigenous_debug", "Count: " + adapter.getCount() + " - Last position: " + listView.getLastVisiblePosition());
+            }
+            //Log.d("indigenous_debug", "position: " + position);
+
+            int counter = 0;
+            TimelineItem item;
+            int itemPosition = 0;
+            List<String> readEntries = new ArrayList<>();
+            while (itemPosition <= position) {
+                item = adapter.getItem(itemPosition);
+                //Log.d("indigenous_debug", "Position:" + itemPosition + " - " + item.getName());
+                //noinspection ConstantConditions
+                if (item != null && !item.isRead()) {
+                    //Log.d("indigenous_debug", "Marking as read: " + item.getName());
+                    readEntries.add(item.getId());
+                    item.setRead(true);
+                    TimelineItems.set(itemPosition, item);
+                    counter -= 1;
+                }
+                itemPosition++;
+            }
+
+            if (readEntries.size() > 0) {
+                //Log.d("indigenous_debug", "Counter: " + counter);
+                new MicrosubAction(getApplicationContext(), user, layout).markRead(channelId, readEntries, false, false);
+                Utility.notifyChannels(channelId, counter);
+            }
+        }
+        catch (Exception e) {
+            Log.d("indigenous_debug", "Exception marking read: " + e.getMessage());
+        }
     }
 
     /**

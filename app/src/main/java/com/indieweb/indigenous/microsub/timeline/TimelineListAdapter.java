@@ -1110,6 +1110,8 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                                     displayValues.add(channel.getName());
                                 }
                             }
+
+                            @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")
                             final CharSequence[] channelItems = displayValues.toArray(new CharSequence[displayValues.size()]);
 
                             builder.setTitle(context.getString(R.string.select_channel_move));
@@ -1136,6 +1138,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                                                     ms.markUnread(channel.getUid(), unreadEntries, false);
                                                 }
                                                 items.remove(position);
+                                                Utility.notifyChannels(channelId, -1);
                                                 notifyDataSetChanged();
                                                 break;
                                             }
@@ -1151,6 +1154,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             unreadEntries.add(entry.getId());
                             entry.setRead(false);
                             new MicrosubAction(context, user, layout).markUnread(channelId, unreadEntries, true);
+                            Utility.notifyChannels(channelId, 1);
                             break;
 
                         case R.id.timeline_entry_mark_read:
@@ -1158,6 +1162,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             readEntries.add(entry.getId());
                             entry.setRead(true);
                             new MicrosubAction(context, user, layout).markRead(channelId, readEntries, false, true);
+                            Utility.notifyChannels(channelId, -1);
                             break;
 
                         case R.id.timeline_entry_debug:

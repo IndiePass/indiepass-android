@@ -86,6 +86,15 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Indigenous app = Indigenous.getInstance();
+        if (app.isRefreshChannels()) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
     public void onRefresh() {
         setShowRefreshedMessage(true);
         startChannels();

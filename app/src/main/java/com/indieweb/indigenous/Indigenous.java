@@ -19,6 +19,8 @@ public class Indigenous extends Application {
 
     public static Contact contactItem;
 
+    public static boolean refreshChannels;
+
     public static Indigenous getInstance(){
         return singleton;
     }
@@ -31,6 +33,14 @@ public class Indigenous extends Application {
 
     public String getDebug() {
         return debug;
+    }
+
+    public void setRefreshChannels(boolean refresh) {
+        refreshChannels = refresh;
+    }
+
+    public boolean isRefreshChannels() {
+        return refreshChannels;
     }
 
     public void setTimelineItem(TimelineItem item) {

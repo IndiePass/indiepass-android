@@ -382,7 +382,7 @@
     <string name="pref_key_image_preview_compact_title">Image preview on compact</string>
     <string name="pref_key_image_preview_compact_summary">Show the first image per post in the compact style. The images are always visible on the full detail of the post.</string>
     <string name="pref_key_mark_read_title">Mark items read</string>
-    <string name="pref_key_mark_read_summary">Either automatically mark all items read when viewing a channel (per page), or manually with a "Mark all read" button per channel and "Mark read" action in the item menu.</string>
+    <string name="pref_key_mark_read_summary">Configure how items are marked as read.\n1: mark all items read when viewing a channel, which is per page.\n2: manually with a "Mark all read" button per channel (only shows up in case there are more than 20 items) and "Mark read" action in the item menu.\n3: mark read while scrolling.</string>
     <string name="pref_key_search_title">Channel search</string>
     <string name="pref_key_search_summary">Allows to search in a channel for posts</string>
     <string name="pref_key_search_global_title">Global search</string>
@@ -473,11 +473,13 @@
     <string-array name="mark_read_array">
         <item>Channel per page</item>
         <item>Mark manually</item>
+        <item>Mark read while scrolling</item>
     </string-array>
 
     <string-array name="mark_read_array_values">
         <item>1</item>
         <item>2</item>
+        <item>3</item>
     </string-array>
 
     <string-array name="read_default_array">

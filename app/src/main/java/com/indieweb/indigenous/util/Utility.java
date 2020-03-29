@@ -24,6 +24,7 @@ import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.model.Cache;
+import com.indieweb.indigenous.model.Channel;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -130,6 +131,30 @@ public class Utility {
         Indigenous app = Indigenous.getInstance();
         app.setDebug(debug);
         context.startActivity(i);
+    }
+
+    /**
+     * Notify channels the counter is changed.
+     *
+     * @param channelId
+     *   The channel id.
+     * @param count
+     *   How many items to count up or down.
+     */
+    public static void notifyChannels(String channelId, int count) {
+        try {
+            Indigenous app = Indigenous.getInstance();
+            app.setRefreshChannels(true);
+            for (Channel c: app.getChannelsList()) {
+                if (c.getUid().equals(channelId)) {
+                    if (c.getUnread() != -1) {
+                        c.setUnread(c.getUnread() + count);
+                        break;
+                    }
+                }
+            }
+        }
+        catch (Exception ignored) { }
     }
 
     /**

@@ -1,6 +1,7 @@
 <h4>xx/xx/xxxx 0.60</h4>
 <ul>
     <li>Night mode support</li>
+    <li>Allow marking items as read while scrolling</li>
     <li>Better indication when the anonymous account is used on startup</li>
 </ul>
 <h4>25/03/2020 0.59</h4>
