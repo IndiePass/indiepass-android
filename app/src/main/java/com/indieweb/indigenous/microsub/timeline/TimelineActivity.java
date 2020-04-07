@@ -601,7 +601,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     String value = getSingleJsonValueFromArrayOrString(type, object);
                     if (value.length() > 0) {
                         item.addToResponseType(type, value);
-                        checkReference(object, value, item);
+                        checkReference(object, value, item, false);
                     }
                 }
 
@@ -618,7 +618,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     String value = getSingleJsonValueFromArrayOrString(type, object);
                     if (value.length() > 0) {
                         item.addToResponseType(type, value);
-                        checkReference(object, value, item);
+                        checkReference(object, value, item, true);
                     }
                 }
 
@@ -628,7 +628,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     String value = getSingleJsonValueFromArrayOrString(type, object);
                     if (value.length() > 0) {
                         item.addToResponseType(type, value);
-                        checkReference(object, value, item);
+                        checkReference(object, value, item, true);
                     }
                 }
 
@@ -639,7 +639,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     String value = getSingleJsonValueFromArrayOrString(type, object);
                     if (value.length() > 0) {
                         item.addToResponseType(type, value);
-                        checkReference(object, value, item);
+                        checkReference(object, value, item, false);
                     }
                 }
 
@@ -650,7 +650,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     String value = getSingleJsonValueFromArrayOrString(type, object);
                     if (value.length() > 0) {
                         item.addToResponseType(type, value);
-                        checkReference(object, value, item);
+                        checkReference(object, value, item, false);
                     }
                 }
 
@@ -966,9 +966,11 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
      * @param url
      *   The url to find in references
      * @param item
- *   The current timeline item.
+     *   The current timeline item.
+     * @param swapAuthor
+     *   Whether to swap the author or not.
      */
-    private void checkReference(JSONObject object, String url, TimelineItem item) {
+    private void checkReference(JSONObject object, String url, TimelineItem item, boolean swapAuthor) {
 
         if (object.has("refs")) {
             try {
@@ -1001,8 +1003,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                         item.setVideo(video);
                     }
 
-                    // Swap actor and author for likes and reposts.
-                    if (Preferences.getPreference(getApplicationContext(), "pref_key_timeline_author_original", false) && ref.has("author")) {
+                    // Swap actor and author.
+                    if (swapAuthor && Preferences.getPreference(getApplicationContext(), "pref_key_timeline_author_original", false) && ref.has("author")) {
                         String authorName = "";
                         JSONObject author = ref.getJSONObject("author");
                         if (author.has("name")) {
