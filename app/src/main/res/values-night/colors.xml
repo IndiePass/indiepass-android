@@ -4,7 +4,7 @@
     <color name="colorPrimary">#1f1a24</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#a27cc9</color>
-    <color name="iconTint">#6d6d6d</color>
+    <color name="iconTint">#e6e6e7</color>
 
     <color name="listBackgroundColor">#1f1a24</color>
     <color name="textColor">#e6e6e7</color>
