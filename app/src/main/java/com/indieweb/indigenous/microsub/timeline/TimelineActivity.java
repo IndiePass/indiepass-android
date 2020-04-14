@@ -413,7 +413,9 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Utility.saveCache(getApplicationContext(), user.getMeWithoutProtocol(), "timeline", response, channelId, pagerAfter);
+                        if (!showUnread) {
+                            Utility.saveCache(getApplicationContext(), user.getMeWithoutProtocol(), "timeline", response, channelId, pagerAfter);
+                        }
                         parseTimelineResponse(response, false);
                     }
                 },
