@@ -177,6 +177,8 @@
     <string name="feed_parse_error">Error: %s</string>
     <string name="feed_search_error">Something went wrong, please try again.</string>
     <string name="feed_subscribe">Subscribe to feed \'%s\' ?</string>
+    <string name="channel_hide_read">Hide read channels</string>
+    <string name="channel_show_all">Show all channels</string>
 
     <!-- Micropub -->
     <string name="tags">Tags - separate with comma</string>

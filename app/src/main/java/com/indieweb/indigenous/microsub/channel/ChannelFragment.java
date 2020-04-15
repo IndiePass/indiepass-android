@@ -47,6 +47,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
     private ChannelListAdapter adapter;
     private List<Channel> Channels = new ArrayList<>();
     private String readLater;
+    private boolean hideRead = false;
 
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
@@ -75,6 +76,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
             showRefreshLayout();
             readLater = Preferences.getPreference(requireContext(), "pref_key_read_later", "");
             listChannel.setVisibility(View.VISIBLE);
+            hideRead = Preferences.getPreference(requireContext(), "channel_hide_read", false);
             startChannels();
         }
         else {
@@ -161,6 +163,8 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
      *   Whether the response came from cache or not.
      */
     private void parseChannelResponse(String data, boolean fromCache) {
+        boolean hasUnread = false;
+
         try {
             JSONObject object;
             debugResponse = data;
@@ -183,11 +187,13 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
                         unread = (Integer) unreadCheck;
                         totalUnread += unread;
                         if (unread > 0) {
+                            hasUnread = true;
                             unreadChannels++;
                         }
                     }
                     if (unreadCheck instanceof Boolean) {
                         if ((Boolean) unreadCheck) {
+                            hasUnread = true;
                             unread = -1;
                         }
                     }
@@ -207,6 +213,16 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
                 }
             }
             catch (Exception ignored) {}
+
+            // Remove channels if needed.
+            if (hideRead && !fromCache && hasUnread) {
+                for (int j = Channels.size()-1; j >= 0; j--) {
+                    Channel c = Channels.get(j);
+                    if (c.getUnread() == 0) {
+                        Channels.remove(j);
+                    }
+                }
+            }
 
             adapter.notifyDataSetChanged();
             checkRefreshingStatus();
@@ -292,6 +308,13 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
             }
         }
 
+        if (hideRead) {
+            MenuItem item = menu.findItem(R.id.channel_hide_read);
+            if (item != null) {
+                item.setTitle(getString(R.string.channel_show_all));
+            }
+        }
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -307,6 +330,18 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
             case R.id.channel_list_refresh:
                 setShowRefreshedMessage(true);
                 setLayoutRefreshing(true);
+                startChannels();
+                return true;
+
+            case R.id.channel_hide_read:
+                hideRead = !hideRead;
+                if (hideRead) {
+                    item.setTitle(getString(R.string.channel_show_all));
+                }
+                else {
+                    item.setTitle(getString(R.string.channel_hide_read));
+                }
+                Preferences.setPreference(requireContext(), "channel_hide_read", hideRead);
                 startChannels();
                 return true;
 

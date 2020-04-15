@@ -8,6 +8,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/channel_hide_read"
+        android:title="@string/channel_hide_read"
+        app:showAsAction="never" />
+
+    <item
         android:visible="false"
         android:id="@+id/user_add"
         android:icon="@drawable/button_add_account"

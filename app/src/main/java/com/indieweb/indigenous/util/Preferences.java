@@ -61,6 +61,21 @@ public class Preferences {
     }
 
     /**
+     * Set a boolean preference.
+     *
+     * @param context
+     *   The current context
+     * @param pref
+     *   The preference key
+     * @param value
+     *   The value
+     */
+    public static void setPreference(Context context, String pref, boolean value) {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.putBoolean(pref, value).apply();
+    }
+
+    /**
      * Set a string preference.
      *
      * @param context
