@@ -395,6 +395,8 @@
     <string name="pref_key_unread_items_channel_summary">Adds a channel at the top of the list which allows you to view all unread items across all channels at once. Will not show up if there are no unread items or only within one channel. Marking items as read needs to happen manually.</string>
     <string name="pref_key_timeline_author_original_title">Show original author</string>
     <string name="pref_key_timeline_author_original_summary">Swaps the name and photo by the original author for reposts, quotations and likes, if available.</string>
+    <string name="pref_key_timeline_recursive_title">Check references recursively</string>
+    <string name="pref_key_timeline_recursive_summary">Posts can have references to other posts. And those posts can have references again. Toggle this setting to check a level deeper for getting extra content if available. This is currently only enabled for reposts.</string>
     <string name="pref_key_timeline_autoload_more_title">Autoload more posts</string>
     <string name="pref_key_timeline_autoload_more_summary">When the \'Load more\' button comes into view, autoload more posts instead of having to click manually.</string>
     <string name="pref_key_move_item_title">Move items</string>

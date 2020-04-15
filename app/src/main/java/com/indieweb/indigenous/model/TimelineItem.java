@@ -13,8 +13,8 @@ public class TimelineItem implements Serializable {
     private String type;
     private String published;
     private String name;
-    private String textContent;
-    private String htmlContent;
+    private String textContent = "";
+    private String htmlContent = "";
     private String url;
     private String authorName;
     private String authorPhoto = "";
@@ -33,6 +33,7 @@ public class TimelineItem implements Serializable {
     private String video = "";
     private String json;
     private Map<String, String> responseType = new LinkedHashMap<>();
+    private boolean swapReference = true;
 
     public boolean isRead() {
         return isRead;
@@ -242,5 +243,13 @@ public class TimelineItem implements Serializable {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public boolean swapReference() {
+        return swapReference;
+    }
+
+    public void setSwapReference(boolean swapReference) {
+        this.swapReference = swapReference;
     }
 }

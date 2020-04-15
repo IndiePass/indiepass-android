@@ -178,6 +178,12 @@
             android:defaultValue="false" />
         <SwitchPreference
             app:iconSpaceReserved="false"
+            android:key="pref_key_timeline_recursive"
+            android:title="@string/pref_key_timeline_recursive_title"
+            android:summary="@string/pref_key_timeline_recursive_summary"
+            android:defaultValue="false" />
+        <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_timeline_summary_detail_click"
             android:title="@string/pref_key_timeline_summary_detail_click_title"
             android:summary="@string/pref_key_timeline_summary_detail_click_summary"

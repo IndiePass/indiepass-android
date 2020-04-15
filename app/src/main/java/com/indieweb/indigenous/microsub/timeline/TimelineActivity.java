@@ -91,6 +91,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     private LinearLayout noConnection;
     private RelativeLayout layout;
     private boolean hasCache = false;
+    private boolean recursiveReference = false;
 
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
@@ -113,6 +114,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
             refreshLayout.setRefreshing(true);
             readLater = Preferences.getPreference(TimelineActivity.this, "pref_key_read_later", "");
+            recursiveReference = Preferences.getPreference(TimelineActivity.this, "pref_key_timeline_recursive", false);
             channelId = extras.getString("channelId");
             channelName = extras.getString("channelName");
             unread = extras.getInt("unread");
@@ -603,7 +605,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     String value = getSingleJsonValueFromArrayOrString(type, object);
                     if (value.length() > 0) {
                         item.addToResponseType(type, value);
-                        checkReference(object, value, item, false);
+                        checkReference(object, value, item, false, false, 0);
                     }
                 }
 
@@ -620,7 +622,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     String value = getSingleJsonValueFromArrayOrString(type, object);
                     if (value.length() > 0) {
                         item.addToResponseType(type, value);
-                        checkReference(object, value, item, true);
+                        checkReference(object, value, item, true, recursiveReference, 0);
                     }
                 }
 
@@ -630,7 +632,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     String value = getSingleJsonValueFromArrayOrString(type, object);
                     if (value.length() > 0) {
                         item.addToResponseType(type, value);
-                        checkReference(object, value, item, true);
+                        checkReference(object, value, item, true, false, 0);
                     }
                 }
 
@@ -641,7 +643,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     String value = getSingleJsonValueFromArrayOrString(type, object);
                     if (value.length() > 0) {
                         item.addToResponseType(type, value);
-                        checkReference(object, value, item, false);
+                        checkReference(object, value, item, false, false, 0);
                     }
                 }
 
@@ -652,7 +654,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     String value = getSingleJsonValueFromArrayOrString(type, object);
                     if (value.length() > 0) {
                         item.addToResponseType(type, value);
-                        checkReference(object, value, item, false);
+                        checkReference(object, value, item, false, false, 0);
                     }
                 }
 
@@ -793,16 +795,27 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     item.setVideo(video);
                 }
 
-                // Set values of name, text and html content.
-                item.setName(name);
-                item.setTextContent(textContent);
-                item.setHtmlContent(htmlContent);
+                //Log.d("indigenous_debug", "text before: " + item.getTextContent());
+                //Log.d("indigenous_debug", "html before: " + item.getHtmlContent());
+                //Log.d("indigenous_debug", "reference before: " + item.getReference());
 
                 // Swap reference and content if content is empty.
-                if (Preferences.getPreference(getApplicationContext(), "pref_key_timeline_author_original", false) && textContent.length() == 0 && htmlContent.length() == 0 && item.getReference().length() > 0) {
+                if (item.swapReference() && Preferences.getPreference(getApplicationContext(), "pref_key_timeline_author_original", false) && textContent.length() == 0 && htmlContent.length() == 0 && item.getReference().length() > 0) {
+                    //Log.d("indigenous_debug", "swapping ref / content");
                     item.setTextContent(item.getReference());
                     item.setReference("");
                 }
+
+                // Set values of name, text and html content.
+                item.setName(name);
+                if (item.getTextContent().length() == 0) {
+                    item.setTextContent(textContent);
+                }
+                item.setHtmlContent(htmlContent);
+
+                //Log.d("indigenous_debug", "text after: " + item.getTextContent());
+                //Log.d("indigenous_debug", "html after: " + item.getHtmlContent());
+                //Log.d("indigenous_debug", "reference after: " + item.getReference());
 
                 TimelineItems.add(item);
             }
@@ -971,8 +984,12 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
      *   The current timeline item.
      * @param swapAuthor
      *   Whether to swap the author or not.
+     * @param checkRecursive
+     *   Whether to check further recursive.
+     * @param level
+     *   The recursive level
      */
-    private void checkReference(JSONObject object, String url, TimelineItem item, boolean swapAuthor) {
+    private void checkReference(JSONObject object, String url, TimelineItem item, boolean swapAuthor, boolean checkRecursive, int level) {
 
         if (object.has("refs")) {
             try {
@@ -984,10 +1001,21 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     if (ref.has("content")) {
                         JSONObject content = ref.getJSONObject("content");
                         if (content.has("text")) {
+                            if (level == 1 && item.getReference().length() > 0) {
+                                //Log.d("indigenous_debug", "swap on level 1: " + item.getReference());
+                                item.setSwapReference(false);
+                                item.setTextContent(item.getReference());
+                            }
+                            //Log.d("indigenous_debug", "content: " + content.getString("text"));
                             item.setReference(content.getString("text"));
                         }
                     }
                     else if (ref.has("summary")) {
+                        if (level == 1 && item.getReference().length() > 0) {
+                            //Log.d("indigenous_debug", "swap on level 1: " + item.getReference());
+                            item.setSwapReference(false);
+                            item.setTextContent(item.getReference());
+                        }
                         item.setReference(ref.getString("summary"));
                     }
 
@@ -1031,6 +1059,15 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                         if (authorName.length() > 0) {
                             item.setActor(item.getAuthorName());
                             item.setAuthorName(authorName);
+                        }
+                    }
+
+                    if (checkRecursive && ref.has("quotation-of")) {
+                        //Log.d("indigenous_debug", "going recursive");
+                        String secondType = "quotation-of";
+                        String value = getSingleJsonValueFromArrayOrString(secondType, ref);
+                        if (value.length() > 0) {
+                            checkReference(ref, value, item, false, false, 1);
                         }
                     }
                 }
