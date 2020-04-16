@@ -1,5 +1,6 @@
 <h4>xx/xx/xxxx 0.61</h4>
 <ul>
+    <li>Fix crash in compact mode</li>
     <li>Only swap author and name for repost and quotation</li>
     <li>Better contrast for all action buttons in dark mode</li>
     <li>Do not cache the timeline when viewing only unread items</li>
