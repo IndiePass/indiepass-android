@@ -124,7 +124,8 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
                 result = formatIn.parse(item.getPublished());
                 holder.published.setVisibility(View.VISIBLE);
                 holder.published.setText(formatOut.format(result));
-            } catch (ParseException ignored) {
+            }
+            catch (ParseException ignored) {
                 holder.published.setVisibility(View.GONE);
             }
 
@@ -199,7 +200,6 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
                 holder.content.setVisibility(View.GONE);
                 holder.expand.setVisibility(View.GONE);
             }
-
 
             // Button listeners.
             if (item.getUrl().length() > 0) {

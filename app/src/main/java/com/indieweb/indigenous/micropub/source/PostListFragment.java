@@ -246,7 +246,28 @@ public class PostListFragment extends BaseFragment {
 
                 // content.
                 if (object.has("content")) {
-                    content = object.getJSONArray("content").get(0).toString();
+                    boolean hasContent = false;
+                    try {
+                        // Use text first, as the overview is simple, and not a full overview.
+                        JSONObject c = object.getJSONArray("content").getJSONObject(0);
+                        if (c.has("text")) {
+                            hasContent = true;
+                            content = c.getString("text");
+                        }
+                        else if (c.has("html")) {
+                            hasContent = true;
+                            content = c.getString("html");
+                        }
+                    }
+                    catch (JSONException ignored) {}
+
+                    // No content yet, content might be just a string in the first key.
+                    if (!hasContent) {
+                        try {
+                            content = object.getJSONArray("content").get(0).toString();
+                        }
+                        catch (JSONException ignored) {}
+                    }
                 }
                 item.setContent(content);
 
