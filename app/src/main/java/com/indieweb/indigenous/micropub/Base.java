@@ -518,7 +518,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         showProgressBar();
 
         // Use media endpoint to upload media attached to the post.
-        if (user.isAuthenticated() && Preferences.getPreference(getApplicationContext(), "pref_key_upload_media_endpoint", false) && image.size() > 0 && !uploadMediaDone) {
+        if (user.isAuthenticated() && Preferences.getPreference(getApplicationContext(), "pref_key_upload_media_endpoint", false) && (image.size() > 0 || video.size() > 0 || audio.size() > 0) && !uploadMediaDone) {
             mediaCount = image.size() + video.size() + audio.size();
             sendMediaPost();
             return;
@@ -910,9 +910,18 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
                         String fileUrl = response.headers.get("Location");
                         if (fileUrl != null && fileUrl.length() > 0) {
-                            mediaUrls.put(u, fileUrl);
-                            mediaUploadedCount++;
-                            volleyRequestListener.OnSuccessRequest(null);
+                            if (isMediaRequest) {
+                                Snackbar.make(layout, getString(R.string.media_upload_success), Snackbar.LENGTH_SHORT).show();
+                                mediaUrl.setText(fileUrl);
+                                mediaUrl.setVisibility(View.VISIBLE);
+                                Utility.copyToClipboard(fileUrl, getString(R.string.clipboard_media_url), getApplicationContext());
+                                hideProgressBar();
+                            }
+                            else {
+                                mediaUrls.put(u, fileUrl);
+                                mediaUploadedCount++;
+                                volleyRequestListener.OnSuccessRequest(null);
+                            }
                         }
                         else {
                             uploadMediaError = true;
