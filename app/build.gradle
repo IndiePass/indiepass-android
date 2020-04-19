@@ -58,6 +58,8 @@ dependencies {
     implementation 'com.karumi:dexter:4.2.0'
     implementation 'ja.burhanrashid52:photoeditor:1.0.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+    implementation 'io.ticofab.androidgpxparser:parser:1.6.0'
+    implementation 'joda-time:joda-time:2.9.4'
 
     // Specific to Google Playstore
     playstoreImplementation 'com.google.android.gms:play-services-location:17.0.0'

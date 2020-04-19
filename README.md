@@ -23,7 +23,7 @@ Looking for the Desktop client? See https://github.com/swentel/indigenous-deskto
   custom endpoint and token.
 - Micropub
   - post types: article, note, reply, repost, like, bookmark, event,
-    issue, rsvp, geocache, read, checkin and venue (h-card).
+    issue, rsvp, geocache, read, checkin, trip and venue (h-card).
   - add multiple images, videos, audio, tags, toggle syndication targets
   - share location on note, article, event, checkin, geocache and venue
   - send image to media endpoint
@@ -109,6 +109,7 @@ This app uses following external libraries:
 - https://github.com/Karumi/Dexter
 - https://github.com/bumptech/glide
 - https://jsoup.org/download
+- https://github.com/ticofab/android-gpx-parser
 
 ## Other Micropub and Microsub clients
 

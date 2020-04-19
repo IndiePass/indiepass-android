@@ -40,6 +40,7 @@ import com.indieweb.indigenous.micropub.post.ReadActivity;
 import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
+import com.indieweb.indigenous.micropub.post.TripActivity;
 import com.indieweb.indigenous.micropub.post.UploadActivity;
 import com.indieweb.indigenous.micropub.post.VenueActivity;
 import com.indieweb.indigenous.micropub.source.PostListFragment;
@@ -302,6 +303,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.createCheckin:
                 Intent CreateCheckin = new Intent(getBaseContext(), CheckinActivity.class);
                 startActivityForResult(CreateCheckin, CREATE_DRAFT);
+                break;
+
+            case R.id.createTrip:
+                Intent CreateTrip = new Intent(getBaseContext(), TripActivity.class);
+                startActivityForResult(CreateTrip, CREATE_DRAFT);
                 break;
 
             case R.id.createVenue:

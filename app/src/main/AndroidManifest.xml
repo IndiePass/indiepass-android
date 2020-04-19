@@ -313,6 +313,15 @@
         </activity>
 
         <activity
+            android:name=".micropub.post.TripActivity"
+            android:label="@string/add_trip"
+            android:parentActivityName=".LaunchActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.indieweb.indigenous.LaunchActivity" />
+        </activity>
+
+        <activity
             android:name=".micropub.post.ReadActivity"
             android:label="@string/add_read"
             android:parentActivityName=".LaunchActivity">

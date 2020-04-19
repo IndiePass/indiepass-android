@@ -201,6 +201,7 @@
     <string name="add_event">Event</string>
     <string name="add_issue">Issue</string>
     <string name="add_rsvp">RSVP</string>
+    <string name="add_trip">Trip</string>
     <string name="add_checkin">Checkin</string>
     <string name="add_venue">Venue</string>
     <string name="add_geocache">Geocache</string>
@@ -263,6 +264,12 @@
     <string name="bitmap_error">Error generating bitmap from image</string>
     <string name="media_network_fail">Uploading media failed. Status code: %d; message: %s</string>
     <string name="media_fail">Failed uploading media, unknown error</string>
+    <string name="trip_no_points">No points found to send, please load a GPX file.</string>
+    <string name="trip_points_empty">Number of points: 0. Load a GPX file by clicking the location button.</string>
+    <string name="trip_points_count">Number of points: %d. Ready to send!</string>
+    <string name="trip_load_gpx">Load GPX file</string>
+    <string name="trip_reading_error">Error reading GPX file: %s</string>
+    <string name="trip_no_points_found">No points found in GPX file.</string>
 
     <!-- Photoeditor -->
     <string name="editor">Editor</string>

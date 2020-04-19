@@ -134,6 +134,12 @@
 
         <item
             android:checkable="false"
+            android:id="@+id/createTrip"
+            android:icon="@drawable/button_trip_idle"
+            android:title="@string/add_trip" />
+
+        <item
+            android:checkable="false"
             android:id="@+id/createGeocache"
             android:icon="@drawable/button_geocache_idle"
             android:title="@string/add_geocache" />
