@@ -270,6 +270,12 @@
     <string name="trip_load_gpx">Load GPX file</string>
     <string name="trip_reading_error">Error reading GPX file: %s</string>
     <string name="trip_no_points_found">No points found in GPX file.</string>
+    <string name="location_start">Start location</string>
+    <string name="location_end">End location</string>
+    <string name="transport">Transport</string>
+    <string name="cost">Cost</string>
+    <string name="duration">Duration</string>
+    <string name="total_distance">Total distance</string>
 
     <!-- Photoeditor -->
     <string name="editor">Editor</string>
@@ -553,6 +559,18 @@
         <item>80</item>
         <item>90</item>
         <item>100</item>
+    </string-array>
+
+    <string-array name="transport_array">
+        <item>No transport</item>
+        <item>walk</item>
+        <item>run</item>
+        <item>bike</item>
+        <item>drive</item>
+        <item>train</item>
+        <item>flight</item>
+        <item>boat</item>
+        <item>other</item>
     </string-array>
 
 </resources>

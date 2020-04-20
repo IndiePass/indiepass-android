@@ -24,7 +24,7 @@ public class EventActivity extends BaseCreate {
         endDate = findViewById(R.id.endDate);
         super.onCreate(savedInstanceState);
 
-        // Start and end date buttons.
+        // Start and end date listeners.
         startDate.setOnClickListener(new startDateOnClickListener());
         endDate.setOnClickListener(new endDateOnClickListener());
     }
@@ -95,6 +95,5 @@ public class EventActivity extends BaseCreate {
             Utility.showDateTimePickerDialog(EventActivity.this, endDate);
         }
     }
-
 
 }

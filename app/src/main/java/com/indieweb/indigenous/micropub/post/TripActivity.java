@@ -6,11 +6,14 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.micropub.BaseCreate;
+import com.indieweb.indigenous.util.Utility;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -30,6 +33,10 @@ public class TripActivity extends BaseCreate {
     private TextView pointsInfo;
     private List<String> points = new ArrayList<>();
     private int PICK_GPX_REQUEST = 30;
+    private EditText cost;
+    private EditText distance;
+    private EditText duration;
+    private Spinner transport;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +44,23 @@ public class TripActivity extends BaseCreate {
         addCounter = true;
         canAddMedia = false;
         canAddLocation = false;
+
         setContentView(R.layout.activity_trip);
         super.onCreate(savedInstanceState);
+
         saveAsDraft.setVisibility(View.GONE);
         saveAsDraft = null;
         pointsInfo = findViewById(R.id.pointsInfo);
+        transport = findViewById(R.id.transport);
+        cost = findViewById(R.id.cost);
+        distance = findViewById(R.id.distance);
+        duration = findViewById(R.id.duration);
+        startDate = findViewById(R.id.startDate);
+        endDate = findViewById(R.id.endDate);
+
+        // Start and end date listeners.
+        startDate.setOnClickListener(new TripActivity.startDateOnClickListener());
+        endDate.setOnClickListener(new TripActivity.endDateOnClickListener());
     }
 
     @Override
@@ -142,12 +161,32 @@ public class TripActivity extends BaseCreate {
             title.setError(getString(R.string.required_field));
         }
 
-        if (points.size() == 0) {
-            hasErrors = true;
-            Snackbar.make(layout, getString(R.string.trip_no_points), Snackbar.LENGTH_LONG).show();
-        }
-
         if (!hasErrors) {
+
+            if (!TextUtils.isEmpty(startDate.getText())) {
+                bodyParams.put("start", startDate.getText().toString());
+            }
+
+            if (!TextUtils.isEmpty(endDate.getText())) {
+                bodyParams.put("end", endDate.getText().toString());
+            }
+
+            if (!TextUtils.isEmpty(cost.getText())) {
+                bodyParams.put("cost", cost.getText().toString());
+            }
+
+            if (!TextUtils.isEmpty(distance.getText())) {
+                bodyParams.put("distance", distance.getText().toString());
+            }
+
+            if (!TextUtils.isEmpty(duration.getText())) {
+                bodyParams.put("duration", duration.getText().toString());
+            }
+
+            String t = transport.getSelectedItem().toString();
+            if (!t.equals("No transport")) {
+                bodyParams.put("transport", t);
+            }
 
             int i = 0;
             for (String p : points) {
@@ -156,6 +195,26 @@ public class TripActivity extends BaseCreate {
             }
 
             sendBasePost(item);
+        }
+    }
+
+    /**
+     * Start date onclick listener.
+     */
+    class startDateOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Utility.showDateTimePickerDialog(TripActivity.this, startDate);
+        }
+    }
+
+    /**
+     * End date onclick listener
+     */
+    class endDateOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Utility.showDateTimePickerDialog(TripActivity.this, endDate);
         }
     }
 
