@@ -10,4 +10,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <TextView
+        android:visibility="gone"
+        android:text="@string/video_not_found"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/info_text"
+        android:id="@+id/timeline_video_not_video_found"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:visibility="gone"
+        android:text="@string/video_youtube"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/info_text"
+        android:id="@+id/timeline_video_youtube"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

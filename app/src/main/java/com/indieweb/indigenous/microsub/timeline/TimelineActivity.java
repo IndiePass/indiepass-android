@@ -795,6 +795,11 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     item.setVideo(video);
                 }
 
+                // Detect YouTube video.
+                if (item.getUrl().length() > 0 && item.getUrl().contains("youtube.com")) {
+                    item.setVideo(item.getUrl());
+                }
+
                 //Log.d("indigenous_debug", "text before: " + item.getTextContent());
                 //Log.d("indigenous_debug", "html before: " + item.getHtmlContent());
                 //Log.d("indigenous_debug", "reference before: " + item.getReference());

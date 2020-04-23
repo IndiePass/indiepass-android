@@ -127,6 +127,8 @@
     <string name="title_activity_share">Share</string>
     <string name="audio">Listen to audio</string>
     <string name="video">Watch video</string>
+    <string name="video_not_found">Video not found</string>
+    <string name="video_youtube">This is a Video from YouTube\nClick to open the video in either the YouTube app or the browser.</string>
     <string name="map">Map view</string>
     <string name="audio_not_loaded">Audio could not be loaded</string>
     <string name="audio_open">Open audio in favorite player</string>
