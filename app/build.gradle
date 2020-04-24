@@ -7,8 +7,8 @@ android {
         applicationId "com.indieweb.indigenous"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 61
-        versionName "0.61"
+        versionCode 62
+        versionName "0.62"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
