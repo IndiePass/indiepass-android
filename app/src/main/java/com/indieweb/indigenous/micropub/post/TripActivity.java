@@ -87,7 +87,7 @@ public class TripActivity extends BaseCreate {
             return true;
         }
 
-        return onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
