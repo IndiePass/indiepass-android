@@ -484,17 +484,17 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
             if (saveAsDraft != null) {
                  snackbar.setAction(getString(R.string.save_as_draft), new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                saveAsDraft.setChecked(true);
-                                try {
-                                    findViewById(R.id.send).callOnClick();
-                                }
-                                catch (Exception ignored) {
-                                    Snackbar.make(layout, getString(R.string.draft_checked), Snackbar.LENGTH_SHORT).show();
-                                }
+                        @Override
+                        public void onClick(View v) {
+                            saveAsDraft.setChecked(true);
+                            try {
+                                findViewById(R.id.send).callOnClick();
+                            }
+                            catch (Exception ignored) {
+                                Snackbar.make(layout, getString(R.string.draft_checked), Snackbar.LENGTH_SHORT).show();
                             }
                         }
+                    }
                 );
             }
 
@@ -505,11 +505,11 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         if (user.isAnonymous() && user.getMicropubEndpoint().length() == 0) {
             final Snackbar snackbar = Snackbar.make(layout, getString(R.string.no_micropub_endpoint_anonymous), Snackbar.LENGTH_INDEFINITE);
             snackbar.setAction(getString(R.string.close), new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            snackbar.dismiss();
-                        }
+                    @Override
+                    public void onClick(View v) {
+                        snackbar.dismiss();
                     }
+                }
             );
             snackbar.show();
             return;
@@ -573,8 +573,15 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                     public void onErrorResponse(VolleyError error) {
                         hideProgressBar();
                         String message = Utility.parseNetworkError(error, getApplicationContext(), R.string.post_network_fail, R.string.post_fail);
-                        Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
-
+                        final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
+                        snack.setAction(message, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    snack.dismiss();
+                                }
+                            }
+                        );
+                        snack.show();
                     }
                 }
         )
@@ -1067,7 +1074,15 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public void OnFailureRequest(VolleyError error) {
         hideProgressBar();
         String message = Utility.parseNetworkError(error, getApplicationContext(), R.string.media_network_fail, R.string.media_fail);
-        Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
+        final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
+        snack.setAction(message, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    snack.dismiss();
+                }
+            }
+        );
+        snack.show();
     }
 
     /**

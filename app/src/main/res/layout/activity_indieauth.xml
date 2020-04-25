@@ -13,8 +13,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -29,11 +29,12 @@
             <TextView
                 android:id="@+id/info"
                 android:text="@string/sign_in_info"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <EditText
+                android:layout_marginStart="-3dp"
                 android:id="@+id/domain"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -64,6 +65,8 @@
                 android:textColor="@color/colorPrimary"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_marginTop="10dp"
+                android:paddingStart="@dimen/box_padding"
+                android:paddingEnd="@dimen/box_padding"
                 android:id="@+id/selectAccountButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

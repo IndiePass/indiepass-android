@@ -135,6 +135,7 @@ public class TripActivity extends BaseCreate {
                             String message = String.format(getString(R.string.trip_points_count), points.size());
                             pointsInfo.setText(message);
                             Snackbar.make(layout, message, Snackbar.LENGTH_LONG).show();
+                            setChanges(true);
                         }
                         else {
                             Snackbar.make(layout, getString(R.string.trip_no_points_found), Snackbar.LENGTH_LONG).show();
@@ -143,7 +144,16 @@ public class TripActivity extends BaseCreate {
 
                 }
                 catch (Exception e) {
-                    Snackbar.make(layout, String.format(getString(R.string.trip_reading_error), e.getMessage()), Snackbar.LENGTH_LONG).show();
+                    String message = String.format(getString(R.string.trip_reading_error), e.getMessage());
+                    final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
+                    snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                snack.dismiss();
+                            }
+                        }
+                    );
+                    snack.show();
                 }
             }
         }

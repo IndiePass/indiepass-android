@@ -427,7 +427,15 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                         showRefreshMessage = false;
                         checkRefreshingStatus();
                         String message = Utility.parseNetworkError(error, getApplicationContext(), R.string.request_failed, R.string.request_failed_unknown);
-                        Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
+                        final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
+                        snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    snack.dismiss();
+                                }
+                            }
+                        );
+                        snack.show();
                     }
                 }
         )
@@ -865,7 +873,16 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         }
         catch (JSONException e) {
             showRefreshMessage = false;
-            Snackbar.make(layout, String.format(getString(R.string.timeline_parse_error), e.getMessage()), Snackbar.LENGTH_LONG).show();
+            String message = String.format(getString(R.string.timeline_parse_error), e.getMessage());
+            final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
+            snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snack.dismiss();
+                    }
+                }
+            );
+            snack.show();
         }
 
         checkRefreshingStatus();

@@ -82,7 +82,16 @@ abstract public class BaseCreate extends BasePlatformCreate {
 
             }
             catch (JSONException e) {
-                Snackbar.make(layout, String.format(getString(R.string.syndication_targets_parse_error), e.getMessage()), Snackbar.LENGTH_LONG).show();
+                String message = String.format(getString(R.string.syndication_targets_parse_error), e.getMessage());
+                final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
+                snack.setAction(message, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            snack.dismiss();
+                        }
+                    }
+                );
+                snack.show();
             }
         }
 

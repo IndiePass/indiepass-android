@@ -231,7 +231,16 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
         }
         catch (JSONException e) {
             setShowRefreshedMessage(false);
-            Snackbar.make(layout, String.format(getString(R.string.channel_list_parse_error), e.getMessage()), Snackbar.LENGTH_SHORT).show();
+            String message = String.format(getString(R.string.channel_list_parse_error), e.getMessage());
+            final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
+            snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snack.dismiss();
+                    }
+                }
+            );
+            snack.show();
             checkRefreshingStatus();
         }
     }

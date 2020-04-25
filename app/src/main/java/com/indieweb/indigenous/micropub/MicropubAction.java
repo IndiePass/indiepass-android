@@ -5,6 +5,7 @@ import android.content.Context;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RelativeLayout;
@@ -69,7 +70,15 @@ public class MicropubAction {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         String message = Utility.parseNetworkError(error, context, R.string.request_failed, R.string.request_failed_unknown);
-                        Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
+                        final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
+                        snack.setAction(message, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    snack.dismiss();
+                                }
+                            }
+                        );
+                        snack.show();
                     }
                 }
         )
@@ -445,7 +454,15 @@ public class MicropubAction {
                     public void onErrorResponse(VolleyError error) {
                         try {
                             String message = Utility.parseNetworkError(error, context, R.string.micropub_config_network_error, R.string.micropub_config_error);
-                            Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
+                            final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
+                            snack.setAction(message, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        snack.dismiss();
+                                    }
+                                }
+                            );
+                            snack.show();
                         }
                         catch (Exception ignored) {}
                     }

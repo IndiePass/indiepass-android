@@ -49,7 +49,7 @@
     <string name="url_or_text_hint">URL or title</string>
     <string name="url_repository_hint">http://example.com/repository</string>
     <string name="sign_in_with_domain">Sign in</string>
-    <string name="sign_in_info">This login uses IndieAuth and requires you to have a website on your domain that supports IndieAuth.</string>
+    <string name="sign_in_info">This login uses IndieAuth and requires you to have a website on your domain that supports IndieAuth.\n\nFollowing endpoints are required: authorization_endpoint and token_endpoint. Either a micropub or microsub endpoint needs to be available too.</string>
     <string name="switch_account">Switch</string>
     <string name="account_delete_error">Error deleting account</string>
     <string name="connecting">Connecting…</string>
@@ -60,7 +60,7 @@
     <string name="authentication_fail">Authentication failed: Status code: %d; message: %s</string>
     <string name="authentication_fail_token">Authentication failed: %s</string>
     <string name="network_error">Network error</string>
-    <string name="missing_rel_links">We did not find the necessary rel links on your domain (authorization_endpoint, token_endpoint, micropub, microsub)</string>
+    <string name="missing_rel_links">We did not find the necessary endpoints on your domain.</string>
     <string name="no_code_found">No code found in URL to validate</string>
     <string name="validating_code">Validating code</string>
     <string name="account_sync_done">Endpoints and metadata updated. You might need to restart the app for some changes to see effect.</string>

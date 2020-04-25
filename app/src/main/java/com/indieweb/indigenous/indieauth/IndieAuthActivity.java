@@ -151,7 +151,15 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                 validateCode(code, returnedState);
             }
             else {
-                Snackbar.make(layout, getString(R.string.no_code_found), Snackbar.LENGTH_LONG).show();
+                final Snackbar snack = Snackbar.make(layout, getString(R.string.no_code_found), Snackbar.LENGTH_INDEFINITE);
+                snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            snack.dismiss();
+                        }
+                    }
+                );
+                snack.show();
             }
         }
     }
@@ -210,7 +218,15 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
             }
             else {
                 changeSignInButton(R.string.sign_in_with_domain);
-                Snackbar.make(layout, getString(R.string.missing_rel_links), Snackbar.LENGTH_LONG).show();
+                final Snackbar snack = Snackbar.make(layout, getString(R.string.missing_rel_links), Snackbar.LENGTH_INDEFINITE);
+                snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            snack.dismiss();
+                        }
+                    }
+                );
+                snack.show();
             }
 
         }
@@ -314,7 +330,15 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
 
         }
         catch (IllegalArgumentException | IOException e) {
-            Snackbar.make(layout, String.format(getString(R.string.domain_connect_error), e.getMessage()), Snackbar.LENGTH_LONG).show();
+            final Snackbar snack = Snackbar.make(layout, String.format(getString(R.string.domain_connect_error), e.getMessage()), Snackbar.LENGTH_INDEFINITE);
+            snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snack.dismiss();
+                    }
+                }
+            );
+            snack.show();
         }
         catch (Exception ignored) { }
 
@@ -455,7 +479,15 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                         }, 700);
                     }
                     else {
-                        Snackbar.make(layout, String.format(getString(R.string.authentication_fail_token), errorMessage), Snackbar.LENGTH_LONG).show();
+                        final Snackbar snack = Snackbar.make(layout, String.format(getString(R.string.authentication_fail_token), errorMessage), Snackbar.LENGTH_INDEFINITE);
+                        snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    snack.dismiss();
+                                }
+                            }
+                        );
+                        snack.show();
                         showForm();
                     }
                 }
@@ -464,7 +496,15 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     String message = Utility.parseNetworkError(error, getApplicationContext(), R.string.authentication_fail, R.string.network_error);
-                    Snackbar.make(layout, message, Snackbar.LENGTH_LONG).show();
+                    final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
+                    snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                snack.dismiss();
+                            }
+                        }
+                    );
+                    snack.show();
                     showForm();
                 }
             }
