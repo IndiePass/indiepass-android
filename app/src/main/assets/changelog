@@ -1,6 +1,7 @@
 <h4>xx/xx/xxxx 2020 0.63</h4>
 <ul>
-    <li>Do not auto hide error messages, they must be closed instead.</li>
+    <li>Trip post can receive a GPX file from a share intent</li>
+    <li>Do not auto hide error messages, they must be closed instead</li>
 </ul>
 <h4>24/04/2020 2020 0.62</h4>
 <ul>

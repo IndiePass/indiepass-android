@@ -1,6 +1,7 @@
 package com.indieweb.indigenous.micropub.post;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.ticofab.androidgpxparser.parser.GPXParser;
 import io.ticofab.androidgpxparser.parser.domain.Gpx;
@@ -61,6 +63,23 @@ public class TripActivity extends BaseCreate {
         // Start and end date listeners.
         startDate.setOnClickListener(new TripActivity.startDateOnClickListener());
         endDate.setOnClickListener(new TripActivity.endDateOnClickListener());
+
+        Intent intent = getIntent();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String action = intent.getAction();
+            if (Intent.ACTION_SEND.equals(action)) {
+                try {
+                    if (extras.containsKey(Intent.EXTRA_STREAM)) {
+                        String gpxFile = Objects.requireNonNull(extras.get(Intent.EXTRA_STREAM)).toString();
+                        if (gpxFile.length() > 0) {
+                            parseGPXfile(Uri.parse(gpxFile), intent, false);
+                        }
+                    }
+                }
+                catch (Exception ignored) { }
+            }
+        }
     }
 
     @Override
@@ -94,71 +113,85 @@ public class TripActivity extends BaseCreate {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == PICK_GPX_REQUEST && resultCode == RESULT_OK) {
-
             if (data.getData() != null) {
-
-                final int takeFlags = data.getFlags()
-                        & (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
-                try {
-                    getContentResolver().takePersistableUriPermission(data.getData(), takeFlags);
-                    GPXParser mParser = new GPXParser();
-
-                    Gpx parsedGpx = null;
-                    try {
-                        InputStream in = getContentResolver().openInputStream(data.getData());
-                        parsedGpx = mParser.parse(in);
-                    }
-                    catch (IOException | XmlPullParserException e) {
-                        Snackbar.make(layout, String.format(getString(R.string.trip_reading_error), e.getMessage()), Snackbar.LENGTH_LONG).show();
-                    }
-
-                    if (parsedGpx != null) {
-                        points.clear();
-                        List<Track> tracks = parsedGpx.getTracks();
-
-                        for (int i = 0; i < tracks.size(); i++) {
-                            Track track = tracks.get(i);
-                            List<TrackSegment> segments = track.getTrackSegments();
-                            for (int j = 0; j < segments.size(); j++) {
-                                TrackSegment segment = segments.get(j);
-                                for (TrackPoint trackPoint : segment.getTrackPoints()) {
-                                    String coordinates = String.format("%s,%s,%s", trackPoint.getLatitude(), trackPoint.getLongitude(), trackPoint.getElevation());
-                                    String GeoURI = "geo:" + coordinates;
-                                    points.add(GeoURI);
-                                }
-                            }
-                        }
-
-                        if (points.size() > 0) {
-                            String message = String.format(getString(R.string.trip_points_count), points.size());
-                            pointsInfo.setText(message);
-                            Snackbar.make(layout, message, Snackbar.LENGTH_LONG).show();
-                            setChanges(true);
-                        }
-                        else {
-                            Snackbar.make(layout, getString(R.string.trip_no_points_found), Snackbar.LENGTH_LONG).show();
-                        }
-                    }
-
-                }
-                catch (Exception e) {
-                    String message = String.format(getString(R.string.trip_reading_error), e.getMessage());
-                    final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
-                    snack.setAction(getString(R.string.close), new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                snack.dismiss();
-                            }
-                        }
-                    );
-                    snack.show();
-                }
+                parseGPXfile(data.getData(), data, true);
             }
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * Parse a GPX file.
+     *
+     * @param uri
+     *   The file uri.
+     * @param data
+     *   The intent data.
+     */
+    private void parseGPXfile(Uri uri, Intent data, boolean takePermission) {
+
+        final int takeFlags = data.getFlags()
+                & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+        try {
+
+            if (takePermission) {
+                getContentResolver().takePersistableUriPermission(uri, takeFlags);
+            }
+
+            GPXParser mParser = new GPXParser();
+            Gpx parsedGpx = null;
+            try {
+                InputStream in = getContentResolver().openInputStream(uri);
+                parsedGpx = mParser.parse(in);
+            }
+            catch (IOException | XmlPullParserException e) {
+                Snackbar.make(layout, String.format(getString(R.string.trip_reading_error), e.getMessage()), Snackbar.LENGTH_LONG).show();
+            }
+
+            if (parsedGpx != null) {
+                points.clear();
+                List<Track> tracks = parsedGpx.getTracks();
+
+                for (int i = 0; i < tracks.size(); i++) {
+                    Track track = tracks.get(i);
+                    List<TrackSegment> segments = track.getTrackSegments();
+                    for (int j = 0; j < segments.size(); j++) {
+                        TrackSegment segment = segments.get(j);
+                        for (TrackPoint trackPoint : segment.getTrackPoints()) {
+                            String coordinates = String.format("%s,%s,%s", trackPoint.getLatitude(), trackPoint.getLongitude(), trackPoint.getElevation());
+                            String GeoURI = "geo:" + coordinates;
+                            points.add(GeoURI);
+                        }
+                    }
+                }
+
+                if (points.size() > 0) {
+                    String message = String.format(getString(R.string.trip_points_count), points.size());
+                    pointsInfo.setText(message);
+                    Snackbar.make(layout, message, Snackbar.LENGTH_LONG).show();
+                    setChanges(true);
+                }
+                else {
+                    Snackbar.make(layout, getString(R.string.trip_no_points_found), Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+        }
+        catch (Exception e) {
+            String message = String.format(getString(R.string.trip_reading_error), e.getMessage());
+            final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
+            snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snack.dismiss();
+                    }
+                }
+            );
+            snack.show();
+        }
     }
 
     @Override
