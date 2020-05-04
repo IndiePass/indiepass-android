@@ -214,6 +214,11 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
             }
             catch (Exception ignored) {}
 
+            // Set channels globally, make a copy as we need the full list for moving items, or
+            // managing feeds
+            Indigenous app = Indigenous.getInstance();
+            app.setChannels(new ArrayList<>(Channels));
+
             // Remove channels if needed.
             if (hideRead && !fromCache && hasUnread) {
                 for (int j = Channels.size()-1; j >= 0; j--) {
@@ -226,8 +231,6 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
 
             adapter.notifyDataSetChanged();
             checkRefreshingStatus();
-            Indigenous app = Indigenous.getInstance();
-            app.setChannels(Channels);
         }
         catch (JSONException e) {
             setShowRefreshedMessage(false);
