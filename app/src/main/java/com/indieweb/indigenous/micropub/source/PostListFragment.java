@@ -40,6 +40,7 @@ public class PostListFragment extends BaseFragment {
     private Button loadMoreButton;
     private boolean loadMoreButtonAdded = false;
     private String[] olderItems;
+    private static final int FILTER_REQUEST_CODE = 1;
 
     @Nullable
     @Override
@@ -90,7 +91,7 @@ public class PostListFragment extends BaseFragment {
                 return true;
             case R.id.source_post_list_filter:
                 Intent PostListFilter = new Intent(getActivity(), PostListFilterActivity.class);
-                startActivityForResult(PostListFilter, 1);
+                startActivityForResult(PostListFilter, FILTER_REQUEST_CODE);
                 return true;
             case R.id.source_list_debug:
                 Utility.showDebugInfo(requireContext(), debugResponse);
@@ -108,7 +109,7 @@ public class PostListFragment extends BaseFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
+        if (requestCode == FILTER_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 boolean refresh = data.getBooleanExtra("refresh", false);
                 if (refresh) {
