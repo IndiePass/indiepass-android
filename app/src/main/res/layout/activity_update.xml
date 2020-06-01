@@ -30,6 +30,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:padding="@dimen/box_padding"
                     android:textColor="@color/textColor"
                     android:textSize="@dimen/inputText"
                     android:id="@+id/url"

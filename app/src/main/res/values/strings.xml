@@ -324,6 +324,7 @@
     <string name="select_post_limit">Select post limit</string>
     <string name="apply_filter">Apply</string>
     <string name="applying_filter">Applying filter</string>
+    <string name="source_found">Data fetched from server</string>
 
     <!-- Night mode -->
     <string name="night_mode_title">Enable night theme</string>

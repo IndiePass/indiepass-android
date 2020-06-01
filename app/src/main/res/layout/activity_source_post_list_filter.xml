@@ -29,9 +29,8 @@
 
         <Button
             android:layout_marginTop="@dimen/box_padding"
-            android:padding="@dimen/box_padding"
+            android:padding="@dimen/button_padding"
             android:text="@string/apply_filter"
-            android:gravity="start"
             style="?android:attr/borderlessButtonStyle"
             android:background="@color/buttonBackground"
             android:textColor="@color/colorPrimary"

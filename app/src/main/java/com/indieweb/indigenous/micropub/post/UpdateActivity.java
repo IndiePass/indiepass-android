@@ -22,9 +22,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.model.PostListItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
+import com.indieweb.indigenous.util.HTTPRequest;
 import com.indieweb.indigenous.util.Utility;
+import com.indieweb.indigenous.util.VolleyRequestListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +36,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UpdateActivity extends AppCompatActivity implements SendPostInterface {
+public class UpdateActivity extends AppCompatActivity implements SendPostInterface, VolleyRequestListener {
 
     private TextView url;
     private Switch postStatus;
@@ -43,6 +46,8 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
     private User user;
     public RelativeLayout progressBar;
     private RelativeLayout layout;
+    protected VolleyRequestListener volleyRequestListener;
+    private PostListItem item = new PostListItem();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,19 +64,25 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
         body = findViewById(R.id.body);
         progressBar = findViewById(R.id.progressBar);
 
+        // Set listener.
+        VolleyRequestListener(this);
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String urlToUpdate = extras.getString("url");
-            if (urlToUpdate != null && urlToUpdate.length() > 0) {
-                if (URLUtil.isValidUrl(urlToUpdate)) {
-                    url.setText(urlToUpdate);
-                }
-            }
 
             String status = extras.getString("status");
             if (status != null && status.equals("draft")) {
                 postStatus.setChecked(false);
             }
+
+            String urlToUpdate = extras.getString("url");
+            if (urlToUpdate != null && urlToUpdate.length() > 0) {
+                if (URLUtil.isValidUrl(urlToUpdate)) {
+                    url.setText(urlToUpdate);
+                    getPostFromServer(urlToUpdate);
+                }
+            }
+
         }
     }
 
@@ -212,6 +223,128 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
             sendItem.setEnabled(true);
         }
 
+    }
+
+    /**
+     * Get data from server.
+     *
+     * @param url
+     *   The url to fetch data from.
+     */
+    public void getPostFromServer(String url) {
+        String MicropubEndpoint = user.getMicropubEndpoint();
+        if (MicropubEndpoint.contains("?")) {
+            MicropubEndpoint += "&q=source";
+        }
+        else {
+            MicropubEndpoint += "?q=source";
+        }
+
+        MicropubEndpoint += "&url=" + url;
+
+        HTTPRequest r = new HTTPRequest(this.volleyRequestListener, user, getApplicationContext());
+        r.doGetRequest(MicropubEndpoint);
+    }
+
+    @Override
+    public void OnSuccessRequest(String response) {
+        JSONObject object;
+
+        try {
+            JSONObject root = new JSONObject(response);
+            object = root.getJSONObject("properties");
+
+            String url = "";
+            String name = "";
+            String content = "";
+            String published = "";
+            String postStatus = "";
+
+            // url.
+            if (object.has("url")) {
+                url = object.getJSONArray("url").get(0).toString();
+            }
+            item.setUrl(url);
+
+            // post status.
+            if (object.has("post-status")) {
+                postStatus = object.getJSONArray("post-status").get(0).toString();
+            }
+            item.setPostStatus(postStatus);
+
+            // published.
+            if (object.has("published")) {
+                published = object.getJSONArray("published").get(0).toString();
+            }
+            item.setPublished(published);
+
+            // content.
+            if (object.has("content")) {
+                boolean hasContent = false;
+                try {
+                    // Use text first, as the overview is simple, and not a full overview.
+                    JSONObject c = object.getJSONArray("content").getJSONObject(0);
+                    if (c.has("text")) {
+                        hasContent = true;
+                        content = c.getString("text");
+                    }
+                    else if (c.has("html")) {
+                        hasContent = true;
+                        content = c.getString("html");
+                    }
+                }
+                catch (JSONException ignored) {}
+
+                // No content yet, content might be just a string in the first key.
+                if (!hasContent) {
+                    try {
+                        content = object.getJSONArray("content").get(0).toString();
+                    }
+                    catch (JSONException ignored) {}
+                }
+            }
+            item.setContent(content);
+
+            // name.
+            if (object.has("name")) {
+                name = object.getJSONArray("name").get(0).toString();
+            }
+            item.setName(name);
+        }
+        catch (JSONException ignored) {}
+
+        if (item.getName().length() > 0 || item.getContent().length() > 0) {
+            if (item.getName().length() > 0) {
+                title.setText(item.getName());
+            }
+            if (item.getContent().length() > 0) {
+                body.setText(item.getContent());
+            }
+            if (!item.getPostStatus().equals("published")) {
+                postStatus.setChecked(false);
+            }
+            Snackbar.make(layout, getString(R.string.source_found), Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void OnFailureRequest(VolleyError error) {
+        String message = getString(R.string.request_failed_unknown);
+        try {
+            message = Utility.parseNetworkError(error, getApplicationContext(), R.string.request_failed, R.string.request_failed_unknown);
+        }
+        catch (Exception ignored) {}
+        Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Set request listener.
+     *
+     * @param volleyRequestListener
+     *   The volley request listener.
+     */
+    private void VolleyRequestListener(VolleyRequestListener volleyRequestListener) {
+        this.volleyRequestListener = volleyRequestListener;
     }
 
 }
