@@ -46,6 +46,8 @@
                 android:textColor="@color/colorPrimary"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_marginTop="10dp"
+                android:paddingStart="@dimen/box_padding"
+                android:paddingEnd="@dimen/box_padding"
                 android:id="@+id/signInButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
