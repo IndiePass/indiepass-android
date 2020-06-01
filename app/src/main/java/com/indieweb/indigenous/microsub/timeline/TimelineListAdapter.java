@@ -1000,19 +1000,10 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public void onClick(View v) {
             TimelineItem item = items.get(this.position);
             Intent intent = new Intent(context, TimelineActivity.class);
-
-            // Aggregated feeds should trigger a search. We don't have a water proof way of knowing
-            // a feed has multiple authors, so hardcoded for now on twitter.
-            if (item.getUrl().contains("twitter.com")) {
-                intent.putExtra("channelId", channelId);
-                intent.putExtra("search", item.getAuthorName());
-            }
-            else {
-                intent.putExtra("channelId", channelId);
-                intent.putExtra("channelName", channelName);
-                intent.putExtra("sourceId", item.getSourceId());
-                intent.putExtra("sourceName", item.getAuthorName());
-            }
+            intent.putExtra("channelId", channelId);
+            intent.putExtra("channelName", channelName);
+            intent.putExtra("sourceId", item.getSourceId());
+            intent.putExtra("sourceName", item.getAuthorName());
             context.startActivity(intent);
         }
     }
