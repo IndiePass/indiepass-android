@@ -47,7 +47,7 @@ public class DraftFragment extends Fragment {
         ListView listDraft = view.findViewById(R.id.draft_list);
         TextView empty = view.findViewById(R.id.noDrafts);
 
-        User user = new Accounts(getContext()).getCurrentUser();
+        User user = new Accounts(getContext()).getDefaultUser();
         DatabaseHelper db = new DatabaseHelper(requireContext());
         List<Draft> drafts = db.getDrafts(user.getMeWithoutProtocol());
 

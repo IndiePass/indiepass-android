@@ -40,8 +40,8 @@ public class PostListFilterActivity extends AppCompatActivity {
 
         layout = findViewById(R.id.source_post_filter_root);
 
-        // Get current user.
-        User user = new Accounts(this).getCurrentUser();
+        // Get default user.
+        User user = new Accounts(this).getDefaultUser();
 
         // Get post limit spinner.
         postLimitSpinner = findViewById(R.id.postLimit);

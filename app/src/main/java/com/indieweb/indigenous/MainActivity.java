@@ -3,7 +3,6 @@ package com.indieweb.indigenous;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.navigation.NavigationView;
@@ -125,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        user = new Accounts(this).getCurrentUser();
+        user = new Accounts(this).getDefaultUser();
 
         // Let pushy listener restart if necessary, and if configured.
         //noinspection ConstantConditions
@@ -149,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setFirstItemNavigationView();
 
         // Set user information.
-        User user = new Accounts(getApplicationContext()).getCurrentUser();
+        User user = new Accounts(getApplicationContext()).getDefaultUser();
         View headerView = navigationView.getHeaderView(0);
         TextView authorUrl = headerView.findViewById(R.id.navAuthorUrl);
         if (authorUrl != null) {

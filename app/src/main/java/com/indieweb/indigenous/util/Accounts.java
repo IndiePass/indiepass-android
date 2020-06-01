@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import androidx.appcompat.app.AlertDialog;
 
 import android.os.Handler;
+import android.util.Log;
 import android.widget.RelativeLayout;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -33,11 +34,11 @@ public class Accounts {
     }
 
     /**
-     * Gets the current user.
+     * Gets the default user.
      *
      * @return User
      */
-    public User getCurrentUser() {
+    public User getDefaultUser() {
         User user = new User();
 
         SharedPreferences preferences = context.getSharedPreferences("indigenous", MODE_PRIVATE);
@@ -83,6 +84,20 @@ public class Accounts {
         }
 
         return user;
+    }
+
+    /**
+     * Get number of users.
+     *
+     * @return int
+     */
+    public int getCount() {
+        int numberOfUsers = 0;
+
+        Account[] AllAccounts = this.getAllAccounts();
+        numberOfUsers = AllAccounts.length;
+
+        return numberOfUsers;
     }
 
     /**
@@ -170,13 +185,13 @@ public class Accounts {
      *
      * @return Account[]
      */
-    private Account[] getAllAccounts() {
+    public Account[] getAllAccounts() {
         AccountManager accountManager = AccountManager.get(context);
         return accountManager.getAccountsByType(ACCOUNT_TYPE);
     }
 
     /**
-     * Returns all users.
+     * Returns users.
      *
      * @return User[]
      */
@@ -204,6 +219,26 @@ public class Accounts {
             users.add(user);
         }
         return users;
+    }
+
+    /**
+     * Return a specific user.
+     *
+     * @param name
+     *   The user to get.
+     *
+     * @return User
+     */
+    public User getUser(String name) {
+        User user = null;
+        List<User> users = this.getAllUsers();
+        for (User u: users) {
+            if (u.getMe().equals(name)) {
+                user = u;
+            }
+        }
+
+        return user;
     }
 
 }

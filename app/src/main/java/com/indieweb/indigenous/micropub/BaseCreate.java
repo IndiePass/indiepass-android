@@ -1,18 +1,23 @@
 package com.indieweb.indigenous.micropub;
 
+import android.accounts.Account;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
@@ -26,7 +31,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static com.indieweb.indigenous.MainActivity.RESULT_DRAFT_SAVED;
 
@@ -37,8 +44,8 @@ abstract public class BaseCreate extends BasePlatformCreate {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Get current user.
-        user = new Accounts(this).getCurrentUser();
+        // Get default user.
+        user = new Accounts(this).getDefaultUser();
 
         // Syndication targets.
         LinearLayout syndicationLayout = findViewById(R.id.syndicationTargets);
@@ -169,7 +176,29 @@ abstract public class BaseCreate extends BasePlatformCreate {
                                 setUrlAndFocusOnMessage(incomingData);
                                 if (autoSubmit.length() > 0) {
                                     if (Preferences.getPreference(this, autoSubmit, false)) {
-                                        sendBasePost(null);
+                                        if (new Accounts(this).getCount() > 1) {
+                                            final List<String> accounts = new ArrayList<>();
+                                            final Account[] AllAccounts = new Accounts(this).getAllAccounts();
+                                            for (Account account: AllAccounts) {
+                                                accounts.add(account.name);
+                                            }
+                                            final CharSequence[] accountItems = accounts.toArray(new CharSequence[accounts.size()]);
+                                            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                                            builder.setTitle(getString(R.string.account_select_to_post));
+                                            builder.setCancelable(false);
+                                            builder.setItems(accountItems, new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int index) {
+                                                    user = new Accounts(getApplicationContext()).getUser(accounts.get(index));
+                                                    sendBasePost(null);
+                                                }
+                                            });
+                                            builder.show();
+
+                                        }
+                                        else {
+                                            sendBasePost(null);
+                                        }
                                     }
                                 }
                             }

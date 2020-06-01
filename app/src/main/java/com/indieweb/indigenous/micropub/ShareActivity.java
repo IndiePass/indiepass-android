@@ -54,7 +54,7 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
 
-        user = new Accounts(this).getCurrentUser();
+        user = new Accounts(this).getDefaultUser();
         if (!user.isValid()) {
             ScrollView layout = findViewById(R.id.share_root);
             Snackbar.make(layout, getString(R.string.no_user), Snackbar.LENGTH_LONG).show();

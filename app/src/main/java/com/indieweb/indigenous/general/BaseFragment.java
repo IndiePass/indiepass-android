@@ -33,7 +33,7 @@ abstract public class BaseFragment extends Fragment implements VolleyRequestList
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        user = new Accounts(getContext()).getCurrentUser();
+        user = new Accounts(getContext()).getDefaultUser();
 
         // Refresh layout.
         try {

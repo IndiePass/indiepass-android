@@ -14,7 +14,7 @@ public class LaunchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        User user = new Accounts(this).getCurrentUser();
+        User user = new Accounts(this).getDefaultUser();
         if (user.isValid()) {
             Intent MainActivity = new Intent(getBaseContext(), MainActivity.class);
             startActivity(MainActivity);

@@ -55,7 +55,7 @@
             android:layout_height="fill_parent"
             android:layout_gravity="start"
             app:itemIconTint="@color/iconTint"
-            app:itemTextColor="@color/lightBlue"
+            app:itemTextColor="@color/shareMenuColor"
             app:menu="@menu/share_menu"
             app:itemBackground="@drawable/nav_item_background" />
 

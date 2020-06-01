@@ -45,7 +45,7 @@ public class AnonymousFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
         requireActivity().setTitle(R.string.accounts);
-        user = new Accounts(getContext()).getCurrentUser();
+        user = new Accounts(getContext()).getDefaultUser();
         layout = view.findViewById(R.id.anonymous_root);
         readerEndpoint = view.findViewById(R.id.reader);
         postEndpoint = view.findViewById(R.id.post);
@@ -82,7 +82,7 @@ public class AnonymousFragment extends Fragment {
                         Preferences.setPreference(getContext(), "anonymous_microsub_endpoint", getString(R.string.anonymous_microsub_endpoint));
                         Preferences.setPreference(getContext(), "anonymous_micropub_endpoint","");
                         Preferences.setPreference(getContext(), "anonymous_token", "");
-                        user = new Accounts(getContext()).getCurrentUser();
+                        user = new Accounts(getContext()).getDefaultUser();
                         setValues();
 
                         Snackbar.make(layout, getString(R.string.anonymous_reset), Snackbar.LENGTH_SHORT).show();

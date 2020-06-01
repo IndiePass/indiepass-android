@@ -47,7 +47,7 @@ public class UsersFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
         listView = view.findViewById(R.id.users_list);
-        currentUser = new Accounts(getContext()).getCurrentUser();
+        currentUser = new Accounts(getContext()).getDefaultUser();
         requireActivity().setTitle(R.string.accounts);
         layout = view.findViewById(R.id.users_list_root);
 

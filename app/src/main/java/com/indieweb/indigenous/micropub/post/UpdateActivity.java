@@ -49,8 +49,8 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
         setContentView(R.layout.activity_update);
         super.onCreate(savedInstanceState);
 
-        // Get current user.
-        user = new Accounts(this).getCurrentUser();
+        // Get default user.
+        user = new Accounts(this).getDefaultUser();
 
         layout = findViewById(R.id.update_root);
         url = findViewById(R.id.url);

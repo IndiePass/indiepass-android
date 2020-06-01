@@ -78,7 +78,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
         }
         else {
 
-            user = new Accounts(this).getCurrentUser();
+            user = new Accounts(this).getDefaultUser();
 
             // Channel.
             TextView channel = findViewById(R.id.timeline_channel);

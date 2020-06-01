@@ -201,7 +201,7 @@ public class PushNotificationActivity extends AppCompatActivity {
 
             @Override
             protected Map<String, String> getParams() {
-                User user = new Accounts(getApplicationContext()).getCurrentUser();
+                User user = new Accounts(getApplicationContext()).getDefaultUser();
                 Map<String, String> params = new HashMap<>();
                 params.put("url", user.getMe());
                 params.put("apiToken", siteApiToken.getText().toString());
@@ -298,7 +298,7 @@ public class PushNotificationActivity extends AppCompatActivity {
 
             @Override
             protected Map<String, String> getParams() {
-                User user = new Accounts(getApplicationContext()).getCurrentUser();
+                User user = new Accounts(getApplicationContext()).getDefaultUser();
                 Map<String, String> params = new HashMap<>();
                 params.put("url", user.getMe());
                 params.put("apiToken", siteApiToken.getText().toString());

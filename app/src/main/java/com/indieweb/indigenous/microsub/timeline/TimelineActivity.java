@@ -155,7 +155,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 loadMoreButton.setBackgroundColor(getResources().getColor(R.color.loadMoreButtonBackgroundColor));
                 refreshLayout.setOnRefreshListener(this);
             }
-            user = new Accounts(this).getCurrentUser();
+            user = new Accounts(this).getDefaultUser();
 
             // Get style.
             DatabaseHelper db = new DatabaseHelper(TimelineActivity.this);

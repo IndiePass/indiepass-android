@@ -62,7 +62,7 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_channels);
         listChannel = findViewById(R.id.channel_list);
-        user = new Accounts(this).getCurrentUser();
+        user = new Accounts(this).getDefaultUser();
 
         layout = findViewById(R.id.channel_manage_root);
         noConnection = findViewById(R.id.noConnection);

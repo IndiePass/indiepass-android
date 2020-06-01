@@ -17,7 +17,7 @@
 
     <color name="menuTextcolor">#424242</color>
     <color name="drawerTintcolor">#424242</color>
-    <color name="lightBlue">#e6e6e7</color>
+    <color name="shareMenuColor">#e6e6e7</color>
     <color name="paneColor">#e6e6e7</color>
     <color name="paneColorDivider">#e6e6e7</color>
     <color name="listDividerColor">#e6e6e7</color>

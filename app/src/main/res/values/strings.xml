@@ -66,11 +66,12 @@
     <string name="account_sync_done">Endpoints and metadata updated. You might need to restart the app for some changes to see effect.</string>
     <string name="account_sync_error">Error syncing: %s</string>
     <string name="domain_connect_error">Could not connect to domain: %s</string>
-    <string name="current_user">Current account</string>
+    <string name="default_user">Default account</string>
     <string name="account_delete_confirm">Are you sure you want to delete account %s ?</string>
     <string name="account_sync">Syncing %s</string>
     <string name="account_removed">Account %s removed</string>
     <string name="account_select">Select account</string>
+    <string name="account_select_to_post">Select account to post</string>
     <string name="account_selected">Account set to %s</string>
     <string name="account_switch">Switch to account %s ?</string>
     <string name="user_exception">We ran into an exception getting the accounts. Please manage the accounts from the device accounts section.</string>

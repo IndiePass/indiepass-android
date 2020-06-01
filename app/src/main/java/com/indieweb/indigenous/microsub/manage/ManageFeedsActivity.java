@@ -63,7 +63,7 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
             this.setTitle("Feeds in " + channelName);
             refreshLayout = findViewById(R.id.refreshFeed);
             refreshLayout.setOnRefreshListener(this);
-            user = new Accounts(this).getCurrentUser();
+            user = new Accounts(this).getDefaultUser();
             startFeed();
         }
         else {

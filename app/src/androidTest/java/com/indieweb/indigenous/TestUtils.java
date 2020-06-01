@@ -37,7 +37,7 @@ class TestUtils {
     }
 
     static void removeAccount(Context context, Activity activity) {
-        User user = new Accounts(context).getCurrentUser();
+        User user = new Accounts(context).getDefaultUser();
         AccountManager am = AccountManager.get(context);
         am.removeAccount(user.getAccount(), activity, null, null);
 

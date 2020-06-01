@@ -107,7 +107,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
 
             if (item.getMe().equals(currentUser.getMe())) {
                 holder.userCurrent.setVisibility(View.VISIBLE);
-                holder.userCurrent.setText(R.string.current_user);
+                holder.userCurrent.setText(R.string.default_user);
                 holder.switchAccount.setVisibility(View.GONE);
             }
             else {

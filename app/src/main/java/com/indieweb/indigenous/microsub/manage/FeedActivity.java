@@ -68,7 +68,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
             channelName = extras.getString("channelName");
             shareUrl = extras.getString("url");
             this.setTitle(String.format(getString(R.string.add_feed_in_channel), channelName));
-            user = new Accounts(this).getCurrentUser();
+            user = new Accounts(this).getDefaultUser();
 
             feedResults = findViewById(R.id.feedResults);
             url = findViewById(R.id.url);
