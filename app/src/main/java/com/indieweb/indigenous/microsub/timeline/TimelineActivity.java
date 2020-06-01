@@ -132,6 +132,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             }
 
             if (preview) {
+                channelId = "preview";
                 this.setTitle("Preview");
             }
             else {
@@ -415,7 +416,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if (!showUnread) {
+                        if (!showUnread && !preview) {
                             Utility.saveCache(getApplicationContext(), user.getMeWithoutProtocol(), "timeline", response, channelId, pagerAfter);
                         }
                         parseTimelineResponse(response, false);
@@ -836,7 +837,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             adapter.notifyDataSetChanged();
 
             // Notify
-            if (!fromCache && !isGlobalUnread && !isSourceView && (unread > 0 || unread == -1) && entries.size() > 0
+            if (!fromCache && !isGlobalUnread && !isSourceView && !preview && (unread > 0 || unread == -1) && entries.size() > 0
                     && Preferences.getPreference(getApplicationContext(), "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_CHANNEL_CLICK
                     && !readLater.equals(channelId)) {
                 new MicrosubAction(TimelineActivity.this, user, layout).markRead(channelId, entries, false, false);
