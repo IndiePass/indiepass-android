@@ -348,7 +348,7 @@
     <string name="indigenous_device_store_error">Error storing device: %s</string>
     <string name="indigenous_unknown_error">unknown error</string>
     <string name="pushy_me_token_not_found">Pushy.me token not found to register on backend.</string>
-    <string name="push_notification_label">Click to open the app</string>
+    <string name="push_notification_label">Click to open Indigenous</string>
 
     <!-- Preferences: share -->
     <string name="pref_category_sharing_title">Share</string>
