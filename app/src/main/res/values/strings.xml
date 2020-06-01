@@ -44,13 +44,13 @@
     <string name="add_new_account">Add new account</string>
     <string name="no_user">No account found</string>
     <string name="select_account">Select account</string>
-    <string name="select_account_info">Switch to an existing account by pressing the \"Select account\" button.</string>
+    <string name="select_account_info">Set the default account by pressing the \"Select account\" button.</string>
     <string name="url_hint">http://example.com</string>
     <string name="url_or_text_hint">URL or title</string>
     <string name="url_repository_hint">http://example.com/repository</string>
     <string name="sign_in_with_domain">Sign in</string>
     <string name="sign_in_info">This login uses IndieAuth and requires you to have a website on your domain that supports IndieAuth.\n\nThe authorization and token endpoints are required. The micropub or microsub endpoint are optional, but at least one needs to be found.</string>
-    <string name="switch_account">Switch</string>
+    <string name="switch_account">Set</string>
     <string name="account_delete_error">Error deleting account</string>
     <string name="connecting">Connecting…</string>
     <string name="connection_to_domain">Connecting to domain, one moment</string>
@@ -72,8 +72,8 @@
     <string name="account_removed">Account %s removed</string>
     <string name="account_select">Select account</string>
     <string name="account_select_to_post">Select account to post</string>
-    <string name="account_selected">Account set to %s</string>
-    <string name="account_switch">Switch to account %s ?</string>
+    <string name="account_selected">Default account set to %s</string>
+    <string name="account_switch">Set default account to %s ?</string>
     <string name="user_exception">We ran into an exception getting the accounts. Please manage the accounts from the device accounts section.</string>
     <string name="anonymous_settings">Anonymous settings</string>
     <string name="anonymous_info">You are using the anonymous account in Indigenous. The reader is connected by default to a server on https://indigenous.realize.be.\n\nYou can change both the reader and post endpoint to a custom location so you can test yourself and even save posts on your own server without needing an IndieAuth enabled website.\n\nThe token will be send in the authentication header for both endpoints.</string>
