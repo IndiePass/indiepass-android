@@ -35,6 +35,7 @@ public class PushyBroadcastReceiver extends BroadcastReceiver {
         // Prepare a notification with vibration, sound and lights.
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setAutoCancel(true)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setColor(context.getResources().getColor(R.color.colorPrimary))
                 .setContentTitle(notificationTitle)
                 .setContentText(notificationText)
