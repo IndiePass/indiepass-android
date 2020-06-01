@@ -405,7 +405,7 @@
     <string name="pref_key_search_global_title">Global search</string>
     <string name="pref_key_search_global_summary">Allows to search for posts across all channels</string>
     <string name="pref_key_author_timeline_title">Timeline per author</string>
-    <string name="pref_key_author_timeline_summary">Makes the author avatar clickable to see all posts by this author</string>
+    <string name="pref_key_author_timeline_summary">Makes the author avatar clickable to see all posts by this author if your server supports this feature</string>
     <string name="pref_key_unread_items_channel_title">Unread items channel</string>
     <string name="pref_key_unread_items_channel_summary">Adds a channel at the top of the list which allows you to view all unread items across all channels at once. Will not show up if there are no unread items or only within one channel. Marking items as read needs to happen manually.</string>
     <string name="pref_key_timeline_author_original_title">Show original author</string>
