@@ -57,6 +57,7 @@
             android:layout_height="wrap_content" />
 
         <Button
+            android:layout_marginStart="10dp"
             android:padding="@dimen/box_padding"
             android:background="@color/buttonBackground"
             android:textColor="@color/colorPrimary"
@@ -65,13 +66,6 @@
             android:id="@+id/buttonPushyMe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <View
-            android:layout_marginTop="@dimen/box_padding"
-            android:layout_marginBottom="@dimen/box_padding"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/list_divider_height"
-            android:background="@color/listDividerColor" />
 
         <!--<TextView
             android:padding="@dimen/box_padding"

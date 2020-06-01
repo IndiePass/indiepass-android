@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import androidx.core.app.NotificationCompat;
@@ -34,7 +35,7 @@ public class PushyBroadcastReceiver extends BroadcastReceiver {
         // Prepare a notification with vibration, sound and lights.
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setAutoCancel(true)
-                .setSmallIcon(R.drawable.logo)
+                .setColor(context.getResources().getColor(R.color.colorPrimary))
                 .setContentTitle(notificationTitle)
                 .setContentText(notificationText)
                 .setLights(Color.BLUE, 1000, 1000)
