@@ -60,6 +60,7 @@
         android:orientation="horizontal">
 
         <Button
+            android:layout_marginEnd="@dimen/list_item_icon_margin_right"
             android:background="@drawable/button_reply"
             android:hint="@string/add_reply"
             android:textColorHint="@android:color/transparent"
@@ -68,7 +69,7 @@
             android:layout_height="@dimen/list_item_icon_size" />
 
         <Button
-            android:layout_marginStart="@dimen/list_item_icon_margin_left"
+            android:layout_marginEnd="@dimen/list_item_icon_margin_right"
             android:background="@drawable/button_like"
             android:hint="@string/add_like"
             android:textColorHint="@android:color/transparent"
@@ -77,7 +78,7 @@
             android:layout_height="@dimen/list_item_icon_size" />
 
         <Button
-            android:layout_marginStart="@dimen/list_item_icon_margin_left"
+            android:layout_marginEnd="@dimen/list_item_icon_margin_right"
             android:background="@drawable/button_repost"
             android:id="@+id/itemRepost"
             android:hint="@string/add_repost"
@@ -86,7 +87,7 @@
             android:layout_height="@dimen/list_item_icon_size" />
 
         <Button
-            android:layout_marginStart="@dimen/list_item_icon_margin_left"
+            android:layout_marginEnd="@dimen/list_item_icon_margin_right"
             android:background="@drawable/button_bookmark"
             android:id="@+id/itemBookmark"
             android:hint="@string/add_bookmark"
@@ -95,7 +96,7 @@
             android:layout_height="@dimen/list_item_icon_size" />
 
         <Button
-            android:layout_marginStart="@dimen/list_item_icon_margin_left"
+            android:layout_marginEnd="@dimen/list_item_icon_margin_right"
             android:background="@drawable/button_read"
             android:id="@+id/itemRead"
             android:hint="@string/add_read"
@@ -104,34 +105,7 @@
             android:layout_height="@dimen/list_item_icon_size" />
 
         <Button
-            android:layout_marginStart="@dimen/list_item_icon_margin_left"
-            android:background="@drawable/button_external"
-            android:id="@+id/itemExternal"
-            android:hint="@string/external_link"
-            android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/list_item_icon_size"
-            android:layout_height="@dimen/list_item_icon_size" />
-
-        <Button
-            android:layout_marginStart="@dimen/list_item_icon_margin_left"
-            android:background="@drawable/button_audio"
-            android:hint="@string/audio"
-            android:textColorHint="@android:color/transparent"
-            android:id="@+id/itemAudio"
-            android:layout_width="@dimen/list_item_icon_size"
-            android:layout_height="@dimen/list_item_icon_size" />
-
-        <Button
-            android:layout_marginStart="@dimen/list_item_icon_margin_left"
-            android:background="@drawable/button_video"
-            android:id="@+id/itemVideo"
-            android:hint="@string/video"
-            android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/list_item_icon_size"
-            android:layout_height="@dimen/list_item_icon_size" />
-
-        <Button
-            android:layout_marginStart="@dimen/list_item_icon_margin_left"
+            android:layout_marginEnd="@dimen/list_item_icon_margin_right"
             android:background="@drawable/button_rsvp"
             android:id="@+id/itemRSVP"
             android:hint="@string/add_rsvp"
@@ -140,7 +114,33 @@
             android:layout_height="@dimen/list_item_icon_size" />
 
         <Button
-            android:layout_marginStart="@dimen/list_item_icon_margin_left"
+            android:layout_marginEnd="@dimen/list_item_icon_margin_right"
+            android:background="@drawable/button_external"
+            android:id="@+id/itemExternal"
+            android:hint="@string/external_link"
+            android:textColorHint="@android:color/transparent"
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size" />
+
+        <Button
+            android:layout_marginEnd="@dimen/list_item_icon_margin_right"
+            android:background="@drawable/button_audio"
+            android:hint="@string/audio"
+            android:textColorHint="@android:color/transparent"
+            android:id="@+id/itemAudio"
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size" />
+
+        <Button
+            android:layout_marginEnd="@dimen/list_item_icon_margin_right"
+            android:background="@drawable/button_video"
+            android:id="@+id/itemVideo"
+            android:hint="@string/video"
+            android:textColorHint="@android:color/transparent"
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size" />
+
+        <Button
             android:background="@drawable/button_map"
             android:id="@+id/itemMap"
             android:hint="@string/map"
