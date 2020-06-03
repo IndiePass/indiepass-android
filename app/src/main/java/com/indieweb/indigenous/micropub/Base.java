@@ -146,6 +146,8 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public Double longitude = null;
     public RelativeLayout progressBar;
     public Location mCurrentLocation;
+    public LinearLayout accountPostWrapper;
+    public TextView accountPost;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

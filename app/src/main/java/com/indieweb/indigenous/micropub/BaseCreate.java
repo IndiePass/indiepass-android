@@ -47,6 +47,36 @@ abstract public class BaseCreate extends BasePlatformCreate {
         // Get default user.
         user = new Accounts(this).getDefaultUser();
 
+        // Account wrapper.
+        accountPostWrapper = findViewById(R.id.accountPostWrapper);
+        accountPost = findViewById(R.id.accountPost);
+        if (accountPostWrapper != null && new Accounts(this).getCount() > 1) {
+            accountPostWrapper.setVisibility(View.VISIBLE);
+            setAccountPostInfo(user.getMeWithoutProtocol());
+            accountPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final List<String> accounts = new ArrayList<>();
+                    final Account[] AllAccounts = new Accounts(BaseCreate.this).getAllAccounts();
+                    for (Account account: AllAccounts) {
+                        accounts.add(account.name);
+                    }
+                    final CharSequence[] accountItems = accounts.toArray(new CharSequence[accounts.size()]);
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(BaseCreate.this);
+                    builder.setTitle(getString(R.string.account_select_to_post));
+                    builder.setCancelable(true);
+                    builder.setItems(accountItems, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int index) {
+                            user = new Accounts(getApplicationContext()).getUser(accounts.get(index));
+                            setAccountPostInfo(user.getMeWithoutProtocol());
+                        }
+                    });
+                    builder.show();
+                }
+            });
+        }
+
         // Syndication targets.
         LinearLayout syndicationLayout = findViewById(R.id.syndicationTargets);
         String syndicationTargetsString = user.getSyndicationTargets();
@@ -214,7 +244,6 @@ abstract public class BaseCreate extends BasePlatformCreate {
                                                 }
                                             });
                                             builder.show();
-
                                         }
                                         else {
                                             sendBasePost(null);
@@ -303,6 +332,13 @@ abstract public class BaseCreate extends BasePlatformCreate {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setAccountPostInfo(String userName) {
+        if (userName.endsWith("/")) {
+            userName = userName.substring(0, userName.length() - 1);
+        }
+        accountPost.setText(String.format(getString(R.string.account_post_as), userName));
     }
 
     /**

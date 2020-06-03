@@ -279,6 +279,7 @@
     <string name="cost">Cost</string>
     <string name="duration">Duration</string>
     <string name="total_distance">Total distance</string>
+    <string name="account_post_as">Posting as %s</string>
 
     <!-- Photoeditor -->
     <string name="editor">Editor</string>

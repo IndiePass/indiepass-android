@@ -17,6 +17,8 @@
             android:orientation="vertical"
             android:padding="@dimen/box_padding">
 
+            <include layout="@layout/widget_post_account" />
+
             <TextView
                 android:padding="@dimen/box_padding"
                 android:id="@+id/pointsInfo"

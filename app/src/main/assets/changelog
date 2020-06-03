@@ -7,6 +7,7 @@
     <li>Trip post can receive a GPX file from a share intent</li>
     <li>Do not auto hide error messages, they must be closed instead</li>
     <li>Select account when auto post is configured and having multiple accounts</li>
+    <li>Better support for multiple accounts: select account on input screens, or view all channels in reader</li>
 </ul>
 <h4>24/04/2020 2020 0.62</h4>
 <ul>
