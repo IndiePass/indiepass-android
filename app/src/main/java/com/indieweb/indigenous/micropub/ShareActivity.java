@@ -46,6 +46,7 @@ import java.util.ArrayList;
 public class ShareActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     String incomingText = "";
+    String incomingTitle = "";
     String incomingImage = "";
     User user;
 
@@ -68,9 +69,18 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
         if (extras != null) {
             if (Intent.ACTION_SEND.equals(action)) {
                 try {
+
+                    if (extras.containsKey(Intent.EXTRA_SUBJECT)) {
+                        incomingTitle = extras.get(Intent.EXTRA_SUBJECT).toString();
+                    }
+                    else if (extras.containsKey(Intent.EXTRA_TITLE)) {
+                        incomingTitle = extras.get(Intent.EXTRA_TITLE).toString();
+                    }
+
                     if (extras.containsKey(Intent.EXTRA_TEXT)) {
                         incomingText = extras.get(Intent.EXTRA_TEXT).toString();
                     }
+
                     if (extras.containsKey(Intent.EXTRA_STREAM)) {
                         incomingImage = extras.get(Intent.EXTRA_STREAM).toString();
                     }
@@ -82,13 +92,19 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
         TextView createTitle = findViewById(R.id.createTitle);
 
         // Add title and preview.
-        if (incomingText.length() > 0 || incomingImage.length() > 0) {
+        if (incomingText.length() > 0 || incomingTitle.length() > 0 || incomingImage.length() > 0) {
             createTitle.setVisibility(View.VISIBLE);
 
+            if (incomingTitle.length() > 0) {
+                TextView previewTitle = findViewById(R.id.previewTitle);
+                previewTitle.setVisibility(View.VISIBLE);
+                previewTitle.setText(incomingTitle);
+            }
+
             if (incomingText.length() > 0) {
-                TextView preview = findViewById(R.id.previewText);
-                preview.setVisibility(View.VISIBLE);
-                preview.setText(incomingText);
+                TextView previewText = findViewById(R.id.previewText);
+                previewText.setVisibility(View.VISIBLE);
+                previewText.setText(incomingText);
             }
 
             if (incomingImage.length() > 0) {
@@ -214,6 +230,9 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
         switch (item.getItemId()) {
             case R.id.createArticle:
                 Intent CreateArticle = new Intent(getBaseContext(), ArticleActivity.class);
+                if (incomingTitle != null && incomingTitle.length() > 0) {
+                    CreateArticle.putExtra("incomingTitle", incomingTitle);
+                }
                 if (incomingText != null && incomingText.length() > 0) {
                     CreateArticle.putExtra("incomingText", incomingText);
                 }
@@ -234,6 +253,9 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                 break;
             case R.id.createLike:
                 Intent CreateLike = new Intent(getBaseContext(), LikeActivity.class);
+                if (incomingTitle != null && incomingTitle.length() > 0) {
+                    CreateLike.putExtra("incomingTitle", incomingTitle);
+                }
                 if (incomingText.length() > 0) {
                     CreateLike.putExtra("incomingText", incomingText);
                 }
@@ -248,6 +270,9 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                 break;
             case R.id.createBookmark:
                 Intent CreateBookmark = new Intent(getBaseContext(), BookmarkActivity.class);
+                if (incomingTitle != null && incomingTitle.length() > 0) {
+                    CreateBookmark.putExtra("incomingTitle", incomingTitle);
+                }
                 if (incomingText.length() > 0) {
                     CreateBookmark.putExtra("incomingText", incomingText);
                 }
@@ -255,6 +280,9 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                 break;
             case R.id.createRepost:
                 Intent CreateRepost = new Intent(getBaseContext(), RepostActivity.class);
+                if (incomingTitle != null && incomingTitle.length() > 0) {
+                    CreateRepost.putExtra("incomingTitle", incomingTitle);
+                }
                 if (incomingText.length() > 0) {
                     CreateRepost.putExtra("incomingText", incomingText);
                 }
@@ -262,6 +290,9 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                 break;
             case R.id.createEvent:
                 Intent CreateEvent = new Intent(getBaseContext(), EventActivity.class);
+                if (incomingTitle != null && incomingTitle.length() > 0) {
+                    CreateEvent.putExtra("incomingTitle", incomingTitle);
+                }
                 if (incomingText.length() > 0) {
                     CreateEvent.putExtra("incomingText", incomingText);
                 }
@@ -304,6 +335,9 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                 break;
             case R.id.createVenue:
                 Intent CreateVenue = new Intent(getBaseContext(), VenueActivity.class);
+                if (incomingTitle != null && incomingTitle.length() > 0) {
+                    CreateVenue.putExtra("incomingTitle", incomingTitle);
+                }
                 if (incomingText.length() > 0) {
                     CreateVenue.putExtra("incomingText", incomingText);
                 }

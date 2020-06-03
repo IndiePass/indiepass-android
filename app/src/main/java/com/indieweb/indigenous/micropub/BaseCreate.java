@@ -171,8 +171,28 @@ abstract public class BaseCreate extends BasePlatformCreate {
                     // Text
                     if (extras.containsKey(Intent.EXTRA_TEXT)) {
                         String incomingData = extras.get(Intent.EXTRA_TEXT).toString();
-                        if (incomingData != null && incomingData.length() > 0) {
+                        if (incomingData.length() > 0) {
                             if (url != null) {
+
+                                if (extras.containsKey(Intent.EXTRA_SUBJECT)) {
+                                    try {
+                                        String incomingTitle = extras.get(Intent.EXTRA_SUBJECT).toString();
+                                        if (incomingTitle.length() > 0 && title != null) {
+                                            title.setText(incomingTitle);
+                                        }
+                                    }
+                                    catch (NullPointerException ignored) { }
+                                }
+                                else if (extras.containsKey(Intent.EXTRA_TITLE)) {
+                                    try {
+                                        String incomingTitle = extras.get(Intent.EXTRA_TITLE).toString();
+                                        if (incomingTitle.length() > 0 && title != null) {
+                                            title.setText(incomingTitle);
+                                        }
+                                    }
+                                    catch (NullPointerException ignored) { }
+                                }
+
                                 setUrlAndFocusOnMessage(incomingData);
                                 if (autoSubmit.length() > 0) {
                                     if (Preferences.getPreference(this, autoSubmit, false)) {
@@ -230,6 +250,12 @@ abstract public class BaseCreate extends BasePlatformCreate {
                     else {
                         body.setText(incomingText);
                     }
+                }
+
+                String incomingTitle = extras.getString("incomingTitle");
+                if (incomingTitle != null && incomingTitle.length() > 0 && title != null) {
+                    setChanges(true);
+                    title.setText(incomingTitle);
                 }
 
                 boolean testIncoming = extras.getBoolean("indigenousTesting");

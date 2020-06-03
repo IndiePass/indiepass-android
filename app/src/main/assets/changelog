@@ -2,6 +2,7 @@
 <ul>
     <li>Fix preview of a feed</li>
     <li>Get more data from server for updating posts</li>
+    <li>Pull in more data when sharing to Indigenous</li>
     <li>Fix move post presenting the full channel list</li>
     <li>Trip post can receive a GPX file from a share intent</li>
     <li>Do not auto hide error messages, they must be closed instead</li>

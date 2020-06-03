@@ -2,13 +2,13 @@
 <resources>
 
     <color name="colorPrimary">#1f1a24</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#a27cc9</color>
-    <color name="iconTint">#e6e6e7</color>
+    <color name="colorPrimaryDark">#212121</color>
+    <color name="colorAccent">#7bb6ff</color>
+    <color name="iconTint">#cbcbcb</color>
 
     <color name="listBackgroundColor">#1f1a24</color>
     <color name="textColor">#e6e6e7</color>
-    <color name="listRowBackgroundColor">#423d46</color>
+    <color name="listRowBackgroundColor">#4f4f4f</color>
 
     <color name="borderColor">#423d46</color>
     <color name="borderStartcolor">@color/iconTint</color>
@@ -17,11 +17,11 @@
 
     <color name="menuTextcolor">#424242</color>
     <color name="drawerTintcolor">#424242</color>
-    <color name="shareMenuColor">#e6e6e7</color>
-    <color name="paneColor">#e6e6e7</color>
-    <color name="paneColorDivider">#e6e6e7</color>
-    <color name="listDividerColor">#e6e6e7</color>
-    <color name="buttonBackground">#e6e6e7</color>
+    <color name="shareMenuColor">#cbcbcb</color>
+    <color name="paneColor">#cbcbcb</color>
+    <color name="paneColorDivider">#cbcbcb</color>
+    <color name="listDividerColor">#cbcbcb</color>
+    <color name="buttonBackground">#cbcbcb</color>
 
     <color name="listRowBackgroundColorTouched">#6d6d6d</color>
     <color name="loadMoreButtonBackgroundColorTouched">#6d6d6d</color>

@@ -27,6 +27,17 @@
                 android:hint="@string/url_hint"
                 android:inputType="textUri" />
 
+            <EditText
+                android:id="@+id/title"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/inputText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:ems="10"
+                android:hint="@string/title"
+                android:inputType="text" />
+
             <include layout="@layout/widget_category" />
 
             <include layout="@layout/widget_targets" />

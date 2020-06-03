@@ -23,6 +23,16 @@
             android:padding="10dp"
             android:visibility="gone"
             android:textStyle="italic"
+            android:id="@+id/previewTitle"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/preview_text_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:padding="10dp"
+            android:visibility="gone"
+            android:textStyle="italic"
             android:id="@+id/previewText"
             android:textColor="@color/textColor"
             android:textSize="@dimen/preview_text_size"
