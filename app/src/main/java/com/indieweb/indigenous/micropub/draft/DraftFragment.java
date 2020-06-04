@@ -49,7 +49,7 @@ public class DraftFragment extends Fragment {
 
         User user = new Accounts(getContext()).getDefaultUser();
         DatabaseHelper db = new DatabaseHelper(requireContext());
-        List<Draft> drafts = db.getDrafts(user.getMeWithoutProtocol());
+        List<Draft> drafts = db.getDrafts();
 
         if (drafts.size() == 0) {
             listDraft.setVisibility(View.GONE);

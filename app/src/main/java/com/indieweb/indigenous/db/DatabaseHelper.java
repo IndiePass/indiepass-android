@@ -185,17 +185,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Get all drafts
      *
-     * @param account
-     *   The account to get the drafts for.
-     *
      * @return <Draft>
      */
-    public List<Draft> getDrafts(String account) {
+    public List<Draft> getDrafts() {
         List<Draft> drafts = new ArrayList<>();
 
         // Select query
-        String selectQuery = "SELECT * FROM " + Draft.TABLE_NAME + " WHERE " + Draft.COLUMN_ACCOUNT + "='" + account + "' " +
-                "ORDER BY " + Draft.COLUMN_TIMESTAMP + " DESC";
+        String selectQuery = "SELECT * FROM " + Draft.TABLE_NAME + " ORDER BY " + Draft.COLUMN_TIMESTAMP + " DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -222,12 +218,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return int
      *   The number of drafts.
      */
-    public int getDraftCount(String account) {
+    public int getDraftCount() {
         int count = 0;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor dataCount;
         if (db != null) {
-            dataCount = db.rawQuery("select "+ Draft.COLUMN_ID + " from " + Draft.TABLE_NAME + " WHERE " + Draft.COLUMN_ACCOUNT + "='" + account + "'", null);
+            dataCount = db.rawQuery("select "+ Draft.COLUMN_ID + " from " + Draft.TABLE_NAME, null);
             count = dataCount.getCount();
             db.close();
         }

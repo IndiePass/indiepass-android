@@ -17,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
 import com.indieweb.indigenous.R;
@@ -24,8 +25,10 @@ import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.micropub.post.BasePlatformCreate;
 import com.indieweb.indigenous.model.Draft;
 import com.indieweb.indigenous.model.Syndication;
+import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Accounts;
 import com.indieweb.indigenous.util.Preferences;
+import com.indieweb.indigenous.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,16 +54,30 @@ abstract public class BaseCreate extends BasePlatformCreate {
         accountPostWrapper = findViewById(R.id.accountPostWrapper);
         accountPost = findViewById(R.id.accountPost);
         if (accountPostWrapper != null && new Accounts(this).getCount() > 1) {
+
+            final List<String> accounts = new ArrayList<>();
+            final Account[] AllAccounts = new Accounts(BaseCreate.this).getAllAccounts();
+            for (Account account: AllAccounts) {
+                accounts.add(account.name);
+            }
+
+            // Check if account is passed in.
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                String incomingAccount = extras.getString("account");
+                if (incomingAccount != null && !incomingAccount.equals(user.getMeWithoutProtocol())) {
+                    User incomingUser = new Accounts(getApplicationContext()).getUser(incomingAccount, true);
+                    if (incomingUser != null) {
+                        user = incomingUser;
+                    }
+                }
+            }
+
             accountPostWrapper.setVisibility(View.VISIBLE);
             setAccountPostInfo(user.getMeWithoutProtocol());
             accountPost.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final List<String> accounts = new ArrayList<>();
-                    final Account[] AllAccounts = new Accounts(BaseCreate.this).getAllAccounts();
-                    for (Account account: AllAccounts) {
-                        accounts.add(account.name);
-                    }
                     final CharSequence[] accountItems = accounts.toArray(new CharSequence[accounts.size()]);
                     final AlertDialog.Builder builder = new AlertDialog.Builder(BaseCreate.this);
                     builder.setTitle(getString(R.string.account_select_to_post));
@@ -68,7 +85,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
                     builder.setItems(accountItems, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int index) {
-                            user = new Accounts(getApplicationContext()).getUser(accounts.get(index));
+                            user = new Accounts(getApplicationContext()).getUser(accounts.get(index), false);
                             setAccountPostInfo(user.getMeWithoutProtocol());
                         }
                     });
@@ -121,7 +138,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
             catch (JSONException e) {
                 String message = String.format(getString(R.string.syndication_targets_parse_error), e.getMessage());
                 final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
-                snack.setAction(message, new View.OnClickListener() {
+                snack.setAction(getString(R.string.close), new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             snack.dismiss();
@@ -239,7 +256,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
                                             builder.setItems(accountItems, new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int index) {
-                                                    user = new Accounts(getApplicationContext()).getUser(accounts.get(index));
+                                                    user = new Accounts(getApplicationContext()).getUser(accounts.get(index), false);
                                                     sendBasePost(null);
                                                 }
                                             });
@@ -322,7 +339,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.addLocation) {
             if (!mRequestingLocationUpdates) {
                 startLocationUpdates();
@@ -334,11 +351,8 @@ abstract public class BaseCreate extends BasePlatformCreate {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setAccountPostInfo(String userName) {
-        if (userName.endsWith("/")) {
-            userName = userName.substring(0, userName.length() - 1);
-        }
-        accountPost.setText(String.format(getString(R.string.account_post_as), userName));
+    public void setAccountPostInfo(@NonNull String userName) {
+        accountPost.setText(String.format(getString(R.string.account_post_as), Utility.stripEndingSlash(userName)));
     }
 
     /**

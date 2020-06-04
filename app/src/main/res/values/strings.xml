@@ -41,6 +41,7 @@
     <!-- Authentication and accounts -->
     <string name="account_type">IndieAuth</string>
     <string name="accounts">Accounts</string>
+    <string name="account_name">Account: %s</string>
     <string name="add_new_account">Add new account</string>
     <string name="no_user">No account found</string>
     <string name="select_account">Select account</string>

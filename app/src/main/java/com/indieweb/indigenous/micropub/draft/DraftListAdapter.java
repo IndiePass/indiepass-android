@@ -31,6 +31,7 @@ import com.indieweb.indigenous.micropub.post.ReplyActivity;
 import com.indieweb.indigenous.micropub.post.RepostActivity;
 import com.indieweb.indigenous.micropub.post.RsvpActivity;
 import com.indieweb.indigenous.model.Draft;
+import com.indieweb.indigenous.util.Utility;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -74,6 +75,7 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
 
     public static class ViewHolder {
         int position;
+        TextView account;
         TextView label;
         TextView published;
         Button update;
@@ -88,6 +90,7 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
             convertView = mInflater.inflate(R.layout.list_item_draft, null);
             holder = new ViewHolder();
             holder.row = convertView.findViewById(R.id.draft_list_item_row);
+            holder.account = convertView.findViewById(R.id.draft_list_account);
             holder.label = convertView.findViewById(R.id.draft_list_label);
             holder.published = convertView.findViewById(R.id.draft_list_type_published);
             holder.update = convertView.findViewById(R.id.draftUpdate);
@@ -106,6 +109,10 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
             // Color of row.
             int color = context.getResources().getColor(R.color.listRowBackgroundColor);
             holder.row.setBackgroundColor(color);
+
+            // Account
+            String account = Utility.stripEndingSlash(draft.getAccount());
+            holder.account.setText(String.format(context.getString(R.string.account_name), account));
 
             // Label
             String label = "";
@@ -159,55 +166,45 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
             switch (draft.getType()) {
                 case "note":
                     startActivity = new Intent(context, NoteActivity.class);
-                    startActivity.putExtra("draftId", draft.getId());
                     break;
                 case "article":
                     startActivity = new Intent(context, ArticleActivity.class);
-                    startActivity.putExtra("draftId", draft.getId());
                     break;
                 case "like":
                     startActivity = new Intent(context, LikeActivity.class);
-                    startActivity.putExtra("draftId", draft.getId());
                     break;
                 case "bookmark":
                     startActivity = new Intent(context, BookmarkActivity.class);
-                    startActivity.putExtra("draftId", draft.getId());
                     break;
                 case "reply":
                     startActivity = new Intent(context, ReplyActivity.class);
-                    startActivity.putExtra("draftId", draft.getId());
                     break;
                 case "repost":
                     startActivity = new Intent(context, RepostActivity.class);
-                    startActivity.putExtra("draftId", draft.getId());
                     break;
                 case "event":
                     startActivity = new Intent(context, EventActivity.class);
-                    startActivity.putExtra("draftId", draft.getId());
                     break;
                 case "rsvp":
                     startActivity = new Intent(context, RsvpActivity.class);
-                    startActivity.putExtra("draftId", draft.getId());
                     break;
                 case "read":
                     startActivity = new Intent(context, ReadActivity.class);
-                    startActivity.putExtra("draftId", draft.getId());
                     break;
                 case "issue":
                     startActivity = new Intent(context, IssueActivity.class);
-                    startActivity.putExtra("draftId", draft.getId());
                     break;
                 case "checkin":
                     startActivity = new Intent(context, CheckinActivity.class);
-                    startActivity.putExtra("draftId", draft.getId());
                     break;
                 case "geocache":
                     startActivity = new Intent(context, GeocacheActivity.class);
-                    startActivity.putExtra("draftId", draft.getId());
                     break;
             }
 
             if (startActivity != null) {
+                startActivity.putExtra("account", draft.getAccount());
+                startActivity.putExtra("draftId", draft.getId());
                 ((Activity) context).startActivityForResult(startActivity, POST_DRAFT);
             }
         }

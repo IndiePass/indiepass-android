@@ -119,6 +119,21 @@ public class Utility {
     }
 
     /**
+     * Strip string.
+     *
+     * @param string
+     *   The string to strip the ending slash of.
+     *
+     * @return string
+     */
+    public static String stripEndingSlash(String string) {
+        if (string.endsWith("/")) {
+            string = string.substring(0, string.length() - 1);
+        }
+        return string;
+    }
+
+    /**
      * Show debug info activity.
      *
      * @param context

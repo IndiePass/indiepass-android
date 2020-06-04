@@ -576,7 +576,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                         hideProgressBar();
                         String message = Utility.parseNetworkError(error, getApplicationContext(), R.string.post_network_fail, R.string.post_fail);
                         final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
-                        snack.setAction(message, new View.OnClickListener() {
+                        snack.setAction(getString(R.string.close), new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     snack.dismiss();
@@ -1077,7 +1077,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         hideProgressBar();
         String message = Utility.parseNetworkError(error, getApplicationContext(), R.string.media_network_fail, R.string.media_fail);
         final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
-        snack.setAction(message, new View.OnClickListener() {
+        snack.setAction(getString(R.string.close), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     snack.dismiss();

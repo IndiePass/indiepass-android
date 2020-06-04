@@ -1,8 +1,12 @@
 package com.indieweb.indigenous;
 
+import android.accounts.Account;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.navigation.NavigationView;
@@ -14,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +30,7 @@ import com.indieweb.indigenous.general.AboutFragment;
 import com.indieweb.indigenous.general.SettingsFragment;
 import com.indieweb.indigenous.indieauth.AnonymousFragment;
 import com.indieweb.indigenous.indieauth.UsersFragment;
+import com.indieweb.indigenous.micropub.BaseCreate;
 import com.indieweb.indigenous.micropub.contact.ContactFragment;
 import com.indieweb.indigenous.micropub.draft.DraftFragment;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
@@ -54,6 +60,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import me.pushy.sdk.Pushy;
 
@@ -63,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Menu drawerMenu;
     DrawerLayout drawer;
     NavigationView navigationView;
+    View headerView;
     public static final int CREATE_DRAFT = 1001;
     public static final int POST_DRAFT = 1002;
     public static final int RESULT_DRAFT_SAVED = 1005;
@@ -148,29 +156,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setFirstItemNavigationView();
 
         // Set user information.
+        headerView = navigationView.getHeaderView(0);
         User user = new Accounts(getApplicationContext()).getDefaultUser();
-        View headerView = navigationView.getHeaderView(0);
-        TextView authorUrl = headerView.findViewById(R.id.navAuthorUrl);
-        if (authorUrl != null) {
-            authorUrl.setVisibility(View.VISIBLE);
-            authorUrl.setText(user.getMe());
-        }
+        setAccountInfo(user);
+        if (new Accounts(this).getCount() > 1) {
 
-        if (user.getName().length() > 0) {
-            TextView authorName = headerView.findViewById(R.id.navAuthorName);
-            if (authorName != null) {
-                authorName.setVisibility(View.VISIBLE);
-                authorName.setText(user.getName());
-            }
-        }
-
-        if (user.getAvatar().length() > 0) {
-            ImageView authorAvatar = headerView.findViewById(R.id.navAuthorAvatar);
-            if (authorAvatar != null) {
-                Glide.with(getApplicationContext())
-                        .load(user.getAvatar())
-                        .apply(RequestOptions.circleCropTransform())
-                        .into(authorAvatar);
+            Button swapAccount = headerView.findViewById(R.id.navAccountSwitch);
+            if (swapAccount != null) {
+                swapAccount.setVisibility(View.VISIBLE);
+                swapAccount.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final List<String> accounts = new ArrayList<>();
+                        final Account[] AllAccounts = new Accounts(MainActivity.this).getAllAccounts();
+                        for (Account account: AllAccounts) {
+                            accounts.add(account.name);
+                        }
+                        final CharSequence[] accountItems = accounts.toArray(new CharSequence[accounts.size()]);
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setTitle(getString(R.string.default_user));
+                        builder.setCancelable(true);
+                        builder.setItems(accountItems, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int index) {
+                                User defaultUser = new Accounts(getApplicationContext()).getUser(accounts.get(index), false);
+                                setAccountInfo(defaultUser);
+                                Snackbar.make(drawer, String.format(getString(R.string.account_selected), accounts.get(index)), Snackbar.LENGTH_SHORT).show();
+                                SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
+                                editor.putString("account", accounts.get(index));
+                                editor.apply();
+                            }
+                        });
+                        builder.show();
+                    }
+                });
             }
         }
 
@@ -387,7 +406,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     public void setDraftMenuItemTitle(boolean callbackOrPost) {
         DatabaseHelper db = new DatabaseHelper(getApplicationContext());
-        int draftCount = db.getDraftCount(user.getMeWithoutProtocol());
+        int draftCount = db.getDraftCount();
         if (draftCount > 0) {
             MenuItem draftItem = drawerMenu.findItem(R.id.nav_drafts);
             if (draftItem != null) {
@@ -555,6 +574,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onPreferenceChanged(int id, boolean enabled) {
         drawerMenu.findItem(id).setVisible(enabled);
+    }
+
+    /**
+     * Set account info
+     *
+     * @param user
+     *   The user
+     */
+    public void setAccountInfo(User user) {
+        TextView authorUrl = headerView.findViewById(R.id.navAuthorUrl);
+        if (authorUrl != null) {
+            authorUrl.setVisibility(View.VISIBLE);
+            authorUrl.setText(Utility.stripEndingSlash(user.getMeWithoutProtocol()));
+        }
+
+        if (user.getName().length() > 0) {
+            TextView authorName = headerView.findViewById(R.id.navAuthorName);
+            if (authorName != null) {
+                authorName.setVisibility(View.VISIBLE);
+                authorName.setText(user.getName());
+            }
+        }
+
+        if (user.getAvatar().length() > 0) {
+            ImageView authorAvatar = headerView.findViewById(R.id.navAuthorAvatar);
+            if (authorAvatar != null) {
+                Glide.with(getApplicationContext())
+                        .load(user.getAvatar())
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(authorAvatar);
+            }
+        }
+
+
     }
 
 }

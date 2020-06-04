@@ -71,7 +71,7 @@ public class MicropubAction {
                     public void onErrorResponse(VolleyError error) {
                         String message = Utility.parseNetworkError(error, context, R.string.request_failed, R.string.request_failed_unknown);
                         final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
-                        snack.setAction(message, new View.OnClickListener() {
+                        snack.setAction(context.getString(R.string.close), new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     snack.dismiss();
@@ -455,7 +455,7 @@ public class MicropubAction {
                         try {
                             String message = Utility.parseNetworkError(error, context, R.string.micropub_config_network_error, R.string.micropub_config_error);
                             final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
-                            snack.setAction(message, new View.OnClickListener() {
+                            snack.setAction(context.getString(R.string.close), new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         snack.dismiss();

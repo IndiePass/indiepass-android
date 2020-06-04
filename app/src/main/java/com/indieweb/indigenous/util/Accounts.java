@@ -146,6 +146,8 @@ public class Accounts {
      *   The current activity
      * @param layout
      *   The current layout
+     *
+     * TODO we have a couple of variations of this code in other places, try to merge them.
      */
     public void selectAccount(final Activity activity, final RelativeLayout layout) {
         final List<String> accounts = new ArrayList<>();
@@ -226,15 +228,25 @@ public class Accounts {
      *
      * @param name
      *   The user to get.
+     * @param checkWithoutProtocol
+     *   Whether to seek based on the protocol or not.
      *
      * @return User
      */
-    public User getUser(String name) {
+    public User getUser(String name, boolean checkWithoutProtocol) {
         User user = null;
         List<User> users = this.getAllUsers();
         for (User u: users) {
-            if (u.getMe().equals(name)) {
-                user = u;
+
+            if (checkWithoutProtocol) {
+                if (u.getMeWithoutProtocol().equals(name)) {
+                    user = u;
+                }
+            }
+            else {
+                if (u.getMe().equals(name)) {
+                    user = u;
+                }
             }
         }
 
