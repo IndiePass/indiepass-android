@@ -87,6 +87,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
                         public void onClick(DialogInterface dialog, int index) {
                             user = new Accounts(getApplicationContext()).getUser(accounts.get(index), false);
                             setAccountPostInfo(user.getMeWithoutProtocol());
+                            setSyndicationTargets();
                         }
                     });
                     builder.show();
@@ -94,60 +95,8 @@ abstract public class BaseCreate extends BasePlatformCreate {
             });
         }
 
-        // Syndication targets.
-        LinearLayout syndicationLayout = findViewById(R.id.syndicationTargets);
-        String syndicationTargetsString = user.getSyndicationTargets();
-        if (syndicationLayout != null && syndicationTargetsString.length() > 0) {
-            JSONObject object;
-            try {
-                JSONArray itemList = new JSONArray(syndicationTargetsString);
-
-                if (itemList.length() > 0) {
-                    TextView syn = new TextView(this);
-                    syn.setText(R.string.syndicate_to);
-                    syn.setPadding(20, 10, 0, 0);
-                    syn.setTextSize(15);
-                    syn.setTextColor(getResources().getColor(R.color.textColor));
-                    syndicationLayout.addView(syn);
-                    syndicationLayout.setPadding(10, 0,0, 0 );
-                }
-
-                for (int i = 0; i < itemList.length(); i++) {
-                    object = itemList.getJSONObject(i);
-                    Syndication syndication = new Syndication();
-                    syndication.setUid(object.getString("uid"));
-                    syndication.setName(object.getString("name"));
-                    if (object.has("checked")) {
-                        syndication.setChecked(object.getBoolean("checked"));
-                    }
-                    syndicationTargets.add(syndication);
-
-                    CheckBox ch = new CheckBox(this);
-                    ch.setText(syndication.getName());
-                    ch.setId(i);
-                    ch.setTextSize(15);
-                    ch.setPadding(0, 10, 0, 10);
-                    ch.setTextColor(getResources().getColor(R.color.textColor));
-                    if (syndication.isChecked()) {
-                        ch.setChecked(true);
-                    }
-                    syndicationLayout.addView(ch);
-                }
-
-            }
-            catch (JSONException e) {
-                String message = String.format(getString(R.string.syndication_targets_parse_error), e.getMessage());
-                final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
-                snack.setAction(getString(R.string.close), new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            snack.dismiss();
-                        }
-                    }
-                );
-                snack.show();
-            }
-        }
+        // Set default syndication targets.
+        setSyndicationTargets();
 
         // Get a couple elements for requirement checks or pre-population.
         title = findViewById(R.id.title);
@@ -351,6 +300,72 @@ abstract public class BaseCreate extends BasePlatformCreate {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Set the syndication targets.
+     */
+    public void setSyndicationTargets() {
+        LinearLayout syndicationLayout = findViewById(R.id.syndicationTargets);
+        syndicationLayout.removeAllViews();
+        String syndicationTargetsString = user.getSyndicationTargets();
+        if (syndicationLayout != null && syndicationTargetsString.length() > 0) {
+            JSONObject object;
+            try {
+                JSONArray itemList = new JSONArray(syndicationTargetsString);
+
+                if (itemList.length() > 0) {
+                    TextView syn = new TextView(this);
+                    syn.setText(R.string.syndicate_to);
+                    syn.setPadding(20, 10, 0, 0);
+                    syn.setTextSize(15);
+                    syn.setTextColor(getResources().getColor(R.color.textColor));
+                    syndicationLayout.addView(syn);
+                    syndicationLayout.setPadding(10, 0,0, 0 );
+                }
+
+                for (int i = 0; i < itemList.length(); i++) {
+                    object = itemList.getJSONObject(i);
+                    Syndication syndication = new Syndication();
+                    syndication.setUid(object.getString("uid"));
+                    syndication.setName(object.getString("name"));
+                    if (object.has("checked")) {
+                        syndication.setChecked(object.getBoolean("checked"));
+                    }
+                    syndicationTargets.add(syndication);
+
+                    CheckBox ch = new CheckBox(this);
+                    ch.setText(syndication.getName());
+                    ch.setId(i);
+                    ch.setTextSize(15);
+                    ch.setPadding(0, 10, 0, 10);
+                    ch.setTextColor(getResources().getColor(R.color.textColor));
+                    if (syndication.isChecked()) {
+                        ch.setChecked(true);
+                    }
+                    syndicationLayout.addView(ch);
+                }
+
+            }
+            catch (JSONException e) {
+                String message = String.format(getString(R.string.syndication_targets_parse_error), e.getMessage());
+                final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
+                snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                snack.dismiss();
+                            }
+                        }
+                );
+                snack.show();
+            }
+        }
+    }
+
+    /**
+     * Set account posting info.
+     *
+     * @param userName
+     *   The user who is posting.
+     */
     public void setAccountPostInfo(@NonNull String userName) {
         accountPost.setText(String.format(getString(R.string.account_post_as), Utility.stripEndingSlash(userName)));
     }

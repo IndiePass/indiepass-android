@@ -46,6 +46,10 @@
             android:layout_height="wrap_content" />
 
         <Button
+            android:background="@color/buttonBackground"
+            android:layout_marginTop="10dp"
+            android:paddingStart="@dimen/box_padding"
+            android:paddingEnd="@dimen/box_padding"
             style="?android:attr/borderlessButtonStyle"
             android:textColor="@color/colorPrimary"
             android:text="@string/audio_open"

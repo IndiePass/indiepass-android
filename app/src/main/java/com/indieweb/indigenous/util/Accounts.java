@@ -65,7 +65,6 @@ public class Accounts {
                     user.setMicrosubEndpoint(accountManager.getUserData(account, "microsub_endpoint"));
                     user.setMicropubEndpoint(accountManager.getUserData(account, "micropub_endpoint"));
                     user.setMicropubMediaEndpoint(accountManager.getUserData(account, "micropub_media_endpoint"));
-
                     user.setSyndicationTargets(accountManager.getUserData(account, "syndication_targets"));
                     user.setPostTypes(accountManager.getUserData(account, "post_types"));
                     user.setAccount(account);
@@ -218,6 +217,9 @@ public class Accounts {
             user.setMicrosubEndpoint(accountManager.getUserData(a, "microsub_endpoint"));
             user.setMicropubEndpoint(accountManager.getUserData(a, "micropub_endpoint"));
             user.setMicropubMediaEndpoint(accountManager.getUserData(a, "micropub_media_endpoint"));
+            user.setSyndicationTargets(accountManager.getUserData(a, "syndication_targets"));
+            user.setPostTypes(accountManager.getUserData(a, "post_types"));
+            user.setAccount(a);
             users.add(user);
         }
         return users;
