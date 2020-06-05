@@ -95,7 +95,7 @@
     <string name="save_as_draft">Save as draft</string>
     <string name="draft_saved">Draft saved</string>
     <string name="draft_deleted">Draft deleted</string>
-    <string name="no_drafts">You have no drafts for this account</string>
+    <string name="no_drafts">Everything is posted!</string>
     <string name="draft_checked">Draft is enabled but not yet saved</string>
 
     <!-- Channels and timelines -->
