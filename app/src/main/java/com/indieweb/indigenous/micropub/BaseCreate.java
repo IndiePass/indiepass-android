@@ -304,9 +304,9 @@ abstract public class BaseCreate extends BasePlatformCreate {
      */
     public void setSyndicationTargets() {
         LinearLayout syndicationLayout = findViewById(R.id.syndicationTargets);
-        syndicationLayout.removeAllViews();
         String syndicationTargetsString = user.getSyndicationTargets();
         if (syndicationLayout != null && syndicationTargetsString.length() > 0) {
+            syndicationLayout.removeAllViews();
             JSONObject object;
             try {
                 JSONArray itemList = new JSONArray(syndicationTargetsString);
