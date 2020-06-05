@@ -254,6 +254,9 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
 
     /**
      * Create channel dialog.
+     *
+     * @todo reload the fragment when the channel is created
+     *       do the same when subscribing to a feed.
      */
     public void createChannel() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ManageChannelActivity.this);

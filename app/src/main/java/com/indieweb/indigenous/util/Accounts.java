@@ -146,7 +146,7 @@ public class Accounts {
      * @param layout
      *   The current layout
      *
-     * TODO we have a couple of variations of this code in other places, try to merge them.
+     * @todo we have a couple of variations of this code in other places, try to merge them.
      */
     public void selectAccount(final Activity activity, final RelativeLayout layout) {
         final List<String> accounts = new ArrayList<>();
