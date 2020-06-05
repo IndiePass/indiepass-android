@@ -1,6 +1,7 @@
 package com.indieweb.indigenous.micropub;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -144,7 +145,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public Button locationQuery;
     public Double latitude = null;
     public Double longitude = null;
-    public RelativeLayout progressBar;
+    public ProgressDialog progressDialog;
     public Location mCurrentLocation;
     public LinearLayout accountPostWrapper;
     public TextView accountPost;
@@ -1115,9 +1116,11 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
      * Show progress bar and disable send menu item.
      */
     public void showProgressBar() {
-        if (progressBar != null && (progressBar.getVisibility() != View.VISIBLE)) {
-            progressBar.setVisibility(View.VISIBLE);
-        }
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(getString(R.string.posting));
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
         if (sendItem != null) {
             sendItem.setEnabled(false);
@@ -1129,8 +1132,8 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
      */
     public void hideProgressBar() {
 
-        if (progressBar != null) {
-            progressBar.setVisibility(View.GONE);
+        if (progressDialog != null) {
+            progressDialog.dismiss();
         }
 
         if (sendItem != null) {

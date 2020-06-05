@@ -1,5 +1,6 @@
 package com.indieweb.indigenous.micropub.post;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -44,7 +46,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
     private EditText body;
     private MenuItem sendItem;
     private User user;
-    public RelativeLayout progressBar;
+    public ProgressDialog progressDialog;
     private RelativeLayout layout;
     protected VolleyRequestListener volleyRequestListener;
     private PostListItem item = new PostListItem();
@@ -62,7 +64,6 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
         postStatus = findViewById(R.id.postStatus);
         title = findViewById(R.id.title);
         body = findViewById(R.id.body);
-        progressBar = findViewById(R.id.progressBar);
 
         // Set listener.
         VolleyRequestListener(this);
@@ -201,9 +202,11 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
      * Show progress bar and disable send menu item.
      */
     public void showProgressBar() {
-        if (progressBar != null) {
-            progressBar.setVisibility(View.VISIBLE);
-        }
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(getString(R.string.posting));
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
         if (sendItem != null) {
             sendItem.setEnabled(false);
@@ -215,8 +218,8 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
      * Hide progress bar and enable send menu item.
      */
     public void hideProgressBar() {
-        if (progressBar != null) {
-            progressBar.setVisibility(View.GONE);
+        if (progressDialog != null) {
+            progressDialog.dismiss();
         }
 
         if (sendItem != null) {

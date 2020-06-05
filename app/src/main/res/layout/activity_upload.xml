@@ -45,6 +45,4 @@
         </LinearLayout>
     </ScrollView>
 
-    <include layout="@layout/widget_progress_bar" />
-
 </RelativeLayout>

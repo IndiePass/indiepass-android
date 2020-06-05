@@ -108,7 +108,6 @@ abstract public class BaseCreate extends BasePlatformCreate {
             visibility.setVisibility(View.VISIBLE);
         }
 
-        progressBar = findViewById(R.id.progressBar);
         saveAsDraft = findViewById(R.id.saveAsDraft);
         publishDate = findViewById(R.id.publishDate);
         mediaPreviewGallery = findViewById(R.id.mediaPreviewGallery);
