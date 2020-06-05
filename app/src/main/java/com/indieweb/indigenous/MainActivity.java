@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +31,6 @@ import com.indieweb.indigenous.general.AboutFragment;
 import com.indieweb.indigenous.general.SettingsFragment;
 import com.indieweb.indigenous.indieauth.AnonymousFragment;
 import com.indieweb.indigenous.indieauth.UsersFragment;
-import com.indieweb.indigenous.micropub.BaseCreate;
 import com.indieweb.indigenous.micropub.contact.ContactFragment;
 import com.indieweb.indigenous.micropub.draft.DraftFragment;
 import com.indieweb.indigenous.micropub.post.ArticleActivity;
@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawer;
     NavigationView navigationView;
     View headerView;
+    int accountCount;
+    Fragment loadedFragment;
     public static final int CREATE_DRAFT = 1001;
     public static final int POST_DRAFT = 1002;
     public static final int RESULT_DRAFT_SAVED = 1005;
@@ -113,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (requestCode == POST_DRAFT && resultCode == RESULT_OK) {
             setDraftMenuItemTitle(true);
             Snackbar.make(drawer, getString(R.string.post_success), Snackbar.LENGTH_SHORT).show();
-            startFragment(new DraftFragment());
+            startFragment(new DraftFragment(), true, false);
         }
     }
 
@@ -132,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        accountCount = new Accounts(this).getCount();
         user = new Accounts(this).getDefaultUser();
 
         // Let pushy listener restart if necessary, and if configured.
@@ -159,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         headerView = navigationView.getHeaderView(0);
         User user = new Accounts(getApplicationContext()).getDefaultUser();
         setAccountInfo(user);
-        if (new Accounts(this).getCount() > 1) {
+        if (accountCount > 1) {
 
             Button swapAccount = headerView.findViewById(R.id.navAccountSwitch);
             if (swapAccount != null) {
@@ -172,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         for (Account account: AllAccounts) {
                             accounts.add(account.name);
                         }
-                        final CharSequence[] accountItems = accounts.toArray(new CharSequence[accounts.size()]);
+                        final CharSequence[] accountItems = accounts.toArray(new CharSequence[0]);
                         final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                         builder.setTitle(getString(R.string.default_user));
                         builder.setCancelable(true);
@@ -181,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             public void onClick(DialogInterface dialog, int index) {
                                 User defaultUser = new Accounts(getApplicationContext()).getUser(accounts.get(index), false);
                                 setAccountInfo(defaultUser);
+                                reloadFragment();
                                 Snackbar.make(drawer, String.format(getString(R.string.account_selected), accounts.get(index)), Snackbar.LENGTH_SHORT).show();
                                 SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
                                 editor.putString("account", accounts.get(index));
@@ -351,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Update main content frame.
         if (fragment != null) {
-            startFragment(fragment);
+            startFragment(fragment, true, false);
         }
 
         return true;
@@ -362,11 +366,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      *
      * @param fragment
      *   Start a fragment.
+     * @param trackFragment
+     *   Whether to store the fragment
      */
-    public void startFragment(Fragment fragment) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, fragment);
-        ft.commit();
+    public void startFragment(Fragment fragment, boolean trackFragment, boolean refresh) {
+        if (trackFragment) {
+            loadedFragment = fragment;
+        }
+        if (refresh) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.detach(fragment).attach(fragment).commit();
+        }
+        else {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
+        }
+    }
+
+    /**
+     * Reload current fragment.
+     */
+    public void reloadFragment() {
+        if (loadedFragment instanceof ChannelFragment
+            || loadedFragment instanceof PostListFragment
+            || loadedFragment instanceof ContactFragment
+        ) {
+            startFragment(loadedFragment, false, true);
+            closeDrawer(true);
+        }
     }
 
     /**
