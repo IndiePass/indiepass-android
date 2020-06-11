@@ -2,13 +2,13 @@
 <resources>
 
     <color name="colorPrimary">#1f1a24</color>
-    <color name="colorPrimaryDark">#212121</color>
+    <color name="colorPrimaryDark">#151921</color>
     <color name="colorAccent">#7bb6ff</color>
     <color name="iconTint">#cbcbcb</color>
 
-    <color name="listBackgroundColor">#1f1a24</color>
+    <color name="listBackgroundColor">#202531</color>
     <color name="textColor">#e6e6e7</color>
-    <color name="listRowBackgroundColor">#4f4f4f</color>
+    <color name="listRowBackgroundColor">#2d3445</color>
 
     <color name="borderColor">#423d46</color>
     <color name="borderStartcolor">@color/iconTint</color>
@@ -19,8 +19,8 @@
     <color name="drawerTintcolor">#424242</color>
     <color name="shareMenuColor">#cbcbcb</color>
     <color name="paneColor">#cbcbcb</color>
-    <color name="paneColorDivider">#cbcbcb</color>
-    <color name="listDividerColor">#cbcbcb</color>
+    <color name="paneColorDivider">#474d5c</color>
+    <color name="listDividerColor">#474d5c</color>
     <color name="buttonBackground">#cbcbcb</color>
 
     <color name="listRowBackgroundColorTouched">#6d6d6d</color>
