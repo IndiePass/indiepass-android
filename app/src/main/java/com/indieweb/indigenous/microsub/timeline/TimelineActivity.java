@@ -989,7 +989,10 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             if (readEntries.size() > 0) {
                 //Log.d("indigenous_debug", "Counter: " + counter);
                 new MicrosubAction(getApplicationContext(), user, layout).markRead(channelId, readEntries, false, false);
-                Utility.notifyChannels(channelId, counter);
+                Utility.notifyChannels(channelId, counter, false);
+                if (sourceId != null) {
+                    Utility.notifyChannels(sourceId, counter, true);
+                }
             }
         }
         catch (Exception e) {

@@ -155,13 +155,22 @@ public class Utility {
      *   The channel id.
      * @param count
      *   How many items to count up or down.
+     * @param isSource
+     *   whether to check on course.
      */
-    public static void notifyChannels(String channelId, int count) {
+    public static void notifyChannels(String channelId, int count, boolean isSource) {
         try {
             Indigenous app = Indigenous.getInstance();
             app.setRefreshChannels(true);
             for (Channel c: app.getChannelsList()) {
-                if (c.getUid().equals(channelId)) {
+                String uid;
+                if (isSource) {
+                    uid = c.getSourceId();
+                }
+                else {
+                    uid = c.getUid();
+                }
+                if (uid.equals(channelId)) {
                     if (c.getUnread() != -1) {
                         c.setUnread(c.getUnread() + count);
                         break;

@@ -1138,7 +1138,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                                                     ms.markUnread(channel.getUid(), unreadEntries, false);
                                                 }
                                                 items.remove(position);
-                                                Utility.notifyChannels(channelId, -1);
+                                                Utility.notifyChannels(channelId, -1, false);
                                                 notifyDataSetChanged();
                                                 break;
                                             }
@@ -1154,7 +1154,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             unreadEntries.add(entry.getId());
                             entry.setRead(false);
                             new MicrosubAction(context, user, layout).markUnread(channelId, unreadEntries, true);
-                            Utility.notifyChannels(channelId, 1);
+                            Utility.notifyChannels(channelId, 1, false);
                             break;
 
                         case R.id.timeline_entry_mark_read:
@@ -1162,7 +1162,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             readEntries.add(entry.getId());
                             entry.setRead(true);
                             new MicrosubAction(context, user, layout).markRead(channelId, readEntries, false, true);
-                            Utility.notifyChannels(channelId, -1);
+                            Utility.notifyChannels(channelId, -1, false);
                             break;
 
                         case R.id.timeline_entry_debug:
