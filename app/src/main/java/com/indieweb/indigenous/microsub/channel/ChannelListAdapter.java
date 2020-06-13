@@ -29,11 +29,13 @@ public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
     private final List<Channel> channels;
     private LayoutInflater mInflater;
     private String readLaterId;
+    private boolean showSources;
 
-    public ChannelListAdapter(Context context, List<Channel> channels, String readLater) {
+    public ChannelListAdapter(Context context, List<Channel> channels, String readLater, Boolean showSources) {
         this.context = context;
         this.channels = channels;
         this.readLaterId = readLater;
+        this.showSources = showSources;
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -85,7 +87,12 @@ public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
             holder.row.setBackgroundColor(color);
 
             // Name.
-            holder.name.setText(channel.getName());
+            if (channel.getSourceId().length() > 0) {
+                holder.name.setText(String.format(context.getString(R.string.channel_source_label), channel.getName()));
+            }
+            else {
+                holder.name.setText(channel.getName());
+            }
 
             // Unread.
             int unreadText = channel.getUnread();
@@ -133,6 +140,12 @@ public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
                     intent.putExtra("channelId", channel.getUid());
                     intent.putExtra("channelName", channel.getName());
                     intent.putExtra("unread", channel.getUnread());
+
+                    if (channel.getSourceId().length() > 0) {
+                        intent.putExtra("sourceId", channel.getSourceId());
+                        intent.putExtra("sourceName", channel.getName());
+                    }
+
                     if (Preferences.getPreference(context, "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_CHANNEL_CLICK && !readLaterId.equals(channel.getUid())) {
                         channels.get(position).setUnread(0);
                         holder.unread.setVisibility(View.GONE);

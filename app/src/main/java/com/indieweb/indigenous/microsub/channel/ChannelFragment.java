@@ -48,6 +48,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
     private List<Channel> Channels = new ArrayList<>();
     private String readLater;
     private boolean hideRead = false;
+    private boolean showSources = false;
 
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
@@ -77,6 +78,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
             readLater = Preferences.getPreference(requireContext(), "pref_key_read_later", "");
             listChannel.setVisibility(View.VISIBLE);
             hideRead = Preferences.getPreference(requireContext(), "channel_hide_read", false);
+            showSources = Preferences.getPreference(requireContext(), "channel_show_sources", false);
             startChannels();
         }
         else {
@@ -109,7 +111,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
         hideNoConnection();
         Channels = new ArrayList<>();
         listChannel.setVisibility(View.VISIBLE);
-        adapter = new ChannelListAdapter(requireContext(), Channels, readLater);
+        adapter = new ChannelListAdapter(requireContext(), Channels, readLater, showSources);
         listChannel.setAdapter(adapter);
         loadChannels();
     }
@@ -141,6 +143,10 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
             microsubEndpoint += "?action=channels";
         }
 
+        if (showSources) {
+            microsubEndpoint += "&method=tree";
+        }
+
         HTTPRequest r = new HTTPRequest(this.volleyRequestListener, user, requireContext());
         r.doGetRequest(microsubEndpoint);
     }
@@ -167,6 +173,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
 
         try {
             JSONObject object;
+            JSONObject source;
             debugResponse = data;
             JSONObject microsubResponse = new JSONObject(data);
             JSONArray channelList = microsubResponse.getJSONArray("channels");
@@ -180,7 +187,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
                 channel.setUid(object.getString("uid"));
                 channel.setName(object.getString("name"));
 
-                Integer unread = 0;
+                int unread = 0;
                 if (!fromCache && object.has("unread")) {
                     Object unreadCheck = object.get("unread");
                     if (unreadCheck instanceof Integer) {
@@ -201,6 +208,48 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
 
                 channel.setUnread(unread);
                 Channels.add(index++, channel);
+
+                // Sources.
+                if (object.has("sources")) {
+                    JSONArray sources = object.getJSONArray("sources");
+
+                    if (sources.length() < 2) {
+                        continue;
+                    }
+
+                    for (int s = 0; s < sources.length(); s++) {
+                        source = sources.getJSONObject(s);
+                        Channel channelSource = new Channel();
+                        channelSource.setUid(object.getString("uid"));
+                        channelSource.setSourceId(source.getString("uid"));
+                        String label = source.getString("url");
+                        if (source.getString("name").length() > 0) {
+                            label = source.getString("name");
+                        }
+                        channelSource.setName(label);
+
+                        int sourceUnread = 0;
+                        if (!fromCache && source.has("unread")) {
+                            Object unreadCheck = source.get("unread");
+                            if (unreadCheck instanceof Integer) {
+                                sourceUnread = (Integer) unreadCheck;
+                                totalUnread += unread;
+                                if (unread > 0) {
+                                    unreadChannels++;
+                                }
+                            }
+                            if (unreadCheck instanceof Boolean) {
+                                if ((Boolean) unreadCheck) {
+                                    sourceUnread = -1;
+                                }
+                            }
+                        }
+
+                        channelSource.setUnread(sourceUnread);
+                        Channels.add(index++, channelSource);
+                    }
+                }
+
             }
 
             try {
@@ -327,6 +376,13 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
             }
         }
 
+        if (showSources) {
+            MenuItem item = menu.findItem(R.id.channel_show_sources);
+            if (item != null) {
+                item.setTitle(getString(R.string.channel_hide_sources));
+            }
+        }
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -354,6 +410,18 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
                     item.setTitle(getString(R.string.channel_hide_read));
                 }
                 Preferences.setPreference(requireContext(), "channel_hide_read", hideRead);
+                startChannels();
+                return true;
+
+            case R.id.channel_show_sources:
+                showSources = !showSources;
+                if (showSources) {
+                    item.setTitle(getString(R.string.channel_hide_sources));
+                }
+                else {
+                    item.setTitle(getString(R.string.channel_show_sources));
+                }
+                Preferences.setPreference(requireContext(), "channel_show_sources", showSources);
                 startChannels();
                 return true;
 

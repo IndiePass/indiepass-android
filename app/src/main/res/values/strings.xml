@@ -183,6 +183,9 @@
     <string name="feed_subscribe">Subscribe to feed \'%s\' ?</string>
     <string name="channel_hide_read">Hide read channels</string>
     <string name="channel_show_all">Show all channels</string>
+    <string name="channel_show_sources">Show sources</string>
+    <string name="channel_hide_sources">Hide sources</string>
+    <string name="channel_source_label"> • %s</string>
 
     <!-- Micropub -->
     <string name="tags">Tags - separate with comma</string>
