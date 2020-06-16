@@ -78,7 +78,7 @@ public class IndieAuthActivity extends AccountAuthenticatorActivity {
     String codeVerifier = "";
     RelativeLayout layout;
 
-    String ClientId = "https://indigenous.realize.be";
+    String ClientId = "https://indigenous.realize.be/";
     String RedirectUri = "https://indigenous.realize.be/indigenous-callback.php";
 
     @Override
