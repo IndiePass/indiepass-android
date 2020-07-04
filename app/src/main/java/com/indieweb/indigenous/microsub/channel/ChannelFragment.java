@@ -111,7 +111,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
         hideNoConnection();
         Channels = new ArrayList<>();
         listChannel.setVisibility(View.VISIBLE);
-        adapter = new ChannelListAdapter(requireContext(), Channels, readLater, showSources);
+        adapter = new ChannelListAdapter(requireContext(), Channels, readLater);
         listChannel.setAdapter(adapter);
         loadChannels();
     }
@@ -233,8 +233,8 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
                             Object unreadCheck = source.get("unread");
                             if (unreadCheck instanceof Integer) {
                                 sourceUnread = (Integer) unreadCheck;
-                                totalUnread += unread;
-                                if (unread > 0) {
+                                totalUnread += sourceUnread;
+                                if (sourceUnread > 0) {
                                     unreadChannels++;
                                 }
                             }

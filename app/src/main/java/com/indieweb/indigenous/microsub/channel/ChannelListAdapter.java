@@ -29,13 +29,11 @@ public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
     private final List<Channel> channels;
     private LayoutInflater mInflater;
     private String readLaterId;
-    private boolean showSources;
 
-    public ChannelListAdapter(Context context, List<Channel> channels, String readLater, Boolean showSources) {
+    public ChannelListAdapter(Context context, List<Channel> channels, String readLater) {
         this.context = context;
         this.channels = channels;
         this.readLaterId = readLater;
-        this.showSources = showSources;
         this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
