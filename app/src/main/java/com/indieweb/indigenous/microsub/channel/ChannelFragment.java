@@ -233,10 +233,6 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
                             Object unreadCheck = source.get("unread");
                             if (unreadCheck instanceof Integer) {
                                 sourceUnread = (Integer) unreadCheck;
-                                totalUnread += sourceUnread;
-                                if (sourceUnread > 0) {
-                                    unreadChannels++;
-                                }
                             }
                             if (unreadCheck instanceof Boolean) {
                                 if ((Boolean) unreadCheck) {
