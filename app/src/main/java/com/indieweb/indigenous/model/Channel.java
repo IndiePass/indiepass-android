@@ -6,6 +6,7 @@ public class Channel {
     private String name;
     private int unread;
     private String sourceId = "";
+    private int unreadSources = 0;
 
     public String getUid() {
         return uid;
@@ -37,5 +38,13 @@ public class Channel {
 
     public void setSourceId(String sourceId) {
         this.sourceId = sourceId;
+    }
+
+    public int getUnreadSources() {
+        return unreadSources;
+    }
+
+    public void setUnreadSources(int unreadSources) {
+        this.unreadSources = unreadSources;
     }
 }

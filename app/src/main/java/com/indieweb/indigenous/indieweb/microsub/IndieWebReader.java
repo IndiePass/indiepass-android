@@ -1,9 +1,7 @@
 package com.indieweb.indigenous.indieweb.microsub;
 
 import android.content.Context;
-import android.view.View;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.TimelineItem;
@@ -84,7 +82,6 @@ public class IndieWebReader extends ReaderBase {
             JSONObject microsubResponse = new JSONObject(data);
             JSONArray channelList = microsubResponse.getJSONArray("channels");
 
-            int index = 0;
             int unreadChannels = 0;
             int totalUnread = 0;
             for (int i = 0; i < channelList.length(); i++) {
@@ -111,10 +108,12 @@ public class IndieWebReader extends ReaderBase {
                 }
 
                 channel.setUnread(unread);
-                Channels.add(index++, channel);
+                Channels.add(channel);
 
                 // Sources.
                 if (object.has("sources")) {
+                    int unreadSources = 0;
+                    List<Channel> Sources = new ArrayList<>();
                     JSONArray sources = object.getJSONArray("sources");
 
                     if (sources.length() < 2) {
@@ -137,16 +136,26 @@ public class IndieWebReader extends ReaderBase {
                             Object unreadCheck = source.get("unread");
                             if (unreadCheck instanceof Integer) {
                                 sourceUnread = (Integer) unreadCheck;
+                                if (sourceUnread > 0) {
+                                    unreadSources++;
+                                }
                             }
                             if (unreadCheck instanceof Boolean) {
                                 if ((Boolean) unreadCheck) {
+                                    unreadSources++;
                                     sourceUnread = -1;
                                 }
                             }
                         }
 
                         channelSource.setUnread(sourceUnread);
-                        Channels.add(index++, channelSource);
+                        Sources.add(channelSource);
+                    }
+
+                    // Set number of unread sources and add to collection.
+                    for (Channel s : Sources) {
+                        s.setUnreadSources(unreadSources);
+                        Channels.add(s);
                     }
                 }
             }

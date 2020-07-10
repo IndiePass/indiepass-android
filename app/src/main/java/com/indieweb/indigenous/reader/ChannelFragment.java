@@ -34,8 +34,6 @@ import com.indieweb.indigenous.util.HTTPRequest;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
 
-import org.json.JSONException;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -177,7 +175,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
         boolean hasUnread = false;
 
         debugResponse = data;
-        List<Channel> parsed = reader.parseChannelResponse(data, false);
+        List<Channel> parsed = reader.parseChannelResponse(data, fromCache);
         Channels.addAll(parsed);
 
         List<Channel> additional = reader.getAdditionalChannels();
@@ -199,7 +197,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
         if (hideRead && !fromCache && hasUnread) {
             for (int j = Channels.size()-1; j >= 0; j--) {
                 Channel c = Channels.get(j);
-                if (c.getUnread() == 0) {
+                if (c.getUnread() == 0 || (c.getSourceId().length() > 0 && c.getUnreadSources() < 2)) {
                     Channels.remove(j);
                 }
             }
