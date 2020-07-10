@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.provider.OpenableColumns;
 import android.provider.Settings;
 import android.util.Base64;
+import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -25,6 +26,11 @@ import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.model.Cache;
 import com.indieweb.indigenous.model.Channel;
+import com.indieweb.indigenous.model.TimelineItem;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -404,6 +410,137 @@ public class Utility {
         }
         catch (Exception e) {
             return string;
+        }
+    }
+
+    /**
+     * Returns a string from either an array or string property.
+     *
+     * @param property
+     *   The property on the object to get a value from.
+     * @param object
+     *   The json object.
+     *
+     * @return value
+     */
+    public static String getSingleJsonValueFromArrayOrString(String property, JSONObject object) {
+        String value = "";
+
+        try {
+            Object temp = object.get(property);
+            if (temp instanceof JSONArray) {
+                value = object.getJSONArray(property).get(0).toString();
+            }
+            else {
+                value = object.getString(property);
+            }
+        }
+        catch (JSONException ignored) { }
+
+        return value;
+    }
+
+    /**
+     * Returns the reference content.
+     *
+     *  @param object
+     *   A JSON object.
+     * @param url
+     *   The url to find in references
+     * @param item
+     *   The current timeline item.
+     * @param swapAuthor
+     *   Whether to swap the author or not.
+     * @param checkRecursive
+     *   Whether to check further recursive.
+     * @param level
+     *   The recursive level
+     * @param context
+     */
+    public static void checkReference(JSONObject object, String url, TimelineItem item, boolean swapAuthor, boolean checkRecursive, int level, Context context) {
+
+        if (object.has("refs")) {
+            try {
+                JSONObject references = object.getJSONObject("refs");
+                if (references.has(url)) {
+                    JSONObject ref = references.getJSONObject(url);
+
+                    // Content.
+                    if (ref.has("content")) {
+                        JSONObject content = ref.getJSONObject("content");
+                        if (content.has("text")) {
+                            if (level == 1 && item.getReference().length() > 0) {
+                                //Log.d("indigenous_debug", "swap on level 1: " + item.getReference());
+                                item.setSwapReference(false);
+                                item.setTextContent(item.getReference());
+                            }
+                            //Log.d("indigenous_debug", "content: " + content.getString("text"));
+                            item.setReference(content.getString("text"));
+                        }
+                    }
+                    else if (ref.has("summary")) {
+                        if (level == 1 && item.getReference().length() > 0) {
+                            //Log.d("indigenous_debug", "swap on level 1: " + item.getReference());
+                            item.setSwapReference(false);
+                            item.setTextContent(item.getReference());
+                        }
+                        item.setReference(ref.getString("summary"));
+                    }
+
+                    // Photo.
+                    if (ref.has("photo")) {
+                        JSONArray photos = ref.getJSONArray("photo");
+                        for (int p = 0; p < photos.length(); p++) {
+                            item.addPhoto(photos.getString(p));
+                        }
+                    }
+
+                    // Video.
+                    if (ref.has("video")) {
+                        String video = ref.getJSONArray("video").getString(0);
+                        item.setVideo(video);
+                    }
+
+                    // Swap actor and author.
+                    if (swapAuthor && Preferences.getPreference(context, "pref_key_timeline_author_original", false) && ref.has("author")) {
+                        String authorName = "";
+                        JSONObject author = ref.getJSONObject("author");
+                        if (author.has("name")) {
+                            authorName = author.getString("name");
+                        }
+                        String authorUrl = "";
+                        if (author.has("url")) {
+                            authorUrl = author.getString("url");
+                            item.setAuthorUrl(authorUrl);
+                        }
+                        if (authorName.equals("null") && authorUrl.length() > 0) {
+                            authorName = authorUrl;
+                        }
+
+                        if (author.has("photo")) {
+                            String authorPhoto = author.getString("photo");
+                            if (!authorPhoto.equals("null") && authorPhoto.length() > 0) {
+                                item.setAuthorPhoto(authorPhoto);
+                            }
+                        }
+
+                        if (authorName.length() > 0) {
+                            item.setActor(item.getAuthorName());
+                            item.setAuthorName(authorName);
+                        }
+                    }
+
+                    if (checkRecursive && ref.has("quotation-of")) {
+                        //Log.d("indigenous_debug", "going recursive");
+                        String secondType = "quotation-of";
+                        String value = getSingleJsonValueFromArrayOrString(secondType, ref);
+                        if (value.length() > 0) {
+                            checkReference(ref, value, item, false, false, 1, context);
+                        }
+                    }
+                }
+            }
+            catch (JSONException ignored) { }
         }
     }
 

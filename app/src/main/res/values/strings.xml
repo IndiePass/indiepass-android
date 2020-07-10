@@ -39,24 +39,31 @@
     <string name="maps_info">Install a maps application to view this location</string>
 
     <!-- Authentication and accounts -->
-    <string name="account_type">IndieAuth</string>
+    <string name="account_type_indieweb">IndieAuth</string>
+    <string name="account_type_pixelfed">Pixelfed</string>
     <string name="accounts">Accounts</string>
     <string name="account_name">Account: %s</string>
-    <string name="add_new_account">Add new account</string>
+    <string name="select_account_type">Select account type</string>
     <string name="no_user">No account found</string>
+    <string name="default_user_select">Set default account</string>
     <string name="select_account">Select account</string>
     <string name="select_account_info">Set the default account by pressing the \"Select account\" button.</string>
     <string name="url_hint">http://example.com</string>
     <string name="url_or_text_hint">URL or title</string>
     <string name="url_repository_hint">http://example.com/repository</string>
-    <string name="sign_in_with_domain">Sign in</string>
-    <string name="sign_in_info">This login uses IndieAuth and requires you to have a website on your domain that supports IndieAuth.\n\nThe authorization and token endpoints are required. The micropub or microsub endpoint are optional, but at least one needs to be found.</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_in_with_indieweb">IndieWeb</string>
+    <string name="sign_in_with_pixelfed">Pixelfed</string>
+    <string name="error_parsing_app_registration_response">Error parsing the app registration response</string>
+    <string name="sign_in_indieauth_info">This login uses IndieAuth and requires you to have a website on your domain that supports IndieAuth.\n\nThe authorization and token endpoints are required. The micropub or microsub endpoint are optional, but at least one needs to be found.</string>
+    <string name="sign_in_pixelfed_info">Login in with your Pixelfed instance. You will be redirected to authorize on that instance.</string>
+    <string name="invalid_url">This is an invalid URl</string>
     <string name="switch_account">Set</string>
     <string name="account_delete_error">Error deleting account</string>
     <string name="connecting">Connecting…</string>
     <string name="connection_to_domain">Connecting to domain, one moment</string>
     <string name="endpoints">Endpoints</string>
-    <string name="title_activity_indieauth">Sign in</string>
+    <string name="title_activity_auth">Sign in</string>
     <string name="authentication_success">Authentication successful</string>
     <string name="authentication_fail">Authentication failed: Status code: %d; message: %s</string>
     <string name="authentication_fail_token">Authentication failed: %s</string>
@@ -85,6 +92,14 @@
     <string name="anonymous_saved">Settings saved</string>
     <string name="anonymous_reset">Settings reset</string>
     <string name="reset_confirm">Reset settings?</string>
+
+    <string name="channel_unread_items">Unread items</string>
+    <string name="channel_home">Home</string>
+    <string name="channel_public">Public</string>
+    <string name="channel_favourites">Favourites</string>
+    <string name="channel_bookmarks">Bookmarks</string>
+    <string name="channel_my_posts">My posts</string>
+    <string name="channel_pixelfed">Pixelfed</string>
 
     <!-- About -->
     <string name="about_info"><![CDATA[Indigenous allows you to engage with the internet as you do on social media sites, but posts it all on your website. Use the built-in reader to read and respond to posts across the internet. Indigenous doesn\'t track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/swentel/indigenous-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a>, <a href="https://openclipart.org">Openclipart</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
@@ -198,6 +213,7 @@
     <string name="required_field">This field is required</string>
     <string name="required_select_media">Please select a media item</string>
     <string name="create_post">Write</string>
+    <string name="add_post">Post</string>
     <string name="add_note">Note</string>
     <string name="add_article">Article</string>
     <string name="add_reply">Reply</string>
@@ -215,7 +231,7 @@
     <string name="delete_video_confirm">Remove video?</string>
     <string name="delete_audio_confirm">Remove audio?</string>
     <string name="delete_image_confirm">Remove image?</string>
-    <string name="media_preview_help">Click on a thumbnail to delete the media item. You can also apply filters or set captions for images.</string>
+    <string name="media_preview_help">Click on a thumbnail for actions on the media item.</string>
     <string name="keep_editing">Keep editing</string>
     <string name="confirm_close">You have unsaved changes, are you sure you want to leave ?</string>
     <string name="send">Send</string>

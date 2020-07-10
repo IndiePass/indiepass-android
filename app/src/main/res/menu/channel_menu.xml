@@ -22,7 +22,7 @@
         android:id="@+id/user_add"
         android:icon="@drawable/button_add_account"
         app:showAsAction="always"
-        android:title="@string/add_new_account" />
+        android:title="@string/select_account_type" />
 
     <item
         android:visible="false"

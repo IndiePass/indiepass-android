@@ -1,6 +1,7 @@
 package com.indieweb.indigenous.util;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -53,15 +54,18 @@ public class HTTPRequest {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json");
 
-                String accessToken = user.getAccessToken();
+                if (user != null) {
+                    String accessToken = user.getAccessToken();
 
-                // Send empty access token in case the user is anonymous and the microsub endpoint
-                // is still set to the Indigenous site.
-                if (user.isAnonymous() && endpoint.contains(context.getString(R.string.anonymous_microsub_endpoint))) {
-                    accessToken = "";
+                    // Send empty access token in case the user is anonymous and the microsub endpoint
+                    // is still set to the Indigenous site.
+                    if (user.isAnonymous() && endpoint.contains(context.getString(R.string.anonymous_microsub_endpoint))) {
+                        accessToken = "";
+                    }
+
+                    headers.put("Authorization", "Bearer " + accessToken);
                 }
 
-                headers.put("Authorization", "Bearer " + accessToken);
                 return headers;
             }
         };
@@ -108,7 +112,10 @@ public class HTTPRequest {
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json");
-                headers.put("Authorization", "Bearer " + user.getAccessToken());
+
+                if (user != null) {
+                    headers.put("Authorization", "Bearer " + user.getAccessToken());
+                }
                 return headers;
             }
         };
@@ -117,4 +124,53 @@ public class HTTPRequest {
         queue.add(getRequest);
     }
 
+    /**
+     * Do a Volley String DELETE Request.
+     *
+     * @param endpoint
+     *   The endpoint to query.
+     * @param params
+     *   The params to send.
+     */
+    public void doDeleteRequest(String endpoint, final Map<String, String> params) {
+        StringRequest getRequest = new StringRequest(Request.Method.DELETE, endpoint,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (volleyRequestListener != null) {
+                            volleyRequestListener.OnSuccessRequest(response);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (volleyRequestListener != null) {
+                            volleyRequestListener.OnFailureRequest(error);
+                        }
+                    }
+                }
+        )
+        {
+
+            @Override
+            protected Map<String, String> getParams() {
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json");
+
+                if (user != null) {
+                    headers.put("Authorization", "Bearer " + user.getAccessToken());
+                }
+                return headers;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(getRequest);
+    }
 }

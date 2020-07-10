@@ -55,7 +55,6 @@
         android:layout_marginStart="@dimen/button_padding"
         android:id="@+id/save"
         android:text="@string/save"
-        android:gravity="start|center_vertical"
         android:background="@color/buttonBackground"
         android:textColor="@color/colorPrimary"
         style="?android:attr/borderlessButtonStyle"
@@ -65,9 +64,9 @@
         android:layout_height="wrap_content" />
 
     <Button
+        android:layout_marginLeft="10dp"
         android:id="@+id/reset"
         android:text="@string/reset"
-        android:gravity="start|center_vertical"
         android:background="@color/buttonBackground"
         android:textColor="@color/colorPrimary"
         style="?android:attr/borderlessButtonStyle"

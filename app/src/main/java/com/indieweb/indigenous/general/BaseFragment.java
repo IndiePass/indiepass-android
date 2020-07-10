@@ -14,7 +14,7 @@ import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
-import com.indieweb.indigenous.util.Accounts;
+import com.indieweb.indigenous.users.Accounts;
 import com.indieweb.indigenous.util.Utility;
 import com.indieweb.indigenous.util.VolleyRequestListener;
 
@@ -77,7 +77,7 @@ abstract public class BaseFragment extends Fragment implements VolleyRequestList
     }
 
     /**
-     * Gets the value of the show refresh message.
+     * Get the value of the show refresh message.
      *
      * @return boolean
      */
@@ -86,7 +86,7 @@ abstract public class BaseFragment extends Fragment implements VolleyRequestList
     }
 
     /**
-     * Sets the value of the show refresh message variable.
+     * Set the value of the show refresh message variable.
      *
      * @param show
      *   Whether to show or not.
@@ -96,7 +96,7 @@ abstract public class BaseFragment extends Fragment implements VolleyRequestList
     }
 
     /**
-     * Sets the value of the the refresh layout.
+     * Set the value of the the refresh layout.
      *
      * @param refresh
      *   Whether to layout refreshing or not.
@@ -106,7 +106,7 @@ abstract public class BaseFragment extends Fragment implements VolleyRequestList
     }
 
     /**
-     * Sets the refresh listener on the layout.
+     * Set the refresh listener on the layout.
      */
     protected void setOnRefreshListener() {
         refreshLayout.setOnRefreshListener(this);
@@ -127,17 +127,33 @@ abstract public class BaseFragment extends Fragment implements VolleyRequestList
     }
 
     /**
-     * Shows the refresh layout.
+     * Show the refresh layout.
      */
     protected void showRefreshLayout() {
         refreshLayout.setVisibility(View.VISIBLE);
     }
 
     /**
-     * Hides the refresh layout.
+     * Hide the refresh layout.
      */
     protected void hideRefreshLayout() {
         refreshLayout.setVisibility(View.GONE);
+    }
+
+    /**
+     * Enable refresh layout.
+     */
+    protected void enableRefresh() {
+        if (!refreshLayout.isEnabled()) {
+            refreshLayout.setEnabled(true);
+        }
+    }
+
+    /**
+     * Disable refresh layout.
+     */
+    protected void disableRefresh() {
+        refreshLayout.setEnabled(false);
     }
 
     /**

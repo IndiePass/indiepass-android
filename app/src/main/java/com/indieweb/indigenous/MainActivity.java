@@ -29,29 +29,29 @@ import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.general.AboutFragment;
 import com.indieweb.indigenous.general.SettingsFragment;
-import com.indieweb.indigenous.indieauth.AnonymousFragment;
-import com.indieweb.indigenous.indieauth.UsersFragment;
-import com.indieweb.indigenous.micropub.contact.ContactFragment;
-import com.indieweb.indigenous.micropub.draft.DraftFragment;
-import com.indieweb.indigenous.micropub.post.ArticleActivity;
-import com.indieweb.indigenous.micropub.post.BookmarkActivity;
-import com.indieweb.indigenous.micropub.post.CheckinActivity;
-import com.indieweb.indigenous.micropub.post.EventActivity;
-import com.indieweb.indigenous.micropub.post.GeocacheActivity;
-import com.indieweb.indigenous.micropub.post.IssueActivity;
-import com.indieweb.indigenous.micropub.post.LikeActivity;
-import com.indieweb.indigenous.micropub.post.NoteActivity;
-import com.indieweb.indigenous.micropub.post.ReadActivity;
-import com.indieweb.indigenous.micropub.post.ReplyActivity;
-import com.indieweb.indigenous.micropub.post.RepostActivity;
-import com.indieweb.indigenous.micropub.post.RsvpActivity;
-import com.indieweb.indigenous.micropub.post.TripActivity;
-import com.indieweb.indigenous.micropub.post.UploadActivity;
-import com.indieweb.indigenous.micropub.post.VenueActivity;
-import com.indieweb.indigenous.micropub.source.PostListFragment;
-import com.indieweb.indigenous.microsub.channel.ChannelFragment;
+import com.indieweb.indigenous.users.AnonymousFragment;
+import com.indieweb.indigenous.users.UsersFragment;
+import com.indieweb.indigenous.contacts.ContactFragment;
+import com.indieweb.indigenous.draft.DraftFragment;
+import com.indieweb.indigenous.post.ArticleActivity;
+import com.indieweb.indigenous.post.BookmarkActivity;
+import com.indieweb.indigenous.post.CheckinActivity;
+import com.indieweb.indigenous.post.EventActivity;
+import com.indieweb.indigenous.post.GeocacheActivity;
+import com.indieweb.indigenous.post.IssueActivity;
+import com.indieweb.indigenous.post.LikeActivity;
+import com.indieweb.indigenous.post.NoteActivity;
+import com.indieweb.indigenous.post.ReadActivity;
+import com.indieweb.indigenous.post.ReplyActivity;
+import com.indieweb.indigenous.post.RepostActivity;
+import com.indieweb.indigenous.post.RsvpActivity;
+import com.indieweb.indigenous.post.TripActivity;
+import com.indieweb.indigenous.post.UploadActivity;
+import com.indieweb.indigenous.post.VenueActivity;
+import com.indieweb.indigenous.indieweb.micropub.source.PostListFragment;
+import com.indieweb.indigenous.reader.ChannelFragment;
 import com.indieweb.indigenous.model.User;
-import com.indieweb.indigenous.util.Accounts;
+import com.indieweb.indigenous.users.Accounts;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
 
@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     View headerView;
     int accountCount;
     Fragment loadedFragment;
+    private General general;
     public static final int CREATE_DRAFT = 1001;
     public static final int POST_DRAFT = 1002;
     public static final int RESULT_DRAFT_SAVED = 1005;
@@ -136,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         accountCount = new Accounts(this).getCount();
         user = new Accounts(this).getDefaultUser();
+        general = GeneralFactory.getGeneral(user, null, MainActivity.this);
 
         // Let pushy listener restart if necessary, and if configured.
         //noinspection ConstantConditions
@@ -191,6 +193,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 editor.apply();
                             }
                         });
+                        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int index) {
+                                dialog.dismiss();
+                            }
+                        });
                         builder.show();
                     }
                 });
@@ -230,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_create:
-                toggleGroupItems(false);
+                general.handleWritePostClick();
                 break;
 
             case R.id.nav_main_menu:
@@ -398,6 +406,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
+     * Click on a menu item.
+     *
+     * @param id
+     *   The menu item to click on.
+     */
+    public void clickOnMenuItem(int id) {
+        drawerMenu.performIdentifierAction(id, 0);
+    }
+
+    /**
      * Open the navigation drawer.
      *
      * @param id
@@ -473,24 +491,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     public void hideItemsInDrawerMenu() {
 
-        // Hide Media if micropub media endpoint is empty.
-        String micropubMediaEndpoint = user.getMicropubMediaEndpoint();
-        if (micropubMediaEndpoint == null || micropubMediaEndpoint.length() == 0 || user.isAnonymous()) {
+        // Upload
+        if (!general.supports(General.FEATURE_UPLOAD) || user.isAnonymous()) {
             setMenuItemVisibility(R.id.nav_upload, false);
             setMenuItemVisibility(R.id.nav_upload2, false);
         }
 
+        // Settings
         if (user.isAnonymous()) {
             setMenuItemVisibility(R.id.nav_settings, false);
         }
 
-        // Hide Posts if setting is not enabled.
-        if (!Preferences.getPreference(this, "pref_key_source_post_list", false) || user.isAnonymous()) {
+        // Posts
+        if (!general.supports(General.FEATURE_POSTS) || user.isAnonymous()) {
             setMenuItemVisibility(R.id.nav_posts, false);
         }
 
-        // Hide Contacts if setting is not enabled.
-        if (!Preferences.getPreference(this, "pref_key_contact_manage", false) || user.isAnonymous()) {
+        // Contacts
+        if (!general.supports(General.FEATURE_CONTACTS) || user.isAnonymous()) {
             setMenuItemVisibility(R.id.nav_contacts, false);
         }
 
@@ -634,8 +652,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .into(authorAvatar);
             }
         }
-
-
     }
-
 }

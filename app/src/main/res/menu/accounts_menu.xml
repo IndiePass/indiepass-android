@@ -6,6 +6,6 @@
         android:id="@+id/user_add"
         app:showAsAction="ifRoom"
         android:icon="@drawable/button_add_account"
-        android:title="@string/add_new_account" />
+        android:title="@string/select_account_type" />
 
 </menu>

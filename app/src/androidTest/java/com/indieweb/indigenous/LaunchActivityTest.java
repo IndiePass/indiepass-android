@@ -21,7 +21,7 @@ public class LaunchActivityTest {
     @Test
     public void testIndieAuthLaunch() {
         onView(withId(R.id.info))
-                .check(matches(withText(R.string.sign_in_info)));
+                .check(matches(withText(R.string.sign_in_indieauth_info)));
     }
 
 }

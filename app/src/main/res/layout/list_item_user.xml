@@ -15,8 +15,16 @@
 
     <TextView
         android:layout_below="@+id/user_list_current"
+        android:id="@+id/user_list_type"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/big_list_title"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" />
+
+    <TextView
+        android:layout_below="@+id/user_list_type"
         android:id="@+id/user_list_url"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/textColor"
         android:textSize="@dimen/big_list_title"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />
@@ -40,7 +48,7 @@
 
     <TextView
         android:layout_below="@+id/user_list_name"
-        android:id="@+id/user_list_endpoints_text"
+        android:id="@+id/user_list_endpoints_title"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
@@ -51,7 +59,7 @@
 
     <TextView
         android:id="@+id/user_list_endpoints"
-        android:layout_below="@+id/user_list_endpoints_text"
+        android:layout_below="@+id/user_list_endpoints_title"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:textColor="@color/textColor"

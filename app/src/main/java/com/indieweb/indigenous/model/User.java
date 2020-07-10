@@ -5,6 +5,7 @@ import android.accounts.Account;
 public class User {
 
     private String me;
+    private String externalId;
     private String accessToken;
     private String microsubEndpoint;
     private String micropubEndpoint;
@@ -18,6 +19,7 @@ public class User {
     private boolean valid = false;
     private boolean anonymous = false;
     private Account account;
+    private String accountType;
 
     public String getMe() {
         return me;
@@ -37,6 +39,14 @@ public class User {
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public String getExternalId() {
+        return externalId != null ? externalId : "";
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
     }
 
     public String getMicropubEndpoint() {
@@ -137,5 +147,13 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
     }
 }

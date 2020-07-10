@@ -1,5 +1,7 @@
 package com.indieweb.indigenous.util;
 
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -14,12 +16,13 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
+import java.util.UUID;
 
 public class VolleyMultipartRequest extends Request<NetworkResponse> {
 
     private final String twoHyphens = "--";
     private final String lineEnd = "\r\n";
-    private final String boundary = "apiclient-" + System.currentTimeMillis();
+    private final String boundary = UUID.randomUUID().toString();
 
     private Response.Listener<NetworkResponse> mListener;
     private Response.ErrorListener mErrorListener;
@@ -176,6 +179,11 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
         if (dataFile.getType() != null && !dataFile.getType().trim().isEmpty()) {
             dataOutputStream.writeBytes("Content-Type: " + dataFile.getType() + lineEnd);
         }
+        // Set a default, helps Cloudflare for instance.
+        else {
+            dataOutputStream.writeBytes("Content-Type: image/jpeg" + lineEnd);
+        }
+        dataOutputStream.writeBytes("Content-Transfer-Encoding: binary" + lineEnd);
         dataOutputStream.writeBytes(lineEnd);
 
         ByteArrayInputStream fileInputStream = new ByteArrayInputStream(dataFile.getContent());
@@ -202,9 +210,10 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
         private byte[] content;
         private String type;
 
-        public DataPart(String name, byte[] data) {
+        public DataPart(String name, byte[] data, String fileType) {
             fileName = name;
             content = data;
+            type = fileType;
         }
 
         String getFileName() {

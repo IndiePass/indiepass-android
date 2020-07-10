@@ -25,7 +25,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.BuildConfig;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
-import com.indieweb.indigenous.util.Accounts;
+import com.indieweb.indigenous.users.Accounts;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
 

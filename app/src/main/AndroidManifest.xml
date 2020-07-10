@@ -32,7 +32,7 @@
         tools:targetApi="m">
 
         <service
-            android:name=".indieauth.AuthenticatorService"
+            android:name=".users.AuthenticatorServiceIndieWeb"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -40,7 +40,19 @@
             </intent-filter>
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
-                android:resource="@xml/authenticator" />
+                android:resource="@xml/authenticator_indieweb" />
+        </service>
+
+        <service
+            android:name=".users.AuthenticatorServicePixelfed"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator_pixelfed" />
         </service>
 
         <activity android:name=".LaunchActivity">
@@ -55,8 +67,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".indieauth.IndieAuthActivity"
-            android:label="@string/title_activity_indieauth"
+            android:name=".users.AuthActivity"
+            android:label="@string/title_activity_auth"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -69,7 +81,7 @@
         </activity>
 
         <activity
-            android:name=".microsub.manage.ManageChannelActivity"
+            android:name=".indieweb.microsub.manage.ManageChannelActivity"
             android:label="@string/channel_manage"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -81,7 +93,7 @@
             android:name=".FeedAlias"
             android:enabled="false"
             android:label="@string/add_feed"
-            android:targetActivity=".microsub.manage.ManageChannelActivity">
+            android:targetActivity=".indieweb.microsub.manage.ManageChannelActivity">
             <intent-filter android:label="@string/add_feed">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -90,7 +102,7 @@
         </activity-alias>
 
         <activity
-            android:name=".microsub.manage.ManageFeedsActivity"
+            android:name=".indieweb.microsub.manage.ManageFeedsActivity"
             android:label="@string/feeds_manage"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -99,7 +111,7 @@
         </activity>
 
         <activity
-            android:name=".microsub.manage.FeedActivity"
+            android:name=".indieweb.microsub.manage.FeedActivity"
             android:label="@string/add_feed"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -108,7 +120,7 @@
         </activity>
 
         <activity
-            android:name=".microsub.timeline.TimelineActivity"
+            android:name=".reader.TimelineActivity"
             android:label="@string/timeline"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -117,7 +129,7 @@
         </activity>
 
         <activity
-            android:name=".microsub.timeline.TimelineImageActivity"
+            android:name=".reader.TimelineImageActivity"
             android:label="@string/title_activity_timeline_image"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -126,7 +138,7 @@
         </activity>
 
         <activity
-            android:name=".microsub.timeline.TimelineDetailActivity"
+            android:name=".reader.TimelineDetailActivity"
             android:label="@string/title_activity_timeline_detail"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -135,7 +147,7 @@
         </activity>
 
         <activity
-            android:name=".microsub.timeline.TimelineAudioActivity"
+            android:name=".reader.TimelineAudioActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_timeline_audio"
             android:parentActivityName=".LaunchActivity">
@@ -145,7 +157,7 @@
         </activity>
 
         <activity
-            android:name=".microsub.timeline.TimelineVideoActivity"
+            android:name=".reader.TimelineVideoActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_timeline_video"
             android:parentActivityName=".LaunchActivity">
@@ -155,7 +167,7 @@
         </activity>
 
         <activity
-            android:name=".micropub.ShareActivity"
+            android:name=".post.ShareActivity"
             android:label="@string/title_activity_share">
             <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.SEND" />
@@ -166,7 +178,7 @@
         </activity>
 
         <activity
-            android:name=".micropub.post.NoteActivity"
+            android:name=".post.NoteActivity"
             android:label="@string/add_note"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -175,7 +187,7 @@
         </activity>
 
         <activity
-            android:name=".micropub.post.CheckinActivity"
+            android:name=".post.CheckinActivity"
             android:label="@string/add_checkin"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -184,7 +196,7 @@
         </activity>
 
         <activity
-            android:name=".micropub.post.VenueActivity"
+            android:name=".post.VenueActivity"
             android:label="@string/add_venue"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -193,7 +205,7 @@
         </activity>
 
         <activity
-            android:name=".micropub.post.GeocacheActivity"
+            android:name=".post.GeocacheActivity"
             android:label="@string/add_geocache"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -202,7 +214,7 @@
         </activity>
 
         <activity
-            android:name=".micropub.post.ArticleActivity"
+            android:name=".post.ArticleActivity"
             android:label="@string/add_article"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -211,7 +223,7 @@
         </activity>
 
         <activity
-            android:name=".micropub.post.RepostActivity"
+            android:name=".post.RepostActivity"
             android:label="@string/repost"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -223,7 +235,7 @@
             android:name=".RepostAlias"
             android:enabled="false"
             android:label="@string/add_repost"
-            android:targetActivity=".micropub.post.RepostActivity">
+            android:targetActivity=".post.RepostActivity">
             <intent-filter android:label="@string/add_repost">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -232,7 +244,7 @@
         </activity-alias>
 
         <activity
-            android:name=".micropub.post.LikeActivity"
+            android:name=".post.LikeActivity"
             android:label="@string/add_like"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -244,7 +256,7 @@
             android:name=".LikeAlias"
             android:enabled="false"
             android:label="@string/add_like"
-            android:targetActivity=".micropub.post.LikeActivity">
+            android:targetActivity=".post.LikeActivity">
             <intent-filter android:label="@string/add_like">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -253,7 +265,7 @@
         </activity-alias>
 
         <activity
-            android:name=".micropub.post.ReplyActivity"
+            android:name=".post.ReplyActivity"
             android:label="@string/reply_to"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -265,7 +277,7 @@
             android:name=".ReplyAlias"
             android:enabled="false"
             android:label="@string/add_reply"
-            android:targetActivity=".micropub.post.ReplyActivity">
+            android:targetActivity=".post.ReplyActivity">
             <intent-filter android:label="@string/add_reply">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -274,7 +286,7 @@
         </activity-alias>
 
         <activity
-            android:name=".micropub.post.BookmarkActivity"
+            android:name=".post.BookmarkActivity"
             android:label="@string/add_bookmark"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -286,7 +298,7 @@
             android:name=".BookmarkAlias"
             android:enabled="false"
             android:label="@string/add_bookmark"
-            android:targetActivity=".micropub.post.BookmarkActivity">
+            android:targetActivity=".post.BookmarkActivity">
             <intent-filter android:label="@string/add_bookmark">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -295,7 +307,7 @@
         </activity-alias>
 
         <activity
-            android:name=".micropub.post.EventActivity"
+            android:name=".post.EventActivity"
             android:label="@string/event"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -304,7 +316,7 @@
         </activity>
 
         <activity
-            android:name=".micropub.post.RsvpActivity"
+            android:name=".post.RsvpActivity"
             android:label="@string/rsvp"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -313,7 +325,7 @@
         </activity>
 
         <activity
-            android:name=".micropub.post.TripActivity"
+            android:name=".post.TripActivity"
             android:label="@string/add_trip"
             android:parentActivityName=".LaunchActivity">
             <intent-filter android:label="@string/app_name">
@@ -327,7 +339,7 @@
         </activity>
 
         <activity
-            android:name=".micropub.post.ReadActivity"
+            android:name=".post.ReadActivity"
             android:label="@string/add_read"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -336,7 +348,7 @@
         </activity>
 
         <activity
-            android:name=".micropub.post.IssueActivity"
+            android:name=".post.IssueActivity"
             android:label="@string/add_issue"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -345,7 +357,7 @@
         </activity>
 
         <activity
-            android:name=".micropub.post.ContactActivity"
+            android:name=".post.ContactActivity"
             android:label="@string/contact"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -364,7 +376,7 @@
         </activity>
 
         <activity
-            android:name=".micropub.post.UploadActivity"
+            android:name=".post.UploadActivity"
             android:label="@string/upload"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -376,7 +388,7 @@
             android:name=".UploadAlias"
             android:enabled="false"
             android:label="@string/upload"
-            android:targetActivity=".micropub.post.UploadActivity">
+            android:targetActivity=".post.UploadActivity">
             <intent-filter android:label="@string/upload">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -385,7 +397,7 @@
         </activity-alias>
 
         <activity
-            android:name=".micropub.post.UpdateActivity"
+            android:name=".post.UpdateActivity"
             android:label="@string/update_post"
             android:parentActivityName=".LaunchActivity">
             <meta-data
@@ -394,7 +406,7 @@
         </activity>
 
         <activity
-            android:name=".micropub.source.PostListFilterActivity"
+            android:name=".indieweb.micropub.source.PostListFilterActivity"
             android:label="@string/source_post_list_filter"
             android:parentActivityName=".LaunchActivity">
             <meta-data

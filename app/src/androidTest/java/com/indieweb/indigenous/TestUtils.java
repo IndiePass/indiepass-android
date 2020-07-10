@@ -7,11 +7,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.indieweb.indigenous.model.User;
-import com.indieweb.indigenous.util.Accounts;
+import com.indieweb.indigenous.users.Accounts;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.indieweb.indigenous.indieauth.IndieAuthActivity.ACCOUNT_TYPE;
-import static com.indieweb.indigenous.indieauth.IndieAuthActivity.TOKEN_TYPE;
+import static com.indieweb.indigenous.users.AuthActivity.INDIEWEB_ACCOUNT_TYPE;
+import static com.indieweb.indigenous.users.AuthActivity.INDIEWEB_TOKEN_TYPE;
 
 class TestUtils {
 
@@ -20,9 +20,9 @@ class TestUtils {
         String accessToken = "awesome";
 
         AccountManager am = AccountManager.get(context);
-        Account account = new Account(domain, ACCOUNT_TYPE);
+        Account account = new Account(domain, INDIEWEB_ACCOUNT_TYPE);
         am.addAccountExplicitly(account, null, null);
-        am.setAuthToken(account, TOKEN_TYPE, accessToken);
+        am.setAuthToken(account, INDIEWEB_TOKEN_TYPE, accessToken);
         am.setUserData(account, "micropub_endpoint", domain + "/micropub");
         am.setUserData(account, "authorization_endpoint", domain + "/auth");
         am.setUserData(account, "micropub_media_endpoint", domain + "/media");

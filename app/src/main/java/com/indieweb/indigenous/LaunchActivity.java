@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.indieweb.indigenous.indieauth.IndieAuthActivity;
+import com.indieweb.indigenous.users.AuthActivity;
 import com.indieweb.indigenous.model.User;
-import com.indieweb.indigenous.util.Accounts;
+import com.indieweb.indigenous.users.Accounts;
 
 public class LaunchActivity extends AppCompatActivity {
 
@@ -21,7 +21,7 @@ public class LaunchActivity extends AppCompatActivity {
             this.finish();
         }
         else {
-            Intent IndieAuth = new Intent(getBaseContext(), IndieAuthActivity.class);
+            Intent IndieAuth = new Intent(getBaseContext(), AuthActivity.class);
             startActivity(IndieAuth);
             this.finish();
         }
