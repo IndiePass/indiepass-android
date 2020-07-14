@@ -361,6 +361,24 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     }
 
     /**
+     * Sync pixelfed.
+     */
+    public void syncPixelfed(User user) {
+        Auth auth = AuthFactory.getAuth(user, AuthActivity.this);
+        auth.syncAccount(layout);
+
+        // Start launch activity which will determine where it will go.
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent launch = new Intent(getBaseContext(), LaunchActivity.class);
+                startActivity(launch);
+                finish();
+            }
+        }, 1000);
+    }
+
+    /**
      * Validate pixelfed code and get access token.
      *
      * @param code
@@ -587,7 +605,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                         }
 
                         AccountManager am = AccountManager.get(getApplicationContext());
-                        int numberOfAccounts = am.getAccounts().length;
+                        int numberOfAccounts = new Accounts(AuthActivity.this).getCount();
 
                         // Create new account.
                         Account account = new Account(domainInput, INDIEWEB_ACCOUNT_TYPE);
@@ -733,12 +751,14 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
             if (accessToken.length() > 0) {
 
                 AccountManager am = AccountManager.get(getApplicationContext());
-                int numberOfAccounts = am.getAccounts().length;
+                int numberOfAccounts = new Accounts(AuthActivity.this).getCount();
 
                 // Create new account.
                 Account account = new Account(domainInput, PIXELFED_ACCOUNT_TYPE);
                 am.addAccountExplicitly(account, null, null);
                 am.setAuthToken(account, PIXELFED_TOKEN_TYPE, accessToken);
+                am.setUserData(account, "client_id", pixelfedClientId);
+                am.setUserData(account, "client_secret", pixelfedClientSecret);
 
                 // Set first account.
                 if (numberOfAccounts == 0) {
@@ -749,15 +769,8 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
 
                 Snackbar.make(layout, getString(R.string.authentication_success), Snackbar.LENGTH_SHORT).show();
 
-                // Start launch activity which will determine where it will go.
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent launch = new Intent(getBaseContext(), LaunchActivity.class);
-                        startActivity(launch);
-                        finish();
-                    }
-                }, 700);
+                requestType = "pixelfedInitialSync";
+                syncPixelfed(new Accounts(AuthActivity.this).getUser(domainInput, false));
             }
             else {
                 final Snackbar snack = Snackbar.make(layout, String.format(getString(R.string.authentication_fail_token), error), Snackbar.LENGTH_INDEFINITE);

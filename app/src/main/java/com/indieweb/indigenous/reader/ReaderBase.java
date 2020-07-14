@@ -1,8 +1,10 @@
 package com.indieweb.indigenous.reader;
 
 import android.content.Context;
+import android.view.MenuItem;
 
 import com.indieweb.indigenous.model.Channel;
+import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Preferences;
 
@@ -69,5 +71,13 @@ abstract public class ReaderBase implements Reader {
     }
 
     @Override
+    public boolean sendTimelineAccessToken(String channelId) {
+        return true;
+    }
+
+    @Override
     public void markRead(String channelId, List<String> entries, boolean markAllRead, boolean showMessage) { }
+
+    @Override
+    public void setContactLabel(MenuItem menuItem, TimelineItem item) { }
 }

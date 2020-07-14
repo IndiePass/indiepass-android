@@ -29,7 +29,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.LaunchActivity;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.indieweb.indieauth.IndieAuthAction;
 import com.indieweb.indigenous.model.User;
 
 import java.io.IOException;
@@ -132,7 +131,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
             if (item.getAvatar().length() > 0) {
                 Glide.with(context)
                         .load(item.getAvatar())
-                        .apply(RequestOptions.circleCropTransform().placeholder(R.drawable.avatar_small))
+                        .apply(RequestOptions.circleCropTransform().placeholder(R.drawable.avatar))
                         .into(holder.avatar);
             }
 
@@ -283,7 +282,8 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
      *   The position in the adapter.
      */
     private void handleSuccessRemoval(User user, int position) {
-        new IndieAuthAction(context, user).revoke();
+        Auth auth = AuthFactory.getAuth(user, context);
+        auth.revokeToken(user);
         if (user.getMe().equals(currentUser.getMe())) {
             Snackbar.make(layout, String.format(context.getString(R.string.account_removed), user.getMe()), Snackbar.LENGTH_SHORT).show();
             new Handler().postDelayed(new Runnable() {

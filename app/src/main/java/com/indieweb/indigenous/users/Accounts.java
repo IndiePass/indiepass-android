@@ -45,60 +45,13 @@ public class Accounts {
 
         SharedPreferences preferences = context.getSharedPreferences("indigenous", MODE_PRIVATE);
         String accountName = preferences.getString("account", "");
-        AccountManager accountManager = AccountManager.get(context);
 
-        // IndieWeb accounts
-        Account[] indiewebAccounts = accountManager.getAccountsByType(INDIEWEB_ACCOUNT_TYPE);
-        if (indiewebAccounts.length > 0) {
-            for (Account account : indiewebAccounts) {
-                if (account.name.equals(accountName)) {
-                    foundUser = true;
-                    user.setValid(true);
-                    user.setMe(accountName);
-                    String token = "";
-                    try {
-                        token = accountManager.peekAuthToken(account, AuthActivity.INDIEWEB_TOKEN_TYPE);
-                    }
-                    catch (Exception ignored) {}
-
-                    user.setAccessToken(token);
-                    user.setExternalId(accountManager.getUserData(account, "external_id"));
-                    user.setAvatar(accountManager.getUserData(account, "author_avatar"));
-                    user.setName(accountManager.getUserData(account, "author_name"));
-                    user.setTokenEndpoint(accountManager.getUserData(account, "token_endpoint"));
-                    user.setAuthorizationEndpoint(accountManager.getUserData(account, "authorization_endpoint"));
-                    user.setMicrosubEndpoint(accountManager.getUserData(account, "microsub_endpoint"));
-                    user.setMicropubEndpoint(accountManager.getUserData(account, "micropub_endpoint"));
-                    user.setMicropubMediaEndpoint(accountManager.getUserData(account, "micropub_media_endpoint"));
-                    user.setSyndicationTargets(accountManager.getUserData(account, "syndication_targets"));
-                    user.setPostTypes(accountManager.getUserData(account, "post_types"));
-                    user.setAccountType(INDIEWEB_ACCOUNT_TYPE);
-                    user.setAccount(account);
-                }
-            }
-        }
-
-        // Pixelfed accounts
-        Account[] pixelfedAccounts = accountManager.getAccountsByType(PIXELFED_ACCOUNT_TYPE);
-        if (pixelfedAccounts.length > 0) {
-            for (Account account : pixelfedAccounts) {
-                if (account.name.equals(accountName)) {
-                    foundUser = true;
-                    user.setValid(true);
-                    user.setMe(accountName);
-                    user.setExternalId(accountManager.getUserData(account, "external_id"));
-                    user.setAvatar(accountManager.getUserData(account, "author_avatar"));
-                    user.setName(accountManager.getUserData(account, "author_name"));
-                    String token = "";
-                    try {
-                        token = accountManager.peekAuthToken(account, AuthActivity.PIXELFED_TOKEN_TYPE);
-                    }
-                    catch (Exception ignored) {}
-
-                    user.setAccessToken(token);
-                    user.setAccountType(PIXELFED_ACCOUNT_TYPE);
-                    user.setAccount(account);
-                }
+        List<User> users = getAllUsers();
+        for (User u : users) {
+            if (u.getAccount().name.equals(accountName)) {
+                user = u;
+                foundUser = true;
+                user.setValid(true);
             }
         }
 
@@ -106,8 +59,8 @@ public class Accounts {
         if (!foundUser) {
             user.setValid(true);
             user.setAnonymous(true);
-            user.setMe("https://indigenous.realize.be");
-            user.setName("Anonymous");
+            user.setMe(context.getString(R.string.anonymous_me));
+            user.setName(context.getString(R.string.anonymous));
             user.setAccessToken(Preferences.getPreference(context, "anonymous_token", ""));
             user.setMicrosubEndpoint(Preferences.getPreference(context, "anonymous_microsub_endpoint", context.getString(R.string.anonymous_microsub_endpoint)));
             user.setMicropubEndpoint(Preferences.getPreference(context, "anonymous_micropub_endpoint", ""));
@@ -172,8 +125,6 @@ public class Accounts {
      *   The current activity
      * @param layout
      *   The current layout
-     *
-     * @todo we have a couple of variations of this code in other places, try to merge them.
      */
     public void selectAccount(final Activity activity, final RelativeLayout layout) {
         final List<String> accounts = new ArrayList<>();
@@ -222,7 +173,7 @@ public class Accounts {
     }
 
     /**
-     * Returns users.
+     * Returns all users.
      *
      * @return User[]
      */
@@ -240,8 +191,8 @@ public class Accounts {
             catch (Exception ignored) {}
 
             user.setAccessToken(token);
-            user.setExternalId(accountManager.getUserData(a, "external_id"));
             user.setAccountType(INDIEWEB_ACCOUNT_TYPE);
+            user.setExternalId(accountManager.getUserData(a, "external_id"));
             user.setAvatar(accountManager.getUserData(a, "author_avatar"));
             user.setName(accountManager.getUserData(a, "author_name"));
             user.setTokenEndpoint(accountManager.getUserData(a, "token_endpoint"));
@@ -268,6 +219,8 @@ public class Accounts {
             user.setAvatar(accountManager.getUserData(a, "author_avatar"));
             user.setName(accountManager.getUserData(a, "author_name"));
             user.setExternalId(accountManager.getUserData(a, "external_id"));
+            user.setClientId(accountManager.getUserData(a, "client_id"));
+            user.setClientSecret(accountManager.getUserData(a, "client_secret"));
             user.setAccountType(PIXELFED_ACCOUNT_TYPE);
             user.setAccount(a);
             users.add(user);

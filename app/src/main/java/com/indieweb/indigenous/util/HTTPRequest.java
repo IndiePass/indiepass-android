@@ -1,7 +1,6 @@
 package com.indieweb.indigenous.util;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;

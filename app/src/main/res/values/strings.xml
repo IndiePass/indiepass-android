@@ -33,6 +33,8 @@
     <string name="no_micropub_media_endpoint">We did not find your media endpoint. In the accounts section, you can synchronize your account to add it.</string>
     <string name="no_micropub_endpoint_anonymous">You need to configure an endpoint in Accounts before Indigenous can post.</string>
     <string name="anonymous_microsub_endpoint">https://indigenous.realize.be/indieweb/microsub</string>
+    <string name="anonymous_me">https://indigenous.realize.be</string>
+    <string name="anonymous">Anonymous</string>
     <string name="items_refreshed">Items refreshed</string>
     <string name="request_failed">Request failed. Status code: %d; message: %s</string>
     <string name="request_failed_unknown">Request failed, unknown error</string>
@@ -97,12 +99,13 @@
     <string name="channel_home">Home</string>
     <string name="channel_public">Public</string>
     <string name="channel_favourites">Favourites</string>
+    <string name="channel_reposts">Reposts</string>
     <string name="channel_bookmarks">Bookmarks</string>
     <string name="channel_my_posts">My posts</string>
     <string name="channel_pixelfed">Pixelfed</string>
 
     <!-- About -->
-    <string name="about_info"><![CDATA[Indigenous allows you to engage with the internet as you do on social media sites, but posts it all on your website. Use the built-in reader to read and respond to posts across the internet. Indigenous doesn\'t track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/swentel/indigenous-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a>, <a href="https://openclipart.org">Openclipart</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
+    <string name="about_info"><![CDATA[Indigenous allows you to engage with the internet as you do on social media sites, but posts it all on your website. Use the built-in reader to read and respond to posts across the internet. Indigenous doesn\'t track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/swentel/indigenous-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
     <string name="view_changelog">View changelog</string>
 
     <!-- Drafts -->
@@ -201,6 +204,8 @@
     <string name="channel_show_sources">Show sources</string>
     <string name="channel_hide_sources">Hide sources</string>
     <string name="channel_source_label"> • %s</string>
+    <string name="follow">Follow</string>
+    <string name="unfollow">Unfollow</string>
 
     <!-- Micropub -->
     <string name="tags">Tags - separate with comma</string>

@@ -38,7 +38,7 @@ public class TimelineAudioActivity extends AppCompatActivity {
             ImageView authorPhotoView = findViewById(R.id.timeline_audio_author_photo);
             Glide.with(this)
                     .load(authorPhoto)
-                    .apply(RequestOptions.circleCropTransform().placeholder(R.drawable.avatar_small))
+                    .apply(RequestOptions.circleCropTransform().placeholder(R.drawable.avatar))
                     .into(authorPhotoView);
 
             // Author name.

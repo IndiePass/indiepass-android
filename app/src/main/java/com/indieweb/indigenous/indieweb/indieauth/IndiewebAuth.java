@@ -20,4 +20,8 @@ public class IndiewebAuth extends AuthBase {
         new MicropubAction(this.getContext(), this.getUser(), layout).refreshConfig();
     }
 
+    @Override
+    public void revokeToken(User user) {
+        new IndieAuthAction(getContext(), user).revoke();
+    }
 }

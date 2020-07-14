@@ -1,6 +1,7 @@
 package com.indieweb.indigenous.post;
 
 import android.content.Context;
+import android.widget.MultiAutoCompleteTextView;
 
 import com.indieweb.indigenous.model.User;
 
@@ -36,4 +37,10 @@ abstract public class PostBase implements Post {
     public String getPostParamName(String name) {
         return name;
     }
+
+    @Override
+    public void prepareTagsAutocomplete(MultiAutoCompleteTextView tags) { }
+
+    @Override
+    public void prepareContactsAutocomplete(MultiAutoCompleteTextView body) { }
 }

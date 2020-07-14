@@ -11,6 +11,7 @@ import com.indieweb.indigenous.pixelfed.PixelfedGeneral;
 import com.indieweb.indigenous.pixelfed.PixelfedReader;
 import com.indieweb.indigenous.reader.Reader;
 
+import static com.indieweb.indigenous.pixelfed.PixelfedReader.CHANNEL_NAME_ANONYMOUS;
 import static com.indieweb.indigenous.users.AuthActivity.PIXELFED_ACCOUNT_TYPE;
 
 public class GeneralFactory {
@@ -19,7 +20,7 @@ public class GeneralFactory {
     public static General getGeneral(User user, String channelId, Context context) {
         String type = "indieweb";
 
-        if (channelId != null && channelId.equals("indigenous_pixelfed")) {
+        if (channelId != null && channelId.equals(CHANNEL_NAME_ANONYMOUS)) {
             type = "pixelfed";
         }
 

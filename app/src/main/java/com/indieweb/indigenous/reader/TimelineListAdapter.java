@@ -37,18 +37,13 @@ import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.post.BookmarkActivity;
-import com.indieweb.indigenous.post.ContactActivity;
-import com.indieweb.indigenous.post.LikeActivity;
 import com.indieweb.indigenous.post.Post;
 import com.indieweb.indigenous.post.PostFactory;
 import com.indieweb.indigenous.post.ReadActivity;
 import com.indieweb.indigenous.post.ReplyActivity;
-import com.indieweb.indigenous.post.RepostActivity;
 import com.indieweb.indigenous.post.RsvpActivity;
 import com.indieweb.indigenous.indieweb.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.Channel;
-import com.indieweb.indigenous.model.Contact;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Preferences;
@@ -62,6 +57,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.indieweb.indigenous.pixelfed.PixelfedReader.CHANNEL_NAME_MY_POSTS;
 import static com.indieweb.indigenous.reader.TimelineActivity.MARK_READ_CHANNEL_CLICK;
 import static com.indieweb.indigenous.reader.TimelineActivity.MARK_READ_MANUAL;
 import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_COMPACT;
@@ -325,6 +321,12 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 if (Preferences.getPreference(context, "pref_key_response_bookmark", false)) {
                     holder.bookmark.setVisibility(View.VISIBLE);
                     holder.bookmark.setOnClickListener(new OnBookmarkClickListener(position));
+                    if (item.isBookmarked()) {
+                        holder.bookmark.setActivated(true);
+                    }
+                    else {
+                        holder.bookmark.setActivated(false);
+                    }
                 }
                 else {
                     holder.bookmark.setVisibility(View.GONE);
@@ -332,7 +334,21 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
                 holder.reply.setVisibility(View.VISIBLE);
                 holder.like.setVisibility(View.VISIBLE);
+                if (item.isLiked()) {
+                    holder.like.setActivated(true);
+                }
+                else {
+                    holder.like.setActivated(false);
+                }
+
                 holder.repost.setVisibility(View.VISIBLE);
+                if (item.isReposted()) {
+                    holder.repost.setActivated(true);
+                }
+                else {
+                    holder.repost.setActivated(false);
+                }
+
                 holder.external.setVisibility(View.VISIBLE);
 
                 holder.reply.setOnClickListener(new OnReplyClickListener(position));
@@ -505,7 +521,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 // Author photo.
                 Glide.with(context)
                         .load(item.getAuthorPhoto())
-                        .apply(RequestOptions.circleCropTransform().placeholder(R.drawable.avatar_small))
+                        .apply(RequestOptions.circleCropTransform().placeholder(R.drawable.avatar))
                         .into(holder.authorPhoto);
 
                 // Source view.
@@ -802,10 +818,16 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
         @Override
         public void onClick(View v) {
-            Intent i = new Intent(context, LikeActivity.class);
             TimelineItem item = items.get(this.position);
-            i.putExtra("incomingText", item.getUrl());
-            context.startActivity(i);
+            boolean liked = reader.doResponse(item, Reader.RESPONSE_LIKE);
+            if (liked) {
+                item.setLiked(true);
+                v.setActivated(true);
+            }
+            else {
+                item.setLiked(false);
+                v.setActivated(false);
+            }
         }
     }
 
@@ -820,10 +842,16 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
         @Override
         public void onClick(View v) {
-            Intent i = new Intent(context, RepostActivity.class);
             TimelineItem item = items.get(this.position);
-            i.putExtra("incomingText", item.getUrl());
-            context.startActivity(i);
+            boolean reposted = reader.doResponse(item, Reader.RESPONSE_REPOST);
+            if (reposted) {
+                item.setReposted(true);
+                v.setActivated(true);
+            }
+            else {
+                item.setReposted(false);
+                v.setActivated(false);
+            }
         }
     }
 
@@ -838,10 +866,16 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
         @Override
         public void onClick(View v) {
-            Intent i = new Intent(context, BookmarkActivity.class);
             TimelineItem item = items.get(this.position);
-            i.putExtra("incomingText", item.getUrl());
-            context.startActivity(i);
+            boolean bookmarked = reader.doResponse(item, Reader.RESPONSE_BOOKMARK);
+            if (bookmarked) {
+                item.setBookmarked(true);
+                v.setActivated(true);
+            }
+            else {
+                item.setBookmarked(false);
+                v.setActivated(false);
+            }
         }
     }
 
@@ -1053,10 +1087,12 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
 
             // Save contact menu item.
-            if (user.isAuthenticated() && Preferences.getPreference(context, "pref_key_contact_manage", false)) {
+            // TODO hardcoded channel
+            if (user.isAuthenticated() && reader.supports(Reader.READER_CONTACT) && !entry.getChannelId().equals(CHANNEL_NAME_MY_POSTS)) {
                 MenuItem itemContact = menu.findItem(R.id.timeline_save_author);
                 if (itemContact != null) {
                     itemContact.setVisible(true);
+                    reader.setContactLabel(itemContact, entry);
                 }
             }
 
@@ -1196,28 +1232,12 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             break;
 
                         case R.id.timeline_save_author:
-                            Indigenous app = Indigenous.getInstance();
-
                             if (entry.getAuthorName().length() > 0) {
-
-                                Contact contact = new Contact();
-                                contact.setName(entry.getAuthorName());
-                                if (entry.getAuthorPhoto().length() > 0) {
-                                    contact.setPhoto(entry.getAuthorPhoto());
-                                }
-                                if (entry.getAuthorUrl().length() > 0) {
-                                    contact.setUrl(entry.getAuthorUrl());
-                                }
-
-                                app.setContact(contact);
-                                Intent startActivity =  new Intent(context, ContactActivity.class);
-                                startActivity.putExtra("addContact", true);
-                                context.startActivity(startActivity);
+                                reader.doResponse(entry, Reader.RESPONSE_CONTACT);
                             }
                             else {
                                 Snackbar.make(layout, context.getString(R.string.contact_no_name), Snackbar.LENGTH_SHORT).show();
                             }
-
                             break;
 
                         case R.id.timeline_entry_share:

@@ -1,12 +1,22 @@
 package com.indieweb.indigenous.post;
 
+import android.widget.MultiAutoCompleteTextView;
+
 import com.android.volley.NetworkResponse;
 
 public interface Post {
 
     String FEATURE_TITLE = "FEATURE_POST_TITLE";
     String FEATURE_CATEGORIES = "FEATURE_POST_CATEGORIES";
+    String FEATURE_CONTACTS = "FEATURE_POST_CONTACTS";
     String FEATURE_MEDIA_UPLOAD_DESCRIPTION = "FEATURE_MEDIA_UPLOAD_DESCRIPTION";
+    String POST_PARAM_H = "h";
+    String POST_PARAM_PUBLISHED = "published";
+    String POST_PARAM_CONTENT = "content";
+    String POST_PARAM_POST_STATUS = "post-status";
+    String POST_PARAM_REPLY = "in-reply-to";
+    String POST_PARAM_PHOTO = "photo";
+    String POST_PARAM_VIDEO = "video";
 
     String getEndpoint(boolean isMediaRequest);
 
@@ -20,8 +30,11 @@ public interface Post {
 
     boolean supports(String name);
 
-    // TODO rename?
     boolean supportsPostParam(String name);
 
     String getPostParamName(String name);
+
+    void prepareTagsAutocomplete(MultiAutoCompleteTextView tags);
+
+    void prepareContactsAutocomplete(MultiAutoCompleteTextView body);
 }

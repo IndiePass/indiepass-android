@@ -19,6 +19,7 @@ public class TimelineItem implements Serializable {
     private String authorName;
     private String authorPhoto = "";
     private String authorUrl = "";
+    private String authorId = "";
     private String actor = "";
     private String channelId = "";
     private String channelName = "";
@@ -32,6 +33,9 @@ public class TimelineItem implements Serializable {
     private String audio = "";
     private String video = "";
     private String json;
+    private boolean liked = false;
+    private boolean reposted = false;
+    private boolean bookmarked = false;
     private Map<String, String> responseType = new LinkedHashMap<>();
     private boolean swapReference = true;
 
@@ -179,6 +183,14 @@ public class TimelineItem implements Serializable {
         this.authorUrl = authorUrl;
     }
 
+    public String getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
+    }
+
     public ArrayList<String> getPhotos() {
         return photos;
     }
@@ -251,5 +263,29 @@ public class TimelineItem implements Serializable {
 
     public void setSwapReference(boolean swapReference) {
         this.swapReference = swapReference;
+    }
+
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
+    }
+
+    public boolean isReposted() {
+        return reposted;
+    }
+
+    public void setReposted(boolean reposted) {
+        this.reposted = reposted;
+    }
+
+    public boolean isBookmarked() {
+        return bookmarked;
+    }
+
+    public void setBookmarked(boolean bookmarked) {
+        this.bookmarked = bookmarked;
     }
 }

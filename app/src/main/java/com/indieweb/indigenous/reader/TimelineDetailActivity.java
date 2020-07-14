@@ -62,6 +62,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
     RelativeLayout layout;
     protected TimelineItem item;
     User user;
+    private Reader reader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
         else {
 
             user = new Accounts(this).getDefaultUser();
+            reader = ReaderFactory.getReader(user, item.getChannelId(), TimelineDetailActivity.this);
 
             // Channel.
             TextView channel = findViewById(R.id.timeline_channel);
@@ -122,7 +124,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
             ImageView authorPhoto = findViewById(R.id.timeline_author_photo);
             Glide.with(TimelineDetailActivity.this)
                     .load(item.getAuthorPhoto())
-                    .apply(RequestOptions.circleCropTransform().placeholder(R.drawable.avatar_small))
+                    .apply(RequestOptions.circleCropTransform().placeholder(R.drawable.avatar))
                     .into(authorPhoto);
 
             // Author name
@@ -381,14 +383,36 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
                 if (Preferences.getPreference(getApplicationContext(), "pref_key_response_bookmark", false)) {
                     bookmark.setOnClickListener(new OnBookmarkClickListener());
+                    if (item.isBookmarked()) {
+                        bookmark.setActivated(true);
+                    }
+                    else {
+                        bookmark.setActivated(false);
+                    }
                 }
                 else {
                     bookmark.setVisibility(View.GONE);
                 }
 
                 reply.setOnClickListener(new OnReplyClickListener());
+
                 like.setOnClickListener(new OnLikeClickListener());
+                if (item.isLiked()) {
+                    like.setActivated(true);
+                }
+                else {
+                    like.setActivated(false);
+                }
+
                 repost.setOnClickListener(new OnRepostClickListener());
+                if (item.isReposted()) {
+                    repost.setActivated(true);
+                }
+                else {
+                    repost.setActivated(false);
+                }
+
+
                 external.setOnClickListener(new OnExternalClickListener());
 
                 if (item.getType().equals("event")) {
@@ -455,6 +479,16 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
+            boolean liked = reader.doResponse(item, Reader.RESPONSE_LIKE);
+            if (liked) {
+                item.setLiked(true);
+                v.setActivated(true);
+            }
+            else {
+                item.setLiked(false);
+                v.setActivated(false);
+            }
+
             Intent i = new Intent(TimelineDetailActivity.this, LikeActivity.class);
             i.putExtra("incomingText", item.getUrl());
             startActivity(i);
@@ -466,9 +500,15 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            Intent i = new Intent(TimelineDetailActivity.this, RepostActivity.class);
-            i.putExtra("incomingText", item.getUrl());
-            startActivity(i);
+            boolean reposted = reader.doResponse(item, Reader.RESPONSE_REPOST);
+            if (reposted) {
+                item.setReposted(true);
+                v.setActivated(true);
+            }
+            else {
+                item.setReposted(false);
+                v.setActivated(false);
+            }
         }
     }
 
@@ -477,9 +517,15 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            Intent i = new Intent(TimelineDetailActivity.this, BookmarkActivity.class);
-            i.putExtra("incomingText", item.getUrl());
-            startActivity(i);
+            boolean bookmarked = reader.doResponse(item, Reader.RESPONSE_BOOKMARK);
+            if (bookmarked) {
+                item.setBookmarked(true);
+                v.setActivated(true);
+            }
+            else {
+                item.setBookmarked(false);
+                v.setActivated(false);
+            }
         }
     }
 
@@ -608,7 +654,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
                 }
             }
 
-            Reader reader = ReaderFactory.getReader(user, item.getChannelId(), TimelineDetailActivity.this);
+            final Reader reader = ReaderFactory.getReader(user, item.getChannelId(), TimelineDetailActivity.this);
             if (!reader.supports(Reader.READER_MARK_READ)) {
                 MenuItem itemMarkRead = menu.findItem(R.id.timeline_entry_mark_read);
                 if (itemMarkRead != null) {
@@ -640,10 +686,11 @@ public class TimelineDetailActivity extends AppCompatActivity {
             }
 
             // Save contact menu item.
-            if (Preferences.getPreference(getApplicationContext(), "pref_key_contact_manage", false)) {
+            if (reader.supports(Reader.READER_CONTACT)) {
                 MenuItem itemContact = menu.findItem(R.id.timeline_save_author);
                 if (itemContact != null) {
                     itemContact.setVisible(true);
+                    reader.setContactLabel(itemContact, item);
                 }
             }
 
@@ -687,23 +734,8 @@ public class TimelineDetailActivity extends AppCompatActivity {
                             break;
 
                         case R.id.timeline_save_author:
-                            Indigenous app2 = Indigenous.getInstance();
-
                             if (entry.getAuthorName().length() > 0) {
-
-                                Contact contact = new Contact();
-                                contact.setName(entry.getAuthorName());
-                                if (entry.getAuthorPhoto().length() > 0) {
-                                    contact.setPhoto(entry.getAuthorPhoto());
-                                }
-                                if (entry.getAuthorUrl().length() > 0) {
-                                    contact.setUrl(entry.getAuthorUrl());
-                                }
-
-                                app2.setContact(contact);
-                                Intent startActivity =  new Intent(getApplicationContext(), ContactActivity.class);
-                                startActivity.putExtra("addContact", true);
-                                startActivity(startActivity);
+                                reader.doResponse(entry, Reader.RESPONSE_CONTACT);
                             }
                             else {
                                 Snackbar.make(layout, getString(R.string.contact_no_name), Snackbar.LENGTH_SHORT).show();

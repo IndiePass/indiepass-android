@@ -1,6 +1,7 @@
 package com.indieweb.indigenous.indieweb.micropub;
 
 import android.content.Context;
+import android.widget.MultiAutoCompleteTextView;
 
 import com.android.volley.NetworkResponse;
 import com.indieweb.indigenous.R;
@@ -55,5 +56,19 @@ public class IndieWebPost extends PostBase {
     @Override
     public void deletePost(String channelId, String id) {
         new MicrosubAction(getContext(), getUser(), null).deletePost(channelId, id);
+    }
+
+    @Override
+    public void prepareTagsAutocomplete(MultiAutoCompleteTextView tags) {
+        if (Preferences.getPreference(getContext(), "pref_key_tags_list", false)) {
+            new MicropubAction(getContext(), getUser(), null).prepareTagsAutocomplete(tags);
+        }
+    }
+
+    @Override
+    public void prepareContactsAutocomplete(MultiAutoCompleteTextView body) {
+        if (Preferences.getPreference(getContext(), "pref_key_contact_body_autocomplete", false)) {
+            new MicropubAction(getContext(), getUser(), null).prepareContactAutocomplete(body);
+        }
     }
 }

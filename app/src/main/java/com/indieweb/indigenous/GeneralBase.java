@@ -22,6 +22,10 @@ abstract public class GeneralBase implements General {
         return user;
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public boolean supports(String feature) {
         return true;

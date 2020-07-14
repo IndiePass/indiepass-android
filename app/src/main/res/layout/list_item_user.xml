@@ -34,7 +34,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:contentDescription="@string/author_photo"
-        android:src="@drawable/avatar_small"
+        android:src="@drawable/avatar"
         android:layout_alignParentEnd="true" />
 
     <TextView

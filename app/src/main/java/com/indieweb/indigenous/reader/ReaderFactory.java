@@ -8,6 +8,7 @@ import com.indieweb.indigenous.indieweb.microsub.IndieWebReader;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.pixelfed.PixelfedReader;
 
+import static com.indieweb.indigenous.pixelfed.PixelfedReader.CHANNEL_NAME_ANONYMOUS;
 import static com.indieweb.indigenous.users.AuthActivity.PIXELFED_ACCOUNT_TYPE;
 
 public class ReaderFactory {
@@ -16,7 +17,7 @@ public class ReaderFactory {
     public static Reader getReader(User user, String channelId, Context context) {
         String type = "indieweb";
 
-        if (channelId != null && channelId.equals("indigenous_pixelfed")) {
+        if (channelId != null && channelId.equals(CHANNEL_NAME_ANONYMOUS)) {
             type = "pixelfed";
         }
 

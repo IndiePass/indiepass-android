@@ -15,7 +15,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:contentDescription="@string/contact_photo"
-            android:src="@drawable/avatar_small" />
+            android:src="@drawable/avatar" />
 
     </LinearLayout>
 

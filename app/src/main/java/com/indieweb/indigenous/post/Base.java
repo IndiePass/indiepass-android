@@ -592,7 +592,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 }
 
                 // h type.
-                if (!isMediaRequest && post.supportsPostParam("h")) {
+                if (!isMediaRequest && post.supportsPostParam(Post.POST_PARAM_H)) {
                     bodyParams.put("h", hType);
                 }
 
@@ -603,7 +603,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
                 // Content
                 if (body != null) {
-                    bodyParams.put(post.getPostParamName("content"), body.getText().toString());
+                    bodyParams.put(post.getPostParamName(Post.POST_PARAM_CONTENT), body.getText().toString());
                 }
 
                 // url
@@ -626,19 +626,19 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
                 // Publish date.
                 if (publishDate != null && !TextUtils.isEmpty(publishDate.getText())) {
-                    bodyParams.put(post.getPostParamName("published"), publishDate.getText().toString());
+                    bodyParams.put(post.getPostParamName(Post.POST_PARAM_PUBLISHED), publishDate.getText().toString());
                 }
                 else if (post.supportsPostParam("published")) {
                     Date date = Calendar.getInstance().getTime();
                     @SuppressLint("SimpleDateFormat")
                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:00Z");
                     df.setTimeZone(TimeZone.getDefault());
-                    bodyParams.put(post.getPostParamName("published"), df.format(date));
+                    bodyParams.put(post.getPostParamName(Post.POST_PARAM_PUBLISHED), df.format(date));
                 }
 
                 // Post status.
                 postStatus = findViewById(R.id.postStatus);
-                if (postStatus != null && post.supportsPostParam("post-status")) {
+                if (postStatus != null && post.supportsPostParam(Post.POST_PARAM_POST_STATUS)) {
                     String postStatusValue = "draft";
                     if (postStatus.isChecked()) {
                         postStatusValue = "published";
@@ -705,13 +705,13 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 if (Preferences.getPreference(getApplicationContext(), "pref_key_upload_media_endpoint", false) && uploadMediaDone && mediaUrls.size() > 0) {
                     int mi = 0;
                     for (Uri u: image) {
-                        bodyParams.put(post.getPostParamName("photo") + "_multiple_[" + mi + "]", mediaUrls.get(u));
+                        bodyParams.put(post.getPostParamName(Post.POST_PARAM_PHOTO) + "_multiple_[" + mi + "]", mediaUrls.get(u));
                         mi++;
                     }
 
                     int mv = 0;
                     for (Uri u: video) {
-                        bodyParams.put("video_multiple_[" + mv + "]", mediaUrls.get(u));
+                        bodyParams.put(post.getPostParamName(Post.POST_PARAM_VIDEO) + "_multiple_[" + mv + "]", mediaUrls.get(u));
                         mv++;
                     }
 

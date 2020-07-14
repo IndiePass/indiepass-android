@@ -1,12 +1,15 @@
 package com.indieweb.indigenous.pixelfed;
 
 import android.content.Context;
+import android.view.MenuItem;
 
+import com.android.volley.Request;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.reader.ReaderBase;
+import com.indieweb.indigenous.util.HTTPRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PixelfedReader extends ReaderBase {
+
+    public static final int LIMIT = 20;
+    public static final String CHANNEL_NAME_ANONYMOUS = "pixelfed_anonymous";
+    public static final String CHANNEL_NAME_HOME = "pixelfed_home";
+    public static final String CHANNEL_NAME_PUBLIC = "pixelfed_public";
+    public static final String CHANNEL_NAME_MY_POSTS = "pixelfed_my_posts";
+    public static final String CHANNEL_NAME_FAVOURITES = "pixelfed_favourites";
+    public static final String CHANNEL_NAME_BOOKMARKS = "pixelfed_bookmarks";
 
     public PixelfedReader(Context context, User user) {
         super(context, user);
@@ -31,6 +42,7 @@ public class PixelfedReader extends ReaderBase {
             case READER_MARK_READ:
             case READER_DEBUG_CHANNELS:
             case READER_MOVE_ITEM:
+            case READER_SEARCH:
                 supported = false;
                 break;
         }
@@ -44,30 +56,31 @@ public class PixelfedReader extends ReaderBase {
         Channel c;
         c = new Channel();
         c.setName(getContext().getString(R.string.channel_home));
-        c.setUid("pixelfed_home");
+        c.setUid(CHANNEL_NAME_HOME);
         c.setUnread(0);
         Channels.add(c);
         c = new Channel();
         c.setName(getContext().getString(R.string.channel_public));
-        c.setUid("pixelfed_public");
+        c.setUid(CHANNEL_NAME_PUBLIC);
         c.setUnread(0);
         Channels.add(c);
         if (this.getUser().isAuthenticated()) {
             c = new Channel();
             c.setName(getContext().getString(R.string.channel_my_posts));
-            c.setUid("pixelfed_my_posts");
+            c.setUid(CHANNEL_NAME_MY_POSTS);
             c.setUnread(0);
             Channels.add(c);
             c = new Channel();
             c.setName(getContext().getString(R.string.channel_favourites));
-            c.setUid("pixelfed_favourites");
+            c.setUid(CHANNEL_NAME_FAVOURITES);
             c.setUnread(0);
             Channels.add(c);
-            c = new Channel();
+            // Disabled until https://github.com/pixelfed/pixelfed/issues/2317 is fixed
+            /*c = new Channel();
             c.setName(getContext().getString(R.string.channel_bookmarks));
-            c.setUid("pixelfed_bookmarks");
+            c.setUid(CHANNEL_NAME_BOOKMARKS");
             c.setUnread(0);
-            Channels.add(c);
+            Channels.add(c);*/
         }
         return Channels;
     }
@@ -78,7 +91,7 @@ public class PixelfedReader extends ReaderBase {
 
         if (getUser().isAnonymous()) {
             Channel channel = new Channel();
-            channel.setUid("indigenous_pixelfed");
+            channel.setUid(CHANNEL_NAME_ANONYMOUS);
             channel.setName(getContext().getString(R.string.channel_pixelfed));
             channel.setUnread(0);
             Channels.add(channel);
@@ -89,50 +102,83 @@ public class PixelfedReader extends ReaderBase {
 
     @Override
     public boolean hideDelete(String channelId) {
-        return !channelId.equals("pixelfed_my_posts");
+        return !channelId.equals(CHANNEL_NAME_MY_POSTS);
     }
 
     @Override
-    public String getTimelineEndpoint(User user, String channelId, boolean isGlobalUnread, boolean showUnread, boolean isSourceView, String sourceId, String pagerAfter) {
+    public String getTimelineEndpoint(User user, String channelId, boolean isGlobalUnread, boolean showUnread, boolean isSourceView, String sourceId, boolean isSearch, String search, String pagerAfter) {
         String endpoint;
-        if (channelId.equals("anonymous_pixelfed")) {
-            endpoint = "https://pixelfed.social/api/v1/timelines/public";
+        if (channelId.equals(CHANNEL_NAME_ANONYMOUS)) {
+            endpoint = "https://pixelfed.social/api/v1/timelines/public?limit=" + LIMIT;
         }
         // TODO works anonymous to?
         else if (isSourceView && sourceId != null) {
             endpoint = this.getUser().getMe() + "/api/v1/accounts/" + sourceId + "/statuses";
         }
+        else if (isSearch && search.length() > 0) {
+            endpoint = this.getUser().getMe() + "/api/v2/search?q=" + search;
+        }
         else {
             switch (channelId) {
-                case "pixelfed_home":
+                case CHANNEL_NAME_HOME:
                     endpoint = this.getUser().getMe() + "/api/v1/timelines/home";
                     break;
-                case "pixelfed_favourites":
+                case CHANNEL_NAME_FAVOURITES:
                     endpoint = this.getUser().getMe() + "/api/v1/favourites";
                     break;
-                case "pixelfed_bookmarks":
+                case CHANNEL_NAME_BOOKMARKS:
                     endpoint = this.getUser().getMe() + "/api/v1/bookmarks";
                     break;
-                case "pixelfed_my_posts":
+                case CHANNEL_NAME_MY_POSTS:
                     endpoint = this.getUser().getMe() + "/api/v1/accounts/" + this.getUser().getExternalId() + "/statuses";
                     break;
-                case "pixelfed_public":
+                case CHANNEL_NAME_PUBLIC:
                 default:
                     endpoint = this.getUser().getMe() + "/api/v1/timelines/public";
                     break;
             }
+
+            endpoint += "?limit=" + LIMIT;
+
+            if (pagerAfter != null && pagerAfter.length() > 0) {
+                endpoint += "&max_id=" + pagerAfter;
+            }
+
         }
 
         return endpoint;
     }
 
     @Override
-    public List<TimelineItem> parseTimelineResponse(String response, String channelId, String channelName, List<String> entries, boolean isGlobalUnread, boolean recursiveReference, String[] olderItems, Context context) {
+    public int getTimelineMethod(boolean isPreview, boolean isSearch) {
+        return Request.Method.GET;
+    }
+
+    @Override
+    public boolean sendTimelineAccessToken(String channelId) {
+        boolean send = true;
+        if (channelId.equals(CHANNEL_NAME_ANONYMOUS)) {
+            send = false;
+        }
+        return send;
+    }
+
+    @Override
+    public List<TimelineItem> parseTimelineResponse(String response, String channelId, String channelName, List<String> entries, boolean isGlobalUnread, boolean isSearch, boolean recursiveReference, String[] olderItems, Context context) {
         JSONObject object;
+        String maxId = "";
         List<TimelineItem> TimelineItems = new ArrayList<>();
 
         try {
-            JSONArray itemList = new JSONArray(response);
+
+            JSONArray itemList;
+            if (isSearch) {
+                JSONObject r = new JSONObject(response);
+                itemList = new JSONArray(r.get("statuses"));
+            }
+            else {
+                itemList = new JSONArray(response);
+            }
 
             for (int i = 0; i < itemList.length(); i++) {
                 object = itemList.getJSONObject(i);
@@ -149,6 +195,7 @@ public class PixelfedReader extends ReaderBase {
                 item.setHtmlContent(object.getString("content"));
                 item.setTextContent("");
                 item.setReference("");
+                item.setChannelId(channelId);
 
                 // Published
                 String published = "";
@@ -181,7 +228,6 @@ public class PixelfedReader extends ReaderBase {
                     try {
                         JSONArray photos = object.getJSONArray("media_attachments");
                         for (int p = 0; p < photos.length(); p++) {
-                            // TODO use preview url?
                             item.addPhoto(photos.getJSONObject(p).getString("url"));
                         }
                     }
@@ -209,10 +255,22 @@ public class PixelfedReader extends ReaderBase {
                             item.setAuthorPhoto(authorPhoto);
                         }
                     }
+
+                    item.setAuthorId(author.getString("id"));
                 }
                 item.setAuthorName(authorName);
 
+                // Responses.
+                item.setLiked(object.getBoolean("favourited"));
+                item.setBookmarked(object.getBoolean("bookmarked"));
+                item.setReposted(object.getBoolean("reblogged"));
+
+                maxId = item.getId();
                 TimelineItems.add(item);
+            }
+
+            if (itemList.length() == LIMIT) {
+                olderItems[0] = maxId;
             }
 
         }
@@ -221,4 +279,64 @@ public class PixelfedReader extends ReaderBase {
         return TimelineItems;
     }
 
+    @Override
+    public boolean doResponse(TimelineItem item, String response) {
+        boolean isActive = false;
+        String appUrl = null;
+
+        switch (response) {
+            case RESPONSE_LIKE:
+                if (item.isLiked()) {
+                    appUrl = getUser().getMe() + "/api/v1/statuses/" + item.getId() + "/unfavourite";
+                }
+                else {
+                    appUrl = getUser().getMe() + "/api/v1/statuses/" + item.getId() + "/favourite";
+                    isActive = true;
+                }
+                break;
+            case RESPONSE_BOOKMARK:
+                if (item.isBookmarked()) {
+                    appUrl = getUser().getMe() + "/api/v1/statuses/" + item.getId() + "/unbookmark";
+                }
+                else {
+                    appUrl = getUser().getMe() + "/api/v1/statuses/" + item.getId() + "/bookmark";
+                    isActive = true;
+                }
+                break;
+            case RESPONSE_REPOST:
+                if (item.isReposted()) {
+                    appUrl = getUser().getMe() + "/api/v1/statuses/" + item.getId() + "/unreblog";
+                }
+                else {
+                    appUrl = getUser().getMe() + "/api/v1/statuses/" + item.getId() + "/reblog";
+                    isActive = true;
+                }
+                break;
+            case RESPONSE_CONTACT:
+                if (item.getChannelId().equals(CHANNEL_NAME_HOME)) {
+                    appUrl = getUser().getMe() + "/api/v1/accounts/" + item.getAuthorId() + "/unfollow";
+                }
+                else {
+                    appUrl = getUser().getMe() + "/api/v1/accounts/" + item.getAuthorId() + "/follow";
+                }
+                break;
+        }
+
+        if (appUrl != null) {
+            HTTPRequest r = new HTTPRequest(null, getUser(), getContext());
+            r.doPostRequest(appUrl, null);
+        }
+
+        return isActive;
+    }
+
+    @Override
+    public void setContactLabel(MenuItem menuItem, TimelineItem item) {
+        if (item.getChannelId().equals(CHANNEL_NAME_HOME)) {
+            menuItem.setTitle(getContext().getString(R.string.unfollow));
+        }
+        else {
+            menuItem.setTitle(getContext().getString(R.string.follow));
+        }
+    }
 }

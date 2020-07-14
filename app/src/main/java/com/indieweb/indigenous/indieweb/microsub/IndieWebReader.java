@@ -1,11 +1,19 @@
 package com.indieweb.indigenous.indieweb.microsub;
 
 import android.content.Context;
+import android.content.Intent;
 
+import com.android.volley.Request;
+import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Channel;
+import com.indieweb.indigenous.model.Contact;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.post.BookmarkActivity;
+import com.indieweb.indigenous.post.ContactActivity;
+import com.indieweb.indigenous.post.LikeActivity;
+import com.indieweb.indigenous.post.RepostActivity;
 import com.indieweb.indigenous.reader.Reader;
 import com.indieweb.indigenous.reader.ReaderBase;
 import com.indieweb.indigenous.util.Preferences;
@@ -44,6 +52,12 @@ public class IndieWebReader extends ReaderBase {
                 break;
             case READER_MOVE_ITEM:
                 supported = Preferences.getPreference(this.getContext(), "pref_key_move_item", false);
+                break;
+            case READER_SEARCH:
+                supported = Preferences.getPreference(this.getContext(), "pref_key_search", false);
+                break;
+            case READER_CONTACT:
+                supported = Preferences.getPreference(this.getContext(), "pref_key_contact_manage", false);
                 break;
         }
 
@@ -191,7 +205,7 @@ public class IndieWebReader extends ReaderBase {
     }
 
     @Override
-    public String getTimelineEndpoint(User user, String channelId, boolean isGlobalUnread, boolean showUnread, boolean isSourceView, String sourceId, String pagerAfter) {
+    public String getTimelineEndpoint(User user, String channelId, boolean isGlobalUnread, boolean showUnread, boolean isSourceView, String sourceId, boolean isSearch, String search, String pagerAfter) {
         String endpoint =  user.getMicrosubEndpoint();
 
         endpoint += "?action=timeline&channel=" + channelId;
@@ -215,7 +229,16 @@ public class IndieWebReader extends ReaderBase {
     }
 
     @Override
-    public List<TimelineItem> parseTimelineResponse(String response, String channelId, String channelName, List<String> entries, boolean isGlobalUnread, boolean recursiveReference, String[] olderItems, Context context) {
+    public int getTimelineMethod(boolean isPreview, boolean isSearch) {
+        if (isPreview || isSearch) {
+            return Request.Method.POST;
+        }
+
+        return Request.Method.GET;
+    }
+
+    @Override
+    public List<TimelineItem> parseTimelineResponse(String response, String channelId, String channelName, List<String> entries, boolean isGlobalUnread, boolean isSearch, boolean recursiveReference, String[] olderItems, Context context) {
         JSONObject object;
         JSONArray itemList;
         List<TimelineItem> TimelineItems = new ArrayList<>();
@@ -558,4 +581,43 @@ public class IndieWebReader extends ReaderBase {
         // TODO fix show message and layout argument.
         new MicrosubAction(this.getContext(), this.getUser(), null).markRead(channelId, entries, markAllRead, false);
     }
+
+    @Override
+    public boolean doResponse(TimelineItem item, String response) {
+        Intent i;
+        switch (response) {
+            case RESPONSE_LIKE:
+                i = new Intent(getContext(), LikeActivity.class);
+                i.putExtra("incomingText", item.getUrl());
+            break;
+            case RESPONSE_BOOKMARK:
+                i = new Intent(getContext(), BookmarkActivity.class);
+                i.putExtra("incomingText", item.getUrl());
+                break;
+            case RESPONSE_CONTACT:
+                Indigenous app2 = Indigenous.getInstance();
+                Contact contact = new Contact();
+                contact.setName(item.getAuthorName());
+                if (item.getAuthorPhoto().length() > 0) {
+                    contact.setPhoto(item.getAuthorPhoto());
+                }
+                if (item.getAuthorUrl().length() > 0) {
+                    contact.setUrl(item.getAuthorUrl());
+                }
+
+                app2.setContact(contact);
+                i =  new Intent(getContext(), ContactActivity.class);
+                i.putExtra("addContact", true);
+                break;
+            case RESPONSE_REPOST:
+            default:
+                i = new Intent(getContext(), RepostActivity.class);
+                i.putExtra("incomingText", item.getUrl());
+                break;
+        }
+
+        getContext().startActivity(i);
+        return false;
+    }
+
 }

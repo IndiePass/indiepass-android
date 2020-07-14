@@ -193,7 +193,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         inflater.inflate(R.menu.timeline_menu, menu);
         mainMenu = menu;
 
-        boolean search = Preferences.getPreference(this, "pref_key_search", false);
+        boolean search = reader.supports(Reader.READER_SEARCH);
         if (user.isAuthenticated() && search && !preview && !isSearch && !isSourceView && !isGlobalUnread) {
             MenuItem item = menu.findItem(R.id.timeline_search);
             if (item != null) {
@@ -377,9 +377,9 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
         entries.clear();
         int method = Request.Method.GET;
-        String readerEndpoint = reader.getTimelineEndpoint(user, channelId, isGlobalUnread, showUnread, isSourceView, sourceId, pagerAfter);
+        String readerEndpoint = reader.getTimelineEndpoint(user, channelId, isGlobalUnread, showUnread, isSourceView, sourceId, isSearch, searchQuery, pagerAfter);
         if (preview || isSearch) {
-            method = Request.Method.POST;
+            method = reader.getTimelineMethod(preview, isSearch);
         }
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
@@ -417,11 +417,13 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
 
+                // TODO move
                 if (preview) {
                     params.put("action", "preview");
                     params.put("url", previewUrl);
                 }
 
+                // TODO move
                 if (isSearch) {
                     params.put("action", "search");
                     params.put("channel", channelId);
@@ -444,7 +446,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     accessToken = "";
                 }
 
-                if (!channelId.equals("indigenous_pixelfed")) {
+                if (reader.sendTimelineAccessToken(channelId)) {
                     headers.put("Authorization", "Bearer " + accessToken);
                 }
                 return headers;
@@ -476,7 +478,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             }
 
             debugResponse = response;
-            List<TimelineItem> parseItems = reader.parseTimelineResponse(response, channelId, channelName, entries, isGlobalUnread, recursiveReference, olderItems, getApplicationContext());
+            List<TimelineItem> parseItems = reader.parseTimelineResponse(response, channelId, channelName, entries, isGlobalUnread, isSearch, recursiveReference, olderItems, getApplicationContext());
             TimelineItems.addAll(parseItems);
             if (firstEntryId == null) {
                 firstEntryId = TimelineItems.get(0).getId();

@@ -20,6 +20,8 @@ public class User {
     private boolean anonymous = false;
     private Account account;
     private String accountType;
+    private String clientId;
+    private String clientSecret;
 
     public String getMe() {
         return me;
@@ -155,5 +157,21 @@ public class User {
 
     public void setAccountType(String accountType) {
         this.accountType = accountType;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getClientSecret() {
+        return clientSecret;
+    }
+
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
     }
 }

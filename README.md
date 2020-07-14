@@ -59,6 +59,8 @@ geo:51.5258325,-0.1359825,0.0;name=london;url=https://hwclondon.co.uk
 
 <img src="https://realize.be/sites/default/files/2019-02/1550590120900.jpg" width="400" />
 
+More screenshots at https://indigenous.realize.be
+
 ## Known issues
 
 #### Authentication loop

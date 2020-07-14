@@ -132,8 +132,8 @@ abstract public class BaseCreate extends BasePlatformCreate {
             body.addTextChangedListener(BaseCreate.this);
 
             // Autocomplete of contacts.
-            if (Preferences.getPreference(this, "pref_key_contact_body_autocomplete", false) && user.isAuthenticated()) {
-                new MicropubAction(getApplicationContext(), user, null).prepareContactAutocomplete(body);
+            if (post.supports(Post.FEATURE_CATEGORIES) && user.isAuthenticated()) {
+                post.prepareContactsAutocomplete(body);
             }
 
         }
@@ -149,8 +149,8 @@ abstract public class BaseCreate extends BasePlatformCreate {
         }
 
         // Autocomplete of tags.
-        if (tags != null && post.supports(Post.FEATURE_CATEGORIES) && Preferences.getPreference(this, "pref_key_tags_list", false) && user.isAuthenticated()) {
-            new MicropubAction(getApplicationContext(), user, null).prepareTagsAutocomplete(tags);
+        if (tags != null && post.supports(Post.FEATURE_CATEGORIES) && user.isAuthenticated()) {
+            post.prepareTagsAutocomplete(tags);
         }
 
         if (isMediaRequest) {

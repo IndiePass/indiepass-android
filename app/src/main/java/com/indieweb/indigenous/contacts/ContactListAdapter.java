@@ -105,7 +105,7 @@ public class ContactListAdapter extends BaseAdapter implements OnClickListener {
             // Photo
             Glide.with(context)
                     .load(contact.getPhoto())
-                    .apply(RequestOptions.circleCropTransform().placeholder(R.drawable.avatar_small))
+                    .apply(RequestOptions.circleCropTransform().placeholder(R.drawable.avatar))
                     .into(holder.photo);
 
             // Name

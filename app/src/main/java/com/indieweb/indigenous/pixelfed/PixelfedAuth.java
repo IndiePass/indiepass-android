@@ -12,6 +12,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.users.AuthBase;
+import com.indieweb.indigenous.util.HTTPRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -87,7 +88,11 @@ public class PixelfedAuth extends AuthBase {
 
         RequestQueue queue = Volley.newRequestQueue(getContext());
         queue.add(getRequest);
-
     }
 
+    @Override
+    public void revokeToken(User user) {
+        // The oauth2-server doesn't support this yet.
+        // see https://github.com/thephpleague/oauth2-server/issues/806
+    }
 }

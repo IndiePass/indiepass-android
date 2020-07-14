@@ -59,6 +59,7 @@ public class PixelfedPost extends PostBase {
         switch (name) {
             case FEATURE_TITLE:
             case FEATURE_CATEGORIES:
+            case FEATURE_CONTACTS:
                 supported = false;
         }
 
@@ -69,10 +70,9 @@ public class PixelfedPost extends PostBase {
     public boolean supportsPostParam(String name) {
         boolean supported = true;
         switch (name) {
-            // TODO create constants
-            case "h":
-            case "published":
-            case "post-status":
+            case POST_PARAM_H:
+            case POST_PARAM_PUBLISHED:
+            case POST_PARAM_POST_STATUS:
                 supported = false;
                 break;
         }
@@ -84,17 +84,17 @@ public class PixelfedPost extends PostBase {
     public String getPostParamName(String name) {
         String paramName = name;
         switch (name) {
-            case "content":
+            case POST_PARAM_CONTENT:
                 paramName = "status";
                 break;
-            case "published":
+            case POST_PARAM_PUBLISHED:
                 paramName = "scheduled_at";
                 break;
-            case "in-reply-to":
+            case POST_PARAM_REPLY:
                 paramName = "in_reply_to_id";
                 break;
-            case "photo":
-            case "video":
+            case POST_PARAM_PHOTO:
+            case POST_PARAM_VIDEO:
                 paramName = "media_ids";
                 break;
         }

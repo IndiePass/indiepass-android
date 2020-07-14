@@ -254,7 +254,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
             }
         }
 
-        boolean search = Preferences.getPreference(getActivity(), "pref_key_search_global", false);
+        boolean search = reader.supports(Reader.READER_SEARCH);
         if (search && user.isAuthenticated()) {
             MenuItem item = menu.findItem(R.id.channel_search);
             if (item != null) {
