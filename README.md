@@ -19,9 +19,8 @@ Desktop: https://github.com/swentel/indigenous-desktop
     additional security when authenticating.
   - Pixelfed: authorize with the instance you registered your account(s).
 - Comes with a built-in anonymous user which allows reading channels and
-  posts coming from https://indigenous.realize.be. Posts can be send to a
-  custom endpoint and token. An anonymous channel also gets the first posts
-  from Pixelfed.
+  posts coming from https://indigenous.realize.be or https://pixelfed.social.
+  Posts can be send to a custom endpoint and token.
 - Posting
   - post types: article, note, reply, repost, like, bookmark, event,
     issue, rsvp, geocache, read, checkin, trip and venue (h-card).
