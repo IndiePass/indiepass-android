@@ -9,7 +9,8 @@ No builds will be uploaded anymore to GitHub, use F-Droid for that.
 More information at https://indieweb.org/Indigenous and
 https://indigenous.realize.be
 
-Looking for the Desktop client? See https://github.com/swentel/indigenous-desktop
+iOS: https://github.com/swentel/indigenous-ios
+Desktop: https://github.com/swentel/indigenous-desktop
 
 ## Functionality
 
