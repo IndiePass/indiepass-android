@@ -24,6 +24,7 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.indieweb.indigenous.users.AuthActivity.INDIEWEB_ACCOUNT_TYPE;
+import static com.indieweb.indigenous.users.AuthActivity.MASTODON_ACCOUNT_TYPE;
 import static com.indieweb.indigenous.users.AuthActivity.PIXELFED_ACCOUNT_TYPE;
 
 public class Accounts {
@@ -169,6 +170,8 @@ public class Accounts {
         ArrayList<Account> list = new ArrayList<>(Arrays.asList(accountManager.getAccountsByType(INDIEWEB_ACCOUNT_TYPE)));
         Account[] pixelFedAccounts = accountManager.getAccountsByType(PIXELFED_ACCOUNT_TYPE);
         list.addAll(Arrays.asList(pixelFedAccounts));
+        Account[] mastodonAccounts = accountManager.getAccountsByType(MASTODON_ACCOUNT_TYPE);
+        list.addAll(Arrays.asList(mastodonAccounts));
         return list.toArray(new Account[0]);
     }
 
@@ -222,6 +225,26 @@ public class Accounts {
             user.setClientId(accountManager.getUserData(a, "client_id"));
             user.setClientSecret(accountManager.getUserData(a, "client_secret"));
             user.setAccountType(PIXELFED_ACCOUNT_TYPE);
+            user.setAccount(a);
+            users.add(user);
+        }
+
+        for (Account a : accountManager.getAccountsByType(MASTODON_ACCOUNT_TYPE)) {
+            User user = new User();
+            user.setMe(a.name);
+            String token = "";
+            try {
+                token = accountManager.peekAuthToken(a, AuthActivity.MASTODON_TOKEN_TYPE);
+            }
+            catch (Exception ignored) {}
+
+            user.setAccessToken(token);
+            user.setAvatar(accountManager.getUserData(a, "author_avatar"));
+            user.setName(accountManager.getUserData(a, "author_name"));
+            user.setExternalId(accountManager.getUserData(a, "external_id"));
+            user.setClientId(accountManager.getUserData(a, "client_id"));
+            user.setClientSecret(accountManager.getUserData(a, "client_secret"));
+            user.setAccountType(MASTODON_ACCOUNT_TYPE);
             user.setAccount(a);
             users.add(user);
         }

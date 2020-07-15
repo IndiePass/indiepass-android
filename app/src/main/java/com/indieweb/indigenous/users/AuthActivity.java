@@ -67,6 +67,8 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     public final static String INDIEWEB_TOKEN_TYPE = "IndieAuth";
     public final static String PIXELFED_ACCOUNT_TYPE = "Pixelfed";
     public final static String PIXELFED_TOKEN_TYPE = "Pixelfed";
+    public final static String MASTODON_ACCOUNT_TYPE = "Mastodon";
+    public final static String MASTODON_TOKEN_TYPE = "Mastodon";
 
     String accountType = "indieweb";
     String requestType = "pixelfedRegister";
@@ -74,6 +76,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     Button signIn;
     ImageButton indieWeb;
     ImageButton pixelfed;
+    ImageButton mastodon;
     EditText domain;
     TextView info;
     String domainInput;
@@ -90,6 +93,8 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     RelativeLayout layout;
     String pixelfedClientId;
     String pixelfedClientSecret;
+    String mastodonClientId;
+    String mastodonClientSecret;
     protected VolleyRequestListener volleyRequestListener;
 
     String ClientId = "https://indigenous.realize.be/";
@@ -144,6 +149,17 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                                 info.setText(getString(R.string.sign_in_indieauth_info));
                             }
                         });
+
+                        mastodon = findViewById(R.id.mastodon);
+                        mastodon.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                accountType = "mastodon";
+                                info.setText(getString(R.string.sign_in_mastodon_info));
+                                signInContainer.setVisibility(View.VISIBLE);
+                            }
+                        });
+
                         pixelfed = findViewById(R.id.pixelfed);
                         pixelfed.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -201,6 +217,9 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
             else if (accountType.equals("pixelfed") && code != null && code.length() > 0) {
                 validatePixelfedCode(code);
             }
+            else if (accountType.equals("mastodon") && code != null && code.length() > 0) {
+                validateMastodonCode(code);
+            }
             else {
                 final Snackbar snack = Snackbar.make(layout, getString(R.string.no_code_found), Snackbar.LENGTH_INDEFINITE);
                 snack.setAction(getString(R.string.close), new View.OnClickListener() {
@@ -243,6 +262,9 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                 registerWithPixelfed();
             }
 
+            if (accountType.equals("mastodon")) {
+                registerWithMastodon();
+            }
         }
     };
 
@@ -324,7 +346,35 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
             );
             snack.show();
         }
+    }
 
+    /**
+     * Connect to Mastodon instance.
+     */
+    private void registerWithMastodon() {
+        domainInput = Utility.stripEndingSlash(domain.getText().toString());
+
+        // Check if there's no protocol, prefix it with https:// if necessary.
+        if (!domainInput.contains("http://") && !domainInput.contains("https://")) {
+            domainInput = "https://" + domainInput;
+        }
+
+        if (URLUtil.isValidUrl( domainInput)) {
+            changeSignInButton(R.string.connecting);
+            registerMastodonApp();
+        }
+        else {
+            changeSignInButton(R.string.sign_in);
+            final Snackbar snack = Snackbar.make(layout, getString(R.string.invalid_url), Snackbar.LENGTH_INDEFINITE);
+            snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            snack.dismiss();
+                        }
+                    }
+            );
+            snack.show();
+        }
     }
 
     /**
@@ -332,6 +382,22 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
      */
     public void registerPixelfedApp() {
         requestType = "pixelfedAppRegister";
+        Map<String, String> params = new HashMap<>();
+        params.put("client_name", "Indigenous");
+        params.put("website", ClientId);
+        params.put("redirect_uris", RedirectUri);
+        params.put("scopes", "read write follow push");
+
+        String appUrl = domainInput + "/api/v1/apps";
+        HTTPRequest r = new HTTPRequest(this.volleyRequestListener, null, getApplicationContext());
+        r.doPostRequest(appUrl, params);
+    }
+
+    /**
+     * Register mastodon app.
+     */
+    public void registerMastodonApp() {
+        requestType = "mastodonAppRegister";
         Map<String, String> params = new HashMap<>();
         params.put("client_name", "Indigenous");
         params.put("website", ClientId);
@@ -361,9 +427,49 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     }
 
     /**
-     * Sync pixelfed.
+     * Authorize with mastodon.
+     */
+    public void authorizeMastodon() {
+        String url = domainInput + "/oauth/authorize?response_type=code&redirect_uri=" + RedirectUri + "&client_id=" + mastodonClientId + "&scope=read+write+follow+push";
+        Uri uri = Uri.parse(url);
+
+        CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
+        intentBuilder.setToolbarColor(ContextCompat.getColor(AuthActivity.this, R.color.colorPrimary));
+        intentBuilder.setSecondaryToolbarColor(ContextCompat.getColor(AuthActivity.this, R.color.colorPrimaryDark));
+        CustomTabsIntent customTabsIntent = intentBuilder.build();
+        customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        customTabsIntent.launchUrl(AuthActivity.this, uri);
+    }
+
+    /**
+     * Sync pixelfed
+     *
+     * @param user
+     *   The current user
      */
     public void syncPixelfed(User user) {
+        Auth auth = AuthFactory.getAuth(user, AuthActivity.this);
+        auth.syncAccount(layout);
+
+        // Start launch activity which will determine where it will go.
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent launch = new Intent(getBaseContext(), LaunchActivity.class);
+                startActivity(launch);
+                finish();
+            }
+        }, 1000);
+    }
+
+    /**
+     * Sync mastodon
+     *
+     * @param user
+     *   The current user
+     */
+    public void syncMastodon(User user) {
         Auth auth = AuthFactory.getAuth(user, AuthActivity.this);
         auth.syncAccount(layout);
 
@@ -389,6 +495,27 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
         Map<String, String> params = new HashMap<>();
         params.put("client_id", pixelfedClientId);
         params.put("client_secret", pixelfedClientSecret);
+        params.put("redirect_uri", RedirectUri);
+        params.put("scope", "read write follow push");
+        params.put("code", code);
+        params.put("grant_type", "authorization_code");
+
+        String appUrl = domainInput + "/oauth/token";
+        HTTPRequest r = new HTTPRequest(this.volleyRequestListener, null, getApplicationContext());
+        r.doPostRequest(appUrl, params);
+    }
+
+    /**
+     * Validate mastodon code and get access token.
+     *
+     * @param code
+     *   The code from the authorize call.
+     */
+    public void validateMastodonCode(String code) {
+        requestType = "mastodonAccessToken";
+        Map<String, String> params = new HashMap<>();
+        params.put("client_id", mastodonClientId);
+        params.put("client_secret", mastodonClientSecret);
         params.put("redirect_uri", RedirectUri);
         params.put("scope", "read write follow push");
         params.put("code", code);
@@ -736,6 +863,18 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
             }
         }
 
+        if (requestType.equals("mastodonAppRegister")) {
+            try {
+                JSONObject object = new JSONObject(response);
+                mastodonClientId = object.getString("client_id");
+                mastodonClientSecret = object.getString("client_secret");
+                authorizeMastodon();
+            }
+            catch (JSONException e) {
+                Snackbar.make(layout, getString(R.string.error_parsing_app_registration_response), Snackbar.LENGTH_LONG).show();
+            }
+        }
+
         if (requestType.equals("pixelfedAccessToken")) {
 
             String error = getString(R.string.request_failed_unknown);
@@ -771,6 +910,55 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
 
                 requestType = "pixelfedInitialSync";
                 syncPixelfed(new Accounts(AuthActivity.this).getUser(domainInput, false));
+            }
+            else {
+                final Snackbar snack = Snackbar.make(layout, String.format(getString(R.string.authentication_fail_token), error), Snackbar.LENGTH_INDEFINITE);
+                snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                snack.dismiss();
+                            }
+                        }
+                );
+                snack.show();
+                showForm();
+            }
+        }
+
+        if (requestType.equals("mastodonAccessToken")) {
+            String error = getString(R.string.request_failed_unknown);
+            String accessToken = "";
+            try {
+                JSONObject object = new JSONObject(response);
+                accessToken = object.getString("access_token");
+            }
+            catch (JSONException e) {
+                error = e.getMessage();
+            }
+
+            if (accessToken.length() > 0) {
+
+                AccountManager am = AccountManager.get(getApplicationContext());
+                int numberOfAccounts = new Accounts(AuthActivity.this).getCount();
+
+                // Create new account.
+                Account account = new Account(domainInput, MASTODON_ACCOUNT_TYPE);
+                am.addAccountExplicitly(account, null, null);
+                am.setAuthToken(account, MASTODON_TOKEN_TYPE, accessToken);
+                am.setUserData(account, "client_id", mastodonClientId);
+                am.setUserData(account, "client_secret", mastodonClientSecret);
+
+                // Set first account.
+                if (numberOfAccounts == 0) {
+                    SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
+                    editor.putString("account", domainInput);
+                    editor.apply();
+                }
+
+                Snackbar.make(layout, getString(R.string.authentication_success), Snackbar.LENGTH_SHORT).show();
+
+                requestType = "mastodonInitialSync";
+                syncMastodon(new Accounts(AuthActivity.this).getUser(domainInput, false));
             }
             else {
                 final Snackbar snack = Snackbar.make(layout, String.format(getString(R.string.authentication_fail_token), error), Snackbar.LENGTH_INDEFINITE);

@@ -48,6 +48,20 @@
                 <ImageButton
                     android:layout_marginTop="20dp"
                     android:background="@android:color/transparent"
+                    android:id="@+id/mastodon"
+                    android:src="@drawable/mastodon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/sign_in_with_mastodon" />
+
+                <TextView
+                    android:text="@string/sign_in_with_mastodon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ImageButton
+                    android:layout_marginTop="20dp"
+                    android:background="@android:color/transparent"
                     android:id="@+id/pixelfed"
                     android:src="@drawable/pixelfed"
                     android:layout_width="wrap_content"

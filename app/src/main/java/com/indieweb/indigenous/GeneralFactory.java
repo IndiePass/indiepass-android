@@ -6,12 +6,14 @@ import androidx.annotation.NonNull;
 
 import com.indieweb.indigenous.indieweb.IndiewebGeneral;
 import com.indieweb.indigenous.indieweb.microsub.IndieWebReader;
+import com.indieweb.indigenous.mastodon.MastodonGeneral;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.pixelfed.PixelfedGeneral;
 import com.indieweb.indigenous.pixelfed.PixelfedReader;
 import com.indieweb.indigenous.reader.Reader;
 
 import static com.indieweb.indigenous.pixelfed.PixelfedReader.CHANNEL_NAME_ANONYMOUS;
+import static com.indieweb.indigenous.users.AuthActivity.MASTODON_ACCOUNT_TYPE;
 import static com.indieweb.indigenous.users.AuthActivity.PIXELFED_ACCOUNT_TYPE;
 
 public class GeneralFactory {
@@ -28,6 +30,9 @@ public class GeneralFactory {
             if (user.getAccountType().equals(PIXELFED_ACCOUNT_TYPE)) {
                 type = "pixelfed";
             }
+            if (user.getAccountType().equals(MASTODON_ACCOUNT_TYPE)) {
+                type = "mastodon";
+            }
         }
 
         switch (type) {
@@ -35,6 +40,8 @@ public class GeneralFactory {
                 return new IndiewebGeneral(context, user);
             case "pixelfed":
                 return new PixelfedGeneral(context, user);
+            case "mastodon":
+                return new MastodonGeneral(context, user);
         }
 
         return null;

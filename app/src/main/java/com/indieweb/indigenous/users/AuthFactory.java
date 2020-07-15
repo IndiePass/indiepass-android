@@ -7,10 +7,12 @@ import androidx.annotation.NonNull;
 import com.indieweb.indigenous.General;
 import com.indieweb.indigenous.indieweb.IndiewebGeneral;
 import com.indieweb.indigenous.indieweb.indieauth.IndiewebAuth;
+import com.indieweb.indigenous.mastodon.MastodonAuth;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.pixelfed.PixelfedAuth;
 import com.indieweb.indigenous.pixelfed.PixelfedGeneral;
 
+import static com.indieweb.indigenous.users.AuthActivity.MASTODON_ACCOUNT_TYPE;
 import static com.indieweb.indigenous.users.AuthActivity.PIXELFED_ACCOUNT_TYPE;
 
 public class AuthFactory {
@@ -23,6 +25,9 @@ public class AuthFactory {
             if (user.getAccountType().equals(PIXELFED_ACCOUNT_TYPE)) {
                 type = "pixelfed";
             }
+            if (user.getAccountType().equals(MASTODON_ACCOUNT_TYPE)) {
+                type = "mastodon";
+            }
         }
 
         switch (type) {
@@ -30,6 +35,8 @@ public class AuthFactory {
                 return new IndiewebAuth(context, user);
             case "pixelfed":
                 return new PixelfedAuth(context, user);
+            case "mastodon":
+                return new MastodonAuth(context, user);
         }
 
         return null;

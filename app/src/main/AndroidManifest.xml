@@ -55,6 +55,18 @@
                 android:resource="@xml/authenticator_pixelfed" />
         </service>
 
+        <service
+            android:name=".users.AuthenticatorServiceMastodon"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator_mastodon" />
+        </service>
+
         <activity android:name=".LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
