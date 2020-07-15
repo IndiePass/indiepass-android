@@ -32,6 +32,7 @@
     <string name="no_micropub_endpoint">We did not find your micropub endpoint. In the accounts section, you can synchronize your account to add it.</string>
     <string name="no_micropub_media_endpoint">We did not find your media endpoint. In the accounts section, you can synchronize your account to add it.</string>
     <string name="no_micropub_endpoint_anonymous">You need to configure an endpoint in Accounts before Indigenous can post.</string>
+    <string name="no_anonymous_posting">Please create an account first before you can post.</string>
     <string name="anonymous_microsub_endpoint">https://indigenous.realize.be/indieweb/microsub</string>
     <string name="anonymous_me">https://indigenous.realize.be</string>
     <string name="anonymous">Anonymous</string>
@@ -183,6 +184,7 @@
     <string name="start_date_event">Start: %s</string>
     <string name="end_date_event">End: %s</string>
     <string name="number_of_images">%d images</string>
+    <string name="number_of_comments">Comments: %d</string>
     <string name="delete_post_confirm">Are you sure you want to delete this post ?</string>
     <string name="item_marked_unread">Item marked unread</string>
     <string name="item_marked_read">Item marked read</string>
@@ -214,6 +216,7 @@
     <string name="publish_date_hint">Publish date - leave empty for \'now\'</string>
     <string name="title">Title</string>
     <string name="published">Published</string>
+    <string name="sensitivity">Sensitive</string>
     <string name="syndicate_to">Syndicate to</string>
     <string name="required_field">This field is required</string>
     <string name="required_select_media">Please select a media item</string>
@@ -248,6 +251,7 @@
     <string name="no_image_found">No image found</string>
     <string name="full_screen_image">Full screen image</string>
     <string name="content">Content</string>
+    <string name="spoiler">Spoiler</string>
     <string name="repost">Repost</string>
     <string name="reply_to">Reply to</string>
     <string name="event">Event</string>
@@ -400,7 +404,9 @@
     <string name="pref_key_read_default_title">Default read status</string>
     <string name="pref_key_read_default_summary">Used for the read post. The read status will not be posted to the server when set to none.</string>
     <string name="pref_key_visibility_title">Post visibility</string>
-    <string name="pref_key_visibility_summary">Allow setting a post to public, private or unlisted. This value is currently not stored when saving a draft.</string>
+    <string name="pref_key_visibility_summary">Allow marking a post public, private or unlisted. This value is currently not stored when saving a draft.</string>
+    <string name="pref_key_sensitivity_title">Post sensitivity</string>
+    <string name="pref_key_sensitivity_summary">Allow marking a post as sensitive. This value is currently not stored when saving a draft.</string>
     <string name="pref_key_location_visibility_title">Location visibility</string>
     <string name="pref_key_location_visibility_summary">When location is found, show a select widget that allows you to send the location visibility.</string>
     <string name="pref_key_location_label_title">Location name</string>

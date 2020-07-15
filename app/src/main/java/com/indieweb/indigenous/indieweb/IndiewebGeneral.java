@@ -3,8 +3,11 @@ package com.indieweb.indigenous.indieweb;
 import android.content.Context;
 
 import com.indieweb.indigenous.GeneralBase;
+import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Preferences;
+
+import java.util.ArrayList;
 
 public class IndiewebGeneral extends GeneralBase {
 
@@ -29,9 +32,23 @@ public class IndiewebGeneral extends GeneralBase {
             case FEATURE_CONTACTS:
                 supported = Preferences.getPreference(this.getContext(), "pref_key_contact_manage", false);
                 break;
+            case FEATURE_HIDE_POST_TYPES:
+                supported = Preferences.getPreference(this.getContext(), "pref_key_post_type_hide", false);
+                break;
         }
 
         return supported;
     }
 
+    @Override
+    public boolean hidePostTypes() {
+        return false;
+    }
+
+    @Override
+    public ArrayList<Integer> getProtectedPostTypes() {
+        ArrayList<Integer> protectedTypes = new ArrayList<>();
+        protectedTypes.add(R.id.createMedia);
+        return protectedTypes;
+    }
 }

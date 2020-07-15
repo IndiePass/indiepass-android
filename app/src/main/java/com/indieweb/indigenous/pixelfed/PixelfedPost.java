@@ -60,6 +60,9 @@ public class PixelfedPost extends PostBase {
             case FEATURE_TITLE:
             case FEATURE_CATEGORIES:
             case FEATURE_CONTACTS:
+            case FEATURE_AUDIO:
+            case FEATURE_LOCATION:
+            case FEATURE_POST_STATUS:
                 supported = false;
         }
 
@@ -108,4 +111,15 @@ public class PixelfedPost extends PostBase {
         HTTPRequest r = new HTTPRequest(null, getUser(), getContext());
         r.doDeleteRequest(endpoint, null);
     }
+
+    @Override
+    public boolean hideUrlField() {
+        return true;
+    }
+
+    @Override
+    public boolean canNotPostAnonymous() {
+        return true;
+    }
+
 }

@@ -1,7 +1,6 @@
 # Indigenous for Android
 
-An IndieWeb app with extensions for sharing information to micropub endpoints
-and reading from microsub endpoints.
+An open social app with support for IndieWeb and Pixelfed.
 
 <a href='https://play.google.com/store/apps/details?id=com.indieweb.indigenous'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="100"/></a> <a href="https://f-droid.org/app/com.indieweb.indigenous"><img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="100"></a>
 
@@ -14,14 +13,17 @@ Looking for the Desktop client? See https://github.com/swentel/indigenous-deskto
 
 ## Functionality
 
-- Login with multiple domains, discover indieauth, micropub, microsub
-  and media endpoints. The micropub and microsub endpoints are optional,
-  but at least one should be available. Token revoke happens when deleting
-  an account. PKCE support for additional security when authenticating.
-- There's also a built-in anonymous user which allows reading channels and
+- Login with multiple domains and account types:
+  - IndieWeb: discover IndieAuth, micropub, microsub and media endpoints. The
+    micropub and microsub endpoints are optional, but at least one should be
+    available. Token revoke happens when deleting an account. PKCE support for
+    additional security when authenticating.
+  - Pixelfed: authorize with the instance you registered your account(s).
+- Comes with a built-in anonymous user which allows reading channels and
   posts coming from https://indigenous.realize.be. Posts can be send to a
-  custom endpoint and token.
-- Micropub
+  custom endpoint and token. An anonymous channel also gets the first posts
+  from Pixelfed.
+- Posting
   - post types: article, note, reply, repost, like, bookmark, event,
     issue, rsvp, geocache, read, checkin, trip and venue (h-card).
   - add multiple images, videos, audio, tags, toggle syndication targets
@@ -29,6 +31,7 @@ Looking for the Desktop client? See https://github.com/swentel/indigenous-deskto
   - send image to media endpoint
   - apply filters, add text and emojis on images
   - Toggle post-status (published vs draft)
+  - Toggle sensitivity and visibility
   - Save as local draft to finish later. This also includes coordinates,
     so you can finish later even when you are on a different location
     then. Place suggestions are also supported.
@@ -36,7 +39,7 @@ Looking for the Desktop client? See https://github.com/swentel/indigenous-deskto
   - Manage contacts (add/delete/update)
   - Query, update and delete: get a list of posts and update basic
     properties (experimental)
-- Microsub
+- Reader
   - read channels, with pull to refresh
   - read items per channel, with pull to refresh, response actions per item
   - reply, like, repost, rsvp, bookmark, upload or add feed directly
@@ -54,6 +57,11 @@ into a Geo URI in the geo property, e.g.
 ```
 geo:51.5258325,-0.1359825,0.0;name=london;url=https://hwclondon.co.uk
 ```
+
+Some features are not available for Pixelfed, because they either don't make
+sense or the API doesn't support it yet. Pull requests welcome of course!
+You can always go to 'settings/applications' on your instance to revoke the
+complete authorization of this app to your account.
 
 ## Screenshot
 
@@ -115,5 +123,5 @@ This app uses following external libraries:
 
 ## Other Micropub and Microsub clients
 
-There are ton of other (mobile) clients, see https://indieweb.org/Micropub/Clients and
-https://indieweb.org/Microsub
+There are ton of other (mobile) IndieWeb clients, see https://indieweb.org/Micropub/Clients
+and https://indieweb.org/Microsub

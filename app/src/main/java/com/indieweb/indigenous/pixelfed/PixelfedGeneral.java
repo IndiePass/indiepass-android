@@ -7,6 +7,8 @@ import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 
+import java.util.ArrayList;
+
 public class PixelfedGeneral extends GeneralBase {
 
     public PixelfedGeneral(Context context, User user) {
@@ -42,4 +44,17 @@ public class PixelfedGeneral extends GeneralBase {
     public void handleWritePostClick() {
         this.handlePostActionButtonClick();
     }
+
+    @Override
+    public boolean hidePostTypes() {
+        return true;
+    }
+
+    @Override
+    public ArrayList<Integer> getProtectedPostTypes() {
+        ArrayList<Integer> protectedTypes = new ArrayList<>();
+        protectedTypes.add(R.id.createArticle);
+        return protectedTypes;
+    }
+
 }

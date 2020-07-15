@@ -19,6 +19,7 @@ public interface Reader {
     String READER_SEARCH = "reader_search";
     String READER_CONTACT = "reader_contact";
     String READER_DEBUG_CHANNELS = "reader_debug_channels";
+    String READER_DETAIL_CLICK = "reader_detail_click";
     String RESPONSE_LIKE = "reader_response_like";
     String RESPONSE_BOOKMARK = "reader_response_bookmark";
     String RESPONSE_REPOST = "reader_response_repost";
@@ -192,5 +193,16 @@ public interface Reader {
      *   The timeline item.
      */
     void setContactLabel(MenuItem menuItem, TimelineItem item);
+
+    /**
+     * Get the reply id.
+     *
+     * @param item
+     *   The timeline item
+     *
+     * @return
+     *   The id for the reply.
+     */
+    String getReplyId(TimelineItem item);
 
 }

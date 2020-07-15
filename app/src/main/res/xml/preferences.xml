@@ -110,6 +110,12 @@
             android:defaultValue="false" />
         <SwitchPreference
             app:iconSpaceReserved="false"
+            android:key="pref_key_post_sensitivity"
+            android:title="@string/pref_key_sensitivity_title"
+            android:summary="@string/pref_key_sensitivity_summary"
+            android:defaultValue="false" />
+        <SwitchPreference
+            app:iconSpaceReserved="false"
             android:key="pref_key_location_label"
             android:title="@string/pref_key_location_label_title"
             android:summary="@string/pref_key_location_label_summary"

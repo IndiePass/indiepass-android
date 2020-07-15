@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <include layout="@layout/widget_post_status_date" />
+            <include layout="@layout/widget_post_options" />
 
             <EditText
                 android:id="@+id/title"

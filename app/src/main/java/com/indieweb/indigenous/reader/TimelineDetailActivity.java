@@ -469,7 +469,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Intent i = new Intent(TimelineDetailActivity.this, ReplyActivity.class);
-            i.putExtra("incomingText", item.getUrl());
+            i.putExtra("incomingText", reader.getReplyId(item));
             startActivity(i);
         }
     }

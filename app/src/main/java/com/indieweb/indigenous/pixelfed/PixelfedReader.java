@@ -43,6 +43,7 @@ public class PixelfedReader extends ReaderBase {
             case READER_DEBUG_CHANNELS:
             case READER_MOVE_ITEM:
             case READER_SEARCH:
+            case READER_DETAIL_CLICK:
                 supported = false;
                 break;
         }
@@ -196,6 +197,7 @@ public class PixelfedReader extends ReaderBase {
                 item.setTextContent("");
                 item.setReference("");
                 item.setChannelId(channelId);
+                item.setNumberOfComments(object.getInt("replies_count"));
 
                 // Published
                 String published = "";
@@ -339,4 +341,12 @@ public class PixelfedReader extends ReaderBase {
             menuItem.setTitle(getContext().getString(R.string.follow));
         }
     }
+
+    @Override
+    public String getReplyId(TimelineItem item) {
+        return item.getId();
+    }
+
+
+
 }

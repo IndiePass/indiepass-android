@@ -16,11 +16,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
+import com.indieweb.indigenous.General;
+import com.indieweb.indigenous.GeneralFactory;
 import com.indieweb.indigenous.LaunchActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.users.Accounts;
-import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
 
 import org.json.JSONArray;
@@ -35,6 +36,7 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
     String incomingTitle = "";
     String incomingImage = "";
     User user;
+    private General general;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,8 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
             Snackbar.make(layout, getString(R.string.no_user), Snackbar.LENGTH_LONG).show();
             return;
         }
+
+        general = GeneralFactory.getGeneral(user, null, ShareActivity.this);
 
         // Listen to incoming data.
         Intent intent = getIntent();
@@ -120,10 +124,9 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
         }
 
         // Hide post types if configured.
-        if (user.isAuthenticated() && Preferences.getPreference(this, "pref_key_post_type_hide", false)) {
+        if (user.isAuthenticated() && general.hidePostTypes()) {
 
-            ArrayList<Integer> protectedTypes = new ArrayList<>();
-            protectedTypes.add(R.id.createMedia);
+            ArrayList<Integer> protectedTypes = new ArrayList<>(general.getProtectedPostTypes());
 
             String postTypes = user.getPostTypes();
 

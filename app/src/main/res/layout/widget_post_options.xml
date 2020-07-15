@@ -25,7 +25,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <Switch
+        android:padding="@dimen/box_padding"
+        android:textSize="@dimen/inputText"
+        android:textColor="@color/textColor"
+        android:id="@+id/postSensitivity"
+        android:checked="false"
+        android:visibility="gone"
+        android:text="@string/sensitivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <Spinner
+        android:paddingTop="@dimen/box_padding"
+        android:paddingBottom="@dimen/box_padding"
         android:visibility="gone"
         android:entries="@array/visibility_array"
         android:id="@+id/postVisibility"

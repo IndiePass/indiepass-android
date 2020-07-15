@@ -71,4 +71,14 @@ public class IndieWebPost extends PostBase {
             new MicropubAction(getContext(), getUser(), null).prepareContactAutocomplete(body);
         }
     }
+
+    @Override
+    public boolean canNotPostAnonymous() {
+        return getUser().getMicropubEndpoint().length() == 0;
+    }
+
+    @Override
+    public String anonymousPostMessage() {
+        return getContext().getString(R.string.no_micropub_endpoint_anonymous);
+    }
 }

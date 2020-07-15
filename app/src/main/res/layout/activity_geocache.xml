@@ -17,7 +17,7 @@
 
             <include layout="@layout/widget_post_account" />
 
-            <include layout="@layout/widget_post_status_date" />
+            <include layout="@layout/widget_post_options" />
 
             <Spinner
                 android:id="@+id/geocacheLogType"

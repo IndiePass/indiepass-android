@@ -36,6 +36,7 @@ public class TimelineItem implements Serializable {
     private boolean liked = false;
     private boolean reposted = false;
     private boolean bookmarked = false;
+    private int numberOfComments = -1;
     private Map<String, String> responseType = new LinkedHashMap<>();
     private boolean swapReference = true;
 
@@ -287,5 +288,13 @@ public class TimelineItem implements Serializable {
 
     public void setBookmarked(boolean bookmarked) {
         this.bookmarked = bookmarked;
+    }
+
+    public int getNumberOfComments() {
+        return numberOfComments;
+    }
+
+    public void setNumberOfComments(int numberOfComments) {
+        this.numberOfComments = numberOfComments;
     }
 }

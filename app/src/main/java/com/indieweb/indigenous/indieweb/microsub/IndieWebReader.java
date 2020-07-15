@@ -59,6 +59,9 @@ public class IndieWebReader extends ReaderBase {
             case READER_CONTACT:
                 supported = Preferences.getPreference(this.getContext(), "pref_key_contact_manage", false);
                 break;
+            case READER_DETAIL_CLICK:
+                supported = Preferences.getPreference(this.getContext(), "pref_key_timeline_summary_detail_click", false);
+                break;
         }
 
         return supported;
@@ -620,4 +623,8 @@ public class IndieWebReader extends ReaderBase {
         return false;
     }
 
+    @Override
+    public String getReplyId(TimelineItem item) {
+        return item.getUrl();
+    }
 }

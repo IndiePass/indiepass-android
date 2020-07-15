@@ -101,7 +101,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public List<Syndication> syndicationTargets = new ArrayList<>();
     private MenuItem sendItem;
     public LinearLayout mediaPreviewGallery;
-    private Switch postStatus;
+    public Switch postStatus;
     private int PICK_IMAGE_REQUEST = 1;
     private int PICK_VIDEO_REQUEST = 2;
     private int PICK_AUDIO_REQUEST = 3;
@@ -111,6 +111,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public Spinner rsvp;
     public Spinner read;
     public Spinner visibility;
+    public Switch sensitivity;
     public TextView publishDate;
     public String urlPostKey;
     public String autoSubmit = "";
@@ -127,7 +128,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public RelativeLayout layout;
 
     public Integer draftId;
-    String fileUrl;
+    public String fileUrl;
     public TextView mediaUrl;
     public boolean isMediaRequest = false;
     public boolean isCheckin = false;
@@ -156,8 +157,13 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
             item.setVisible(false);
         }
 
-        if (!canAddLocation) {
+        if (!canAddLocation || !post.supports(Post.FEATURE_LOCATION)) {
             MenuItem item = menu.findItem(R.id.addLocation);
+            item.setVisible(false);
+        }
+
+        if (!post.supports(Post.FEATURE_AUDIO)) {
+            MenuItem item = menu.findItem(R.id.addAudio);
             item.setVisible(false);
         }
 
@@ -503,8 +509,8 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
             return;
         }
 
-        if (user.isAnonymous() && user.getMicropubEndpoint().length() == 0) {
-            final Snackbar snackbar = Snackbar.make(layout, getString(R.string.no_micropub_endpoint_anonymous), Snackbar.LENGTH_INDEFINITE);
+        if (user.isAnonymous() && post.canNotPostAnonymous()) {
+            final Snackbar snackbar = Snackbar.make(layout, post.anonymousPostMessage(), Snackbar.LENGTH_INDEFINITE);
             snackbar.setAction(getString(R.string.close), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -637,7 +643,6 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 }
 
                 // Post status.
-                postStatus = findViewById(R.id.postStatus);
                 if (postStatus != null && post.supportsPostParam(Post.POST_PARAM_POST_STATUS)) {
                     String postStatusValue = "draft";
                     if (postStatus.isChecked()) {
@@ -649,6 +654,12 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 // Post visibility.
                 if (visibility != null && visibility.getVisibility() == View.VISIBLE) {
                     bodyParams.put("visibility", visibility.getSelectedItem().toString());
+                }
+
+                // Post sensitivity.
+                if (sensitivity != null && sensitivity.getVisibility() == View.VISIBLE) {
+                    String s = sensitivity.isChecked() ? "true" : "false";
+                    bodyParams.put("sensitive", s);
                 }
 
                 // Syndication targets.
@@ -729,7 +740,6 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json");
-                headers.put("User-agent", "Indigenous");
 
                 String accessToken;
                 if (user.isAuthenticated()) {
@@ -973,7 +983,6 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json");
-                headers.put("User-agent", "Indigenous");
 
                 // Send access token in header by default.
                 if (!Preferences.getPreference(getApplicationContext(), "pref_key_access_token_body", false)) {
@@ -1372,7 +1381,6 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                     HashMap<String, String> headers = new HashMap<>();
                     headers.put("Accept", "application/json");
                     headers.put("Authorization", "Bearer " + user.getAccessToken());
-                    headers.put("User-agent", "Indigenous");
                     return headers;
                 }
             };

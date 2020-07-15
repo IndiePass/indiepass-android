@@ -127,6 +127,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public ExpandableTextView content;
         public ImageView image;
         public TextView imageCount;
+        public TextView commentCount;
         public CardView card;
         public LinearLayout row;
         public TextView start;
@@ -184,6 +185,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.location = convertView.findViewById(R.id.timeline_location);
                 holder.author = convertView.findViewById(R.id.timeline_author);
                 holder.imageCount = convertView.findViewById(R.id.timeline_image_count);
+                holder.commentCount = convertView.findViewById(R.id.timeline_comment_count);
                 holder.channel = convertView.findViewById(R.id.timeline_channel);
                 holder.authorPhoto = convertView.findViewById(R.id.timeline_author_photo);
                 holder.reference = convertView.findViewById(R.id.timeline_reference);
@@ -687,7 +689,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     else {
                         holder.image.setVisibility(View.GONE);
                         holder.card.setVisibility(View.GONE);
-                        holder.imageCount.setTextSize(16);
                         holder.imageCount.setOnClickListener(new OnImageClickListener(position));
                     }
 
@@ -703,6 +704,14 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     else {
                         holder.imageCount.setVisibility(View.GONE);
                     }
+
+                    if (item.getNumberOfComments() > 0) {
+                        holder.commentCount.setText(String.format(context.getString(R.string.number_of_comments), item.getNumberOfComments()));
+                    }
+                    else {
+                        holder.commentCount.setVisibility(View.GONE);
+                    }
+
                 }
                 else {
                     holder.image.setVisibility(View.GONE);
@@ -711,7 +720,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 }
 
                 // Set on touch listener.
-                if (Preferences.getPreference(context, "pref_key_timeline_summary_detail_click", false)) {
+                if (reader.supports(Reader.READER_DETAIL_CLICK)) {
                     convertView.setOnTouchListener(eventTouch);
                 }
             }
@@ -798,11 +807,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public void onClick(View v) {
             Intent i = new Intent(context, ReplyActivity.class);
             TimelineItem item = items.get(this.position);
-            String id = item.getUrl();
-            if (user.getAccountType().equals(PIXELFED_ACCOUNT_TYPE)) {
-                id = item.getId();
-            }
-            i.putExtra("incomingText", id);
+            i.putExtra("incomingText", reader.getReplyId(item));
             context.startActivity(i);
         }
     }

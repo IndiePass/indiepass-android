@@ -103,8 +103,20 @@ abstract public class BaseCreate extends BasePlatformCreate {
 
         // Get a couple elements for requirement checks or pre-population.
         title = findViewById(R.id.title);
+        if (!post.supports(Post.FEATURE_TITLE) && title != null) {
+            title.setVisibility(View.GONE);
+        }
+
         body = findViewById(R.id.body);
         url = findViewById(R.id.url);
+        if (post.hideUrlField() && url != null) {
+            url.setVisibility(View.GONE);
+        }
+
+        postStatus = findViewById(R.id.postStatus);
+        if (!post.supports(Post.FEATURE_POST_STATUS)) {
+            postStatus.setVisibility(View.GONE);
+        }
 
         tags = findViewById(R.id.tags);
         if (tags != null && !post.supports(Post.FEATURE_CATEGORIES)) {
@@ -114,6 +126,11 @@ abstract public class BaseCreate extends BasePlatformCreate {
         visibility = findViewById(R.id.postVisibility);
         if (visibility != null && Preferences.getPreference(getApplicationContext(), "pref_key_post_visibility", false)) {
             visibility.setVisibility(View.VISIBLE);
+        }
+
+        sensitivity = findViewById(R.id.postSensitivity);
+        if (sensitivity != null && Preferences.getPreference(getApplicationContext(), "pref_key_post_sensitivity", false)) {
+            sensitivity.setVisibility(View.VISIBLE);
         }
 
         saveAsDraft = findViewById(R.id.saveAsDraft);
