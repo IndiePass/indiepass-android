@@ -15,6 +15,7 @@ public class TimelineItem implements Serializable {
     private String name;
     private String textContent = "";
     private String htmlContent = "";
+    private String spoilerContent = "";
     private String url;
     private String authorName;
     private String authorPhoto = "";
@@ -29,10 +30,11 @@ public class TimelineItem implements Serializable {
     private String start = "";
     private String end = "";
     private String location = "";
-    private ArrayList<String> photos = new ArrayList<>();
     private String audio = "";
     private String video = "";
     private String json;
+    private ArrayList<String> photos = new ArrayList<>();
+    private ArrayList<String> tags = new ArrayList<>();
     private boolean liked = false;
     private boolean reposted = false;
     private boolean bookmarked = false;
@@ -144,6 +146,14 @@ public class TimelineItem implements Serializable {
         this.htmlContent = htmlContent;
     }
 
+    public String getSpoilerContent() {
+        return spoilerContent;
+    }
+
+    public void setSpoilerContent(String spoilerContent) {
+        this.spoilerContent = spoilerContent;
+    }
+
     public String getUrl() {
         return url;
     }
@@ -199,6 +209,16 @@ public class TimelineItem implements Serializable {
     public void addPhoto(String photo) {
         if (!this.photos.contains(photo)) {
             this.photos.add(photo);
+        }
+    }
+
+    public ArrayList<String> getTags() {
+        return tags;
+    }
+
+    public void addTag(String tag) {
+        if (!this.tags.contains(tag)) {
+            this.tags.add(tag);
         }
     }
 

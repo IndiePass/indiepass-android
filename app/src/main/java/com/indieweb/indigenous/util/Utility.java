@@ -10,23 +10,33 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.provider.OpenableColumns;
 import android.provider.Settings;
+import android.text.SpannableStringBuilder;
+import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.indieweb.indigenous.BuildConfig;
 import com.indieweb.indigenous.Indigenous;
+import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.model.Cache;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.TimelineItem;
+import com.indieweb.indigenous.reader.Reader;
+import com.indieweb.indigenous.reader.TimelineActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,21 +86,6 @@ public class Utility {
     }
 
     /**
-     * Set the night theme.
-     *
-     * @param context
-     *   The current context.
-     */
-    public static void setNightTheme(Context context) {
-        if (Preferences.getPreference(context, "night_mode", false)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
-        else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-        }
-    }
-
-    /**
      * Save cache.
      *
      * @param data
@@ -113,6 +108,21 @@ public class Utility {
     }
 
     /**
+     * Set the night theme.
+     *
+     * @param context
+     *   The current context.
+     */
+    public static void setNightTheme(Context context) {
+        if (Preferences.getPreference(context, "night_mode", false)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        }
+    }
+
+    /**
      * Open settings screen.
      */
     public static void openSettings(Context context) {
@@ -125,7 +135,7 @@ public class Utility {
     }
 
     /**
-     * Strip string.
+     * Strip ending slash.
      *
      * @param string
      *   The string to strip the ending slash of.
@@ -135,6 +145,21 @@ public class Utility {
     public static String stripEndingSlash(String string) {
         if (string.endsWith("/")) {
             string = string.substring(0, string.length() - 1);
+        }
+        return string;
+    }
+
+    /**
+     * Strip start slash.
+     *
+     * @param string
+     *   The string to strip the starting slash of.
+     *
+     * @return string
+     */
+    public static String stripStartSlash(String string) {
+        if (string.startsWith("/")) {
+            string = string.substring(1);
         }
         return string;
     }
@@ -456,6 +481,7 @@ public class Utility {
      * @param level
      *   The recursive level
      * @param context
+     *   The current context.
      */
     public static void checkReference(JSONObject object, String url, TimelineItem item, boolean swapAuthor, boolean checkRecursive, int level, Context context) {
 
@@ -542,6 +568,59 @@ public class Utility {
             }
             catch (JSONException ignored) { }
         }
+    }
+
+    /**
+     * Link clickable.
+     *
+     * @param strBuilder
+     *   A string builder.
+     * @param span
+     *   The span with url.
+     * @param context
+     *   The current context
+     * @param reader
+     *   The current reader
+     * @param item
+     *   The current timeline item.
+     */
+    public static void makeLinkClickable(SpannableStringBuilder strBuilder, final URLSpan span, final Context context, Reader reader, final TimelineItem item) {
+        int start = strBuilder.getSpanStart(span);
+        int end = strBuilder.getSpanEnd(span);
+        int flags = strBuilder.getSpanFlags(span);
+
+        String tag = "";
+        if (reader != null) {
+            tag = reader.getTag(span.getURL(), item);
+        }
+
+        final String finalTag = tag;
+        ClickableSpan clickable = new ClickableSpan() {
+            public void onClick(@NonNull View view) {
+                if (finalTag != null && finalTag.length() > 0) {
+                    Intent intent = new Intent(context, TimelineActivity.class);
+                    intent.putExtra("channelId", item.getChannelId());
+                    intent.putExtra("channelName", item.getChannelName());
+                    intent.putExtra("tag", finalTag);
+                    context.startActivity(intent);
+                }
+                else {
+                    try {
+                        CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
+                        intentBuilder.setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                        intentBuilder.setSecondaryToolbarColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
+                        CustomTabsIntent customTabsIntent = intentBuilder.build();
+                        customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        customTabsIntent.launchUrl(context, Uri.parse(span.getURL()));
+                    }
+                    catch (Exception ignored) { }
+                }
+
+            }
+        };
+        strBuilder.setSpan(clickable, start, end, flags);
+        strBuilder.removeSpan(span);
     }
 
 }

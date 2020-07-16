@@ -63,6 +63,7 @@ public class PixelfedPost extends PostBase {
             case FEATURE_AUDIO:
             case FEATURE_LOCATION:
             case FEATURE_POST_STATUS:
+            case FEATURE_SPOILER:
                 supported = false;
         }
 

@@ -208,7 +208,7 @@ public class IndieWebReader extends ReaderBase {
     }
 
     @Override
-    public String getTimelineEndpoint(User user, String channelId, boolean isGlobalUnread, boolean showUnread, boolean isSourceView, String sourceId, boolean isSearch, String search, String pagerAfter) {
+    public String getTimelineEndpoint(User user, String channelId, boolean isGlobalUnread, boolean showUnread, boolean isSourceView, String sourceId, boolean isTagView, String tag, boolean isSearch, String search, String pagerAfter) {
         String endpoint =  user.getMicrosubEndpoint();
 
         endpoint += "?action=timeline&channel=" + channelId;

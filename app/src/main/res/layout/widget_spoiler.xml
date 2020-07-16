@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:visibility="gone"
+    android:id="@+id/spoilerWrapper"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/spoiler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:ems="10"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/inputText"
+            android:minLines="4"
+            android:gravity="top"
+            android:hint="@string/spoiler"
+            android:inputType="textMultiLine|textAutoCorrect|textCapSentences" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>
+

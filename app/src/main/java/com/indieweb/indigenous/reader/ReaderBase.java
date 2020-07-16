@@ -80,4 +80,9 @@ abstract public class ReaderBase implements Reader {
 
     @Override
     public void setContactLabel(MenuItem menuItem, TimelineItem item) { }
+
+    @Override
+    public String getTag(String url, TimelineItem item) {
+        return "";
+    }
 }

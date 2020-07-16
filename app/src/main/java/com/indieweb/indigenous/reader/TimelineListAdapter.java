@@ -14,7 +14,6 @@ import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -62,7 +61,6 @@ import static com.indieweb.indigenous.reader.TimelineActivity.MARK_READ_CHANNEL_
 import static com.indieweb.indigenous.reader.TimelineActivity.MARK_READ_MANUAL;
 import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_COMPACT;
 import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_SUMMARY;
-import static com.indieweb.indigenous.users.AuthActivity.PIXELFED_ACCOUNT_TYPE;
 import static com.indieweb.indigenous.util.Utility.dateFormatStrings;
 
 /**
@@ -123,7 +121,10 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public TextView reference;
         public TextView response;
         public TextView published;
-        public Button expand;
+        public Button expandSpoiler;
+        public LinearLayout spoilerWrapper;
+        public TextView spoiler;
+        public Button expandContent;
         public ExpandableTextView content;
         public ImageView image;
         public TextView imageCount;
@@ -191,7 +192,10 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.reference = convertView.findViewById(R.id.timeline_reference);
                 holder.response = convertView.findViewById(R.id.timeline_response);
                 holder.content = convertView.findViewById(R.id.timeline_content);
-                holder.expand = convertView.findViewById(R.id.timeline_content_more);
+                holder.expandContent = convertView.findViewById(R.id.timeline_content_more);
+                holder.spoilerWrapper = convertView.findViewById(R.id.timeline_spoiler_wrapper);
+                holder.spoiler = convertView.findViewById(R.id.timeline_spoiler);
+                holder.expandSpoiler = convertView.findViewById(R.id.timeline_spoiler_toggle);
             }
 
             convertView.setTag(holder);
@@ -491,7 +495,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
                     URLSpan[] urls = strBuilder.getSpans(0, sequence.length(), URLSpan.class);
                     for (URLSpan span : urls) {
-                        makeLinkClickable(strBuilder, span);
+                        Utility.makeLinkClickable(strBuilder, span, context, null, null);
                     }
 
                     holder.location.setMovementMethod(LinkMovementMethod.getInstance());
@@ -590,7 +594,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
                     URLSpan[] urls = strBuilder.getSpans(0, sequence.length(), URLSpan.class);
                     for (URLSpan span : urls) {
-                        makeLinkClickable(strBuilder, span);
+                        Utility.makeLinkClickable(strBuilder, span, context, null, null);
                     }
 
                     holder.response.setText(strBuilder);
@@ -620,7 +624,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                         SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
                         URLSpan[] urls = strBuilder.getSpans(0, sequence.length(), URLSpan.class);
                         for (URLSpan span : urls) {
-                            makeLinkClickable(strBuilder, span);
+                            Utility.makeLinkClickable(strBuilder, span, context, reader, item);
                         }
                         holder.content.setText(strBuilder);
                         holder.content.setMovementMethod(LinkMovementMethod.getInstance());
@@ -631,17 +635,17 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     }
 
                     if (item.getTextContent().length() > 400) {
-                        holder.expand.setVisibility(View.VISIBLE);
+                        holder.expandContent.setVisibility(View.VISIBLE);
 
-                        holder.expand.setOnClickListener(new View.OnClickListener() {
+                        holder.expandContent.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(final View v) {
                                 if (holder.content.isExpanded()) {
                                     holder.content.collapse();
-                                    holder.expand.setText(R.string.read_more);
+                                    holder.expandContent.setText(R.string.read_more);
                                 } else {
                                     holder.content.expand();
-                                    holder.expand.setText(R.string.close);
+                                    holder.expandContent.setText(R.string.close);
                                 }
                             }
                         });
@@ -656,13 +660,37 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
                     }
                     else {
-                        holder.expand.setVisibility(View.GONE);
+                        holder.expandContent.setVisibility(View.GONE);
                     }
                 }
                 else {
                     holder.content.setMovementMethod(null);
                     holder.content.setVisibility(View.GONE);
-                    holder.expand.setVisibility(View.GONE);
+                    holder.expandContent.setVisibility(View.GONE);
+                }
+
+                // Spoiler.
+                if (item.getSpoilerContent().length() > 0) {
+                    holder.content.setVisibility(View.GONE);
+                    holder.spoilerWrapper.setVisibility(View.VISIBLE);
+                    holder.spoiler.setText(item.getSpoilerContent());
+                    holder.expandSpoiler.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (holder.content.getVisibility() == View.GONE) {
+                                holder.content.setVisibility(View.VISIBLE);
+                                holder.expandSpoiler.setText(context.getString(R.string.show_less));
+                            }
+                            else {
+                                holder.content.setVisibility(View.GONE);
+                                holder.expandSpoiler.setText(context.getString(R.string.show_more));
+                            }
+                        }
+                    });
+                }
+                else {
+                    holder.spoilerWrapper.setVisibility(View.GONE);
+                    holder.content.setVisibility(holder.content.getVisibility());
                 }
 
                 // Reference.
@@ -704,19 +732,27 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     else {
                         holder.imageCount.setVisibility(View.GONE);
                     }
-
-                    if (item.getNumberOfComments() > 0) {
-                        holder.commentCount.setText(String.format(context.getString(R.string.number_of_comments), item.getNumberOfComments()));
-                    }
-                    else {
-                        holder.commentCount.setVisibility(View.GONE);
-                    }
-
                 }
                 else {
                     holder.image.setVisibility(View.GONE);
                     holder.card.setVisibility(View.GONE);
                     holder.imageCount.setVisibility(View.GONE);
+                }
+
+                // Comments.
+                if (item.getNumberOfComments() > 0) {
+                    holder.commentCount.setVisibility(View.VISIBLE);
+                    String comment_text;
+                    if (item.getNumberOfComments() == 1) {
+                        comment_text = context.getString(R.string.comments_one);
+                    }
+                    else {
+                        comment_text = context.getString(R.string.comments_multiple);
+                    }
+                    holder.commentCount.setText(String.format(comment_text, item.getNumberOfComments()));
+                }
+                else {
+                    holder.commentCount.setVisibility(View.GONE);
                 }
 
                 // Set on touch listener.
@@ -763,36 +799,6 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             return true;
         }
     };
-
-    /**
-     * Link clickable.
-     *
-     * @param strBuilder
-     *   A string builder.
-     * @param span
-     *   The span with url.
-     */
-    private void makeLinkClickable(SpannableStringBuilder strBuilder, final URLSpan span) {
-        int start = strBuilder.getSpanStart(span);
-        int end = strBuilder.getSpanEnd(span);
-        int flags = strBuilder.getSpanFlags(span);
-        ClickableSpan clickable = new ClickableSpan() {
-            public void onClick(View view) {
-                try {
-                    CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
-                    intentBuilder.setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary));
-                    intentBuilder.setSecondaryToolbarColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
-                    CustomTabsIntent customTabsIntent = intentBuilder.build();
-                    customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                    customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    customTabsIntent.launchUrl(context, Uri.parse(span.getURL()));
-                }
-                catch (Exception ignored) { }
-            }
-        };
-        strBuilder.setSpan(clickable, start, end, flags);
-        strBuilder.removeSpan(span);
-    }
 
     // Reply listener.
     class OnReplyClickListener implements OnClickListener {

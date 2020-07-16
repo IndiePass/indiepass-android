@@ -1,5 +1,6 @@
 package com.indieweb.indigenous.reader;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -205,7 +206,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
                 SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
                 URLSpan[] urls = strBuilder.getSpans(0, sequence.length(), URLSpan.class);
                 for (URLSpan span : urls) {
-                    makeLinkClickable(strBuilder, span);
+                    Utility.makeLinkClickable(strBuilder, span, TimelineDetailActivity.this, null, null);
                 }
 
                 location.setMovementMethod(LinkMovementMethod.getInstance());
@@ -277,7 +278,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
                 SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
                 URLSpan[] urls = strBuilder.getSpans(0, sequence.length(), URLSpan.class);
                 for (URLSpan span : urls) {
-                    makeLinkClickable(strBuilder, span);
+                    Utility.makeLinkClickable(strBuilder, span, TimelineDetailActivity.this, null, null);
                 }
 
                 response.setText(strBuilder);
@@ -306,7 +307,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
                     SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
                     URLSpan[] urls = strBuilder.getSpans(0, sequence.length(), URLSpan.class);
                     for (URLSpan span : urls) {
-                        makeLinkClickable(strBuilder, span);
+                        Utility.makeLinkClickable(strBuilder, span, TimelineDetailActivity.this, reader, item);
                     }
                     content.setText(strBuilder);
                     content.setMovementMethod(LinkMovementMethod.getInstance());
@@ -755,36 +756,6 @@ public class TimelineDetailActivity extends AppCompatActivity {
             });
             popup.show();
         }
-    }
-
-    /**
-     * Link clickable.
-     *
-     * @param strBuilder
-     *   A string builder.
-     * @param span
-     *   The span with url.
-     */
-    private void makeLinkClickable(SpannableStringBuilder strBuilder, final URLSpan span) {
-        int start = strBuilder.getSpanStart(span);
-        int end = strBuilder.getSpanEnd(span);
-        int flags = strBuilder.getSpanFlags(span);
-        ClickableSpan clickable = new ClickableSpan() {
-            public void onClick(@NonNull View view) {
-                try {
-                    CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
-                    intentBuilder.setToolbarColor(ContextCompat.getColor(TimelineDetailActivity.this, R.color.colorPrimary));
-                    intentBuilder.setSecondaryToolbarColor(ContextCompat.getColor(TimelineDetailActivity.this, R.color.colorPrimaryDark));
-                    CustomTabsIntent customTabsIntent = intentBuilder.build();
-                    customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                    customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    customTabsIntent.launchUrl(TimelineDetailActivity.this, Uri.parse(span.getURL()));
-                }
-                catch (Exception ignored) { }
-            }
-        };
-        strBuilder.setSpan(clickable, start, end, flags);
-        strBuilder.removeSpan(span);
     }
 
 }

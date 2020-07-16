@@ -102,13 +102,21 @@ public interface Reader {
      * @param isSourceView
      *   Whether this is the source view
      * @param sourceId
-     *   The current source id
+     *   The source id
+     * @param isTagView
+     *   Whether this is the tag view
+     * @param tag
+     *   The tag
+     * @param isSearch
+     *   Whether this is the search view
+     * @param search
+     *   The search
      * @param pagerAfter
-     *   The pager after
+     *   The pager value
      *
      * @return String
      */
-    String getTimelineEndpoint(User user, String channelId, boolean isGlobalUnread, boolean showUnread, boolean isSourceView, String sourceId, boolean isSearch, String search, String pagerAfter);
+    String getTimelineEndpoint(User user, String channelId, boolean isGlobalUnread, boolean showUnread, boolean isSourceView, String sourceId, boolean isTagView, String tag, boolean isSearch, String search, String pagerAfter);
 
     /**
      * Get the access token for the timeline.
@@ -205,4 +213,15 @@ public interface Reader {
      */
     String getReplyId(TimelineItem item);
 
+    /**
+     * Return the tag from a URL.
+     *
+     * @param url
+     *   The url to parse.
+     * @param item
+     *   The current timeline item
+     *
+     * @return String
+     */
+    String getTag(String url, TimelineItem item);
 }

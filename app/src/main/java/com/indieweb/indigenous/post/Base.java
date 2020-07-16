@@ -83,6 +83,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     boolean hasChanges = false;
     public MultiAutoCompleteTextView body;
     public EditText title;
+    public EditText spoiler;
     public Switch saveAsDraft;
     public DatabaseHelper db;
     public User user;
@@ -610,6 +611,10 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 // Content
                 if (body != null) {
                     bodyParams.put(post.getPostParamName(Post.POST_PARAM_CONTENT), body.getText().toString());
+                }
+
+                if (spoiler != null && post.supports(Post.FEATURE_SPOILER) && !TextUtils.isEmpty(spoiler.getText())) {
+                    bodyParams.put("spoiler_text", spoiler.getText().toString());
                 }
 
                 // url

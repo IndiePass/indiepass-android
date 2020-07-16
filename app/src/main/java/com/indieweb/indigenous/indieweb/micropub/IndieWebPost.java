@@ -36,8 +36,11 @@ public class IndieWebPost extends PostBase {
     public boolean supports(String name) {
         boolean supported = true;
 
-        if (FEATURE_MEDIA_UPLOAD_DESCRIPTION.equals(name)) {
-            supported = false;
+        switch (name) {
+            case FEATURE_SPOILER:
+            case FEATURE_MEDIA_UPLOAD_DESCRIPTION:
+                supported = false;
+            break;
         }
 
         return supported;

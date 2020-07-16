@@ -102,12 +102,19 @@ abstract public class BaseCreate extends BasePlatformCreate {
         setSyndicationTargets();
 
         // Get a couple elements for requirement checks or pre-population.
+        body = findViewById(R.id.body);
+
         title = findViewById(R.id.title);
         if (!post.supports(Post.FEATURE_TITLE) && title != null) {
             title.setVisibility(View.GONE);
         }
 
-        body = findViewById(R.id.body);
+        spoiler = findViewById(R.id.spoiler);
+        if (spoiler != null && post.supports(Post.FEATURE_SPOILER)) {
+            LinearLayout spoilerWrapper = findViewById(R.id.spoilerWrapper);
+            spoilerWrapper.setVisibility(View.VISIBLE);
+        }
+
         url = findViewById(R.id.url);
         if (post.hideUrlField() && url != null) {
             url.setVisibility(View.GONE);

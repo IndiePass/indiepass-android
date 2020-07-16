@@ -10,11 +10,14 @@ import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.reader.ReaderBase;
 import com.indieweb.indigenous.util.HTTPRequest;
+import com.indieweb.indigenous.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,8 +109,9 @@ public class MastodonReader extends ReaderBase {
     }
 
     @Override
-    public String getTimelineEndpoint(User user, String channelId, boolean isGlobalUnread, boolean showUnread, boolean isSourceView, String sourceId, boolean isSearch, String search, String pagerAfter) {
+    public String getTimelineEndpoint(User user, String channelId, boolean isGlobalUnread, boolean showUnread, boolean isSourceView, String sourceId, boolean isTagView, String tag, boolean isSearch, String search, String pagerAfter) {
         String endpoint;
+
         if (channelId.equals(CHANNEL_NAME_ANONYMOUS)) {
             endpoint = "https://mastodon.social/api/v1/timelines/public?limit=" + LIMIT;
         }
@@ -117,6 +121,9 @@ public class MastodonReader extends ReaderBase {
         }
         else if (isSearch && search.length() > 0) {
             endpoint = this.getUser().getMe() + "/api/v2/search?q=" + search;
+        }
+        else if (isTagView && tag.length() > 0) {
+            endpoint = this.getUser().getMe() + "/api/v1/timelines/tag/" + tag;
         }
         else {
             switch (channelId) {
@@ -197,6 +204,7 @@ public class MastodonReader extends ReaderBase {
                 item.setReference("");
                 item.setChannelId(channelId);
                 item.setNumberOfComments(object.getInt("replies_count"));
+                item.setSpoilerContent(object.getString("spoiler_text"));
 
                 // Published
                 String published = "";
@@ -230,6 +238,17 @@ public class MastodonReader extends ReaderBase {
                         JSONArray photos = object.getJSONArray("media_attachments");
                         for (int p = 0; p < photos.length(); p++) {
                             item.addPhoto(photos.getJSONObject(p).getString("url"));
+                        }
+                    }
+                    catch (JSONException ignored) { }
+                }
+
+                // tags.
+                if (object.has("tags")) {
+                    try {
+                        JSONArray tags = object.getJSONArray("tags");
+                        for (int p = 0; p < tags.length(); p++) {
+                            item.addTag(tags.getJSONObject(p).getString("name"));
                         }
                     }
                     catch (JSONException ignored) { }
@@ -346,6 +365,19 @@ public class MastodonReader extends ReaderBase {
         return item.getId();
     }
 
+    @Override
+    public String getTag(String url, TimelineItem item) {
+        String tag = "";
 
+        try {
+            URL parsed = new URL(url);
+            String[] pathElements = Utility.stripStartSlash(parsed.getPath()).split("/");
+            if (pathElements.length >= 2 && pathElements[0].equals("tags") && item.getTags().contains(pathElements[1].toLowerCase())) {
+                tag = pathElements[1].toLowerCase();
+            }
+        }
+        catch (MalformedURLException ignored) { }
 
+        return tag;
+    }
 }

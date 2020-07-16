@@ -56,6 +56,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     String sourceName;
     boolean isSearch = false;
     String searchQuery;
+    boolean isTag = false;
+    String tag;
     boolean allReadVisible = false;
     List<String> entries = new ArrayList<>();
     Integer unread;
@@ -112,6 +114,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             preview = extras.getBoolean("preview");
             previewUrl = extras.getString("previewUrl");
             sourceId = extras.getString("sourceId");
+            tag = extras.getString("tag");
             sourceName = extras.getString("sourceName");
             searchQuery = extras.getString("search");
             if (searchQuery != null && searchQuery.length() > 2) {
@@ -120,6 +123,10 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
             if (channelId != null && channelId.equals("global")) {
                 isGlobalUnread = true;
+            }
+
+            if (tag != null && tag.length() > 0) {
+                isTag = true;
             }
 
             if (preview) {
@@ -136,6 +143,10 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 // Initiating search
                 else if (isSearch) {
                     this.setTitle(searchQuery);
+                }
+                // Tag view
+                else if (isTag) {
+                    this.setTitle("#" + tag);
                 }
                 else {
                     this.setTitle(channelName);
@@ -377,7 +388,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
         entries.clear();
         int method = Request.Method.GET;
-        String readerEndpoint = reader.getTimelineEndpoint(user, channelId, isGlobalUnread, showUnread, isSourceView, sourceId, isSearch, searchQuery, pagerAfter);
+        String readerEndpoint = reader.getTimelineEndpoint(user, channelId, isGlobalUnread, showUnread, isSourceView, sourceId, isTag, tag, isSearch, searchQuery, pagerAfter);
         if (preview || isSearch) {
             method = reader.getTimelineMethod(preview, isSearch);
         }

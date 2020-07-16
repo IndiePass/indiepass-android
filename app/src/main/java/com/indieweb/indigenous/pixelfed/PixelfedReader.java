@@ -107,7 +107,7 @@ public class PixelfedReader extends ReaderBase {
     }
 
     @Override
-    public String getTimelineEndpoint(User user, String channelId, boolean isGlobalUnread, boolean showUnread, boolean isSourceView, String sourceId, boolean isSearch, String search, String pagerAfter) {
+    public String getTimelineEndpoint(User user, String channelId, boolean isGlobalUnread, boolean showUnread, boolean isSourceView, String sourceId, boolean isTagView, String tag, boolean isSearch, String search, String pagerAfter) {
         String endpoint;
         if (channelId.equals(CHANNEL_NAME_ANONYMOUS)) {
             endpoint = "https://pixelfed.social/api/v1/timelines/public?limit=" + LIMIT;
