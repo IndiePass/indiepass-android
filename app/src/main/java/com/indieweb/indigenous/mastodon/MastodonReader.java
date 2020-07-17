@@ -24,7 +24,7 @@ import java.util.List;
 public class MastodonReader extends ReaderBase {
 
     public static final int LIMIT = 20;
-    public static final String CHANNEL_NAME_ANONYMOUS = "mastodon_anonymous";
+    public static final String CHANNEL_NAME_MASTODON_ANONYMOUS = "mastodon_anonymous";
     public static final String CHANNEL_NAME_HOME = "mastodon_home";
     public static final String CHANNEL_NAME_PUBLIC = "mastodon_public";
     public static final String CHANNEL_NAME_MY_POSTS = "mastodon_my_posts";
@@ -89,21 +89,6 @@ public class MastodonReader extends ReaderBase {
     }
 
     @Override
-    public List<Channel> getAdditionalChannels() {
-        List<Channel> Channels = new ArrayList<>();
-
-        if (getUser().isAnonymous()) {
-            Channel channel = new Channel();
-            channel.setUid(CHANNEL_NAME_ANONYMOUS);
-            channel.setName(getContext().getString(R.string.channel_mastodon));
-            channel.setUnread(0);
-            Channels.add(channel);
-        }
-
-        return Channels;
-    }
-
-    @Override
     public boolean hideDelete(String channelId) {
         return !channelId.equals(CHANNEL_NAME_MY_POSTS);
     }
@@ -112,7 +97,7 @@ public class MastodonReader extends ReaderBase {
     public String getTimelineEndpoint(User user, String channelId, boolean isGlobalUnread, boolean showUnread, boolean isSourceView, String sourceId, boolean isTagView, String tag, boolean isSearch, String search, String pagerAfter) {
         String endpoint;
 
-        if (channelId.equals(CHANNEL_NAME_ANONYMOUS)) {
+        if (channelId.equals(CHANNEL_NAME_MASTODON_ANONYMOUS)) {
             endpoint = "https://mastodon.social/api/v1/timelines/public?limit=" + LIMIT;
         }
         // TODO works anonymous to?
@@ -164,7 +149,7 @@ public class MastodonReader extends ReaderBase {
     @Override
     public boolean sendTimelineAccessToken(String channelId) {
         boolean send = true;
-        if (channelId.equals(CHANNEL_NAME_ANONYMOUS)) {
+        if (channelId.equals(CHANNEL_NAME_MASTODON_ANONYMOUS)) {
             send = false;
         }
         return send;
@@ -176,6 +161,7 @@ public class MastodonReader extends ReaderBase {
         String maxId = "";
         List<TimelineItem> TimelineItems = new ArrayList<>();
 
+        // TODO catch exception
         try {
 
             JSONArray itemList;
@@ -281,9 +267,15 @@ public class MastodonReader extends ReaderBase {
                 item.setAuthorName(authorName);
 
                 // Responses.
-                item.setLiked(object.getBoolean("favourited"));
-                item.setBookmarked(object.getBoolean("bookmarked"));
-                item.setReposted(object.getBoolean("reblogged"));
+                if (object.has("favourited")) {
+                    item.setLiked(object.getBoolean("favourited"));
+                }
+                if (object.has("bookmarked")) {
+                    item.setLiked(object.getBoolean("bookmarked"));
+                }
+                if (object.has("reblogged")) {
+                    item.setLiked(object.getBoolean("reblogged"));
+                }
 
                 maxId = item.getId();
                 TimelineItems.add(item);
@@ -348,6 +340,11 @@ public class MastodonReader extends ReaderBase {
         }
 
         return isActive;
+    }
+
+    @Override
+    public boolean canContact(String channelId) {
+        return !channelId.equals(CHANNEL_NAME_MY_POSTS);
     }
 
     @Override

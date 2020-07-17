@@ -3,6 +3,7 @@ package com.indieweb.indigenous.reader;
 import android.content.Context;
 import android.view.MenuItem;
 
+import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
@@ -10,6 +11,9 @@ import com.indieweb.indigenous.util.Preferences;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.indieweb.indigenous.mastodon.MastodonReader.CHANNEL_NAME_MASTODON_ANONYMOUS;
+import static com.indieweb.indigenous.pixelfed.PixelfedReader.CHANNEL_NAME_PIXELFED_ANONYMOUS;
 
 abstract public class ReaderBase implements Reader {
 
@@ -52,7 +56,24 @@ abstract public class ReaderBase implements Reader {
 
     @Override
     public List<Channel> getAdditionalChannels() {
-        return new ArrayList<>();
+        List<Channel> Channels = new ArrayList<>();
+
+        if (getUser().isAnonymous()) {
+
+            Channel channel = new Channel();
+            channel.setUid(CHANNEL_NAME_MASTODON_ANONYMOUS);
+            channel.setName(getContext().getString(R.string.channel_mastodon));
+            channel.setUnread(0);
+            Channels.add(channel);
+
+            channel = new Channel();
+            channel.setUid(CHANNEL_NAME_PIXELFED_ANONYMOUS);
+            channel.setName(getContext().getString(R.string.channel_pixelfed));
+            channel.setUnread(0);
+            Channels.add(channel);
+        }
+
+        return Channels;
     }
 
     @Override
@@ -80,6 +101,11 @@ abstract public class ReaderBase implements Reader {
 
     @Override
     public void setContactLabel(MenuItem menuItem, TimelineItem item) { }
+
+    @Override
+    public boolean canContact(String channelId) {
+        return true;
+    }
 
     @Override
     public String getTag(String url, TimelineItem item) {

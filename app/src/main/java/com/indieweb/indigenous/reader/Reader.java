@@ -70,7 +70,7 @@ public interface Reader {
     List<Channel> getChannels();
 
     /**
-     * Get list of additional channels.
+     * Get list of anonymous channels.
      *
      * @return List<Channel>
      */
@@ -191,6 +191,16 @@ public interface Reader {
      * @return boolean.
      */
     boolean doResponse(TimelineItem item, String response);
+
+    /**
+     * Whether contact can be used.
+     *
+     * @param channelId
+     *   The current channel id.
+     *
+     * @return boolean
+     */
+    boolean canContact(String channelId);
 
     /**
      * Sets the contact label.

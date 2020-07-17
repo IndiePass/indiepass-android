@@ -21,7 +21,7 @@ import java.util.List;
 public class PixelfedReader extends ReaderBase {
 
     public static final int LIMIT = 20;
-    public static final String CHANNEL_NAME_ANONYMOUS = "pixelfed_anonymous";
+    public static final String CHANNEL_NAME_PIXELFED_ANONYMOUS = "pixelfed_anonymous";
     public static final String CHANNEL_NAME_HOME = "pixelfed_home";
     public static final String CHANNEL_NAME_PUBLIC = "pixelfed_public";
     public static final String CHANNEL_NAME_MY_POSTS = "pixelfed_my_posts";
@@ -87,21 +87,6 @@ public class PixelfedReader extends ReaderBase {
     }
 
     @Override
-    public List<Channel> getAdditionalChannels() {
-        List<Channel> Channels = new ArrayList<>();
-
-        if (getUser().isAnonymous()) {
-            Channel channel = new Channel();
-            channel.setUid(CHANNEL_NAME_ANONYMOUS);
-            channel.setName(getContext().getString(R.string.channel_pixelfed));
-            channel.setUnread(0);
-            Channels.add(channel);
-        }
-
-        return Channels;
-    }
-
-    @Override
     public boolean hideDelete(String channelId) {
         return !channelId.equals(CHANNEL_NAME_MY_POSTS);
     }
@@ -109,7 +94,8 @@ public class PixelfedReader extends ReaderBase {
     @Override
     public String getTimelineEndpoint(User user, String channelId, boolean isGlobalUnread, boolean showUnread, boolean isSourceView, String sourceId, boolean isTagView, String tag, boolean isSearch, String search, String pagerAfter) {
         String endpoint;
-        if (channelId.equals(CHANNEL_NAME_ANONYMOUS)) {
+
+        if (channelId.equals(CHANNEL_NAME_PIXELFED_ANONYMOUS)) {
             endpoint = "https://pixelfed.social/api/v1/timelines/public?limit=" + LIMIT;
         }
         // TODO works anonymous to?
@@ -158,7 +144,7 @@ public class PixelfedReader extends ReaderBase {
     @Override
     public boolean sendTimelineAccessToken(String channelId) {
         boolean send = true;
-        if (channelId.equals(CHANNEL_NAME_ANONYMOUS)) {
+        if (channelId.equals(CHANNEL_NAME_PIXELFED_ANONYMOUS)) {
             send = false;
         }
         return send;
@@ -330,6 +316,11 @@ public class PixelfedReader extends ReaderBase {
         }
 
         return isActive;
+    }
+
+    @Override
+    public boolean canContact(String channelId) {
+        return !channelId.equals(CHANNEL_NAME_MY_POSTS);
     }
 
     @Override

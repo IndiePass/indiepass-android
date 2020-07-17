@@ -1098,8 +1098,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
 
             // Save contact menu item.
-            // TODO hardcoded channel
-            if (user.isAuthenticated() && reader.supports(Reader.READER_CONTACT) && !entry.getChannelId().equals(CHANNEL_NAME_MY_POSTS)) {
+            if (user.isAuthenticated() && reader.supports(Reader.READER_CONTACT) && reader.canContact(entry.getChannelId())) {
                 MenuItem itemContact = menu.findItem(R.id.timeline_save_author);
                 if (itemContact != null) {
                     itemContact.setVisible(true);

@@ -581,7 +581,6 @@ public class IndieWebReader extends ReaderBase {
 
     @Override
     public void markRead(String channelId, List<String> entries, boolean markAllRead, boolean showMessage) {
-        // TODO fix show message and layout argument.
         new MicrosubAction(this.getContext(), this.getUser(), null).markRead(channelId, entries, markAllRead, false);
     }
 

@@ -20,8 +20,8 @@ Desktop: https://github.com/swentel/indigenous-desktop
   - Mastodon: authorize with the instance you registered your account(s).
   - Pixelfed: authorize with the instance you registered your account(s).
 - Comes with a built-in anonymous user which allows reading channels and
-  posts coming from https://indigenous.realize.be or https://pixelfed.social.
-  Posts can be send to a custom endpoint and token.
+  posts coming from https://indigenous.realize.be, https://mastodon.social or
+  https://pixelfed.social. Posts can be send to a custom endpoint and token.
 - Posting
   - post types: article, note, reply, repost, like, bookmark, event,
     issue, rsvp, geocache, read, checkin, trip and venue (h-card).
@@ -59,8 +59,9 @@ geo:51.5258325,-0.1359825,0.0;name=london;url=https://hwclondon.co.uk
 
 Some features are not available for Mastodon and Pixelfed, because they either
 don't make sense or the API doesn't support it yet. Pull requests welcome of
-course! You can always go to 'settings/applications' on your instance to revoke
-the complete authorization of this app to your account.
+course! You can always go to 'oauth/authorized_applications' (Mastodon) or
+'settings/applications' (Pixelfed) on your instance to revoke the authorization
+of this app to your account.
 
 ## Screenshot
 

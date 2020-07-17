@@ -12,6 +12,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.users.AuthBase;
+import com.indieweb.indigenous.util.HTTPRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -91,7 +92,12 @@ public class MastodonAuth extends AuthBase {
 
     @Override
     public void revokeToken(User user) {
-        // The oauth2-server doesn't support this yet.
-        // see https://github.com/thephpleague/oauth2-server/issues/806
+        String endpoint = user.getMe() + "/oauth/revoke";
+        Map<String, String> params = new HashMap<>();
+        params.put("client_id", user.getClientId());
+        params.put("client_secret", user.getClientSecret());
+        params.put("token", user.getAccessToken());
+        HTTPRequest r = new HTTPRequest(null, user, getContext());
+        r.doPostRequest(endpoint, params);
     }
 }
