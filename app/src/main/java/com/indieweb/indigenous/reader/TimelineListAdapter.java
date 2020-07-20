@@ -3,6 +3,7 @@ package com.indieweb.indigenous.reader;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.browser.customtabs.CustomTabsIntent;
@@ -15,6 +16,8 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.URLSpan;
+import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,7 +59,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.indieweb.indigenous.pixelfed.PixelfedReader.CHANNEL_NAME_MY_POSTS;
+import static com.indieweb.indigenous.reader.Reader.RESPONSE_LIKE;
+import static com.indieweb.indigenous.reader.Reader.RESPONSE_REPOST;
 import static com.indieweb.indigenous.reader.TimelineActivity.MARK_READ_CHANNEL_CLICK;
 import static com.indieweb.indigenous.reader.TimelineActivity.MARK_READ_MANUAL;
 import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_COMPACT;
@@ -614,7 +618,8 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                         String html = item.getHtmlContent();
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                             sequence = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
-                        } else {
+                        }
+                        else {
                             sequence = Html.fromHtml(html);
                         }
 
@@ -634,16 +639,26 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                         holder.content.setText(item.getTextContent().trim());
                     }
 
+                    holder.content.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            if (!holder.content.isTextSelectable()) {
+                                holder.content.setTextIsSelectable(true);
+                            }
+                            return true;
+                        }
+                    });
+
                     if (item.getTextContent().length() > 400) {
                         holder.expandContent.setVisibility(View.VISIBLE);
-
                         holder.expandContent.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(final View v) {
                                 if (holder.content.isExpanded()) {
                                     holder.content.collapse();
                                     holder.expandContent.setText(R.string.read_more);
-                                } else {
+                                }
+                                else {
                                     holder.content.expand();
                                     holder.expandContent.setText(R.string.close);
                                 }
@@ -829,15 +844,20 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
         @Override
         public void onClick(View v) {
-            TimelineItem item = items.get(this.position);
-            boolean liked = reader.doResponse(item, Reader.RESPONSE_LIKE);
-            if (liked) {
-                item.setLiked(true);
-                v.setActivated(true);
+            if (!reader.supports(RESPONSE_LIKE)) {
+                Snackbar.make(layout, context.getString(R.string.no_anonymous_posting), Snackbar.LENGTH_SHORT).show();
             }
             else {
-                item.setLiked(false);
-                v.setActivated(false);
+                TimelineItem item = items.get(this.position);
+                boolean liked = reader.doResponse(item, Reader.RESPONSE_LIKE);
+                if (liked) {
+                    item.setLiked(true);
+                    v.setActivated(true);
+                }
+                else {
+                    item.setLiked(false);
+                    v.setActivated(false);
+                }
             }
         }
     }
@@ -853,15 +873,20 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
         @Override
         public void onClick(View v) {
-            TimelineItem item = items.get(this.position);
-            boolean reposted = reader.doResponse(item, Reader.RESPONSE_REPOST);
-            if (reposted) {
-                item.setReposted(true);
-                v.setActivated(true);
+            if (!reader.supports(RESPONSE_REPOST)) {
+                Snackbar.make(layout, context.getString(R.string.no_anonymous_posting), Snackbar.LENGTH_SHORT).show();
             }
             else {
-                item.setReposted(false);
-                v.setActivated(false);
+                TimelineItem item = items.get(this.position);
+                boolean reposted = reader.doResponse(item, Reader.RESPONSE_REPOST);
+                if (reposted) {
+                    item.setReposted(true);
+                    v.setActivated(true);
+                }
+                else {
+                    item.setReposted(false);
+                    v.setActivated(false);
+                }
             }
         }
     }
@@ -877,15 +902,20 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
         @Override
         public void onClick(View v) {
-            TimelineItem item = items.get(this.position);
-            boolean bookmarked = reader.doResponse(item, Reader.RESPONSE_BOOKMARK);
-            if (bookmarked) {
-                item.setBookmarked(true);
-                v.setActivated(true);
+            if (!reader.supports(Reader.RESPONSE_BOOKMARK)) {
+                Snackbar.make(layout, context.getString(R.string.no_anonymous_posting), Snackbar.LENGTH_SHORT).show();
             }
             else {
-                item.setBookmarked(false);
-                v.setActivated(false);
+                TimelineItem item = items.get(this.position);
+                boolean bookmarked = reader.doResponse(item, Reader.RESPONSE_BOOKMARK);
+                if (bookmarked) {
+                    item.setBookmarked(true);
+                    v.setActivated(true);
+                }
+                else {
+                    item.setBookmarked(false);
+                    v.setActivated(false);
+                }
             }
         }
     }

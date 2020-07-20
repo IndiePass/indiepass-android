@@ -188,21 +188,7 @@ public class IndieWebReader extends ReaderBase {
             }
             catch (Exception ignored) {}
         }
-        catch (JSONException ignored) {
-            // TODO
-            /*setShowRefreshedMessage(false);
-            String message = String.format(getString(R.string.channel_list_parse_error), e.getMessage());
-            final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
-            snack.setAction(getString(R.string.close), new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            snack.dismiss();
-                        }
-                    }
-            );
-            snack.show();
-            checkRefreshingStatus();*/
-        }
+        catch (JSONException ignored) { }
 
         return Channels;
     }

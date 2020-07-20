@@ -481,7 +481,6 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     @SuppressLint("ClickableViewAccessibility")
     protected void parseTimelineResponse(String response, boolean fromCache) {
 
-        // TODO catch exception.
         try {
 
             if (fromCache) {

@@ -62,7 +62,6 @@
             android:textColor="@color/textColor"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:textIsSelectable="true"
             android:layout_marginBottom="5dp"
             android:textSize="@dimen/list_item_text_size"
             android:layout_width="fill_parent" />
@@ -115,6 +114,7 @@
             <TextView
                 android:textColor="@color/textColor"
                 android:textSize="@dimen/list_item_text_size"
+                android:textIsSelectable="true"
                 android:id="@+id/timeline_spoiler"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -137,9 +137,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="10"
-            android:textIsSelectable="true"
-            android:clickable="true"
-            android:focusable="true"
+            android:importantForAccessibility="yes"
+            android:textIsSelectable="false"
+            android:longClickable="true"
             android:textColor="@color/textColor"
             android:textSize="@dimen/list_item_text_size"
             android:lineSpacingExtra="5dp"

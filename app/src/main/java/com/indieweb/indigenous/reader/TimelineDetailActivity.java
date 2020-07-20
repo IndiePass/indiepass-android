@@ -1,6 +1,5 @@
 package com.indieweb.indigenous.reader;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,7 +7,6 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
@@ -32,15 +29,10 @@ import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.general.DebugActivity;
-import com.indieweb.indigenous.post.BookmarkActivity;
-import com.indieweb.indigenous.post.ContactActivity;
-import com.indieweb.indigenous.post.LikeActivity;
 import com.indieweb.indigenous.post.ReadActivity;
 import com.indieweb.indigenous.post.ReplyActivity;
-import com.indieweb.indigenous.post.RepostActivity;
 import com.indieweb.indigenous.post.RsvpActivity;
 import com.indieweb.indigenous.indieweb.microsub.MicrosubAction;
-import com.indieweb.indigenous.model.Contact;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.users.Accounts;
@@ -54,6 +46,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.indieweb.indigenous.reader.Reader.RESPONSE_LIKE;
+import static com.indieweb.indigenous.reader.Reader.RESPONSE_REPOST;
 import static com.indieweb.indigenous.reader.TimelineActivity.MARK_READ_CHANNEL_CLICK;
 import static com.indieweb.indigenous.reader.TimelineActivity.MARK_READ_MANUAL;
 import static com.indieweb.indigenous.util.Utility.dateFormatStrings;
@@ -289,7 +283,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
             }
 
             // Content.
-            TextView content = findViewById(R.id.timeline_content);
+            final TextView content = findViewById(R.id.timeline_content);
             if (item.getHtmlContent().length() > 0 || item.getTextContent().length() > 0) {
 
                 if (item.getHtmlContent().length() > 0) {
@@ -316,6 +310,17 @@ public class TimelineDetailActivity extends AppCompatActivity {
                     content.setMovementMethod(null);
                     content.setText(item.getTextContent().trim());
                 }
+
+                content.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        if (!content.isTextSelectable()) {
+                            content.setTextIsSelectable(true);
+                        }
+                        return true;
+                    }
+                });
+
             }
             else {
                 content.setMovementMethod(null);
@@ -480,19 +485,20 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            boolean liked = reader.doResponse(item, Reader.RESPONSE_LIKE);
-            if (liked) {
-                item.setLiked(true);
-                v.setActivated(true);
+            if (!reader.supports(RESPONSE_LIKE)) {
+                Snackbar.make(layout, getString(R.string.no_anonymous_posting), Snackbar.LENGTH_SHORT).show();
             }
             else {
-                item.setLiked(false);
-                v.setActivated(false);
+                boolean liked = reader.doResponse(item, Reader.RESPONSE_LIKE);
+                if (liked) {
+                    item.setLiked(true);
+                    v.setActivated(true);
+                }
+                else {
+                    item.setLiked(false);
+                    v.setActivated(false);
+                }
             }
-
-            Intent i = new Intent(TimelineDetailActivity.this, LikeActivity.class);
-            i.putExtra("incomingText", item.getUrl());
-            startActivity(i);
         }
     }
 
@@ -501,14 +507,19 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            boolean reposted = reader.doResponse(item, Reader.RESPONSE_REPOST);
-            if (reposted) {
-                item.setReposted(true);
-                v.setActivated(true);
+            if (!reader.supports(RESPONSE_REPOST)) {
+                Snackbar.make(layout, getString(R.string.no_anonymous_posting), Snackbar.LENGTH_SHORT).show();
             }
             else {
-                item.setReposted(false);
-                v.setActivated(false);
+                boolean reposted = reader.doResponse(item, Reader.RESPONSE_REPOST);
+                if (reposted) {
+                    item.setReposted(true);
+                    v.setActivated(true);
+                }
+                else {
+                    item.setReposted(false);
+                    v.setActivated(false);
+                }
             }
         }
     }
@@ -518,14 +529,19 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            boolean bookmarked = reader.doResponse(item, Reader.RESPONSE_BOOKMARK);
-            if (bookmarked) {
-                item.setBookmarked(true);
-                v.setActivated(true);
+            if (!reader.supports(Reader.RESPONSE_BOOKMARK)) {
+                Snackbar.make(layout, getString(R.string.no_anonymous_posting), Snackbar.LENGTH_SHORT).show();
             }
             else {
-                item.setBookmarked(false);
-                v.setActivated(false);
+                boolean bookmarked = reader.doResponse(item, Reader.RESPONSE_BOOKMARK);
+                if (bookmarked) {
+                    item.setBookmarked(true);
+                    v.setActivated(true);
+                }
+                else {
+                    item.setBookmarked(false);
+                    v.setActivated(false);
+                }
             }
         }
     }

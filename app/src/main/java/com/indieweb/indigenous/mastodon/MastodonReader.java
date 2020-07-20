@@ -49,6 +49,11 @@ public class MastodonReader extends ReaderBase {
             case READER_DETAIL_CLICK:
                 supported = false;
                 break;
+            case RESPONSE_LIKE:
+            case RESPONSE_REPOST:
+            case RESPONSE_BOOKMARK:
+                supported = getUser().isAuthenticated();
+                break;
         }
 
         return supported;
@@ -98,9 +103,13 @@ public class MastodonReader extends ReaderBase {
         String endpoint;
 
         if (channelId.equals(CHANNEL_NAME_MASTODON_ANONYMOUS)) {
-            endpoint = "https://mastodon.social/api/v1/timelines/public?limit=" + LIMIT;
+            if (isSourceView && sourceId != null) {
+                endpoint = "https://mastodon.social/api/v1/accounts/" + sourceId + "/statuses?limit=" + LIMIT;
+            }
+            else {
+                endpoint = "https://mastodon.social/api/v1/timelines/public?limit=" + LIMIT;
+            }
         }
-        // TODO works anonymous to?
         else if (isSourceView && sourceId != null) {
             endpoint = this.getUser().getMe() + "/api/v1/accounts/" + sourceId + "/statuses";
         }
@@ -132,10 +141,10 @@ public class MastodonReader extends ReaderBase {
 
             endpoint += "?limit=" + LIMIT;
 
-            if (pagerAfter != null && pagerAfter.length() > 0) {
-                endpoint += "&max_id=" + pagerAfter;
-            }
+        }
 
+        if (pagerAfter != null && pagerAfter.length() > 0) {
+            endpoint += "&max_id=" + pagerAfter;
         }
 
         return endpoint;
@@ -161,7 +170,6 @@ public class MastodonReader extends ReaderBase {
         String maxId = "";
         List<TimelineItem> TimelineItems = new ArrayList<>();
 
-        // TODO catch exception
         try {
 
             JSONArray itemList;

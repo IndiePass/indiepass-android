@@ -22,7 +22,6 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
-import com.indieweb.indigenous.indieweb.micropub.MicropubAction;
 import com.indieweb.indigenous.model.Draft;
 import com.indieweb.indigenous.model.Syndication;
 import com.indieweb.indigenous.model.User;
@@ -89,8 +88,9 @@ abstract public class BaseCreate extends BasePlatformCreate {
                         @Override
                         public void onClick(DialogInterface dialog, int index) {
                             user = new Accounts(getApplicationContext()).getUser(accounts.get(index), false);
+                            post = PostFactory.getPost(user, getApplicationContext());
                             setAccountPostInfo(user.getMeWithoutProtocol());
-                            setSyndicationTargets();
+                            prepareFields();
                         }
                     });
                     builder.show();
@@ -98,37 +98,13 @@ abstract public class BaseCreate extends BasePlatformCreate {
             });
         }
 
-        // Set default syndication targets.
-        setSyndicationTargets();
-
         // Get a couple elements for requirement checks or pre-population.
         body = findViewById(R.id.body);
-
         title = findViewById(R.id.title);
-        if (!post.supports(Post.FEATURE_TITLE) && title != null) {
-            title.setVisibility(View.GONE);
-        }
-
         spoiler = findViewById(R.id.spoiler);
-        if (spoiler != null && post.supports(Post.FEATURE_SPOILER)) {
-            LinearLayout spoilerWrapper = findViewById(R.id.spoilerWrapper);
-            spoilerWrapper.setVisibility(View.VISIBLE);
-        }
-
         url = findViewById(R.id.url);
-        if (post.hideUrlField() && url != null) {
-            url.setVisibility(View.GONE);
-        }
-
         postStatus = findViewById(R.id.postStatus);
-        if (!post.supports(Post.FEATURE_POST_STATUS)) {
-            postStatus.setVisibility(View.GONE);
-        }
-
         tags = findViewById(R.id.tags);
-        if (tags != null && !post.supports(Post.FEATURE_CATEGORIES)) {
-            tags.setVisibility(View.GONE);
-        }
 
         visibility = findViewById(R.id.postVisibility);
         if (visibility != null && Preferences.getPreference(getApplicationContext(), "pref_key_post_visibility", false)) {
@@ -154,12 +130,6 @@ abstract public class BaseCreate extends BasePlatformCreate {
         // Add listener on body.
         if (body != null) {
             body.addTextChangedListener(BaseCreate.this);
-
-            // Autocomplete of contacts.
-            if (post.supports(Post.FEATURE_CATEGORIES) && user.isAuthenticated()) {
-                post.prepareContactsAutocomplete(body);
-            }
-
         }
 
         // On checkin, set label and url visible already.
@@ -172,11 +142,6 @@ abstract public class BaseCreate extends BasePlatformCreate {
             publishDate.setOnClickListener(new publishDateOnClickListener());
         }
 
-        // Autocomplete of tags.
-        if (tags != null && post.supports(Post.FEATURE_CATEGORIES) && user.isAuthenticated()) {
-            post.prepareTagsAutocomplete(tags);
-        }
-
         if (isMediaRequest) {
             mediaUrl = findViewById(R.id.mediaUrl);
         }
@@ -186,6 +151,9 @@ abstract public class BaseCreate extends BasePlatformCreate {
             TextInputLayout textInputLayout = findViewById(R.id.textInputLayout);
             textInputLayout.setCounterEnabled(true);
         }
+
+        // Prepare fields.
+        prepareFields();
 
         Intent intent = getIntent();
         Bundle extras = getIntent().getExtras();
@@ -310,6 +278,75 @@ abstract public class BaseCreate extends BasePlatformCreate {
         }
     }
 
+    /**
+     * Prepare fields: hides or shows fields, adds autocomplete listeners etc.
+     */
+    void prepareFields() {
+
+        setSyndicationTargets();
+
+        // Title visibility.
+        if (title != null) {
+            if (!post.supports(Post.FEATURE_TITLE)) {
+                title.setVisibility(View.GONE);
+            }
+            else {
+                title.setVisibility(View.VISIBLE);
+            }
+        }
+
+        // Post status visibility.
+        if (postStatus != null) {
+            if (!post.supports(Post.FEATURE_POST_STATUS)) {
+                postStatus.setVisibility(View.GONE);
+            }
+            else {
+                postStatus.setVisibility(View.VISIBLE);
+            }
+        }
+
+        // Tags visibility.
+        if (tags != null) {
+            if (!post.supports(Post.FEATURE_CATEGORIES)) {
+                tags.setVisibility(View.GONE);
+            }
+            else {
+                tags.setVisibility(View.VISIBLE);
+            }
+        }
+
+        // URL visibility.
+        if (url != null) {
+            if (post.hideUrlField()) {
+                url.setVisibility(View.GONE);
+            }
+            else {
+                url.setVisibility(View.VISIBLE);
+            }
+        }
+
+        // Spoiler.
+        if (spoiler != null) {
+            LinearLayout spoilerWrapper = findViewById(R.id.spoilerWrapper);
+            if (post.supports(Post.FEATURE_SPOILER)) {
+                spoilerWrapper.setVisibility(View.VISIBLE);
+            }
+            else {
+                spoilerWrapper.setVisibility(View.GONE);
+            }
+        }
+
+        // Autocomplete of contacts.
+        if (post.supports(Post.FEATURE_CATEGORIES) && user.isAuthenticated()) {
+            post.prepareContactsAutocomplete(body);
+        }
+
+        // Autocomplete of tags.
+        if (tags != null && post.supports(Post.FEATURE_CATEGORIES) && user.isAuthenticated()) {
+            post.prepareTagsAutocomplete(tags);
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -337,56 +374,58 @@ abstract public class BaseCreate extends BasePlatformCreate {
     public void setSyndicationTargets() {
         LinearLayout syndicationLayout = findViewById(R.id.syndicationTargets);
         String syndicationTargetsString = user.getSyndicationTargets();
-        if (syndicationLayout != null && syndicationTargetsString.length() > 0) {
+        if (syndicationLayout != null) {
             syndicationLayout.removeAllViews();
-            JSONObject object;
-            try {
-                JSONArray itemList = new JSONArray(syndicationTargetsString);
+            if (syndicationTargetsString.length() > 0) {
+                JSONObject object;
+                try {
+                    JSONArray itemList = new JSONArray(syndicationTargetsString);
 
-                if (itemList.length() > 0) {
-                    TextView syn = new TextView(this);
-                    syn.setText(R.string.syndicate_to);
-                    syn.setPadding(20, 10, 0, 0);
-                    syn.setTextSize(15);
-                    syn.setTextColor(getResources().getColor(R.color.textColor));
-                    syndicationLayout.addView(syn);
-                    syndicationLayout.setPadding(10, 0,0, 0 );
-                }
-
-                for (int i = 0; i < itemList.length(); i++) {
-                    object = itemList.getJSONObject(i);
-                    Syndication syndication = new Syndication();
-                    syndication.setUid(object.getString("uid"));
-                    syndication.setName(object.getString("name"));
-                    if (object.has("checked")) {
-                        syndication.setChecked(object.getBoolean("checked"));
+                    if (itemList.length() > 0) {
+                        TextView syn = new TextView(this);
+                        syn.setText(R.string.syndicate_to);
+                        syn.setPadding(20, 10, 0, 0);
+                        syn.setTextSize(15);
+                        syn.setTextColor(getResources().getColor(R.color.textColor));
+                        syndicationLayout.addView(syn);
+                        syndicationLayout.setPadding(10, 0,0, 0 );
                     }
-                    syndicationTargets.add(syndication);
 
-                    CheckBox ch = new CheckBox(this);
-                    ch.setText(syndication.getName());
-                    ch.setId(i);
-                    ch.setTextSize(15);
-                    ch.setPadding(0, 10, 0, 10);
-                    ch.setTextColor(getResources().getColor(R.color.textColor));
-                    if (syndication.isChecked()) {
-                        ch.setChecked(true);
-                    }
-                    syndicationLayout.addView(ch);
-                }
-
-            }
-            catch (JSONException e) {
-                String message = String.format(getString(R.string.syndication_targets_parse_error), e.getMessage());
-                final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
-                snack.setAction(getString(R.string.close), new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                snack.dismiss();
-                            }
+                    for (int i = 0; i < itemList.length(); i++) {
+                        object = itemList.getJSONObject(i);
+                        Syndication syndication = new Syndication();
+                        syndication.setUid(object.getString("uid"));
+                        syndication.setName(object.getString("name"));
+                        if (object.has("checked")) {
+                            syndication.setChecked(object.getBoolean("checked"));
                         }
-                );
-                snack.show();
+                        syndicationTargets.add(syndication);
+
+                        CheckBox ch = new CheckBox(this);
+                        ch.setText(syndication.getName());
+                        ch.setId(i);
+                        ch.setTextSize(15);
+                        ch.setPadding(0, 10, 0, 10);
+                        ch.setTextColor(getResources().getColor(R.color.textColor));
+                        if (syndication.isChecked()) {
+                            ch.setChecked(true);
+                        }
+                        syndicationLayout.addView(ch);
+                    }
+
+                }
+                catch (JSONException e) {
+                    String message = String.format(getString(R.string.syndication_targets_parse_error), e.getMessage());
+                    final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
+                    snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    snack.dismiss();
+                                }
+                            }
+                    );
+                    snack.show();
+                }
             }
         }
     }

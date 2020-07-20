@@ -46,6 +46,8 @@ Desktop: https://github.com/swentel/indigenous-desktop
   - view fullscreen images, zoom and pinch
   - Manage channels and feeds
   - Offline reading, optional via settings
+  - Main content becomes selectable after long click
+  - Browse by tag for Mastodon
 - Share intents: receive text or images to directly share
 - Push notifications: receive push notifications if you have an account
   on https://indigenous.realize.be

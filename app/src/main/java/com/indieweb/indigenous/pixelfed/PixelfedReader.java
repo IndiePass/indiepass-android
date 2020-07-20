@@ -46,6 +46,12 @@ public class PixelfedReader extends ReaderBase {
             case READER_DETAIL_CLICK:
                 supported = false;
                 break;
+            case READER_SOURCE_VIEW:
+            case RESPONSE_LIKE:
+            case RESPONSE_REPOST:
+            case RESPONSE_BOOKMARK:
+                supported = getUser().isAuthenticated();
+                break;
         }
 
         return supported;
@@ -98,7 +104,6 @@ public class PixelfedReader extends ReaderBase {
         if (channelId.equals(CHANNEL_NAME_PIXELFED_ANONYMOUS)) {
             endpoint = "https://pixelfed.social/api/v1/timelines/public?limit=" + LIMIT;
         }
-        // TODO works anonymous to?
         else if (isSourceView && sourceId != null) {
             endpoint = this.getUser().getMe() + "/api/v1/accounts/" + sourceId + "/statuses";
         }
@@ -126,11 +131,10 @@ public class PixelfedReader extends ReaderBase {
             }
 
             endpoint += "?limit=" + LIMIT;
+        }
 
-            if (pagerAfter != null && pagerAfter.length() > 0) {
-                endpoint += "&max_id=" + pagerAfter;
-            }
-
+        if (pagerAfter != null && pagerAfter.length() > 0) {
+            endpoint += "&max_id=" + pagerAfter;
         }
 
         return endpoint;
