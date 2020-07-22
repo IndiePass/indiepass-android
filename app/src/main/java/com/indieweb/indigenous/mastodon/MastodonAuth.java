@@ -29,7 +29,7 @@ public class MastodonAuth extends AuthBase {
     @Override
     public void syncAccount(RelativeLayout layout) {
 
-        String endpoint = getUser().getMe() + "/api/v1/accounts/verify_credentials";
+        String endpoint = getUser().getBaseUrl() + "/api/v1/accounts/verify_credentials";
         StringRequest getRequest = new StringRequest(Request.Method.GET, endpoint,
                 new Response.Listener<String>() {
                     @Override
@@ -49,6 +49,10 @@ public class MastodonAuth extends AuthBase {
                             if (Response.has("display_name")) {
                                 foundInfo = true;
                                 authorName = Response.getString("display_name");
+                            }
+                            else if (Response.has("username")) {
+                                foundInfo = true;
+                                authorName = Response.getString("username");
                             }
                             if (Response.has("avatar")) {
                                 foundInfo = true;
@@ -92,7 +96,7 @@ public class MastodonAuth extends AuthBase {
 
     @Override
     public void revokeToken(User user) {
-        String endpoint = user.getMe() + "/oauth/revoke";
+        String endpoint = user.getBaseUrl() + "/oauth/revoke";
         Map<String, String> params = new HashMap<>();
         params.put("client_id", user.getClientId());
         params.put("client_secret", user.getClientSecret());

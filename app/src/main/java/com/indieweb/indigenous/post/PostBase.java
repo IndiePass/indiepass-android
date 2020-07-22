@@ -8,8 +8,8 @@ import com.indieweb.indigenous.model.User;
 
 abstract public class PostBase implements Post {
 
-    private Context context;
-    private User user;
+    private final Context context;
+    private final User user;
 
     public PostBase(Context context, User user) {
         this.context = context;

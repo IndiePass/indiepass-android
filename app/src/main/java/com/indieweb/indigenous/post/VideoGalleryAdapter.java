@@ -20,12 +20,12 @@ import java.util.List;
 
 public class VideoGalleryAdapter extends RecyclerView.Adapter<VideoGalleryAdapter.MyViewHolder> {
 
-    private List<Uri> video;
-    private Context context;
-    private boolean isMediaRequest;
+    private final List<Uri> video;
+    private final Context context;
+    private final boolean isMediaRequest;
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView thumbnail;
+        final ImageView thumbnail;
 
         MyViewHolder(View view) {
             super(view);
@@ -67,7 +67,7 @@ public class VideoGalleryAdapter extends RecyclerView.Adapter<VideoGalleryAdapte
     // Video click listener.
     class OnVideoClickListener implements View.OnClickListener {
 
-        int position;
+        final int position;
 
         OnVideoClickListener(int position) {
             this.position = position;

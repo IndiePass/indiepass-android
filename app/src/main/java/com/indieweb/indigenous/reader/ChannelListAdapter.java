@@ -27,8 +27,8 @@ public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
 
     private final Context context;
     private final List<Channel> channels;
-    private LayoutInflater mInflater;
-    private String readLaterId;
+    private final LayoutInflater mInflater;
+    private final String readLaterId;
 
     public ChannelListAdapter(Context context, List<Channel> channels, String readLater) {
         this.context = context;
@@ -116,7 +116,7 @@ public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
     /**
      * OnTouchListener for channel row.
      */
-    private View.OnTouchListener eventTouch = new View.OnTouchListener() {
+    private final View.OnTouchListener eventTouch = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent motionEvent) {
             ViewHolder holder = (ViewHolder)v.getTag();

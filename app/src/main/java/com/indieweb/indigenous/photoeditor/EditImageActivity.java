@@ -58,10 +58,10 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     private EmojiBSFragment mEmojiBSFragment;
     private TextView mTxtCurrentTool;
     private RecyclerView mRvTools, mRvFilters;
-    private EditingToolsAdapter mEditingToolsAdapter = new EditingToolsAdapter(this);
-    private FilterViewAdapter mFilterViewAdapter = new FilterViewAdapter(this);
+    private final EditingToolsAdapter mEditingToolsAdapter = new EditingToolsAdapter(this);
+    private final FilterViewAdapter mFilterViewAdapter = new FilterViewAdapter(this);
     private ConstraintLayout mRootView;
-    private ConstraintSet mConstraintSet = new ConstraintSet();
+    private final ConstraintSet mConstraintSet = new ConstraintSet();
     private boolean mIsFilterVisible;
     private boolean hasFilter = false;
 
@@ -272,7 +272,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     }
 
     @Override
-    public void isPermissionGranted(boolean isGranted, String permission) {
+    public void isPermissionGranted(boolean isGranted) {
         if (isGranted) {
             saveImage();
         }

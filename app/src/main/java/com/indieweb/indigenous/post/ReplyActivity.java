@@ -10,7 +10,6 @@ public class ReplyActivity extends BaseCreate {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        postType = "Reply";
         urlPostKey = "in-reply-to";
         addCounter = true;
         canAddMedia = true;

@@ -10,7 +10,6 @@ public class BookmarkActivity extends BaseCreate {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        postType = "Bookmark";
         urlPostKey = "bookmark-of";
         autoSubmit = "pref_key_share_bookmark_auto_submit";
         addCounter = true;

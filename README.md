@@ -17,8 +17,8 @@ Desktop: https://github.com/swentel/indigenous-desktop
     micropub and microsub endpoints are optional, but at least one should be
     available. Token revoke happens when deleting an account. PKCE support for
     additional security when authenticating.
-  - Mastodon: authorize with the instance you registered your account(s).
-  - Pixelfed: authorize with the instance you registered your account(s).
+  - Fediverse: Mastodon and Pixelfed - connect with the instance where you are
+    registered.
 - Comes with a built-in anonymous user which allows reading channels and
   posts coming from https://indigenous.realize.be, https://mastodon.social or
   https://pixelfed.social. Posts can be send to a custom endpoint and token.
@@ -50,7 +50,7 @@ Desktop: https://github.com/swentel/indigenous-desktop
   - Browse by tag for Mastodon
 - Share intents: receive text or images to directly share
 - Push notifications: receive push notifications if you have an account
-  on https://indigenous.realize.be
+  on https://indigenous.realize.be. Only for IndieWeb accounts.
 
 Checkin, Geocache and Venue are experimental and pass on all information
 into a Geo URI in the geo property, e.g.
@@ -110,6 +110,10 @@ request or open an issue with the file attached. Some strings contain '%s'.
 These are placeholders and should be kept.
 
 https://github.com/swentel/indigenous-android/blob/master/app/src/main/res/values/strings.xml
+
+## API
+
+Want to add a new account type, checkout API.md for a quick guide.
 
 ## Credits
 

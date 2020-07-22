@@ -1,7 +1,5 @@
 package com.indieweb.indigenous.util;
 
-import android.util.Log;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -24,8 +22,8 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
     private final String lineEnd = "\r\n";
     private final String boundary = UUID.randomUUID().toString();
 
-    private Response.Listener<NetworkResponse> mListener;
-    private Response.ErrorListener mErrorListener;
+    private final Response.Listener<NetworkResponse> mListener;
+    private final Response.ErrorListener mErrorListener;
     private Map<String, String> mHeaders;
 
 
@@ -206,9 +204,9 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
     }
 
     protected class DataPart {
-        private String fileName;
-        private byte[] content;
-        private String type;
+        private final String fileName;
+        private final byte[] content;
+        private final String type;
 
         public DataPart(String name, byte[] data, String fileType) {
             fileName = name;

@@ -28,7 +28,9 @@ import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.indieweb.indigenous.util.Utility.getSingleJsonValueFromArrayOrString;
 import static com.indieweb.indigenous.util.Utility.checkReference;
@@ -227,6 +229,24 @@ public class IndieWebReader extends ReaderBase {
     }
 
     @Override
+    public Map<String, String> getTimelineParams(boolean isPreview, boolean isSearch, String channelId, String previewUrl, String searchQuery) {
+        Map<String, String> params = new HashMap<>();
+
+        if (isPreview) {
+            params.put("action", "preview");
+            params.put("url", previewUrl);
+        }
+
+        if (isSearch) {
+            params.put("action", "search");
+            params.put("channel", channelId);
+            params.put("query", searchQuery);
+        }
+
+        return params;
+    }
+
+    @Override
     public List<TimelineItem> parseTimelineResponse(String response, String channelId, String channelName, List<String> entries, boolean isGlobalUnread, boolean isSearch, boolean recursiveReference, String[] olderItems, Context context) {
         JSONObject object;
         JSONArray itemList;
@@ -347,7 +367,7 @@ public class IndieWebReader extends ReaderBase {
                 // Follow-of.
                 if (object.has("follow-of")) {
                     type = "follow-of";
-                    textContent = "Started following you!";
+                    textContent = context.getString(R.string.started_following);
                 }
 
                 // Repost.

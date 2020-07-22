@@ -11,7 +11,6 @@ public class VenueActivity extends BaseCreate {
     protected void onCreate(Bundle savedInstanceState) {
         canAddMedia = true;
         canAddLocation = true;
-        postType = "Venue";
         isCheckin = true;
         addCounter = true;
         hType = "card";

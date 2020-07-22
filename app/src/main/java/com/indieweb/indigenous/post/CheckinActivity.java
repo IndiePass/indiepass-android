@@ -11,7 +11,6 @@ public class CheckinActivity extends BaseCreate {
     protected void onCreate(Bundle savedInstanceState) {
         canAddMedia = true;
         canAddLocation = true;
-        postType = "Checkin";
         isCheckin = true;
         addCounter = true;
         setContentView(R.layout.activity_checkin);

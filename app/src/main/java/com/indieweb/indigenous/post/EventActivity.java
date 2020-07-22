@@ -13,7 +13,6 @@ public class EventActivity extends BaseCreate {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        postType = "Event";
         hType = "event";
         canAddMedia = true;
         canAddLocation = true;

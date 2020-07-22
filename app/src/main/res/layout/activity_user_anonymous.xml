@@ -64,7 +64,7 @@
         android:layout_height="wrap_content" />
 
     <Button
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:id="@+id/reset"
         android:text="@string/reset"
         android:background="@color/buttonBackground"

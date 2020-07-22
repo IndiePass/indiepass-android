@@ -12,7 +12,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.users.AuthBase;
-import com.indieweb.indigenous.util.HTTPRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +28,7 @@ public class PixelfedAuth extends AuthBase {
     @Override
     public void syncAccount(RelativeLayout layout) {
 
-        String endpoint = getUser().getMe() + "/api/v1/accounts/verify_credentials";
+        String endpoint = getUser().getBaseUrl() + "/api/v1/accounts/verify_credentials";
         StringRequest getRequest = new StringRequest(Request.Method.GET, endpoint,
                 new Response.Listener<String>() {
                     @Override
@@ -49,6 +48,10 @@ public class PixelfedAuth extends AuthBase {
                             if (Response.has("display_name")) {
                                 foundInfo = true;
                                 authorName = Response.getString("display_name");
+                            }
+                            else if (Response.has("username")) {
+                                foundInfo = true;
+                                authorName = Response.getString("username");
                             }
                             if (Response.has("avatar")) {
                                 foundInfo = true;

@@ -34,8 +34,8 @@ import io.ticofab.androidgpxparser.parser.domain.TrackSegment;
 public class TripActivity extends BaseCreate {
 
     private TextView pointsInfo;
-    private List<String> points = new ArrayList<>();
-    private int PICK_GPX_REQUEST = 30;
+    private final List<String> points = new ArrayList<>();
+    private final int PICK_GPX_REQUEST = 30;
     private EditText cost;
     private EditText distance;
     private EditText duration;
@@ -43,7 +43,6 @@ public class TripActivity extends BaseCreate {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        postType = "Trip";
         addCounter = true;
         canAddMedia = false;
         canAddLocation = false;

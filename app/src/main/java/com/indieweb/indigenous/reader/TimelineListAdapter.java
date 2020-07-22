@@ -3,7 +3,6 @@ package com.indieweb.indigenous.reader;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.browser.customtabs.CustomTabsIntent;
@@ -16,8 +15,6 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.URLSpan;
-import android.util.Log;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -74,16 +71,16 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
     private final Context context;
     private final List<TimelineItem> items;
-    private LayoutInflater mInflater;
-    private boolean debugItemJSON;
-    private boolean isSourceView;
+    private final LayoutInflater mInflater;
+    private final boolean debugItemJSON;
+    private final boolean isSourceView;
     private final User user;
     private final String channelId;
     private final String channelName;
     private final ListView listView;
     private final int Style;
     private final RelativeLayout layout;
-    private Reader reader;
+    private final Reader reader;
 
     TimelineListAdapter(Context context, Reader reader, List<TimelineItem> items, User user, String channelId, String channelName, ListView listView, boolean isSourceView, int style, RelativeLayout layout) {
         this.context = context;
@@ -373,6 +370,9 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 else {
                     holder.rsvp.setVisibility(View.GONE);
                 }
+
+                holder.menu.setVisibility(View.VISIBLE);
+                holder.menu.setOnClickListener(new OnMenuClickListener(position, this.debugItemJSON));
             }
             else {
                 holder.bookmark.setVisibility(View.GONE);
@@ -381,10 +381,8 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 holder.repost.setVisibility(View.GONE);
                 holder.external.setVisibility(View.GONE);
                 holder.rsvp.setVisibility(View.GONE);
+                holder.menu.setVisibility(View.GONE);
             }
-
-            // Menu listener.
-            holder.menu.setOnClickListener(new OnMenuClickListener(position, this.debugItemJSON));
 
             // Audio.
             if (item.getAudio().length() > 0) {
@@ -787,7 +785,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     /**
      * OnTouchListener for channel row.
      */
-    private View.OnTouchListener eventTouch = new View.OnTouchListener() {
+    private final View.OnTouchListener eventTouch = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent motionEvent) {
             TimelineListAdapter.ViewHolder holder = (TimelineListAdapter.ViewHolder)v.getTag();
@@ -818,7 +816,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     // Reply listener.
     class OnReplyClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnReplyClickListener(int position) {
             this.position = position;
@@ -836,7 +834,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     // Like listener.
     class OnLikeClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnLikeClickListener(int position) {
             this.position = position;
@@ -865,7 +863,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     // Repost listener.
     class OnRepostClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnRepostClickListener(int position) {
             this.position = position;
@@ -894,7 +892,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     // Bookmark listener.
     class OnBookmarkClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnBookmarkClickListener(int position) {
             this.position = position;
@@ -923,7 +921,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     // Read listener.
     class OnReadClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnReadClickListener(int position) {
             this.position = position;
@@ -948,7 +946,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     // Image listener.
     class OnImageClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnImageClickListener(int position) {
             this.position = position;
@@ -966,7 +964,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     // External listener.
     class OnExternalClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnExternalClickListener(int position) {
             this.position = position;
@@ -993,7 +991,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     // RSVP listener.
     class OnRsvpClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnRsvpClickListener(int position) {
             this.position = position;
@@ -1011,7 +1009,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     // Audio listener.
     class OnAudioClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnAudioClickListener(int position) {
             this.position = position;
@@ -1032,7 +1030,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     // Video listener.
     class OnVideoClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnVideoClickListener(int position) {
             this.position = position;
@@ -1050,7 +1048,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     // Map listener.
     class OnMapClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnMapClickListener(int position) {
             this.position = position;
@@ -1074,7 +1072,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     // Author listener.
     class OnAuthorClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnAuthorClickListener(int position) {
             this.position = position;
@@ -1095,8 +1093,8 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     // Menu listener.
     class OnMenuClickListener implements OnClickListener {
 
-        int position;
-        boolean debugJson;
+        final int position;
+        final boolean debugJson;
 
         OnMenuClickListener(int position, boolean debugJson) {
             this.position = position;

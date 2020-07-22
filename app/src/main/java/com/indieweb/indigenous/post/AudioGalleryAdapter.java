@@ -21,13 +21,13 @@ import java.util.List;
 
 public class AudioGalleryAdapter extends RecyclerView.Adapter<AudioGalleryAdapter.MyViewHolder> {
 
-    private List<Uri> audio;
-    private Context context;
-    private boolean isMediaRequest;
+    private final List<Uri> audio;
+    private final Context context;
+    private final boolean isMediaRequest;
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView thumbnail;
-        TextView audioName;
+        final ImageView thumbnail;
+        final TextView audioName;
 
         MyViewHolder(View view) {
             super(view);
@@ -69,7 +69,7 @@ public class AudioGalleryAdapter extends RecyclerView.Adapter<AudioGalleryAdapte
     // Audio click listener.
     class OnAudioClickListener implements View.OnClickListener {
 
-        int position;
+        final int position;
 
         OnAudioClickListener(int position) {
             this.position = position;

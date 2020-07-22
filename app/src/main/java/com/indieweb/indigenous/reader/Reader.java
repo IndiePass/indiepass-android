@@ -8,6 +8,7 @@ import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface Reader {
 
@@ -53,7 +54,7 @@ public interface Reader {
     boolean hasEndpoint();
 
     /**
-     * Get the channel endpoint
+     * Get the channel endpoint.
      *
      * @param showSources
      *   Whether to show the sources or not
@@ -139,6 +140,24 @@ public interface Reader {
      * @return int
      */
     int getTimelineMethod(boolean isPreview, boolean isSearch);
+
+    /**
+     * Get timeline params.
+     *
+     * @param isPreview
+     *   Whether this is a preview
+     * @param isSearch
+     *   Whether this is a search
+     * @param channelId
+     *   The current channel id
+     * @param previewUrl
+     *   The preview URL
+     * @param searchQuery
+     *   The search query.
+     *
+     * @return Map
+     */
+    Map<String, String> getTimelineParams(boolean isPreview, boolean isSearch, String channelId, String previewUrl, String searchQuery);
 
     /**
      * Parse a timeline response.

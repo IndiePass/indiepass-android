@@ -28,9 +28,9 @@ public class PixelfedPost extends PostBase {
     @Override
     public String getEndpoint(boolean isMediaRequest) {
         if (isMediaRequest) {
-            return this.getUser().getMe() + "/api/v1/media";
+            return this.getUser().getBaseUrl() + "/api/v1/media";
         }
-        return this.getUser().getMe() + "/api/v1/statuses";
+        return this.getUser().getBaseUrl() + "/api/v1/statuses";
     }
 
     @Override
@@ -53,10 +53,10 @@ public class PixelfedPost extends PostBase {
     }
 
     @Override
-    public boolean supports(String name) {
+    public boolean supports(String feature) {
         boolean supported = true;
 
-        switch (name) {
+        switch (feature) {
             case FEATURE_TITLE:
             case FEATURE_CATEGORIES:
             case FEATURE_CONTACTS:
@@ -108,7 +108,7 @@ public class PixelfedPost extends PostBase {
 
     @Override
     public void deletePost(String channelId, String id) {
-        String endpoint = getUser().getMe() + "/api/v1/statuses/" + id;
+        String endpoint = getUser().getBaseUrl() + "/api/v1/statuses/" + id;
         HTTPRequest r = new HTTPRequest(null, getUser(), getContext());
         r.doDeleteRequest(endpoint, null);
     }

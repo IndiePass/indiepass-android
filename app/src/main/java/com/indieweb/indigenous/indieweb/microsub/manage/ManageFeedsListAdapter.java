@@ -30,9 +30,9 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
 
     private final Context context;
     private final List<Feed> items;
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
     private final User user;
-    private RelativeLayout layout;
+    private final RelativeLayout layout;
 
     ManageFeedsListAdapter(Context context, List<Feed> items, User user, RelativeLayout layout) {
         this.context = context;
@@ -90,7 +90,7 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
     // Delete listener.
     class OnDeleteClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnDeleteClickListener(int position) {
             this.position = position;
@@ -122,7 +122,7 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
     // Move listener.
     class OnMoveClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnMoveClickListener(int position) {
             this.position = position;

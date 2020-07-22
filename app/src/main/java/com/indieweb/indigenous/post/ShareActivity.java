@@ -36,7 +36,6 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
     String incomingTitle = "";
     String incomingImage = "";
     User user;
-    private General general;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +49,7 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
             return;
         }
 
-        general = GeneralFactory.getGeneral(user, null, ShareActivity.this);
+        General general = GeneralFactory.getGeneral(user, null, ShareActivity.this);
 
         // Listen to incoming data.
         Intent intent = getIntent();

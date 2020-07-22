@@ -6,7 +6,7 @@ import com.indieweb.indigenous.model.User;
 
 abstract public class GeneralBase implements General {
 
-    private Context context;
+    private final Context context;
     private User user;
 
     public GeneralBase(Context context, User user) {

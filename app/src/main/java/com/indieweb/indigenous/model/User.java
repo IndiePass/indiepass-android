@@ -4,7 +4,7 @@ import android.accounts.Account;
 
 public class User {
 
-    private String me;
+    private String accountName;
     private String externalId;
     private String accessToken;
     private String microsubEndpoint;
@@ -16,6 +16,7 @@ public class User {
     private String avatar;
     private String name;
     private String postTypes;
+    private String displayName;
     private boolean valid = false;
     private boolean anonymous = false;
     private Account account;
@@ -23,16 +24,29 @@ public class User {
     private String clientId;
     private String clientSecret;
 
-    public String getMe() {
-        return me;
+    public String getAccountName() {
+        return accountName;
     }
 
-    public String getMeWithoutProtocol() {
-        return me.replace("https://","").replace("http://", "");
+    public String getAccountNameWithoutProtocol() {
+        return accountName.replace("https://","").replace("http://", "");
     }
 
-    public void setMe(String me) {
-        this.me = me;
+    public String getBaseUrl() {
+        String url = getAccountName();
+        if (url.contains("@")) {
+            String[] parts = url.split("@");
+            url = parts[0];
+        }
+        return url;
+    }
+
+    public String getBaseUrlWithoutProtocol() {
+        return  getBaseUrl().replace("https://","").replace("http://", "");
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
     public String getAccessToken() {
@@ -149,6 +163,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getAccountType() {

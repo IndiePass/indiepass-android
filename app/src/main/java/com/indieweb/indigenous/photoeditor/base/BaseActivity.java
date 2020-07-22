@@ -31,7 +31,7 @@ public class BaseActivity extends AppCompatActivity {
         return isGranted;
     }
 
-    public void isPermissionGranted(boolean isGranted, String permission) {
+    public void isPermissionGranted(boolean isGranted) {
 
     }
 
@@ -43,7 +43,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == READ_WRITE_STORAGE) {
-            isPermissionGranted(grantResults[0] == PackageManager.PERMISSION_GRANTED, permissions[0]);
+            isPermissionGranted(grantResults[0] == PackageManager.PERMISSION_GRANTED);
         }
     }
 

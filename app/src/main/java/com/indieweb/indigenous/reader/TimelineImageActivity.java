@@ -69,7 +69,7 @@ public class TimelineImageActivity extends AppCompatActivity {
 
     class ImagePagerAdapter extends PagerAdapter {
 
-        private LayoutInflater inflater;
+        private final LayoutInflater inflater;
 
         ImagePagerAdapter() {
             inflater = LayoutInflater.from(TimelineImageActivity.this);

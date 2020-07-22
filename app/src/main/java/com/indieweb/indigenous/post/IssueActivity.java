@@ -10,7 +10,6 @@ public class IssueActivity extends BaseCreate {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        postType = "Issue";
         urlPostKey = "in-reply-to";
         addCounter = true;
         canAddMedia = true;

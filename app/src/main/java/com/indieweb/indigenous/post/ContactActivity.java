@@ -40,7 +40,6 @@ public class ContactActivity extends BaseCreate {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        postType = "Contact";
         hType = "card";
 
         setContentView(R.layout.activity_contact);

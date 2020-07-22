@@ -51,7 +51,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
     User user;
     TextView resultTitle;
     ListView feedResults;
-    private List<Feed> Feeds = new ArrayList<>();
+    private final List<Feed> Feeds = new ArrayList<>();
     private FeedsResultAdapter adapter;
     RelativeLayout layout;
 
@@ -196,7 +196,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
 
         private final Context context;
         private final List<Feed> items;
-        private LayoutInflater mInflater;
+        private final LayoutInflater mInflater;
 
         FeedsResultAdapter(Context context, List<Feed> items) {
             this.context = context;
@@ -252,7 +252,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
         // Subscribe listener.
         class OnSubscribeClickListener implements View.OnClickListener {
 
-            int position;
+            final int position;
 
             OnSubscribeClickListener(int position) {
                 this.position = position;
@@ -283,7 +283,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
         // Preview listener.
         class OnPreviewClickListener implements View.OnClickListener {
 
-            int position;
+            final int position;
 
             OnPreviewClickListener(int position) {
                 this.position = position;

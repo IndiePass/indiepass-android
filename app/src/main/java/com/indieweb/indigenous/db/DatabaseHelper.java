@@ -17,7 +17,7 @@ import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_SUMMARY
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 27;
+    private static final int DATABASE_VERSION = 28;
     private static final String DATABASE_NAME = "indigenous";
 
     public DatabaseHelper(Context context) {
@@ -36,8 +36,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(TimelineStyle.CREATE_TABLE);
         db.execSQL(Draft.CREATE_TABLE);
         db.execSQL(Cache.CREATE_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS tracks");
-        db.execSQL("DROP TABLE IF EXISTS points");
+
+        // Remove obsolete tables.
+        if (oldVersion < 27) {
+            db.execSQL("DROP TABLE IF EXISTS tracks");
+            db.execSQL("DROP TABLE IF EXISTS points");
+        }
+
+        // New fields.
+        if (oldVersion < 28) {
+            db.execSQL("ALTER TABLE " + Draft.TABLE_NAME + " ADD COLUMN " + Draft.COLUMN_SPOILER + " TEXT");
+            db.execSQL("ALTER TABLE " + Draft.TABLE_NAME + " ADD COLUMN " + Draft.COLUMN_PUBLISHED + " INTEGER");
+            db.execSQL("ALTER TABLE " + Draft.TABLE_NAME + " ADD COLUMN " + Draft.COLUMN_VISIBILITY + " TEXT");
+            db.execSQL("ALTER TABLE " + Draft.TABLE_NAME + " ADD COLUMN " + Draft.COLUMN_SENSITIVITY + " INTEGER");
+        }
     }
 
     /**
@@ -95,6 +107,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(Draft.COLUMN_ACCOUNT, draft.getAccount());
         values.put(Draft.COLUMN_NAME, draft.getName());
         values.put(Draft.COLUMN_BODY, draft.getBody());
+        values.put(Draft.COLUMN_SPOILER, draft.getSpoiler());
         values.put(Draft.COLUMN_IMAGE, draft.getImage());
         values.put(Draft.COLUMN_CAPTION, draft.getCaption());
         values.put(Draft.COLUMN_VIDEO, draft.getVideo());
@@ -105,6 +118,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(Draft.COLUMN_END_DATE, draft.getEndDate());
         values.put(Draft.COLUMN_SYNDICATION_TARGETS, draft.getSyndicationTargets());
         values.put(Draft.COLUMN_PUBLISH_DATE, draft.getPublishDate());
+        values.put(Draft.COLUMN_PUBLISHED, draft.getPublished());
+        values.put(Draft.COLUMN_VISIBILITY, draft.getVisibility());
+        values.put(Draft.COLUMN_SENSITIVITY, draft.getSensitivity());
         values.put(Draft.COLUMN_LOCATION_NAME, draft.getLocationName());
         values.put(Draft.COLUMN_LOCATION_URL, draft.getLocationUrl());
         values.put(Draft.COLUMN_LOCATION_VISIBILITY, draft.getLocationVisibility());
@@ -151,6 +167,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         Draft.COLUMN_TYPE,
                         Draft.COLUMN_NAME,
                         Draft.COLUMN_BODY,
+                        Draft.COLUMN_SPOILER,
                         Draft.COLUMN_IMAGE,
                         Draft.COLUMN_CAPTION,
                         Draft.COLUMN_VIDEO,
@@ -161,6 +178,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         Draft.COLUMN_END_DATE,
                         Draft.COLUMN_SYNDICATION_TARGETS,
                         Draft.COLUMN_PUBLISH_DATE,
+                        Draft.COLUMN_PUBLISHED,
+                        Draft.COLUMN_VISIBILITY,
+                        Draft.COLUMN_SENSITIVITY,
                         Draft.COLUMN_COORDINATES,
                         Draft.COLUMN_LOCATION_NAME,
                         Draft.COLUMN_LOCATION_URL,
@@ -245,6 +265,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         draft.setType(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_TYPE)));
         draft.setName(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_NAME)));
         draft.setBody(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_BODY)));
+        draft.setSpoiler(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_SPOILER)));
         draft.setImage(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_IMAGE)));
         draft.setCaption(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_CAPTION)));
         draft.setVideo(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_VIDEO)));
@@ -255,6 +276,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         draft.setEndDate(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_END_DATE)));
         draft.setSyndicationTargets(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_SYNDICATION_TARGETS)));
         draft.setPublishDate(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_PUBLISH_DATE)));
+        draft.setPublished(cursor.getInt(cursor.getColumnIndex(Draft.COLUMN_PUBLISHED)));
+        draft.setVisibility(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_VISIBILITY)));
+        draft.setSensitivity(cursor.getInt(cursor.getColumnIndex(Draft.COLUMN_SENSITIVITY)));
         draft.setCoordinates(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_COORDINATES)));
         draft.setLocationName(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_LOCATION_NAME)));
         draft.setLocationUrl(cursor.getString(cursor.getColumnIndex(Draft.COLUMN_LOCATION_URL)));

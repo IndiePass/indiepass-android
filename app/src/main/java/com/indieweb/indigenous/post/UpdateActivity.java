@@ -47,7 +47,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
     public ProgressDialog progressDialog;
     private RelativeLayout layout;
     protected VolleyRequestListener volleyRequestListener;
-    private PostListItem item = new PostListItem();
+    private final PostListItem item = new PostListItem();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

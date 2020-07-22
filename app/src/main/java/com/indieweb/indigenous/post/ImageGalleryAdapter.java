@@ -28,13 +28,13 @@ import static com.indieweb.indigenous.MainActivity.EDIT_IMAGE;
 
 public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.MyViewHolder> {
 
-    private List<Uri> image;
-    private List<String> captions;
-    private Context context;
-    private boolean isMediaRequest;
+    private final List<Uri> image;
+    private final List<String> captions;
+    private final Context context;
+    private final boolean isMediaRequest;
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView thumbnail;
+        final ImageView thumbnail;
 
         MyViewHolder(View view) {
             super(view);
@@ -75,7 +75,7 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
     // Image click listener.
     class OnImageClickListener implements View.OnClickListener {
 
-        int position;
+        final int position;
 
         OnImageClickListener(int position) {
             this.position = position;

@@ -12,7 +12,6 @@ public class NoteActivity extends BaseCreate {
     protected void onCreate(Bundle savedInstanceState) {
         canAddMedia = true;
         canAddLocation = true;
-        postType = "Note";
         addCounter = true;
         setContentView(R.layout.activity_note);
         super.onCreate(savedInstanceState);

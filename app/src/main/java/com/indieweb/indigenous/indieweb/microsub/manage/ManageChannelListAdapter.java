@@ -32,8 +32,8 @@ import java.util.List;
 public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannelListAdapter.ViewHolder> implements ItemMoveCallback.ItemTouchHelperContract {
 
     private boolean moved = false;
-    private boolean isShare;
-    private String url;
+    private final boolean isShare;
+    private final String url;
     private final Context context;
     private final List<Channel> channels;
     private final User user;
@@ -172,11 +172,11 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        View rowView;
-        public TextView name;
-        public Button update;
-        public Button delete;
-        public Button drag;
+        final View rowView;
+        public final TextView name;
+        public final Button update;
+        public final Button delete;
+        public final Button drag;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -192,7 +192,7 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
     // Update listener.
     class OnUpdateClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnUpdateClickListener(int position) {
             this.position = position;
@@ -248,7 +248,7 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
     // Delete listener.
     class OnDeleteClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnDeleteClickListener(int position) {
             this.position = position;

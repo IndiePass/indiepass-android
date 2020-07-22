@@ -27,7 +27,7 @@ public class ColorPickerAdapter extends RecyclerView.Adapter<ColorPickerAdapter.
 
     private Context context;
     private LayoutInflater inflater;
-    private List<Integer> colorPickerColors;
+    private final List<Integer> colorPickerColors;
     private OnColorPickerClickListener onColorPickerClickListener;
 
     ColorPickerAdapter(@NonNull Context context, @NonNull List<Integer> colorPickerColors) {
@@ -85,7 +85,7 @@ public class ColorPickerAdapter extends RecyclerView.Adapter<ColorPickerAdapter.
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        View colorPickerView;
+        final View colorPickerView;
 
         public ViewHolder(View itemView) {
             super(itemView);

@@ -18,12 +18,11 @@ public class LaunchActivity extends AppCompatActivity {
         if (user.isValid()) {
             Intent MainActivity = new Intent(getBaseContext(), MainActivity.class);
             startActivity(MainActivity);
-            this.finish();
         }
         else {
             Intent IndieAuth = new Intent(getBaseContext(), AuthActivity.class);
             startActivity(IndieAuth);
-            this.finish();
         }
+        this.finish();
     }
 }

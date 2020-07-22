@@ -9,6 +9,7 @@ import com.indieweb.indigenous.mastodon.MastodonGeneral;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.pixelfed.PixelfedGeneral;
 
+import static com.indieweb.indigenous.mastodon.MastodonReader.CHANNEL_NAME_MASTODON_ANONYMOUS;
 import static com.indieweb.indigenous.pixelfed.PixelfedReader.CHANNEL_NAME_PIXELFED_ANONYMOUS;
 import static com.indieweb.indigenous.users.AuthActivity.MASTODON_ACCOUNT_TYPE;
 import static com.indieweb.indigenous.users.AuthActivity.PIXELFED_ACCOUNT_TYPE;
@@ -19,8 +20,15 @@ public class GeneralFactory {
     public static General getGeneral(User user, String channelId, Context context) {
         String type = "indieweb";
 
-        if (channelId != null && channelId.equals(CHANNEL_NAME_PIXELFED_ANONYMOUS)) {
-            type = "pixelfed";
+        if (channelId != null) {
+            switch (channelId) {
+                case CHANNEL_NAME_MASTODON_ANONYMOUS:
+                    type = "mastodon";
+                    break;
+                case CHANNEL_NAME_PIXELFED_ANONYMOUS:
+                    type = "pixelfed";
+                    break;
+            }
         }
 
         if (user.isAuthenticated()) {

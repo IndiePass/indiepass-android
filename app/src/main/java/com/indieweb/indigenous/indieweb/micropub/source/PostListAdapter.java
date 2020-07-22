@@ -42,7 +42,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
 
     private final Context context;
     private final List<PostListItem> items;
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
     private final boolean showUpdateButton;
     private final boolean showDeleteButton;
     private final User user;
@@ -229,7 +229,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
     // Update listener.
     class OnUpdateClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnUpdateClickListener(int position) {
             this.position = position;
@@ -248,7 +248,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
     // Reply listener.
     class OnReplyClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnReplyClickListener(int position) {
             this.position = position;
@@ -266,7 +266,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
     // External listener.
     class OnExternalClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnExternalClickListener(int position) {
             this.position = position;
@@ -293,7 +293,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
     // Delete listener.
     class OnDeleteClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnDeleteClickListener(int position) {
             this.position = position;

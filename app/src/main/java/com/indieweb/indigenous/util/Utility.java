@@ -14,7 +14,6 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -56,7 +55,7 @@ import java.util.List;
 
 public class Utility {
 
-    public static List<String> dateFormatStrings = Arrays.asList("yyyy-MM-dd'T'HH:mm:ssZ", "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd HH:mm:ssZ", "yyyy-MM-dd HH:mmZ");
+    public static final List<String> dateFormatStrings = Arrays.asList("yyyy-MM-dd'T'HH:mm:ssZ", "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd HH:mm:ssZ", "yyyy-MM-dd HH:mmZ");
 
     /**
      * Check if we have an internet connection.

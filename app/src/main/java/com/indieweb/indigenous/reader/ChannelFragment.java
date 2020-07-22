@@ -129,7 +129,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
 
         if (!Utility.hasConnection(requireContext()) && reader.supports(Reader.READER_CHANNEL_CAN_CACHE)) {
             setShowRefreshedMessage(false);
-            Cache cache = user.isAuthenticated() ? Utility.getCache(requireContext(), user.getMeWithoutProtocol(), "channels", "", "") : null;
+            Cache cache = user.isAuthenticated() ? Utility.getCache(requireContext(), user.getAccountNameWithoutProtocol(), "channels", "", "") : null;
             if (cache != null && cache.getData().length() > 0) {
                 parseChannelResponse(cache.getData(), true);
                 Snackbar.make(layout, getString(R.string.reader_offline), Snackbar.LENGTH_SHORT).show();
@@ -157,7 +157,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void OnSuccessRequest(String response) {
         try {
-            Utility.saveCache(requireContext(), user.getMeWithoutProtocol(), "channels", response, "", "");
+            Utility.saveCache(requireContext(), user.getAccountNameWithoutProtocol(), "channels", response, "", "");
         }
         catch (Exception ignored) {}
         parseChannelResponse(response, false);

@@ -10,7 +10,6 @@ public class RepostActivity extends BaseCreate {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        postType = "Repost";
         urlPostKey = "repost-of";
         autoSubmit = "pref_key_share_repost_auto_submit";
         addCounter = true;

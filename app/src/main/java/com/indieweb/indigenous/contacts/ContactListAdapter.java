@@ -37,9 +37,9 @@ public class ContactListAdapter extends BaseAdapter implements OnClickListener {
 
     private final Context context;
     private final List<Contact> contacts;
-    private LayoutInflater mInflater;
-    private User user;
-    private RelativeLayout layout;
+    private final LayoutInflater mInflater;
+    private final User user;
+    private final RelativeLayout layout;
 
     ContactListAdapter(Context context, List<Contact> contacts, User user, RelativeLayout layout) {
         this.context = context;
@@ -152,7 +152,7 @@ public class ContactListAdapter extends BaseAdapter implements OnClickListener {
     // Update listener.
     class OnUpdateClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnUpdateClickListener(int position) {
             this.position = position;
@@ -172,7 +172,7 @@ public class ContactListAdapter extends BaseAdapter implements OnClickListener {
     // Delete listener.
     class OnDeleteClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnDeleteClickListener(int position) {
             this.position = position;

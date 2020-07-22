@@ -15,7 +15,6 @@ public class UploadActivity extends BaseCreate {
         isMediaRequest = true;
         finishActivity = false;
         canAddMedia = true;
-        postType = "Media";
         setContentView(R.layout.activity_upload);
         super.onCreate(savedInstanceState);
 

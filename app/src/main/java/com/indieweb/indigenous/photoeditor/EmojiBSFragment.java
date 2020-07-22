@@ -31,7 +31,7 @@ public class EmojiBSFragment extends BottomSheetDialogFragment {
         void onEmojiClick(String emojiUnicode);
     }
 
-    private BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
+    private final BottomSheetBehavior.BottomSheetCallback mBottomSheetBehaviorCallback = new BottomSheetBehavior.BottomSheetCallback() {
 
         @Override
         public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -74,7 +74,7 @@ public class EmojiBSFragment extends BottomSheetDialogFragment {
 
     public class EmojiAdapter extends RecyclerView.Adapter<EmojiAdapter.ViewHolder> {
 
-        ArrayList<String> emojisList = PhotoEditor.getEmojis(getActivity());
+        final ArrayList<String> emojisList = PhotoEditor.getEmojis(getActivity());
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -93,7 +93,7 @@ public class EmojiBSFragment extends BottomSheetDialogFragment {
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            TextView txtEmoji;
+            final TextView txtEmoji;
 
             ViewHolder(View itemView) {
                 super(itemView);

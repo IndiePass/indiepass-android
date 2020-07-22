@@ -25,6 +25,7 @@ public class PixelfedReader extends ReaderBase {
     public static final String CHANNEL_NAME_HOME = "pixelfed_home";
     public static final String CHANNEL_NAME_PUBLIC = "pixelfed_public";
     public static final String CHANNEL_NAME_MY_POSTS = "pixelfed_my_posts";
+    public static final String CHANNEL_NAME_NOTIFICATIONS = "pixelfed_notifications";
     public static final String CHANNEL_NAME_FAVOURITES = "pixelfed_favourites";
     public static final String CHANNEL_NAME_BOOKMARKS = "pixelfed_bookmarks";
 
@@ -78,6 +79,11 @@ public class PixelfedReader extends ReaderBase {
             c.setUnread(0);
             Channels.add(c);
             c = new Channel();
+            c.setName(getContext().getString(R.string.channel_notifications));
+            c.setUid(CHANNEL_NAME_NOTIFICATIONS);
+            c.setUnread(0);
+            Channels.add(c);
+            c = new Channel();
             c.setName(getContext().getString(R.string.channel_favourites));
             c.setUid(CHANNEL_NAME_FAVOURITES);
             c.setUnread(0);
@@ -85,7 +91,7 @@ public class PixelfedReader extends ReaderBase {
             // Disabled until https://github.com/pixelfed/pixelfed/issues/2317 is fixed
             /*c = new Channel();
             c.setName(getContext().getString(R.string.channel_bookmarks));
-            c.setUid(CHANNEL_NAME_BOOKMARKS");
+            c.setUid(CHANNEL_NAME_BOOKMARKS);
             c.setUnread(0);
             Channels.add(c);*/
         }
@@ -105,28 +111,31 @@ public class PixelfedReader extends ReaderBase {
             endpoint = "https://pixelfed.social/api/v1/timelines/public?limit=" + LIMIT;
         }
         else if (isSourceView && sourceId != null) {
-            endpoint = this.getUser().getMe() + "/api/v1/accounts/" + sourceId + "/statuses";
+            endpoint = this.getUser().getBaseUrl() + "/api/v1/accounts/" + sourceId + "/statuses";
         }
         else if (isSearch && search.length() > 0) {
-            endpoint = this.getUser().getMe() + "/api/v2/search?q=" + search;
+            endpoint = this.getUser().getBaseUrl() + "/api/v2/search?q=" + search;
         }
         else {
             switch (channelId) {
                 case CHANNEL_NAME_HOME:
-                    endpoint = this.getUser().getMe() + "/api/v1/timelines/home";
+                    endpoint = this.getUser().getBaseUrl() + "/api/v1/timelines/home";
                     break;
                 case CHANNEL_NAME_FAVOURITES:
-                    endpoint = this.getUser().getMe() + "/api/v1/favourites";
+                    endpoint = this.getUser().getBaseUrl() + "/api/v1/favourites";
+                    break;
+                case CHANNEL_NAME_NOTIFICATIONS:
+                    endpoint = this.getUser().getBaseUrl() + "/api/v1/notifications";
                     break;
                 case CHANNEL_NAME_BOOKMARKS:
-                    endpoint = this.getUser().getMe() + "/api/v1/bookmarks";
+                    endpoint = this.getUser().getBaseUrl() + "/api/v1/bookmarks";
                     break;
                 case CHANNEL_NAME_MY_POSTS:
-                    endpoint = this.getUser().getMe() + "/api/v1/accounts/" + this.getUser().getExternalId() + "/statuses";
+                    endpoint = this.getUser().getBaseUrl() + "/api/v1/accounts/" + this.getUser().getExternalId() + "/statuses";
                     break;
                 case CHANNEL_NAME_PUBLIC:
                 default:
-                    endpoint = this.getUser().getMe() + "/api/v1/timelines/public";
+                    endpoint = this.getUser().getBaseUrl() + "/api/v1/timelines/public";
                     break;
             }
 
@@ -159,6 +168,7 @@ public class PixelfedReader extends ReaderBase {
         JSONObject object;
         String maxId = "";
         List<TimelineItem> TimelineItems = new ArrayList<>();
+        boolean getMedia;
 
         try {
 
@@ -172,6 +182,7 @@ public class PixelfedReader extends ReaderBase {
             }
 
             for (int i = 0; i < itemList.length(); i++) {
+                getMedia = true;
                 object = itemList.getJSONObject(i);
                 TimelineItem item = new TimelineItem();
                 item.setJson(itemList.getString(i));
@@ -181,13 +192,43 @@ public class PixelfedReader extends ReaderBase {
                 String name = "";
                 String authorName = "";
 
-                item.setType(type);
                 item.setName(name);
-                item.setHtmlContent(object.getString("content"));
+
+                if (object.has("content")) {
+                    item.setHtmlContent(object.getString("content"));
+                }
                 item.setTextContent("");
                 item.setReference("");
                 item.setChannelId(channelId);
-                item.setNumberOfComments(object.getInt("replies_count"));
+
+                if (object.has("type")) {
+                    getMedia = false;
+                    String notificationType = object.getString("type");
+                    switch (notificationType) {
+                        case "favourite":
+                            type = "like-of";
+                            item.addToResponseType(type, object.getJSONObject("status").getString("uri"));
+                            break;
+                        case "reblog":
+                            type = "repost-of";
+                            getMedia = false;
+                            item.addToResponseType(type, object.getJSONObject("status").getString("uri"));
+                            break;
+                        case "follow":
+                            type = "follow-of";
+                            item.setHtmlContent(context.getString(R.string.started_following));
+                            break;
+                        case "mention":
+                            type = "in-reply-to";
+                            item.addToResponseType(type, object.getJSONObject("status").getString("uri"));
+                            item.setHtmlContent(object.getJSONObject("status").getString("content"));
+                            break;
+                    }
+                }
+
+                if (object.has("replies_count")) {
+                    item.setNumberOfComments(object.getInt("replies_count"));
+                }
 
                 // Published
                 String published = "";
@@ -216,7 +257,7 @@ public class PixelfedReader extends ReaderBase {
                 }
 
                 // Photos.
-                if (object.has("media_attachments")) {
+                if (object.has("media_attachments") && getMedia) {
                     try {
                         JSONArray photos = object.getJSONArray("media_attachments");
                         for (int p = 0; p < photos.length(); p++) {
@@ -253,11 +294,18 @@ public class PixelfedReader extends ReaderBase {
                 item.setAuthorName(authorName);
 
                 // Responses.
-                item.setLiked(object.getBoolean("favourited"));
-                item.setBookmarked(object.getBoolean("bookmarked"));
-                item.setReposted(object.getBoolean("reblogged"));
+                if (object.has("favourited")) {
+                    item.setLiked(object.getBoolean("favourited"));
+                }
+                if (object.has("bookmarked")) {
+                    item.setBookmarked(object.getBoolean("bookmarked"));
+                }
+                if (object.has("reblogged")) {
+                    item.setReposted(object.getBoolean("reblogged"));
+                }
 
                 maxId = item.getId();
+                item.setType(type);
                 TimelineItems.add(item);
             }
 
@@ -279,37 +327,37 @@ public class PixelfedReader extends ReaderBase {
         switch (response) {
             case RESPONSE_LIKE:
                 if (item.isLiked()) {
-                    appUrl = getUser().getMe() + "/api/v1/statuses/" + item.getId() + "/unfavourite";
+                    appUrl = getUser().getBaseUrl() + "/api/v1/statuses/" + item.getId() + "/unfavourite";
                 }
                 else {
-                    appUrl = getUser().getMe() + "/api/v1/statuses/" + item.getId() + "/favourite";
+                    appUrl = getUser().getBaseUrl() + "/api/v1/statuses/" + item.getId() + "/favourite";
                     isActive = true;
                 }
                 break;
             case RESPONSE_BOOKMARK:
                 if (item.isBookmarked()) {
-                    appUrl = getUser().getMe() + "/api/v1/statuses/" + item.getId() + "/unbookmark";
+                    appUrl = getUser().getBaseUrl() + "/api/v1/statuses/" + item.getId() + "/unbookmark";
                 }
                 else {
-                    appUrl = getUser().getMe() + "/api/v1/statuses/" + item.getId() + "/bookmark";
+                    appUrl = getUser().getBaseUrl() + "/api/v1/statuses/" + item.getId() + "/bookmark";
                     isActive = true;
                 }
                 break;
             case RESPONSE_REPOST:
                 if (item.isReposted()) {
-                    appUrl = getUser().getMe() + "/api/v1/statuses/" + item.getId() + "/unreblog";
+                    appUrl = getUser().getBaseUrl() + "/api/v1/statuses/" + item.getId() + "/unreblog";
                 }
                 else {
-                    appUrl = getUser().getMe() + "/api/v1/statuses/" + item.getId() + "/reblog";
+                    appUrl = getUser().getBaseUrl() + "/api/v1/statuses/" + item.getId() + "/reblog";
                     isActive = true;
                 }
                 break;
             case RESPONSE_CONTACT:
                 if (item.getChannelId().equals(CHANNEL_NAME_HOME)) {
-                    appUrl = getUser().getMe() + "/api/v1/accounts/" + item.getAuthorId() + "/unfollow";
+                    appUrl = getUser().getBaseUrl() + "/api/v1/accounts/" + item.getAuthorId() + "/unfollow";
                 }
                 else {
-                    appUrl = getUser().getMe() + "/api/v1/accounts/" + item.getAuthorId() + "/follow";
+                    appUrl = getUser().getBaseUrl() + "/api/v1/accounts/" + item.getAuthorId() + "/follow";
                 }
                 break;
         }
@@ -324,7 +372,7 @@ public class PixelfedReader extends ReaderBase {
 
     @Override
     public boolean canContact(String channelId) {
-        return !channelId.equals(CHANNEL_NAME_MY_POSTS);
+        return !channelId.equals(CHANNEL_NAME_MY_POSTS) && !channelId.equals(CHANNEL_NAME_NOTIFICATIONS);
     }
 
     @Override

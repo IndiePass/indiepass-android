@@ -24,8 +24,8 @@ import ja.burhanrashid52.photoeditor.PhotoFilter;
 
 public class FilterViewAdapter extends RecyclerView.Adapter<FilterViewAdapter.ViewHolder> {
 
-    private FilterListener mFilterListener;
-    private List<Pair<String, PhotoFilter>> mPairList = new ArrayList<>();
+    private final FilterListener mFilterListener;
+    private final List<Pair<String, PhotoFilter>> mPairList = new ArrayList<>();
 
     public FilterViewAdapter(FilterListener filterListener) {
         mFilterListener = filterListener;
@@ -53,8 +53,8 @@ public class FilterViewAdapter extends RecyclerView.Adapter<FilterViewAdapter.Vi
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView mImageFilterView;
-        TextView mTxtFilterName;
+        final ImageView mImageFilterView;
+        final TextView mTxtFilterName;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -71,7 +71,7 @@ public class FilterViewAdapter extends RecyclerView.Adapter<FilterViewAdapter.Vi
 
     private Bitmap getBitmapFromAsset(Context context, String strName) {
         AssetManager assetManager = context.getAssets();
-        InputStream istr = null;
+        InputStream istr;
         try {
             istr = assetManager.open(strName);
             return BitmapFactory.decodeStream(istr);

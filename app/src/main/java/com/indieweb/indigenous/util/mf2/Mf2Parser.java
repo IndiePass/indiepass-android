@@ -19,7 +19,7 @@ import org.jsoup.select.Elements;
  */
 public class Mf2Parser {
 
-    private ArrayList<HCard> hcards = new ArrayList<>();
+    private final ArrayList<HCard> hcards = new ArrayList<>();
 
     /**
      * Constructor

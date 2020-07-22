@@ -32,7 +32,7 @@ public class ContactFragment extends BaseFragment implements View.OnClickListene
 
     private ListView listContact;
     private ContactListAdapter adapter;
-    private List<Contact> Contacts = new ArrayList<>();
+    private final List<Contact> Contacts = new ArrayList<>();
 
     @Nullable
     @Override

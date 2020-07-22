@@ -12,7 +12,6 @@ public class ReadActivity extends BaseCreate {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        postType = "Read";
         urlPostKey = "read-of";
         addCounter = true;
         setContentView(R.layout.activity_read);

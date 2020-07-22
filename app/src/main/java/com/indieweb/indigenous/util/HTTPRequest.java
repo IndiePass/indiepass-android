@@ -16,9 +16,9 @@ import java.util.Map;
 
 public class HTTPRequest {
 
-    private Context context;
-    private User user;
-    private VolleyRequestListener volleyRequestListener;
+    private final Context context;
+    private final User user;
+    private final VolleyRequestListener volleyRequestListener;
 
     public HTTPRequest(VolleyRequestListener volleyRequestListener, User user, Context context) {
         this.volleyRequestListener = volleyRequestListener;

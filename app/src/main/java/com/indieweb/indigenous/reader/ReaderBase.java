@@ -11,14 +11,15 @@ import com.indieweb.indigenous.util.Preferences;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.indieweb.indigenous.mastodon.MastodonReader.CHANNEL_NAME_MASTODON_ANONYMOUS;
 import static com.indieweb.indigenous.pixelfed.PixelfedReader.CHANNEL_NAME_PIXELFED_ANONYMOUS;
 
 abstract public class ReaderBase implements Reader {
 
-    private Context context;
-    private User user;
+    private final Context context;
+    private final User user;
 
     public ReaderBase(Context context, User user) {
         this.context = context;
@@ -94,6 +95,11 @@ abstract public class ReaderBase implements Reader {
     @Override
     public boolean sendTimelineAccessToken(String channelId) {
         return true;
+    }
+
+    @Override
+    public Map<String, String> getTimelineParams(boolean isPreview, boolean isSearch, String channelId, String previewUrl, String searchQuery) {
+        return null;
     }
 
     @Override

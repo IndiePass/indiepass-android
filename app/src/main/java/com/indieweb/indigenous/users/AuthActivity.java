@@ -97,8 +97,8 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     String mastodonClientSecret;
     protected VolleyRequestListener volleyRequestListener;
 
-    String ClientId = "https://indigenous.realize.be/";
-    String RedirectUri = "https://indigenous.realize.be/indigenous-callback.php";
+    final String ClientId = "https://indigenous.realize.be/";
+    final String RedirectUri = "https://indigenous.realize.be/indigenous-callback.php";
 
     /**
      * Set request listener.
@@ -173,9 +173,8 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                         // Show 'select account' button.
                         SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
                         String accountName = preferences.getString("account", "");
-                        AccountManager accountManager = AccountManager.get(getApplicationContext());
-                        Account[] accounts = accountManager.getAccounts();
-                        if (accountName.length() == 0 && accounts.length > 0) {
+                        int numberOfAccounts = new Accounts(AuthActivity.this).getCount();
+                        if (accountName.length() == 0 && numberOfAccounts > 0) {
                             LinearLayout selectContainer = findViewById(R.id.selectContainer);
                             selectContainer.setVisibility(View.VISIBLE);
                             Button selectAccount = findViewById(R.id.selectAccountButton);
@@ -254,6 +253,13 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                 return;
             }
 
+            domainInput = domain.getText().toString();
+
+            // Check if there's no protocol, prefix it with https:// if necessary.
+            if (!domainInput.contains("http://") && !domainInput.contains("https://")) {
+                domainInput = "https://" + domainInput;
+            }
+
             if (accountType.equals("indieweb")) {
                 registerWithIndieWeb();
             }
@@ -269,6 +275,101 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     };
 
     /**
+     * Change the sign in button.
+     *
+     * @param text
+     *   The text to change the sign in button to.
+     */
+    public void changeSignInButton(int text) {
+        signIn.setText(text);
+    }
+
+    /**
+     * Show sign in form and reset variables.
+     */
+    public void showForm() {
+        info.setVisibility(View.VISIBLE);
+        domain.setVisibility(View.VISIBLE);
+        signIn.setVisibility(View.VISIBLE);
+        changeSignInButton(R.string.sign_in);
+    }
+
+
+    @Override
+    public void OnSuccessRequest(String response) {
+        if (requestType.equals("pixelfedAppRegister")) {
+            handlePixelfedAppRegister(response);
+        }
+
+        if (requestType.equals("pixelfedAccessToken")) {
+            handlePixelfedAccessToken(response);
+        }
+
+        if (requestType.equals("mastodonAppRegister")) {
+            handleMastodonAppRegister(response);
+        }
+
+        if (requestType.equals("mastodonAccessToken")) {
+            handleMastodonAccessToken(response);
+        }
+
+    }
+
+    @Override
+    public void OnFailureRequest(VolleyError error) {
+        showForm();
+        String message = getString(R.string.request_failed_unknown);
+        try {
+            message = Utility.parseNetworkError(error, getApplicationContext(), R.string.request_failed, R.string.request_failed_unknown);
+        }
+        catch (Exception ignored) {}
+        Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Start the authorization.
+     *
+     * @param uri
+     *   The URI to open.
+     */
+    public void startAuthorization(Uri uri) {
+        CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
+        intentBuilder.setToolbarColor(ContextCompat.getColor(AuthActivity.this, R.color.colorPrimary));
+        intentBuilder.setSecondaryToolbarColor(ContextCompat.getColor(AuthActivity.this, R.color.colorPrimaryDark));
+        CustomTabsIntent customTabsIntent = intentBuilder.build();
+        customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        customTabsIntent.launchUrl(AuthActivity.this, uri);
+    }
+
+    /**
+     * Set default account.
+     */
+    public void setDefaultAccount() {
+        int numberOfAccounts = new Accounts(AuthActivity.this).getCount();
+        if (numberOfAccounts == 0) {
+            SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
+            editor.putString("account", getAccountName());
+            editor.apply();
+        }
+    }
+
+    /**
+     * Creates a unique account name based on domain input.
+     *
+     * Use this function when creating a new account.
+     *
+     * @return String
+     */
+    public String getAccountName() {
+        String accountName = domainInput;
+
+        accountName += "@" + state.replace("-", "");
+
+        return accountName;
+    }
+
+    /**
      * Register with IndieWeb.
      */
     private void registerWithIndieWeb() {
@@ -282,28 +383,12 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
         authorName = "";
         authorAvatar = "";
 
-        domainInput = domain.getText().toString();
-
-        // Check if there's no protocol, prefix it with https:// if necessary.
-        if (!domainInput.contains("http://") && !domainInput.contains("https://")) {
-            domainInput = "https://" + domainInput;
-        }
-
         changeSignInButton(R.string.connecting);
         if (validIndieWebDomain(domainInput)) {
-
             String codeChallenge = Utility.sha256(codeVerifier);
             String url = authorizationEndpoint + "?code_challenge_method=S256&code_challenge=" + codeChallenge + "&response_type=code&redirect_uri=" + RedirectUri + "&client_id=" + ClientId + "&me=" + domainInput + "&scope=create+update+delete+media+read+follow+channels+mute+block&state=" + state;
             Uri uri = Uri.parse(url);
-
-            CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
-            intentBuilder.setToolbarColor(ContextCompat.getColor(AuthActivity.this, R.color.colorPrimary));
-            intentBuilder.setSecondaryToolbarColor(ContextCompat.getColor(AuthActivity.this, R.color.colorPrimaryDark));
-            CustomTabsIntent customTabsIntent = intentBuilder.build();
-            customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            customTabsIntent.launchUrl(AuthActivity.this, uri);
-
+            startAuthorization(uri);
         }
         else {
             changeSignInButton(R.string.sign_in);
@@ -317,213 +402,6 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
             );
             snack.show();
         }
-    }
-
-    /**
-     * Connect to Pixelfed instance.
-     */
-    private void registerWithPixelfed() {
-        domainInput = Utility.stripEndingSlash(domain.getText().toString());
-
-        // Check if there's no protocol, prefix it with https:// if necessary.
-        if (!domainInput.contains("http://") && !domainInput.contains("https://")) {
-            domainInput = "https://" + domainInput;
-        }
-
-        if (URLUtil.isValidUrl( domainInput)) {
-            changeSignInButton(R.string.connecting);
-            registerPixelfedApp();
-        }
-        else {
-            changeSignInButton(R.string.sign_in);
-            final Snackbar snack = Snackbar.make(layout, getString(R.string.invalid_url), Snackbar.LENGTH_INDEFINITE);
-            snack.setAction(getString(R.string.close), new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            snack.dismiss();
-                        }
-                    }
-            );
-            snack.show();
-        }
-    }
-
-    /**
-     * Connect to Mastodon instance.
-     */
-    private void registerWithMastodon() {
-        domainInput = Utility.stripEndingSlash(domain.getText().toString());
-
-        // Check if there's no protocol, prefix it with https:// if necessary.
-        if (!domainInput.contains("http://") && !domainInput.contains("https://")) {
-            domainInput = "https://" + domainInput;
-        }
-
-        if (URLUtil.isValidUrl( domainInput)) {
-            changeSignInButton(R.string.connecting);
-            registerMastodonApp();
-        }
-        else {
-            changeSignInButton(R.string.sign_in);
-            final Snackbar snack = Snackbar.make(layout, getString(R.string.invalid_url), Snackbar.LENGTH_INDEFINITE);
-            snack.setAction(getString(R.string.close), new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            snack.dismiss();
-                        }
-                    }
-            );
-            snack.show();
-        }
-    }
-
-    /**
-     * Register Pixelfed application.
-     */
-    public void registerPixelfedApp() {
-        requestType = "pixelfedAppRegister";
-        Map<String, String> params = new HashMap<>();
-        params.put("client_name", "Indigenous");
-        params.put("website", ClientId);
-        params.put("redirect_uris", RedirectUri);
-        params.put("scopes", "read write follow push");
-
-        String appUrl = domainInput + "/api/v1/apps";
-        HTTPRequest r = new HTTPRequest(this.volleyRequestListener, null, getApplicationContext());
-        r.doPostRequest(appUrl, params);
-    }
-
-    /**
-     * Register mastodon app.
-     */
-    public void registerMastodonApp() {
-        requestType = "mastodonAppRegister";
-        Map<String, String> params = new HashMap<>();
-        params.put("client_name", "Indigenous");
-        params.put("website", ClientId);
-        params.put("redirect_uris", RedirectUri);
-        params.put("scopes", "read write follow push");
-
-        String appUrl = domainInput + "/api/v1/apps";
-        HTTPRequest r = new HTTPRequest(this.volleyRequestListener, null, getApplicationContext());
-        r.doPostRequest(appUrl, params);
-    }
-
-    /**
-     * Authorize with pixelfed.
-     */
-    public void authorizePixelfed() {
-
-        String url = domainInput + "/oauth/authorize?response_type=code&redirect_uri=" + RedirectUri + "&client_id=" + pixelfedClientId + "&scope=read+write+follow+push";
-        Uri uri = Uri.parse(url);
-
-        CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
-        intentBuilder.setToolbarColor(ContextCompat.getColor(AuthActivity.this, R.color.colorPrimary));
-        intentBuilder.setSecondaryToolbarColor(ContextCompat.getColor(AuthActivity.this, R.color.colorPrimaryDark));
-        CustomTabsIntent customTabsIntent = intentBuilder.build();
-        customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        customTabsIntent.launchUrl(AuthActivity.this, uri);
-    }
-
-    /**
-     * Authorize with mastodon.
-     */
-    public void authorizeMastodon() {
-        String url = domainInput + "/oauth/authorize?response_type=code&redirect_uri=" + RedirectUri + "&client_id=" + mastodonClientId + "&scope=read+write+follow+push";
-        Uri uri = Uri.parse(url);
-
-        CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
-        intentBuilder.setToolbarColor(ContextCompat.getColor(AuthActivity.this, R.color.colorPrimary));
-        intentBuilder.setSecondaryToolbarColor(ContextCompat.getColor(AuthActivity.this, R.color.colorPrimaryDark));
-        CustomTabsIntent customTabsIntent = intentBuilder.build();
-        customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        customTabsIntent.launchUrl(AuthActivity.this, uri);
-    }
-
-    /**
-     * Sync pixelfed
-     *
-     * @param user
-     *   The current user
-     */
-    public void syncPixelfed(User user) {
-        Auth auth = AuthFactory.getAuth(user, AuthActivity.this);
-        auth.syncAccount(layout);
-
-        // Start launch activity which will determine where it will go.
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent launch = new Intent(getBaseContext(), LaunchActivity.class);
-                startActivity(launch);
-                finish();
-            }
-        }, 1000);
-    }
-
-    /**
-     * Sync mastodon
-     *
-     * @param user
-     *   The current user
-     */
-    public void syncMastodon(User user) {
-        Auth auth = AuthFactory.getAuth(user, AuthActivity.this);
-        auth.syncAccount(layout);
-
-        // Start launch activity which will determine where it will go.
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent launch = new Intent(getBaseContext(), LaunchActivity.class);
-                startActivity(launch);
-                finish();
-            }
-        }, 1000);
-    }
-
-    /**
-     * Validate pixelfed code and get access token.
-     *
-     * @param code
-     *   The code from the authorize call.
-     */
-    public void validatePixelfedCode(String code) {
-        requestType = "pixelfedAccessToken";
-        Map<String, String> params = new HashMap<>();
-        params.put("client_id", pixelfedClientId);
-        params.put("client_secret", pixelfedClientSecret);
-        params.put("redirect_uri", RedirectUri);
-        params.put("scope", "read write follow push");
-        params.put("code", code);
-        params.put("grant_type", "authorization_code");
-
-        String appUrl = domainInput + "/oauth/token";
-        HTTPRequest r = new HTTPRequest(this.volleyRequestListener, null, getApplicationContext());
-        r.doPostRequest(appUrl, params);
-    }
-
-    /**
-     * Validate mastodon code and get access token.
-     *
-     * @param code
-     *   The code from the authorize call.
-     */
-    public void validateMastodonCode(String code) {
-        requestType = "mastodonAccessToken";
-        Map<String, String> params = new HashMap<>();
-        params.put("client_id", mastodonClientId);
-        params.put("client_secret", mastodonClientSecret);
-        params.put("redirect_uri", RedirectUri);
-        params.put("scope", "read write follow push");
-        params.put("code", code);
-        params.put("grant_type", "authorization_code");
-
-        String appUrl = domainInput + "/oauth/token";
-        HTTPRequest r = new HTTPRequest(this.volleyRequestListener, null, getApplicationContext());
-        r.doPostRequest(appUrl, params);
     }
 
     /**
@@ -626,11 +504,11 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
         catch (IllegalArgumentException | IOException e) {
             final Snackbar snack = Snackbar.make(layout, String.format(getString(R.string.domain_connect_error), e.getMessage()), Snackbar.LENGTH_INDEFINITE);
             snack.setAction(getString(R.string.close), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        snack.dismiss();
+                        @Override
+                        public void onClick(View v) {
+                            snack.dismiss();
+                        }
                     }
-                }
             );
             snack.show();
         }
@@ -652,156 +530,151 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, tokenEndpoint,
-            new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
 
-                    String accessToken = "";
-                    String errorMessage = "";
-                    boolean accessTokenFound = false;
+                        String accessToken = "";
+                        String errorMessage = "";
+                        boolean accessTokenFound = false;
 
-                    try {
-                        JSONObject indieAuthResponse = new JSONObject(response);
-                        accessToken = indieAuthResponse.getString("access_token");
-                        accessTokenFound = true;
-
-                        // Check profile key.
-                        if (indieAuthResponse.has("profile")) {
-                            JSONObject profile = indieAuthResponse.getJSONObject("profile");
-                            if (profile.has("name")) {
-                                authorName = profile.getString("name");
-                            }
-                            if (profile.has("photo")) {
-                                authorAvatar = profile.getString("photo");
-                            }
-                        }
-                    }
-                    catch (JSONException e) {
-
-                        // Catch the json exception. However, we're not done yet.
-                        errorMessage = e.getMessage();
-
-                        // Known, and maybe other projects, do not return a json response (yet), so
-                        // the access token might be in the body as an URL-encoded query string.
-                        // @see https://github.com/idno/Known/issues/1986
                         try {
-                            Map<String, String> query_pairs = new LinkedHashMap<>();
-                            String[] pairs = response.split("&");
-                            for (String pair : pairs) {
-                                int idx = pair.indexOf("=");
-                                query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
+                            JSONObject indieAuthResponse = new JSONObject(response);
+                            accessToken = indieAuthResponse.getString("access_token");
+                            accessTokenFound = true;
+
+                            // Check profile key.
+                            if (indieAuthResponse.has("profile")) {
+                                JSONObject profile = indieAuthResponse.getJSONObject("profile");
+                                if (profile.has("name")) {
+                                    authorName = profile.getString("name");
+                                }
+                                if (profile.has("photo")) {
+                                    authorAvatar = profile.getString("photo");
+                                }
                             }
-                            accessToken = query_pairs.get("access_token");
-                            if (accessToken != null && accessToken.length() > 0) {
-                                accessTokenFound = true;
-                            }
-
                         }
-                        catch (Exception e1) {
-                            errorMessage += " - " + e1.getMessage();
-                        }
+                        catch (JSONException e) {
 
-                    }
+                            // Catch the json exception. However, we're not done yet.
+                            errorMessage = e.getMessage();
 
-                    if (accessTokenFound && returnedState.equals(state)) {
-
-                        // If author name or avatar are still empty, try parsing the HTML.
-                        if (authorName.length() == 0 || authorAvatar.length() == 0) {
-                            String noProtocolUrl = domainInput.replace("https://","").replace("http://", "");
+                            // Known, and maybe other projects, do not return a json response (yet),
+                            // so the access token might be in the body as an URL-encoded query
+                            // string.
+                            // @see https://github.com/idno/Known/issues/1986
                             try {
+                                Map<String, String> query_pairs = new LinkedHashMap<>();
+                                String[] pairs = response.split("&");
+                                for (String pair : pairs) {
+                                    int idx = pair.indexOf("=");
+                                    query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
+                                }
+                                accessToken = query_pairs.get("access_token");
+                                if (accessToken != null && accessToken.length() > 0) {
+                                    accessTokenFound = true;
+                                }
 
-                                Mf2Parser parser = new Mf2Parser();
-                                ArrayList<HCard> cards = parser.parse(doc, new URI(domainInput));
+                            }
+                            catch (Exception e1) {
+                                errorMessage += " - " + e1.getMessage();
+                            }
+                        }
 
-                                for (HCard c : cards) {
-                                    if (c.getUrl() != null && c.getName() != null) {
-                                        String HCardURL = c.getUrl().replace("https://","").replace("http://", "");
-                                        if (HCardURL.equals(noProtocolUrl) || HCardURL.equals(noProtocolUrl + "/")) {
-                                            if (authorName.length() == 0) {
-                                                authorName = c.getName();
+                        if (accessTokenFound && returnedState.equals(state)) {
+
+                            // If author name or avatar are still empty, try parsing the HTML.
+                            if (authorName.length() == 0 || authorAvatar.length() == 0) {
+                                String noProtocolUrl = domainInput.replace("https://","").replace("http://", "");
+                                try {
+
+                                    Mf2Parser parser = new Mf2Parser();
+                                    ArrayList<HCard> cards = parser.parse(doc, new URI(domainInput));
+
+                                    for (HCard c : cards) {
+                                        if (c.getUrl() != null && c.getName() != null) {
+                                            String HCardURL = c.getUrl().replace("https://","").replace("http://", "");
+                                            if (HCardURL.equals(noProtocolUrl) || HCardURL.equals(noProtocolUrl + "/")) {
+                                                if (authorName.length() == 0) {
+                                                    authorName = c.getName();
+                                                }
+                                                if (authorAvatar.length() == 0) {
+                                                    authorAvatar = c.getAvatar();
+                                                }
+                                                break;
                                             }
-                                            if (authorAvatar.length() == 0) {
-                                                authorAvatar = c.getAvatar();
-                                            }
-                                            break;
                                         }
                                     }
                                 }
+                                catch (Exception ignored) { }
                             }
-                            catch (Exception ignored) { }
-                        }
 
-                        AccountManager am = AccountManager.get(getApplicationContext());
-                        int numberOfAccounts = new Accounts(AuthActivity.this).getCount();
+                            AccountManager am = AccountManager.get(getApplicationContext());
 
-                        // Create new account.
-                        Account account = new Account(domainInput, INDIEWEB_ACCOUNT_TYPE);
-                        am.addAccountExplicitly(account, null, null);
-                        am.setAuthToken(account, INDIEWEB_TOKEN_TYPE, accessToken);
-                        am.setUserData(account, "micropub_endpoint", micropubEndpoint);
-                        am.setUserData(account, "microsub_endpoint", microsubEndpoint);
-                        am.setUserData(account, "authorization_endpoint", authorizationEndpoint);
-                        am.setUserData(account, "token_endpoint", tokenEndpoint);
-                        am.setUserData(account, "micropub_media_endpoint", micropubMediaEndpoint);
-                        am.setUserData(account, "author_name", authorName);
-                        am.setUserData(account, "author_avatar", authorAvatar);
+                            // Create new account.
+                            Account account = new Account(getAccountName(), INDIEWEB_ACCOUNT_TYPE);
+                            am.addAccountExplicitly(account, null, null);
+                            am.setAuthToken(account, INDIEWEB_TOKEN_TYPE, accessToken);
+                            am.setUserData(account, "micropub_endpoint", micropubEndpoint);
+                            am.setUserData(account, "microsub_endpoint", microsubEndpoint);
+                            am.setUserData(account, "authorization_endpoint", authorizationEndpoint);
+                            am.setUserData(account, "token_endpoint", tokenEndpoint);
+                            am.setUserData(account, "micropub_media_endpoint", micropubMediaEndpoint);
+                            am.setUserData(account, "author_name", authorName);
+                            am.setUserData(account, "author_avatar", authorAvatar);
 
-                        // Set first account.
-                        if (numberOfAccounts == 0) {
-                            SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
-                            editor.putString("account", domainInput);
-                            editor.apply();
-                        }
+                            // Set default account.
+                            setDefaultAccount();
 
-                        // Get micropub configuration.
-                        User user = new User();
-                        user.setMicropubEndpoint(micropubEndpoint);
-                        user.setAccessToken(accessToken);
-                        user.setAccount(account);
-                        new MicropubAction(getApplicationContext(), user, layout).refreshConfig();
+                            // Get micropub configuration.
+                            User user = new User();
+                            user.setMicropubEndpoint(micropubEndpoint);
+                            user.setAccessToken(accessToken);
+                            user.setAccount(account);
+                            new MicropubAction(getApplicationContext(), user, layout).refreshConfig();
 
-                        Snackbar.make(layout, getString(R.string.authentication_success), Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(layout, getString(R.string.authentication_success), Snackbar.LENGTH_SHORT).show();
 
-                        // Start launch activity which will determine where it will go.
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                Intent launch = new Intent(getBaseContext(), LaunchActivity.class);
-                                startActivity(launch);
-                                finish();
-                            }
-                        }, 700);
-                    }
-                    else {
-                        final Snackbar snack = Snackbar.make(layout, String.format(getString(R.string.authentication_fail_token), errorMessage), Snackbar.LENGTH_INDEFINITE);
-                        snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                            // Start launch activity which will determine where it will go.
+                            new Handler().postDelayed(new Runnable() {
                                 @Override
-                                public void onClick(View v) {
-                                    snack.dismiss();
+                                public void run() {
+                                    Intent launch = new Intent(getBaseContext(), LaunchActivity.class);
+                                    startActivity(launch);
+                                    finish();
                                 }
-                            }
+                            }, 700);
+                        }
+                        else {
+                            final Snackbar snack = Snackbar.make(layout, String.format(getString(R.string.authentication_fail_token), errorMessage), Snackbar.LENGTH_INDEFINITE);
+                            snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            snack.dismiss();
+                                        }
+                                    }
+                            );
+                            snack.show();
+                            showForm();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        String message = Utility.parseNetworkError(error, getApplicationContext(), R.string.authentication_fail, R.string.network_error);
+                        final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
+                        snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        snack.dismiss();
+                                    }
+                                }
                         );
                         snack.show();
                         showForm();
                     }
                 }
-            },
-            new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    String message = Utility.parseNetworkError(error, getApplicationContext(), R.string.authentication_fail, R.string.network_error);
-                    final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
-                    snack.setAction(getString(R.string.close), new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                snack.dismiss();
-                            }
-                        }
-                    );
-                    snack.show();
-                    showForm();
-                }
-            }
         )
         {
             @Override
@@ -830,160 +703,321 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     }
 
     /**
-     * Change the sign in button.
-     *
-     * @param text
-     *   The text to change the sign in button to.
+     * Register with a Pixelfed instance.
      */
-    public void changeSignInButton(int text) {
-        signIn.setText(text);
+    private void registerWithPixelfed() {
+        domainInput = Utility.stripEndingSlash(domainInput);
+
+        if (URLUtil.isValidUrl( domainInput)) {
+            changeSignInButton(R.string.connecting);
+            registerPixelfedApp();
+        }
+        else {
+            changeSignInButton(R.string.sign_in);
+            final Snackbar snack = Snackbar.make(layout, getString(R.string.invalid_url), Snackbar.LENGTH_INDEFINITE);
+            snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            snack.dismiss();
+                        }
+                    }
+            );
+            snack.show();
+        }
     }
 
     /**
-     * Show sign in form and reset variables.
+     * Register Pixelfed application.
      */
-    public void showForm() {
-        info.setVisibility(View.VISIBLE);
-        domain.setVisibility(View.VISIBLE);
-        signIn.setVisibility(View.VISIBLE);
-        changeSignInButton(R.string.sign_in);
+    private void registerPixelfedApp() {
+        requestType = "pixelfedAppRegister";
+        Map<String, String> params = new HashMap<>();
+        params.put("client_name", "Indigenous");
+        params.put("website", ClientId);
+        params.put("redirect_uris", RedirectUri);
+        params.put("scopes", "read write follow push");
+
+        String appUrl = domainInput + "/api/v1/apps";
+        HTTPRequest r = new HTTPRequest(this.volleyRequestListener, null, getApplicationContext());
+        r.doPostRequest(appUrl, params);
     }
 
-    @Override
-    public void OnSuccessRequest(String response) {
-        if (requestType.equals("pixelfedAppRegister")) {
-            try {
-                JSONObject object = new JSONObject(response);
-                pixelfedClientId = object.getString("client_id");
-                pixelfedClientSecret = object.getString("client_secret");
-                authorizePixelfed();
-            }
-            catch (JSONException e) {
-                Snackbar.make(layout, getString(R.string.error_parsing_app_registration_response), Snackbar.LENGTH_LONG).show();
-            }
-        }
-
-        if (requestType.equals("mastodonAppRegister")) {
-            try {
-                JSONObject object = new JSONObject(response);
-                mastodonClientId = object.getString("client_id");
-                mastodonClientSecret = object.getString("client_secret");
-                authorizeMastodon();
-            }
-            catch (JSONException e) {
-                Snackbar.make(layout, getString(R.string.error_parsing_app_registration_response), Snackbar.LENGTH_LONG).show();
-            }
-        }
-
-        if (requestType.equals("pixelfedAccessToken")) {
-
-            String error = getString(R.string.request_failed_unknown);
-            String accessToken = "";
-            try {
-                JSONObject object = new JSONObject(response);
-                accessToken = object.getString("access_token");
-            }
-            catch (JSONException e) {
-                error = e.getMessage();
-            }
-
-            if (accessToken.length() > 0) {
-
-                AccountManager am = AccountManager.get(getApplicationContext());
-                int numberOfAccounts = new Accounts(AuthActivity.this).getCount();
-
-                // Create new account.
-                Account account = new Account(domainInput, PIXELFED_ACCOUNT_TYPE);
-                am.addAccountExplicitly(account, null, null);
-                am.setAuthToken(account, PIXELFED_TOKEN_TYPE, accessToken);
-                am.setUserData(account, "client_id", pixelfedClientId);
-                am.setUserData(account, "client_secret", pixelfedClientSecret);
-
-                // Set first account.
-                if (numberOfAccounts == 0) {
-                    SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
-                    editor.putString("account", domainInput);
-                    editor.apply();
-                }
-
-                Snackbar.make(layout, getString(R.string.authentication_success), Snackbar.LENGTH_SHORT).show();
-
-                requestType = "pixelfedInitialSync";
-                syncPixelfed(new Accounts(AuthActivity.this).getUser(domainInput, false));
-            }
-            else {
-                final Snackbar snack = Snackbar.make(layout, String.format(getString(R.string.authentication_fail_token), error), Snackbar.LENGTH_INDEFINITE);
-                snack.setAction(getString(R.string.close), new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                snack.dismiss();
-                            }
-                        }
-                );
-                snack.show();
-                showForm();
-            }
-        }
-
-        if (requestType.equals("mastodonAccessToken")) {
-            String error = getString(R.string.request_failed_unknown);
-            String accessToken = "";
-            try {
-                JSONObject object = new JSONObject(response);
-                accessToken = object.getString("access_token");
-            }
-            catch (JSONException e) {
-                error = e.getMessage();
-            }
-
-            if (accessToken.length() > 0) {
-
-                AccountManager am = AccountManager.get(getApplicationContext());
-                int numberOfAccounts = new Accounts(AuthActivity.this).getCount();
-
-                // Create new account.
-                Account account = new Account(domainInput, MASTODON_ACCOUNT_TYPE);
-                am.addAccountExplicitly(account, null, null);
-                am.setAuthToken(account, MASTODON_TOKEN_TYPE, accessToken);
-                am.setUserData(account, "client_id", mastodonClientId);
-                am.setUserData(account, "client_secret", mastodonClientSecret);
-
-                // Set first account.
-                if (numberOfAccounts == 0) {
-                    SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
-                    editor.putString("account", domainInput);
-                    editor.apply();
-                }
-
-                Snackbar.make(layout, getString(R.string.authentication_success), Snackbar.LENGTH_SHORT).show();
-
-                requestType = "mastodonInitialSync";
-                syncMastodon(new Accounts(AuthActivity.this).getUser(domainInput, false));
-            }
-            else {
-                final Snackbar snack = Snackbar.make(layout, String.format(getString(R.string.authentication_fail_token), error), Snackbar.LENGTH_INDEFINITE);
-                snack.setAction(getString(R.string.close), new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                snack.dismiss();
-                            }
-                        }
-                );
-                snack.show();
-                showForm();
-            }
-        }
-
-    }
-
-    @Override
-    public void OnFailureRequest(VolleyError error) {
-        showForm();
-        String message = getString(R.string.request_failed_unknown);
+    /**
+     * Handle the register response.
+     *
+     * @param response
+     *   The current response.
+     */
+    private void handlePixelfedAppRegister(String response) {
         try {
-            message = Utility.parseNetworkError(error, getApplicationContext(), R.string.request_failed, R.string.request_failed_unknown);
+            JSONObject object = new JSONObject(response);
+            pixelfedClientId = object.getString("client_id");
+            pixelfedClientSecret = object.getString("client_secret");
+            authorizePixelfed();
         }
-        catch (Exception ignored) {}
-        Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
+        catch (JSONException e) {
+            Snackbar.make(layout, getString(R.string.error_parsing_app_registration_response), Snackbar.LENGTH_LONG).show();
+        }
     }
+
+    /**
+     * Authorize with pixelfed.
+     */
+    private void authorizePixelfed() {
+        String url = domainInput + "/oauth/authorize?response_type=code&redirect_uri=" + RedirectUri + "&client_id=" + pixelfedClientId + "&scope=read+write+follow+push";
+        Uri uri = Uri.parse(url);
+        startAuthorization(uri);
+    }
+
+    /**
+     * Validate pixelfed code and get access token.
+     *
+     * @param code
+     *   The code from the authorize call.
+     */
+    private void validatePixelfedCode(String code) {
+        requestType = "pixelfedAccessToken";
+        Map<String, String> params = new HashMap<>();
+        params.put("client_id", pixelfedClientId);
+        params.put("client_secret", pixelfedClientSecret);
+        params.put("redirect_uri", RedirectUri);
+        params.put("scope", "read write follow push");
+        params.put("code", code);
+        params.put("grant_type", "authorization_code");
+
+        String appUrl = domainInput + "/oauth/token";
+        HTTPRequest r = new HTTPRequest(this.volleyRequestListener, null, getApplicationContext());
+        r.doPostRequest(appUrl, params);
+    }
+
+    /**
+     * Handle the access token response.
+     *
+     * @param response
+     *   The current response
+     */
+    private void handlePixelfedAccessToken(String response) {
+        String error = getString(R.string.request_failed_unknown);
+        String accessToken = "";
+        try {
+            JSONObject object = new JSONObject(response);
+            accessToken = object.getString("access_token");
+        }
+        catch (JSONException e) {
+            error = e.getMessage();
+        }
+
+        if (accessToken.length() > 0) {
+
+            AccountManager am = AccountManager.get(getApplicationContext());
+
+            // Create new account.
+            Account account = new Account(getAccountName(), PIXELFED_ACCOUNT_TYPE);
+            am.addAccountExplicitly(account, null, null);
+            am.setAuthToken(account, PIXELFED_TOKEN_TYPE, accessToken);
+            am.setUserData(account, "client_id", pixelfedClientId);
+            am.setUserData(account, "client_secret", pixelfedClientSecret);
+
+            // Set default account.
+            setDefaultAccount();
+
+            Snackbar.make(layout, getString(R.string.authentication_success), Snackbar.LENGTH_SHORT).show();
+
+            requestType = "pixelfedInitialSync";
+            syncPixelfed(new Accounts(AuthActivity.this).getUser(getAccountName(), true, false));
+        }
+        else {
+            final Snackbar snack = Snackbar.make(layout, String.format(getString(R.string.authentication_fail_token), error), Snackbar.LENGTH_INDEFINITE);
+            snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            snack.dismiss();
+                        }
+                    }
+            );
+            snack.show();
+            showForm();
+        }
+    }
+
+    /**
+     * Sync pixelfed
+     *
+     * @param user
+     *   The current user
+     */
+    private void syncPixelfed(User user) {
+        Auth auth = AuthFactory.getAuth(user, AuthActivity.this);
+        auth.syncAccount(layout);
+
+        // Start launch activity which will determine where it will go.
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent launch = new Intent(getBaseContext(), LaunchActivity.class);
+                startActivity(launch);
+                finish();
+            }
+        }, 1000);
+    }
+
+    /**
+     * Register with a Mastodon instance.
+     */
+    private void registerWithMastodon() {
+        domainInput = Utility.stripEndingSlash(domainInput);
+
+        if (URLUtil.isValidUrl( domainInput)) {
+            changeSignInButton(R.string.connecting);
+            registerMastodonApp();
+        }
+        else {
+            changeSignInButton(R.string.sign_in);
+            final Snackbar snack = Snackbar.make(layout, getString(R.string.invalid_url), Snackbar.LENGTH_INDEFINITE);
+            snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            snack.dismiss();
+                        }
+                    }
+            );
+            snack.show();
+        }
+    }
+
+    /**
+     * Register mastodon application.
+     */
+    private void registerMastodonApp() {
+        requestType = "mastodonAppRegister";
+        Map<String, String> params = new HashMap<>();
+        params.put("client_name", "Indigenous");
+        params.put("website", ClientId);
+        params.put("redirect_uris", RedirectUri);
+        params.put("scopes", "read write follow push");
+
+        String appUrl = domainInput + "/api/v1/apps";
+        HTTPRequest r = new HTTPRequest(this.volleyRequestListener, null, getApplicationContext());
+        r.doPostRequest(appUrl, params);
+    }
+
+    /**
+     * Handle the register response
+     *
+     * @param response
+     *   The current response.
+     */
+    private void handleMastodonAppRegister(String response) {
+        try {
+            JSONObject object = new JSONObject(response);
+            mastodonClientId = object.getString("client_id");
+            mastodonClientSecret = object.getString("client_secret");
+            authorizeMastodon();
+        }
+        catch (JSONException e) {
+            Snackbar.make(layout, getString(R.string.error_parsing_app_registration_response), Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Authorize with mastodon.
+     */
+    private void authorizeMastodon() {
+        String url = domainInput + "/oauth/authorize?response_type=code&redirect_uri=" + RedirectUri + "&client_id=" + mastodonClientId + "&scope=read+write+follow+push";
+        Uri uri = Uri.parse(url);
+        startAuthorization(uri);
+    }
+
+    /**
+     * Validate mastodon code and get access token.
+     *
+     * @param code
+     *   The code from the authorize call.
+     */
+    private void validateMastodonCode(String code) {
+        requestType = "mastodonAccessToken";
+        Map<String, String> params = new HashMap<>();
+        params.put("client_id", mastodonClientId);
+        params.put("client_secret", mastodonClientSecret);
+        params.put("redirect_uri", RedirectUri);
+        params.put("scope", "read write follow push");
+        params.put("code", code);
+        params.put("grant_type", "authorization_code");
+
+        String appUrl = domainInput + "/oauth/token";
+        HTTPRequest r = new HTTPRequest(this.volleyRequestListener, null, getApplicationContext());
+        r.doPostRequest(appUrl, params);
+    }
+
+    /**
+     * Handle the access token response.
+     *
+     * @param response
+     *   The current response
+     */
+    private void handleMastodonAccessToken(String response) {
+        String error = getString(R.string.request_failed_unknown);
+        String accessToken = "";
+        try {
+            JSONObject object = new JSONObject(response);
+            accessToken = object.getString("access_token");
+        }
+        catch (JSONException e) {
+            error = e.getMessage();
+        }
+
+        if (accessToken.length() > 0) {
+
+            AccountManager am = AccountManager.get(getApplicationContext());
+
+            // Create new account.
+            Account account = new Account(getAccountName(), MASTODON_ACCOUNT_TYPE);
+            am.addAccountExplicitly(account, null, null);
+            am.setAuthToken(account, MASTODON_TOKEN_TYPE, accessToken);
+            am.setUserData(account, "client_id", mastodonClientId);
+            am.setUserData(account, "client_secret", mastodonClientSecret);
+
+            // Set default account.
+            setDefaultAccount();
+
+            Snackbar.make(layout, getString(R.string.authentication_success), Snackbar.LENGTH_SHORT).show();
+
+            requestType = "mastodonInitialSync";
+            syncMastodon(new Accounts(AuthActivity.this).getUser(getAccountName(), true, false));
+        }
+        else {
+            final Snackbar snack = Snackbar.make(layout, String.format(getString(R.string.authentication_fail_token), error), Snackbar.LENGTH_INDEFINITE);
+            snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            snack.dismiss();
+                        }
+                    }
+            );
+            snack.show();
+            showForm();
+        }
+    }
+
+    /**
+     * Sync mastodon
+     *
+     * @param user
+     *   The current user
+     */
+    private void syncMastodon(User user) {
+        Auth auth = AuthFactory.getAuth(user, AuthActivity.this);
+        auth.syncAccount(layout);
+
+        // Start launch activity which will determine where it will go.
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent launch = new Intent(getBaseContext(), LaunchActivity.class);
+                startActivity(launch);
+                finish();
+            }
+        }, 1000);
+    }
+
 }

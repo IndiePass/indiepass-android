@@ -428,6 +428,9 @@ public class TimelineDetailActivity extends AppCompatActivity {
                 else {
                     rsvp.setVisibility(View.GONE);
                 }
+
+                boolean debugItemJSON = Preferences.getPreference(TimelineDetailActivity.this, "pref_key_debug_microsub_item_json", false);
+                menu.setOnClickListener(new OnMenuClickListener(debugItemJSON));
             }
             else {
                 bookmark.setVisibility(View.GONE);
@@ -436,11 +439,8 @@ public class TimelineDetailActivity extends AppCompatActivity {
                 repost.setVisibility(View.GONE);
                 external.setVisibility(View.GONE);
                 rsvp.setVisibility(View.GONE);
+                menu.setVisibility(View.GONE);
             }
-
-            // Menu listener.
-            boolean debugItemJSON = Preferences.getPreference(TimelineDetailActivity.this, "pref_key_debug_microsub_item_json", false);
-            menu.setOnClickListener(new OnMenuClickListener(debugItemJSON));
 
             // Audio.
             if (item.getAudio().length() > 0) {
@@ -650,7 +650,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
     // Menu listener.
     class OnMenuClickListener implements View.OnClickListener {
 
-        boolean debugJson;
+        final boolean debugJson;
 
         OnMenuClickListener(boolean debugJson) {
             this.debugJson = debugJson;

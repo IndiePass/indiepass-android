@@ -36,7 +36,7 @@ public class MicropubAction {
 
     private final Context context;
     private final User user;
-    private RelativeLayout layout;
+    private final RelativeLayout layout;
 
     public MicropubAction(Context context, User user, RelativeLayout layout) {
         this.context = context;

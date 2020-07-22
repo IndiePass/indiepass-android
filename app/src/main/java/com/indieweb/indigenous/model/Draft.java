@@ -10,6 +10,7 @@ public class Draft {
     public static final String COLUMN_TYPE = "type";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_BODY = "body";
+    public static final String COLUMN_SPOILER = "spoiler";
     public static final String COLUMN_IMAGE = "image";
     public static final String COLUMN_CAPTION = "caption";
     public static final String COLUMN_VIDEO = "video";
@@ -21,6 +22,9 @@ public class Draft {
     public static final String COLUMN_END_DATE = "end_date";
     public static final String COLUMN_SYNDICATION_TARGETS = "syndication_targets";
     public static final String COLUMN_PUBLISH_DATE = "publish_date";
+    public static final String COLUMN_PUBLISHED = "published";
+    public static final String COLUMN_VISIBILITY = "visibility";
+    public static final String COLUMN_SENSITIVITY = "sensitivity";
     public static final String COLUMN_COORDINATES = "coordinates";
     public static final String COLUMN_LOCATION_NAME = "location_name";
     public static final String COLUMN_LOCATION_URL = "location_url";
@@ -35,6 +39,7 @@ public class Draft {
                 + COLUMN_TYPE + " TEXT,"
                 + COLUMN_NAME + " TEXT,"
                 + COLUMN_BODY + " TEXT,"
+                + COLUMN_SPOILER + " TEXT,"
                 + COLUMN_IMAGE + " TEXT,"
                 + COLUMN_CAPTION + " TEXT,"
                 + COLUMN_VIDEO + " TEXT,"
@@ -45,6 +50,9 @@ public class Draft {
                 + COLUMN_END_DATE + " TEXT,"
                 + COLUMN_SYNDICATION_TARGETS + " TEXT,"
                 + COLUMN_PUBLISH_DATE + " TEXT,"
+                + COLUMN_PUBLISHED + " INTEGER,"
+                + COLUMN_VISIBILITY + " TEXT,"
+                + COLUMN_SENSITIVITY + " INTEGER,"
                 + COLUMN_COORDINATES + " TEXT,"
                 + COLUMN_LOCATION_NAME + " TEXT,"
                 + COLUMN_LOCATION_URL + " TEXT,"
@@ -59,6 +67,7 @@ public class Draft {
     private String type;
     private String name = "";
     private String body = "";
+    private String spoiler = "";
     private String image = "";
     private String caption = "";
     private String video = "";
@@ -69,6 +78,9 @@ public class Draft {
     private String end_date = "";
     private String syndication_targets = "";
     private String publish_date = "";
+    private Integer published = 1;
+    private String visibility = "";
+    private Integer sensitivity = 0;
     private String coordinates = "";
     private String location_name = "";
     private String location_url = "";
@@ -106,6 +118,30 @@ public class Draft {
 
     public void setPublishDate(String publish_date) {
         this.publish_date = publish_date;
+    }
+
+    public Integer getPublished() {
+        return published != null ? published : 1;
+    }
+
+    public void setPublished(Integer published) {
+        this.published = published;
+    }
+
+    public String getVisibility() {
+        return visibility != null ? visibility : "";
+    }
+
+    public void setVisibility(String visibility) {
+        this.visibility = visibility;
+    }
+
+    public Integer getSensitivity() {
+        return sensitivity != null ? sensitivity : 0;
+    }
+
+    public void setSensitivity(Integer sensitivity) {
+        this.sensitivity = sensitivity;
     }
 
     public String getCoordinates() {
@@ -202,6 +238,14 @@ public class Draft {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getSpoiler() {
+        return spoiler != null ? spoiler : "";
+    }
+
+    public void setSpoiler(String spoiler) {
+        this.spoiler = spoiler;
     }
 
     public String getImage() {

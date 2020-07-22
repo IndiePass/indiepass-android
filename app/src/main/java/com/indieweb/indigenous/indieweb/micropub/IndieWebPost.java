@@ -33,10 +33,10 @@ public class IndieWebPost extends PostBase {
     }
 
     @Override
-    public boolean supports(String name) {
+    public boolean supports(String feature) {
         boolean supported = true;
 
-        switch (name) {
+        switch (feature) {
             case FEATURE_SPOILER:
             case FEATURE_MEDIA_UPLOAD_DESCRIPTION:
                 supported = false;

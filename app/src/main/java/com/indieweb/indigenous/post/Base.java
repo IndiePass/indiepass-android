@@ -88,24 +88,24 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public DatabaseHelper db;
     public User user;
     public MultiAutoCompleteTextView tags;
-    public List<Uri> image = new ArrayList<>();
-    public List<Uri> video = new ArrayList<>();
-    public List<Uri> audio = new ArrayList<>();
+    public final List<Uri> image = new ArrayList<>();
+    public final List<Uri> video = new ArrayList<>();
+    public final List<Uri> audio = new ArrayList<>();
     public int mediaCount = 0;
     public int mediaUploadedCount = 0;
-    public Map<Uri, String> mediaUrls = new HashMap<>();
+    public final Map<Uri, String> mediaUrls = new HashMap<>();
     public boolean uploadMediaDone = false;
     public boolean uploadMediaError = false;
-    public List<String> caption = new ArrayList<>();
-    public static String EMPTY_CAPTION = "_EMPTY_";
+    public final List<String> caption = new ArrayList<>();
+    public static final String EMPTY_CAPTION = "_EMPTY_";
     public boolean preparedDraft = false;
-    public List<Syndication> syndicationTargets = new ArrayList<>();
+    public final List<Syndication> syndicationTargets = new ArrayList<>();
     private MenuItem sendItem;
     public LinearLayout mediaPreviewGallery;
     public Switch postStatus;
-    private int PICK_IMAGE_REQUEST = 1;
-    private int PICK_VIDEO_REQUEST = 2;
-    private int PICK_AUDIO_REQUEST = 3;
+    private final int PICK_IMAGE_REQUEST = 1;
+    private final int PICK_VIDEO_REQUEST = 2;
+    private final int PICK_AUDIO_REQUEST = 3;
     private VolleyRequestListener volleyRequestListener;
 
     public EditText url;
@@ -117,7 +117,6 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public String urlPostKey;
     public String autoSubmit = "";
     public String hType = "entry";
-    public String postType = "Post";
     public Spinner geocacheLogType;
     public TextView startDate;
     public TextView endDate;
@@ -125,7 +124,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public boolean canAddMedia = false;
     public boolean canAddLocation = false;
     public boolean addCounter = false;
-    public Map<String, String> bodyParams = new LinkedHashMap<>();
+    public final Map<String, String> bodyParams = new LinkedHashMap<>();
     public RelativeLayout layout;
 
     public Integer draftId;
@@ -138,7 +137,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public Spinner locationVisibility;
     public AutoCompleteTextView locationName;
     public EditText locationUrl;
-    public List<Place> placeItems = new ArrayList<>();
+    public final List<Place> placeItems = new ArrayList<>();
     public TextView locationCoordinates;
     public String coordinates;
     public Button locationQuery;

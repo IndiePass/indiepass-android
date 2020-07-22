@@ -59,7 +59,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     boolean isTag = false;
     String tag;
     boolean allReadVisible = false;
-    List<String> entries = new ArrayList<>();
+    final List<String> entries = new ArrayList<>();
     Integer unread;
     boolean showUnread = false;
     Menu mainMenu;
@@ -89,9 +89,9 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
 
-    public static int MARK_READ_CHANNEL_CLICK = 1;
-    public static int MARK_READ_MANUAL = 2;
-    public static int MARK_READ_SCROLL = 3;
+    public static final int MARK_READ_CHANNEL_CLICK = 1;
+    public static final int MARK_READ_MANUAL = 2;
+    public static final int MARK_READ_SCROLL = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -367,7 +367,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         if (!Utility.hasConnection(getApplicationContext())) {
             showRefreshMessage = false;
 
-            Cache cache = user.isAuthenticated() ? Utility.getCache(getApplicationContext(), user.getMeWithoutProtocol(), "timeline", channelId, pagerAfter) : null;
+            Cache cache = user.isAuthenticated() ? Utility.getCache(getApplicationContext(), user.getAccountNameWithoutProtocol(), "timeline", channelId, pagerAfter) : null;
             if (cache != null && cache.getData().length() > 0) {
                 parseTimelineResponse(cache.getData(), true);
             }
@@ -400,7 +400,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     @Override
                     public void onResponse(String response) {
                         if (!showUnread && !preview) {
-                            Utility.saveCache(getApplicationContext(), user.getMeWithoutProtocol(), "timeline", response, channelId, pagerAfter);
+                            Utility.saveCache(getApplicationContext(), user.getAccountNameWithoutProtocol(), "timeline", response, channelId, pagerAfter);
                         }
                         parseTimelineResponse(response, false);
                     }
@@ -426,22 +426,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
         {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-
-                // TODO move
-                if (preview) {
-                    params.put("action", "preview");
-                    params.put("url", previewUrl);
-                }
-
-                // TODO move
-                if (isSearch) {
-                    params.put("action", "search");
-                    params.put("channel", channelId);
-                    params.put("query", searchQuery);
-                }
-
-                return params;
+                return reader.getTimelineParams(preview, isSearch, channelId, previewUrl, searchQuery);
             }
 
             @Override
@@ -490,10 +475,14 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             debugResponse = response;
             List<TimelineItem> parseItems = reader.parseTimelineResponse(response, channelId, channelName, entries, isGlobalUnread, isSearch, recursiveReference, olderItems, getApplicationContext());
             TimelineItems.addAll(parseItems);
-            if (firstEntryId == null) {
+
+            if (firstEntryId == null && parseItems.size() > 0) {
                 firstEntryId = TimelineItems.get(0).getId();
             }
-            adapter.notifyDataSetChanged();
+
+            if (parseItems.size() > 0) {
+                adapter.notifyDataSetChanged();
+            }
 
             // Notify
             if (reader.supports(Reader.READER_MARK_READ) && !fromCache && !isGlobalUnread && !isSourceView && !preview && (unread > 0 || unread == -1) && entries.size() > 0
@@ -551,7 +540,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     /**
      * Load more touch button.
      */
-    private View.OnTouchListener loadMoreTouch = new View.OnTouchListener() {
+    private final View.OnTouchListener loadMoreTouch = new View.OnTouchListener() {
         @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View v, MotionEvent motionEvent) {

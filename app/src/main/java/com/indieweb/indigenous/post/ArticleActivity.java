@@ -12,7 +12,6 @@ public class ArticleActivity extends BaseCreate {
     protected void onCreate(Bundle savedInstanceState) {
         canAddMedia = true;
         canAddLocation = true;
-        postType = "Article";
         addCounter = true;
         setContentView(R.layout.activity_article);
         super.onCreate(savedInstanceState);

@@ -4,13 +4,10 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.indieweb.indigenous.General;
-import com.indieweb.indigenous.indieweb.IndiewebGeneral;
 import com.indieweb.indigenous.indieweb.indieauth.IndiewebAuth;
 import com.indieweb.indigenous.mastodon.MastodonAuth;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.pixelfed.PixelfedAuth;
-import com.indieweb.indigenous.pixelfed.PixelfedGeneral;
 
 import static com.indieweb.indigenous.users.AuthActivity.MASTODON_ACCOUNT_TYPE;
 import static com.indieweb.indigenous.users.AuthActivity.PIXELFED_ACCOUNT_TYPE;

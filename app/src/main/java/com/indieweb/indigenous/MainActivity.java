@@ -1,6 +1,5 @@
 package com.indieweb.indigenous;
 
-import android.accounts.Account;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -173,9 +172,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onClick(View v) {
                         final List<String> accounts = new ArrayList<>();
-                        final Account[] AllAccounts = new Accounts(MainActivity.this).getAllAccounts();
-                        for (Account account: AllAccounts) {
-                            accounts.add(account.name);
+                        final List<User> users = new Accounts(MainActivity.this).getAllUsers();
+                        for (User user: users) {
+                            accounts.add(user.getDisplayName());
                         }
                         final CharSequence[] accountItems = accounts.toArray(new CharSequence[0]);
                         final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -184,16 +183,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         builder.setItems(accountItems, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int index) {
-                                User defaultUser = new Accounts(getApplicationContext()).getUser(accounts.get(index), false);
+                                User defaultUser = new Accounts(getApplicationContext()).getUser(accounts.get(index), false, false);
                                 general = GeneralFactory.getGeneral(defaultUser, null, MainActivity.this);
-                                hideItemsInDrawerMenu();
+                                Snackbar.make(drawer, String.format(getString(R.string.account_selected), defaultUser.getDisplayName()), Snackbar.LENGTH_SHORT).show();
+                                SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
+                                editor.putString("account", defaultUser.getAccount().name);
+                                editor.apply();
+                                user = defaultUser;
+                                toggleGroupItems(true);
                                 setDraftMenuItemTitle(false);
                                 setAccountInfo(defaultUser);
                                 reloadFragment();
-                                Snackbar.make(drawer, String.format(getString(R.string.account_selected), accounts.get(index)), Snackbar.LENGTH_SHORT).show();
-                                SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
-                                editor.putString("account", accounts.get(index));
-                                editor.apply();
                             }
                         });
                         builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -381,15 +381,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      *   Whether to store the fragment
      */
     public void startFragment(Fragment fragment, boolean trackFragment, boolean refresh) {
+
         if (trackFragment) {
             loadedFragment = fragment;
         }
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (refresh) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.detach(fragment).attach(fragment).commit();
         }
         else {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
             ft.commit();
         }
@@ -635,7 +636,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView authorUrl = headerView.findViewById(R.id.navAuthorUrl);
         if (authorUrl != null) {
             authorUrl.setVisibility(View.VISIBLE);
-            authorUrl.setText(Utility.stripEndingSlash(user.getMeWithoutProtocol()));
+            authorUrl.setText(Utility.stripEndingSlash(user.getBaseUrlWithoutProtocol()));
         }
 
         TextView authorName = headerView.findViewById(R.id.navAuthorName);

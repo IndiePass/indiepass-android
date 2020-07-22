@@ -34,11 +34,11 @@ import java.util.Map;
 
 public class Endpoints {
 
-    private User user;
-    private Context context;
+    private final User user;
+    private final Context context;
     private Document doc;
     private String url;
-    private RelativeLayout layout;
+    private final RelativeLayout layout;
 
     public Endpoints(Context context, User user, RelativeLayout layout) {
         this.context = context;
@@ -60,7 +60,7 @@ public class Endpoints {
 
         try {
             boolean foundInfo = false;
-            url = user.getMe();
+            url = user.getBaseUrl();
 
             org.jsoup.Connection connection = Jsoup.connect(url);
             org.jsoup.Connection.Response response = connection.execute();
@@ -168,7 +168,7 @@ public class Endpoints {
 
                         // If author name or avatar are still empty, try parsing the HTML.
                         if (authorName.length() == 0 || authorAvatar.length() == 0) {
-                            String noProtocolUrl = user.getMeWithoutProtocol();
+                            String noProtocolUrl = user.getBaseUrlWithoutProtocol();
                             try {
 
                                 Mf2Parser parser = new Mf2Parser();

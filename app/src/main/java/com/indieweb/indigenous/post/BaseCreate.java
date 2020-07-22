@@ -1,6 +1,5 @@
 package com.indieweb.indigenous.post;
 
-import android.accounts.Account;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -58,38 +57,39 @@ abstract public class BaseCreate extends BasePlatformCreate {
         if (accountPostWrapper != null && new Accounts(this).getCount() > 1) {
 
             final List<String> accounts = new ArrayList<>();
-            final Account[] AllAccounts = new Accounts(BaseCreate.this).getAllAccounts();
-            for (Account account: AllAccounts) {
-                accounts.add(account.name);
+            final List<User> users = new Accounts(BaseCreate.this).getAllUsers();
+            for (User user: users) {
+                accounts.add(user.getDisplayName());
             }
 
             // Check if account is passed in.
             Bundle extras = getIntent().getExtras();
             if (extras != null) {
                 String incomingAccount = extras.getString("account");
-                if (incomingAccount != null && !incomingAccount.equals(user.getMeWithoutProtocol())) {
-                    User incomingUser = new Accounts(getApplicationContext()).getUser(incomingAccount, true);
+                if (incomingAccount != null && !incomingAccount.equals(user.getAccountNameWithoutProtocol())) {
+                    User incomingUser = new Accounts(getApplicationContext()).getUser(incomingAccount, true, true);
                     if (incomingUser != null) {
                         user = incomingUser;
+                        post = PostFactory.getPost(user, getApplicationContext());
                     }
                 }
             }
 
             accountPostWrapper.setVisibility(View.VISIBLE);
-            setAccountPostInfo(user.getMeWithoutProtocol());
+            setAccountPostInfo(user.getDisplayName());
             accountPost.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final CharSequence[] accountItems = accounts.toArray(new CharSequence[accounts.size()]);
+                    final CharSequence[] accountItems = accounts.toArray(new CharSequence[0]);
                     final AlertDialog.Builder builder = new AlertDialog.Builder(BaseCreate.this);
                     builder.setTitle(getString(R.string.account_select_to_post));
                     builder.setCancelable(true);
                     builder.setItems(accountItems, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int index) {
-                            user = new Accounts(getApplicationContext()).getUser(accounts.get(index), false);
+                            user = new Accounts(getApplicationContext()).getUser(accounts.get(index), false, false);
                             post = PostFactory.getPost(user, getApplicationContext());
-                            setAccountPostInfo(user.getMeWithoutProtocol());
+                            setAccountPostInfo(user.getDisplayName());
                             prepareFields();
                         }
                     });
@@ -193,18 +193,18 @@ abstract public class BaseCreate extends BasePlatformCreate {
                                     if (Preferences.getPreference(this, autoSubmit, false)) {
                                         if (new Accounts(this).getCount() > 1) {
                                             final List<String> accounts = new ArrayList<>();
-                                            final Account[] AllAccounts = new Accounts(this).getAllAccounts();
-                                            for (Account account: AllAccounts) {
-                                                accounts.add(account.name);
+                                            final List<User> users = new Accounts(BaseCreate.this).getAllUsers();
+                                            for (User user: users) {
+                                                accounts.add(user.getDisplayName());
                                             }
-                                            final CharSequence[] accountItems = accounts.toArray(new CharSequence[accounts.size()]);
+                                            final CharSequence[] accountItems = accounts.toArray(new CharSequence[0]);
                                             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
                                             builder.setTitle(getString(R.string.account_select_to_post));
                                             builder.setCancelable(false);
                                             builder.setItems(accountItems, new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int index) {
-                                                    user = new Accounts(getApplicationContext()).getUser(accounts.get(index), false);
+                                                    user = new Accounts(getApplicationContext()).getUser(accounts.get(index), false, false);
                                                     sendBasePost(null);
                                                 }
                                             });
@@ -337,7 +337,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
         }
 
         // Autocomplete of contacts.
-        if (post.supports(Post.FEATURE_CATEGORIES) && user.isAuthenticated()) {
+        if (body != null && post.supports(Post.FEATURE_CATEGORIES) && user.isAuthenticated()) {
             post.prepareContactsAutocomplete(body);
         }
 
@@ -455,6 +455,35 @@ abstract public class BaseCreate extends BasePlatformCreate {
             // Set as checked again to avoid confusion.
             saveAsDraft.setChecked(true);
 
+            // Post status.
+            if (postStatus != null) {
+                if (draft.getPublished() == 1) {
+                    postStatus.setChecked(true);
+                }
+                else {
+                    postStatus.setChecked(false);
+                }
+            }
+
+            // Visibility.
+            if (visibility != null && draft.getVisibility().length() > 0) {
+                int visibilitySelection = 0;
+                switch (draft.getVisibility()) {
+                    case "private":
+                        visibilitySelection = 1;
+                        break;
+                    case "unlisted":
+                        visibilitySelection = 2;
+                        break;
+                }
+                visibility.setSelection(visibilitySelection);
+            }
+
+            // Sensitivity
+            if (sensitivity != null && draft.getSensitivity() == 1) {
+                sensitivity.setChecked(true);
+            }
+
             // Name.
             if (title != null && draft.getName().length() > 0) {
                 title.setText(draft.getName());
@@ -463,6 +492,11 @@ abstract public class BaseCreate extends BasePlatformCreate {
             // Body.
             if (body != null && draft.getBody().length() > 0) {
                 body.setText(draft.getBody());
+            }
+
+            // Spoiler.
+            if (spoiler != null && draft.getSpoiler().length() > 0) {
+                spoiler.setText(draft.getSpoiler());
             }
 
             // Tags.
@@ -654,7 +688,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
         }
 
         draft.setType(type);
-        draft.setAccount(user.getMeWithoutProtocol());
+        draft.setAccount(user.getAccountNameWithoutProtocol());
 
         if (title != null && !TextUtils.isEmpty(title.getText())) {
             draft.setName(title.getText().toString());
@@ -670,6 +704,10 @@ abstract public class BaseCreate extends BasePlatformCreate {
 
         if (url != null && !TextUtils.isEmpty(url.getText())) {
             draft.setUrl(url.getText().toString());
+        }
+
+        if (postStatus != null) {
+            draft.setPublished(postStatus.isChecked() ? 1 : 0);
         }
 
         if (publishDate != null && !TextUtils.isEmpty(publishDate.getText())) {
@@ -690,6 +728,18 @@ abstract public class BaseCreate extends BasePlatformCreate {
 
         if (coordinates != null) {
             draft.setCoordinates(coordinates);
+        }
+
+        if (visibility != null) {
+            draft.setVisibility(visibility.getSelectedItem().toString());
+        }
+
+        if (sensitivity != null) {
+            draft.setSensitivity(sensitivity.isChecked() ? 1 : 0);
+        }
+
+        if (spoiler != null) {
+            draft.setSpoiler(spoiler.getText().toString());
         }
 
         if (syndicationTargets.size() > 0) {

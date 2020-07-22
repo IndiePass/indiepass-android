@@ -11,7 +11,6 @@ public class LikeActivity extends BaseCreate {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        postType = "Like";
         urlPostKey = "like-of";
         autoSubmit = "pref_key_share_like_auto_submit";
         setContentView(R.layout.activity_like);

@@ -41,7 +41,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
 
     private final Context context;
     private final List<User> items;
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
     private final User currentUser;
     private final Activity activity;
     private final RelativeLayout layout;
@@ -110,7 +110,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
         final User item = items.get(position);
         if (item != null) {
 
-            if (item.getMe().equals(currentUser.getMe())) {
+            if (item.getAccountName().equals(currentUser.getAccountName())) {
                 holder.userCurrent.setVisibility(View.VISIBLE);
                 holder.userCurrent.setText(R.string.default_user);
                 holder.switchAccount.setVisibility(GONE);
@@ -122,7 +122,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
             }
 
             // Url.
-            holder.url.setText(item.getMe());
+            holder.url.setText(item.getBaseUrl());
 
             // Type.
             holder.accountType.setText(item.getAccountType());
@@ -180,7 +180,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
     // Switch listener.
     class OnSwitchClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnSwitchClickListener(int position) {
             this.position = position;
@@ -196,7 +196,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
     // Sync listener.
     class OnSyncClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnSyncClickListener(int position) {
             this.position = position;
@@ -205,7 +205,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
         @Override
         public void onClick(View v) {
             final User user = items.get(this.position);
-            Snackbar.make(layout, String.format(context.getString(R.string.account_sync), user.getMe()), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(layout, String.format(context.getString(R.string.account_sync), user.getDisplayName()), Snackbar.LENGTH_SHORT).show();
             Auth auth = AuthFactory.getAuth(user, context);
             auth.syncAccount(layout);
         }
@@ -214,7 +214,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
     // Delete listener.
     class OnDeleteClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnDeleteClickListener(int position) {
             this.position = position;
@@ -225,7 +225,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
             final User user = items.get(this.position);
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle(String.format(context.getString(R.string.account_delete_confirm), user.getMe()));
+            builder.setTitle(String.format(context.getString(R.string.account_delete_confirm), user.getDisplayName()));
             builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,int id) {
 
@@ -284,8 +284,8 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
     private void handleSuccessRemoval(User user, int position) {
         Auth auth = AuthFactory.getAuth(user, context);
         auth.revokeToken(user);
-        if (user.getMe().equals(currentUser.getMe())) {
-            Snackbar.make(layout, String.format(context.getString(R.string.account_removed), user.getMe()), Snackbar.LENGTH_SHORT).show();
+        if (user.getAccountName().equals(currentUser.getAccountName())) {
+            Snackbar.make(layout, String.format(context.getString(R.string.account_removed), user.getDisplayName()), Snackbar.LENGTH_SHORT).show();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -296,7 +296,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
             }, 700);
         }
         else {
-            Snackbar.make(layout, String.format(context.getString(R.string.account_removed), user.getMe()), Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(layout, String.format(context.getString(R.string.account_removed), user.getDisplayName()), Snackbar.LENGTH_SHORT).show();
             items.remove(position);
             notifyDataSetChanged();
         }

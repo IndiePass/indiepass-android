@@ -12,7 +12,6 @@ public class GeocacheActivity extends BaseCreate {
     protected void onCreate(Bundle savedInstanceState) {
         canAddMedia = true;
         canAddLocation = true;
-        postType = "Geocache";
         isCheckin = true;
         addCounter = true;
         setContentView(R.layout.activity_geocache);

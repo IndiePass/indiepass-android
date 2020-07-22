@@ -15,7 +15,7 @@ public interface General {
     String FEATURE_CONTACTS = "contacts";
 
     /**
-     * Whether the app supports a certain feature.
+     * Whether the app supports a certain general feature.
      *
      * @param feature
      *   The feature to check.
@@ -35,7 +35,7 @@ public interface General {
     void handleWritePostClick();
 
     /**
-     * Whether to hide post types.
+     * Whether to hide post types on the share activity.
      *
      * @return boolean
      */
@@ -47,5 +47,4 @@ public interface General {
      * @return ArrayList
      */
     ArrayList<Integer> getProtectedPostTypes();
-
 }

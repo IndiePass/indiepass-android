@@ -60,7 +60,7 @@ public class Accounts {
         if (!foundUser) {
             user.setValid(true);
             user.setAnonymous(true);
-            user.setMe(context.getString(R.string.anonymous_me));
+            user.setAccountName(context.getString(R.string.anonymous_me));
             user.setName(context.getString(R.string.anonymous));
             user.setAccessToken(Preferences.getPreference(context, "anonymous_token", ""));
             user.setMicrosubEndpoint(Preferences.getPreference(context, "anonymous_microsub_endpoint", context.getString(R.string.anonymous_microsub_endpoint)));
@@ -92,10 +92,10 @@ public class Accounts {
      */
     public void switchAccount(final Activity activity, final User user, final RelativeLayout layout) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(String.format(context.getString(R.string.account_switch), user.getMe()));
+        builder.setTitle(String.format(context.getString(R.string.account_switch), user.getDisplayName()));
         builder.setPositiveButton(context.getString(R.string.switch_account),new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int id) {
-                Snackbar.make(layout, String.format(context.getString(R.string.account_selected), user.getMe()), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(layout, String.format(context.getString(R.string.account_selected), user.getDisplayName()), Snackbar.LENGTH_SHORT).show();
                 SharedPreferences.Editor editor = context.getSharedPreferences("indigenous", MODE_PRIVATE).edit();
                 editor.putString("account", user.getAccount().name);
                 editor.apply();
@@ -129,10 +129,9 @@ public class Accounts {
      */
     public void selectAccount(final Activity activity, final RelativeLayout layout) {
         final List<String> accounts = new ArrayList<>();
-
-        final Account[] AllAccounts = this.getAllAccounts();
-        for (Account account: AllAccounts) {
-            accounts.add(account.name);
+        final List<User> users = new Accounts(context).getAllUsers();
+        for (User user: users) {
+            accounts.add(user.getDisplayName());
         }
 
         final CharSequence[] accountItems = accounts.toArray(new CharSequence[0]);
@@ -143,9 +142,10 @@ public class Accounts {
         builder.setItems(accountItems, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int index) {
-                Snackbar.make(layout, String.format(context.getString(R.string.account_selected), accounts.get(index)), Snackbar.LENGTH_SHORT).show();
+                User defaultUser = new Accounts(context).getUser(accounts.get(index), false, false);
+                Snackbar.make(layout, String.format(context.getString(R.string.account_selected), defaultUser.getDisplayName()), Snackbar.LENGTH_SHORT).show();
                 SharedPreferences.Editor editor = context.getSharedPreferences("indigenous", MODE_PRIVATE).edit();
-                editor.putString("account", accounts.get(index));
+                editor.putString("account", defaultUser.getAccount().name);
                 editor.apply();
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -186,7 +186,7 @@ public class Accounts {
         for (Account a : accountManager.getAccountsByType(INDIEWEB_ACCOUNT_TYPE)) {
             User user = new User();
             user.setAccount(a);
-            user.setMe(a.name);
+            user.setAccountName(a.name);
             String token = "";
             try {
                 token = accountManager.peekAuthToken(a, AuthActivity.INDIEWEB_TOKEN_TYPE);
@@ -205,13 +205,14 @@ public class Accounts {
             user.setMicropubMediaEndpoint(accountManager.getUserData(a, "micropub_media_endpoint"));
             user.setSyndicationTargets(accountManager.getUserData(a, "syndication_targets"));
             user.setPostTypes(accountManager.getUserData(a, "post_types"));
+            user.setDisplayName(user.getBaseUrl());
             user.setAccount(a);
             users.add(user);
         }
 
         for (Account a : accountManager.getAccountsByType(PIXELFED_ACCOUNT_TYPE)) {
             User user = new User();
-            user.setMe(a.name);
+            user.setAccountName(a.name);
             String token = "";
             try {
                 token = accountManager.peekAuthToken(a, AuthActivity.PIXELFED_TOKEN_TYPE);
@@ -224,6 +225,13 @@ public class Accounts {
             user.setExternalId(accountManager.getUserData(a, "external_id"));
             user.setClientId(accountManager.getUserData(a, "client_id"));
             user.setClientSecret(accountManager.getUserData(a, "client_secret"));
+
+            String displayName = user.getBaseUrl();
+            if (user.getName().length() > 0) {
+                displayName = user.getName() + " (" + PIXELFED_ACCOUNT_TYPE + ")";
+            }
+            user.setDisplayName(displayName);
+
             user.setAccountType(PIXELFED_ACCOUNT_TYPE);
             user.setAccount(a);
             users.add(user);
@@ -231,7 +239,7 @@ public class Accounts {
 
         for (Account a : accountManager.getAccountsByType(MASTODON_ACCOUNT_TYPE)) {
             User user = new User();
-            user.setMe(a.name);
+            user.setAccountName(a.name);
             String token = "";
             try {
                 token = accountManager.peekAuthToken(a, AuthActivity.MASTODON_TOKEN_TYPE);
@@ -244,6 +252,13 @@ public class Accounts {
             user.setExternalId(accountManager.getUserData(a, "external_id"));
             user.setClientId(accountManager.getUserData(a, "client_id"));
             user.setClientSecret(accountManager.getUserData(a, "client_secret"));
+
+            String displayName = user.getBaseUrl();
+            if (user.getName().length() > 0) {
+                displayName = user.getName() + " (" + MASTODON_ACCOUNT_TYPE + ")";
+            }
+            user.setDisplayName(displayName);
+
             user.setAccountType(MASTODON_ACCOUNT_TYPE);
             user.setAccount(a);
             users.add(user);
@@ -257,24 +272,36 @@ public class Accounts {
      *
      * @param name
      *   The user to get.
+     * @param useAccountName
+     *   Whether to use the internal account name.
      * @param checkWithoutProtocol
      *   Whether to seek based on the protocol or not.
      *
      * @return User
      */
-    public User getUser(String name, boolean checkWithoutProtocol) {
+    public User getUser(String name, boolean useAccountName, boolean checkWithoutProtocol) {
         User user = null;
         List<User> users = this.getAllUsers();
         for (User u: users) {
 
-            if (checkWithoutProtocol) {
-                if (u.getMeWithoutProtocol().equals(name)) {
-                    user = u;
+            if (useAccountName) {
+                if (checkWithoutProtocol) {
+                    if (u.getAccountNameWithoutProtocol().equals(name)) {
+                        user = u;
+                        break;
+                    }
+                }
+                else {
+                    if (u.getAccountName().equals(name)) {
+                        user = u;
+                        break;
+                    }
                 }
             }
             else {
-                if (u.getMe().equals(name)) {
+                if (u.getDisplayName().equals(name)) {
                     user = u;
+                    break;
                 }
             }
         }

@@ -15,8 +15,8 @@ import java.util.List;
 
 public class EditingToolsAdapter extends RecyclerView.Adapter<EditingToolsAdapter.ViewHolder> {
 
-    private List<ToolModel> mToolList = new ArrayList<>();
-    private OnItemSelected mOnItemSelected;
+    private final List<ToolModel> mToolList = new ArrayList<>();
+    private final OnItemSelected mOnItemSelected;
 
     public EditingToolsAdapter(OnItemSelected onItemSelected) {
         mOnItemSelected = onItemSelected;
@@ -32,9 +32,9 @@ public class EditingToolsAdapter extends RecyclerView.Adapter<EditingToolsAdapte
     }
 
     class ToolModel {
-        private String mToolName;
-        private int mToolIcon;
-        private ToolType mToolType;
+        private final String mToolName;
+        private final int mToolIcon;
+        private final ToolType mToolType;
 
         ToolModel(String toolName, int toolIcon, ToolType toolType) {
             mToolName = toolName;
@@ -64,8 +64,8 @@ public class EditingToolsAdapter extends RecyclerView.Adapter<EditingToolsAdapte
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgToolIcon;
-        TextView txtTool;
+        final ImageView imgToolIcon;
+        final TextView txtTool;
 
         ViewHolder(View itemView) {
             super(itemView);

@@ -47,9 +47,9 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
 
     private final Context context;
     private final List<Draft> drafts;
-    private LayoutInflater mInflater;
-    private LinearLayout layout;
-    private DraftFragment.OnDraftChangedListener callback;
+    private final LayoutInflater mInflater;
+    private final LinearLayout layout;
+    private final DraftFragment.OnDraftChangedListener callback;
 
     DraftListAdapter(Context context, List<Draft> drafts, DraftFragment.OnDraftChangedListener callback, LinearLayout layout) {
         this.context = context;
@@ -152,7 +152,7 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
     // Update listener.
     class OnUpdateClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnUpdateClickListener(int position) {
             this.position = position;
@@ -213,7 +213,7 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
     // Delete listener.
     class OnDeleteClickListener implements OnClickListener {
 
-        int position;
+        final int position;
 
         OnDeleteClickListener(int position) {
             this.position = position;

@@ -29,7 +29,7 @@ public class MicrosubTest extends ActivityInstrumentationTestCase2<LaunchActivit
     }
 
     @Rule
-    public ActivityTestRule<LaunchActivity> rule = new ActivityTestRule<>(LaunchActivity.class, true, false);
+    public final ActivityTestRule<LaunchActivity> rule = new ActivityTestRule<>(LaunchActivity.class, true, false);
 
     @Before
     public void setUp() throws Exception {

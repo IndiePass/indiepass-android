@@ -35,7 +35,7 @@ public class PostTypeFormsTest extends ActivityInstrumentationTestCase2<LaunchAc
     }
 
     @Rule
-    public ActivityTestRule<LaunchActivity> rule = new ActivityTestRule<>(LaunchActivity.class, true, false);
+    public final ActivityTestRule<LaunchActivity> rule = new ActivityTestRule<>(LaunchActivity.class, true, false);
 
     @Before
     public void setUp() throws Exception {

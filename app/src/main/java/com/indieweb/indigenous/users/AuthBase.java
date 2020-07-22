@@ -2,15 +2,12 @@ package com.indieweb.indigenous.users;
 
 import android.content.Context;
 
-import com.indieweb.indigenous.General;
-import com.indieweb.indigenous.MainActivity;
-import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 
 abstract public class AuthBase implements Auth {
 
-    private Context context;
-    private User user;
+    private final Context context;
+    private final User user;
 
     public AuthBase(Context context, User user) {
         this.context = context;

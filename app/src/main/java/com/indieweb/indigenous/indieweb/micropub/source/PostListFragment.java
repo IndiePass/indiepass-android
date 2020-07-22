@@ -308,7 +308,7 @@ public class PostListFragment extends BaseFragment {
     /**
      * Load more touch button.
      */
-    private View.OnTouchListener loadMoreTouch = new View.OnTouchListener() {
+    private final View.OnTouchListener loadMoreTouch = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent motionEvent) {
             switch(motionEvent.getAction()) {
