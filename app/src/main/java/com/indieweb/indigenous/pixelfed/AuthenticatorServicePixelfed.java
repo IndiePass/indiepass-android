@@ -1,16 +1,16 @@
-package com.indieweb.indigenous.users;
+package com.indieweb.indigenous.pixelfed;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-public class AuthenticatorServiceIndieWeb extends Service {
+public class AuthenticatorServicePixelfed extends Service {
 
-    private AuthenticatorIndieWeb authenticator;
+    private AuthenticatorPixelfed authenticator;
 
     @Override
     public void onCreate() {
-        authenticator = new AuthenticatorIndieWeb(this);
+        authenticator = new AuthenticatorPixelfed(this);
     }
 
     @Override

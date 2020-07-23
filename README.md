@@ -1,6 +1,6 @@
 # Indigenous for Android
 
-An open social app with support for IndieWeb, Mastodon and Pixelfed.
+An open social app with support for IndieWeb, Mastodon, Pleroma and Pixelfed.
 
 <a href='https://play.google.com/store/apps/details?id=com.indieweb.indigenous'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="100"/></a> <a href="https://f-droid.org/app/com.indieweb.indigenous"><img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="100"></a>
 
@@ -17,11 +17,12 @@ Desktop: https://github.com/swentel/indigenous-desktop
     micropub and microsub endpoints are optional, but at least one should be
     available. Token revoke happens when deleting an account. PKCE support for
     additional security when authenticating.
-  - Fediverse: Mastodon and Pixelfed - connect with the instance where you are
-    registered.
+  - Fediverse: Mastodon, Pleroma and Pixelfed - connect with the instance where
+    you registered.
 - Comes with a built-in anonymous user which allows reading channels and
-  posts coming from https://indigenous.realize.be, https://mastodon.social or
-  https://pixelfed.social. Posts can be send to a custom endpoint and token.
+  posts coming from https://indigenous.realize.be, https://mastodon.social,
+  https://pleroma.site or https://pixelfed.social. Posts can be send to a custom
+  endpoint and token.
 - Posting
   - post types: article, note, reply, repost, like, bookmark, event,
     issue, rsvp, geocache, read, checkin, trip and venue (h-card).
@@ -61,9 +62,12 @@ geo:51.5258325,-0.1359825,0.0;name=london;url=https://hwclondon.co.uk
 
 Some features are not available for Mastodon and Pixelfed, because they either
 don't make sense or the API doesn't support it yet. Pull requests welcome of
-course! You can always go to 'oauth/authorized_applications' (Mastodon) or
-'settings/applications' (Pixelfed) on your instance to revoke the authorization
-of this app to your account.
+course! To check authorizations of this app on your accounts, go to following
+url on your instance:
+
+Mastodon: oauth/authorized_applications
+Pixelfed: settings/applications
+Pleroma: not found yet (info welcome!)
 
 ## Screenshot
 
@@ -127,7 +131,8 @@ This app uses following external libraries:
 - https://jsoup.org/download
 - https://github.com/ticofab/android-gpx-parser
 
-## Other Micropub and Microsub clients
+## Other IndieWeb and Fediverse clients
 
-There are ton of other (mobile) IndieWeb clients, see https://indieweb.org/Micropub/Clients
-and https://indieweb.org/Microsub
+- Indieweb: https://indieweb.org/Micropub/Clients and https://indieweb.org/Microsub
+- Mastodon: https://joinmastodon.org/apps
+- Pleroma: https://docs.pleroma.social/clients.html

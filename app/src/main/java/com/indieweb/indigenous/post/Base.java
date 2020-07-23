@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -717,7 +718,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 }
 
                 // Media urls.
-                if (Preferences.getPreference(getApplicationContext(), "pref_key_upload_media_endpoint", false) && uploadMediaDone && mediaUrls.size() > 0) {
+                if (post.useMediaEndpoint() && uploadMediaDone && mediaUrls.size() > 0) {
                     int mi = 0;
                     for (Uri u: image) {
                         bodyParams.put(post.getPostParamName(Post.POST_PARAM_PHOTO) + "_multiple_[" + mi + "]", mediaUrls.get(u));
@@ -1140,11 +1141,16 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
      * Show progress bar and disable send menu item.
      */
     public void showProgressBar() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(getString(R.string.posting));
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage(getString(R.string.posting));
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setCancelable(false);
+        }
+
+        if (!progressDialog.isShowing()) {
+            progressDialog.show();
+        }
 
         if (sendItem != null) {
             sendItem.setEnabled(false);
@@ -1156,7 +1162,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
      */
     public void hideProgressBar() {
 
-        if (progressDialog != null) {
+        if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
 

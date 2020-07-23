@@ -69,14 +69,17 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     public final static String PIXELFED_TOKEN_TYPE = "Pixelfed";
     public final static String MASTODON_ACCOUNT_TYPE = "Mastodon";
     public final static String MASTODON_TOKEN_TYPE = "Mastodon";
+    public final static String PLEROMA_ACCOUNT_TYPE = "Pleroma";
+    public final static String PLEROMA_TOKEN_TYPE = "Pleroma";
 
     String accountType = "indieweb";
-    String requestType = "pixelfedRegister";
+    String requestType = "";
     String state;
     Button signIn;
     ImageButton indieWeb;
     ImageButton pixelfed;
     ImageButton mastodon;
+    ImageButton pleroma;
     EditText domain;
     TextView info;
     String domainInput;
@@ -95,6 +98,8 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     String pixelfedClientSecret;
     String mastodonClientId;
     String mastodonClientSecret;
+    String pleromaClientId;
+    String pleromaClientSecret;
     protected VolleyRequestListener volleyRequestListener;
 
     final String ClientId = "https://indigenous.realize.be/";
@@ -160,6 +165,16 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                             }
                         });
 
+                        pleroma = findViewById(R.id.pleroma);
+                        pleroma.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                accountType = "pleroma";
+                                info.setText(getString(R.string.sign_in_pleroma_info));
+                                signInContainer.setVisibility(View.VISIBLE);
+                            }
+                        });
+
                         pixelfed = findViewById(R.id.pixelfed);
                         pixelfed.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -219,6 +234,9 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
             else if (accountType.equals("mastodon") && code != null && code.length() > 0) {
                 validateMastodonCode(code);
             }
+            else if (accountType.equals("pleroma") && code != null && code.length() > 0) {
+                validatePleromaCode(code);
+            }
             else {
                 final Snackbar snack = Snackbar.make(layout, getString(R.string.no_code_found), Snackbar.LENGTH_INDEFINITE);
                 snack.setAction(getString(R.string.close), new View.OnClickListener() {
@@ -271,6 +289,10 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
             if (accountType.equals("mastodon")) {
                 registerWithMastodon();
             }
+
+            if (accountType.equals("pleroma")) {
+                registerWithPleroma();
+            }
         }
     };
 
@@ -311,6 +333,14 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
 
         if (requestType.equals("mastodonAccessToken")) {
             handleMastodonAccessToken(response);
+        }
+
+        if (requestType.equals("pleromaAppRegister")) {
+            handlePleromaAppRegister(response);
+        }
+
+        if (requestType.equals("pleromaAccessToken")) {
+            handlePleromaAccessToken(response);
         }
 
     }
@@ -885,6 +915,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
         }
     }
 
+
     /**
      * Register mastodon application.
      */
@@ -1006,6 +1037,165 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
      *   The current user
      */
     private void syncMastodon(User user) {
+        Auth auth = AuthFactory.getAuth(user, AuthActivity.this);
+        auth.syncAccount(layout);
+
+        // Start launch activity which will determine where it will go.
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent launch = new Intent(getBaseContext(), LaunchActivity.class);
+                startActivity(launch);
+                finish();
+            }
+        }, 1000);
+    }
+
+    /**
+     * Register with a Pleroma instance.
+     */
+    private void registerWithPleroma() {
+        domainInput = Utility.stripEndingSlash(domainInput);
+
+        if (URLUtil.isValidUrl( domainInput)) {
+            changeSignInButton(R.string.connecting);
+            registerPleromaApp();
+        }
+        else {
+            changeSignInButton(R.string.sign_in);
+            final Snackbar snack = Snackbar.make(layout, getString(R.string.invalid_url), Snackbar.LENGTH_INDEFINITE);
+            snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            snack.dismiss();
+                        }
+                    }
+            );
+            snack.show();
+        }
+    }
+
+    /**
+     * Register pleroma application.
+     */
+    private void registerPleromaApp() {
+        requestType = "pleromaAppRegister";
+        Map<String, String> params = new HashMap<>();
+        params.put("client_name", "Indigenous");
+        params.put("website", ClientId);
+        params.put("redirect_uris", RedirectUri);
+        params.put("scopes", "read write follow push");
+
+        String appUrl = domainInput + "/api/v1/apps";
+        HTTPRequest r = new HTTPRequest(this.volleyRequestListener, null, getApplicationContext());
+        r.doPostRequest(appUrl, params);
+    }
+
+    /**
+     * Handle the register response
+     *
+     * @param response
+     *   The current response.
+     */
+    private void handlePleromaAppRegister(String response) {
+        try {
+            JSONObject object = new JSONObject(response);
+            pleromaClientId = object.getString("client_id");
+            pleromaClientSecret = object.getString("client_secret");
+            authorizePleroma();
+        }
+        catch (JSONException e) {
+            Snackbar.make(layout, getString(R.string.error_parsing_app_registration_response), Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Authorize with pleroma.
+     */
+    private void authorizePleroma() {
+        String url = domainInput + "/oauth/authorize?response_type=code&redirect_uri=" + RedirectUri + "&client_id=" + pleromaClientId + "&scope=read+write+follow+push";
+        Uri uri = Uri.parse(url);
+        startAuthorization(uri);
+    }
+
+    /**
+     * Validate pleroma code and get access token.
+     *
+     * @param code
+     *   The code from the authorize call.
+     */
+    private void validatePleromaCode(String code) {
+        requestType = "pleromaAccessToken";
+        Map<String, String> params = new HashMap<>();
+        params.put("client_id", pleromaClientId);
+        params.put("client_secret", pleromaClientSecret);
+        params.put("redirect_uri", RedirectUri);
+        params.put("scope", "read write follow push");
+        params.put("code", code);
+        params.put("grant_type", "authorization_code");
+
+        String appUrl = domainInput + "/oauth/token";
+        HTTPRequest r = new HTTPRequest(this.volleyRequestListener, null, getApplicationContext());
+        r.doPostRequest(appUrl, params);
+    }
+
+    /**
+     * Handle the access token response.
+     *
+     * @param response
+     *   The current response
+     */
+    private void handlePleromaAccessToken(String response) {
+        String error = getString(R.string.request_failed_unknown);
+        String accessToken = "";
+        try {
+            JSONObject object = new JSONObject(response);
+            accessToken = object.getString("access_token");
+        }
+        catch (JSONException e) {
+            error = e.getMessage();
+        }
+
+        if (accessToken.length() > 0) {
+
+            AccountManager am = AccountManager.get(getApplicationContext());
+
+            // Create new account.
+            Account account = new Account(getAccountName(), PLEROMA_ACCOUNT_TYPE);
+            am.addAccountExplicitly(account, null, null);
+            am.setAuthToken(account, PLEROMA_TOKEN_TYPE, accessToken);
+            am.setUserData(account, "client_id", pleromaClientId);
+            am.setUserData(account, "client_secret", pleromaClientSecret);
+
+            // Set default account.
+            setDefaultAccount();
+
+            Snackbar.make(layout, getString(R.string.authentication_success), Snackbar.LENGTH_SHORT).show();
+
+            requestType = "pleromaInitialSync";
+            syncPleroma(new Accounts(AuthActivity.this).getUser(getAccountName(), true, false));
+        }
+        else {
+            final Snackbar snack = Snackbar.make(layout, String.format(getString(R.string.authentication_fail_token), error), Snackbar.LENGTH_INDEFINITE);
+            snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            snack.dismiss();
+                        }
+                    }
+            );
+            snack.show();
+            showForm();
+        }
+    }
+
+    /**
+     * Sync pleroma
+     *
+     * @param user
+     *   The current user
+     */
+    private void syncPleroma(User user) {
         Auth auth = AuthFactory.getAuth(user, AuthActivity.this);
         auth.syncAccount(layout);
 

@@ -1,7 +1,7 @@
 <h4>xx/xx/xxxx 2020 0.63</h4>
 <ul>
     <li>Fix preview of a feed</li>
-    <li>Add Pixelfed and Mastodon Account types</li>
+    <li>Add Pixelfed, Pleroma and Mastodon Account types</li>
     <li>Get more data from server for updating posts</li>
     <li>Pull in more data when sharing to Indigenous</li>
     <li>Fix move post presenting the full channel list</li>
@@ -9,7 +9,7 @@
     <li>Do not auto hide error messages, they must be closed instead</li>
     <li>Select account when auto post is configured and having multiple accounts</li>
     <li>View sources on channel overview in case the server supports the method=tree call</li>
-    <li>Quickly switch accounts from navigation bar for reader, or easily while creating a post</li>
+    <li>Quickly switch accounts from navigation bar for reader, or while creating a post</li>
 </ul>
 <h4>24/04/2020 2020 0.62</h4>
 <ul>

@@ -1,16 +1,16 @@
-package com.indieweb.indigenous.users;
+package com.indieweb.indigenous.mastodon;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-public class AuthenticatorServicePixelfed extends Service {
+public class AuthenticatorServiceMastodon extends Service {
 
-    private AuthenticatorPixelfed authenticator;
+    private AuthenticatorMastodon authenticator;
 
     @Override
     public void onCreate() {
-        authenticator = new AuthenticatorPixelfed(this);
+        authenticator = new AuthenticatorMastodon(this);
     }
 
     @Override

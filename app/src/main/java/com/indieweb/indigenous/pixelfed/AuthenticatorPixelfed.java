@@ -1,28 +1,24 @@
-package com.indieweb.indigenous.users;
+package com.indieweb.indigenous.pixelfed;
 
-import android.accounts.AbstractAccountAuthenticator;
-import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.indieweb.indigenous.users.AuthActivity;
+import com.indieweb.indigenous.users.AuthenticatorBase;
+
 import static com.indieweb.indigenous.users.AuthActivity.PIXELFED_ACCOUNT_TYPE;
 import static com.indieweb.indigenous.users.AuthActivity.PIXELFED_TOKEN_TYPE;
 
-public class AuthenticatorPixelfed extends AbstractAccountAuthenticator {
+public class AuthenticatorPixelfed extends AuthenticatorBase {
 
     private final Context context;
 
     public AuthenticatorPixelfed(Context context) {
         super(context);
         this.context = context;
-    }
-
-    @Override
-    public Bundle editProperties(AccountAuthenticatorResponse response, String accountType) {
-        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -36,28 +32,8 @@ public class AuthenticatorPixelfed extends AbstractAccountAuthenticator {
     }
 
     @Override
-    public Bundle confirmCredentials(AccountAuthenticatorResponse response, Account account, Bundle options) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Bundle getAuthToken(AccountAuthenticatorResponse response, Account account, String authTokenType, Bundle options) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public String getAuthTokenLabel(String authTokenType) {
         return PIXELFED_ACCOUNT_TYPE;
-    }
-
-    @Override
-    public Bundle updateCredentials(AccountAuthenticatorResponse response, Account account, String authTokenType, Bundle options) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Bundle hasFeatures(AccountAuthenticatorResponse response, Account account, String[] features) {
-        throw new UnsupportedOperationException();
     }
 
 }

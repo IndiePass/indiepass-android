@@ -8,11 +8,14 @@ import com.indieweb.indigenous.indieweb.microsub.IndieWebReader;
 import com.indieweb.indigenous.mastodon.MastodonReader;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.pixelfed.PixelfedReader;
+import com.indieweb.indigenous.pleroma.PleromaReader;
 
 import static com.indieweb.indigenous.mastodon.MastodonReader.CHANNEL_NAME_MASTODON_ANONYMOUS;
 import static com.indieweb.indigenous.pixelfed.PixelfedReader.CHANNEL_NAME_PIXELFED_ANONYMOUS;
+import static com.indieweb.indigenous.pleroma.PleromaReader.CHANNEL_NAME_PLEROMA_ANONYMOUS;
 import static com.indieweb.indigenous.users.AuthActivity.MASTODON_ACCOUNT_TYPE;
 import static com.indieweb.indigenous.users.AuthActivity.PIXELFED_ACCOUNT_TYPE;
+import static com.indieweb.indigenous.users.AuthActivity.PLEROMA_ACCOUNT_TYPE;
 
 public class ReaderFactory {
 
@@ -28,6 +31,9 @@ public class ReaderFactory {
                 case CHANNEL_NAME_PIXELFED_ANONYMOUS:
                     type = "pixelfed";
                     break;
+                case CHANNEL_NAME_PLEROMA_ANONYMOUS:
+                    type = "pleroma";
+                    break;
             }
         }
 
@@ -38,6 +44,9 @@ public class ReaderFactory {
             if (user.getAccountType().equals(MASTODON_ACCOUNT_TYPE)) {
                 type = "mastodon";
             }
+            if (user.getAccountType().equals(PLEROMA_ACCOUNT_TYPE)) {
+                type = "pleroma";
+            }
         }
 
         switch (type) {
@@ -45,6 +54,8 @@ public class ReaderFactory {
                 return new IndieWebReader(context, user);
             case "pixelfed":
                 return new PixelfedReader(context, user);
+            case "pleroma":
+                return new PleromaReader(context, user);
             case "mastodon":
                 return new MastodonReader(context, user);
         }

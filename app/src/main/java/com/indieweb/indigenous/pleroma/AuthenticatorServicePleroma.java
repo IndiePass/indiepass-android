@@ -1,16 +1,16 @@
-package com.indieweb.indigenous.users;
+package com.indieweb.indigenous.pleroma;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-public class AuthenticatorServiceMastodon extends Service {
+public class AuthenticatorServicePleroma extends Service {
 
-    private AuthenticatorMastodon authenticator;
+    private AuthenticatorPleroma authenticator;
 
     @Override
     public void onCreate() {
-        authenticator = new AuthenticatorMastodon(this);
+        authenticator = new AuthenticatorPleroma(this);
     }
 
     @Override

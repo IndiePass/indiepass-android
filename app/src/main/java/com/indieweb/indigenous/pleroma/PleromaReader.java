@@ -1,4 +1,4 @@
-package com.indieweb.indigenous.mastodon;
+package com.indieweb.indigenous.pleroma;
 
 import android.content.Context;
 import android.view.MenuItem;
@@ -21,18 +21,18 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MastodonReader extends ReaderBase {
+public class PleromaReader extends ReaderBase {
 
     public static final int LIMIT = 20;
-    public static final String CHANNEL_NAME_MASTODON_ANONYMOUS = "mastodon_anonymous";
-    public static final String CHANNEL_NAME_HOME = "mastodon_home";
-    public static final String CHANNEL_NAME_PUBLIC = "mastodon_public";
-    public static final String CHANNEL_NAME_MY_POSTS = "mastodon_my_posts";
-    public static final String CHANNEL_NAME_NOTIFICATIONS = "mastodon_notifications";
-    public static final String CHANNEL_NAME_FAVOURITES = "mastodon_favourites";
-    public static final String CHANNEL_NAME_BOOKMARKS = "mastodon_bookmarks";
+    public static final String CHANNEL_NAME_PLEROMA_ANONYMOUS = "pleroma_anonymous";
+    public static final String CHANNEL_NAME_HOME = "pleroma_home";
+    public static final String CHANNEL_NAME_PUBLIC = "pleroma_public";
+    public static final String CHANNEL_NAME_MY_POSTS = "pleroma_my_posts";
+    public static final String CHANNEL_NAME_NOTIFICATIONS = "pleroma_notifications";
+    public static final String CHANNEL_NAME_FAVOURITES = "pleroma_favourites";
+    public static final String CHANNEL_NAME_BOOKMARKS = "pleroma_bookmarks";
 
-    public MastodonReader(Context context, User user) {
+    public PleromaReader(Context context, User user) {
         super(context, user);
     }
 
@@ -108,12 +108,12 @@ public class MastodonReader extends ReaderBase {
     public String getTimelineEndpoint(User user, String channelId, boolean isGlobalUnread, boolean showUnread, boolean isSourceView, String sourceId, boolean isTagView, String tag, boolean isSearch, String search, String pagerAfter) {
         String endpoint;
 
-        if (channelId.equals(CHANNEL_NAME_MASTODON_ANONYMOUS)) {
+        if (channelId.equals(CHANNEL_NAME_PLEROMA_ANONYMOUS)) {
             if (isSourceView && sourceId != null) {
-                endpoint = "https://mastodon.social/api/v1/accounts/" + sourceId + "/statuses?limit=" + LIMIT;
+                endpoint = "https://pleroma.site/api/v1/accounts/" + sourceId + "/statuses?limit=" + LIMIT;
             }
             else {
-                endpoint = "https://mastodon.social/api/v1/timelines/public?limit=" + LIMIT;
+                endpoint = "https://pleroma.site/api/v1/timelines/public?limit=" + LIMIT;
             }
         }
         else if (isSourceView && sourceId != null) {
@@ -167,7 +167,7 @@ public class MastodonReader extends ReaderBase {
     @Override
     public boolean sendTimelineAccessToken(String channelId) {
         boolean send = true;
-        if (channelId.equals(CHANNEL_NAME_MASTODON_ANONYMOUS)) {
+        if (channelId.equals(CHANNEL_NAME_PLEROMA_ANONYMOUS)) {
             send = false;
         }
         return send;

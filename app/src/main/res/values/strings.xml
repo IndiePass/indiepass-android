@@ -45,6 +45,7 @@
     <string name="account_type_indieweb">IndieAuth</string>
     <string name="account_type_pixelfed">Pixelfed</string>
     <string name="account_type_mastodon">Mastodon</string>
+    <string name="account_type_pleroma">Pleroma</string>
     <string name="accounts">Accounts</string>
     <string name="account_name">Account: %s</string>
     <string name="select_account_type">Select account type</string>
@@ -59,10 +60,12 @@
     <string name="sign_in_with_indieweb">IndieWeb</string>
     <string name="sign_in_with_pixelfed">Pixelfed</string>
     <string name="sign_in_with_mastodon">Mastodon</string>
+    <string name="sign_in_with_pleroma">Pleroma</string>
     <string name="error_parsing_app_registration_response">Error parsing the app registration response</string>
     <string name="sign_in_indieauth_info">This login uses IndieAuth and requires you to have a website on your domain that supports IndieAuth.\n\nThe authorization and token endpoints are required. The micropub or microsub endpoint are optional, but at least one needs to be found.</string>
     <string name="sign_in_mastodon_info">Enter the base URL of your Mastodon instance. You will be redirected to authorize on that instance.</string>
     <string name="sign_in_pixelfed_info">Enter the base URL of your Pixelfed instance. You will be redirected to authorize on that instance.</string>
+    <string name="sign_in_pleroma_info">Enter the base URL of your Pleroma instance. You will be redirected to authorize on that instance.</string>
     <string name="invalid_url">This is an invalid URl</string>
     <string name="switch_account">Set</string>
     <string name="account_delete_error">Error deleting account</string>
@@ -109,9 +112,10 @@
     <string name="channel_notifications">Notifications</string>
     <string name="channel_pixelfed">Pixelfed</string>
     <string name="channel_mastodon">Mastodon</string>
+    <string name="channel_pleroma">Pleroma</string>
 
     <!-- About -->
-    <string name="about_info"><![CDATA[Indigenous allows you to engage with the internet as you do on social media sites, but posts it all on your website or a federated instance like Pixelfed or Mastodon. Use the built-in reader to read and respond to posts across the internet. Indigenous doesn\'t track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/swentel/indigenous-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
+    <string name="about_info"><![CDATA[Indigenous allows you to engage with the internet as you do on social media sites, but posts it all on your website or a federated instance like Mastodon, Pleroma or Pixelfed. Use the built-in reader to read and respond to posts across the internet. Indigenous doesn\'t track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/swentel/indigenous-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
     <string name="view_changelog">View changelog</string>
 
     <!-- Drafts -->
@@ -286,7 +290,7 @@
     <string name="post_success">Post success</string>
     <string name="media_upload_success">Media upload success</string>
     <string name="no_media_url_found">No file url found</string>
-    <string name="post_network_fail">%s posting failed. Status code: %d; message: %s</string>
+    <string name="post_network_fail">Posting failed. Status code: %d; message: %s</string>
     <string name="post_fail">Failed posting, unknown error</string>
     <string name="post_update_network_fail">Update failed. Status code: %d; message: %s</string>
     <string name="post_update_fail">Failed updating post</string>

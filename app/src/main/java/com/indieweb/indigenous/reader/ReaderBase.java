@@ -15,6 +15,7 @@ import java.util.Map;
 
 import static com.indieweb.indigenous.mastodon.MastodonReader.CHANNEL_NAME_MASTODON_ANONYMOUS;
 import static com.indieweb.indigenous.pixelfed.PixelfedReader.CHANNEL_NAME_PIXELFED_ANONYMOUS;
+import static com.indieweb.indigenous.pleroma.PleromaReader.CHANNEL_NAME_PLEROMA_ANONYMOUS;
 
 abstract public class ReaderBase implements Reader {
 
@@ -70,6 +71,12 @@ abstract public class ReaderBase implements Reader {
             channel = new Channel();
             channel.setUid(CHANNEL_NAME_PIXELFED_ANONYMOUS);
             channel.setName(getContext().getString(R.string.channel_pixelfed));
+            channel.setUnread(0);
+            Channels.add(channel);
+
+            channel = new Channel();
+            channel.setUid(CHANNEL_NAME_PLEROMA_ANONYMOUS);
+            channel.setName(getContext().getString(R.string.channel_pleroma));
             channel.setUnread(0);
             Channels.add(channel);
         }

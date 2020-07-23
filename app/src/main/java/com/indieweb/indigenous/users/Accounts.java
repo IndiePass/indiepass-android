@@ -26,6 +26,7 @@ import static android.content.Context.MODE_PRIVATE;
 import static com.indieweb.indigenous.users.AuthActivity.INDIEWEB_ACCOUNT_TYPE;
 import static com.indieweb.indigenous.users.AuthActivity.MASTODON_ACCOUNT_TYPE;
 import static com.indieweb.indigenous.users.AuthActivity.PIXELFED_ACCOUNT_TYPE;
+import static com.indieweb.indigenous.users.AuthActivity.PLEROMA_ACCOUNT_TYPE;
 
 public class Accounts {
 
@@ -260,6 +261,33 @@ public class Accounts {
             user.setDisplayName(displayName);
 
             user.setAccountType(MASTODON_ACCOUNT_TYPE);
+            user.setAccount(a);
+            users.add(user);
+        }
+
+        for (Account a : accountManager.getAccountsByType(PLEROMA_ACCOUNT_TYPE)) {
+            User user = new User();
+            user.setAccountName(a.name);
+            String token = "";
+            try {
+                token = accountManager.peekAuthToken(a, AuthActivity.PLEROMA_TOKEN_TYPE);
+            }
+            catch (Exception ignored) {}
+
+            user.setAccessToken(token);
+            user.setAvatar(accountManager.getUserData(a, "author_avatar"));
+            user.setName(accountManager.getUserData(a, "author_name"));
+            user.setExternalId(accountManager.getUserData(a, "external_id"));
+            user.setClientId(accountManager.getUserData(a, "client_id"));
+            user.setClientSecret(accountManager.getUserData(a, "client_secret"));
+
+            String displayName = user.getBaseUrl();
+            if (user.getName().length() > 0) {
+                displayName = user.getName() + " (" + PLEROMA_ACCOUNT_TYPE + ")";
+            }
+            user.setDisplayName(displayName);
+
+            user.setAccountType(PLEROMA_ACCOUNT_TYPE);
             user.setAccount(a);
             users.add(user);
         }
