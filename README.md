@@ -146,3 +146,4 @@ Things I'd love to explore one day:
 - cleanup the various ways of requests
 - allow posting to multiple accounts at once
 - better UI/UX for managing feeds
+- detail views for Fediverse
