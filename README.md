@@ -17,8 +17,7 @@ Desktop: https://github.com/swentel/indigenous-desktop
     micropub and microsub endpoints are optional, but at least one should be
     available. Token revoke happens when deleting an account. PKCE support for
     additional security when authenticating.
-  - Fediverse: Mastodon, Pleroma and Pixelfed - connect with the instance where
-    you registered.
+  - Fediverse: Mastodon, Pleroma and Pixelfed.
 - Comes with a built-in anonymous user which allows reading channels and
   posts coming from https://indigenous.realize.be, https://mastodon.social,
   https://pleroma.site or https://pixelfed.social. Posts can be send to a custom
