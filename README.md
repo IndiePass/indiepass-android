@@ -115,10 +115,6 @@ These are placeholders and should be kept.
 
 https://github.com/swentel/indigenous-android/blob/master/app/src/main/res/values/strings.xml
 
-## API
-
-Want to add a new account type, checkout API.md for a quick guide.
-
 ## Credits
 
 This app uses following external libraries:
@@ -136,3 +132,18 @@ This app uses following external libraries:
 - Indieweb: https://indieweb.org/Micropub/Clients and https://indieweb.org/Microsub
 - Mastodon: https://joinmastodon.org/apps
 - Pleroma: https://docs.pleroma.social/clients.html
+
+## API
+
+If you'd like to add a new account type, checkout API.md for a quick guide.
+
+## Issues
+
+If you found a bug, open a request. Feature requests might be closed as I love
+having a clean queue. Pull requests are welcome though :)
+
+Things I'd love to explore one day:
+
+- cleanup the various ways of requests
+- allow posting to multiple accounts at once
+- better UI/UX for managing feeds
