@@ -35,6 +35,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Cache;
+import com.indieweb.indigenous.model.ChannelCounter;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.TimelineStyle;
 import com.indieweb.indigenous.model.User;
@@ -44,6 +45,7 @@ import com.indieweb.indigenous.util.Utility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -589,10 +591,10 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             }
             //Log.d("indigenous_debug", "position: " + position);
 
-            int counter = 0;
             TimelineItem item;
             int itemPosition = 0;
             List<String> readEntries = new ArrayList<>();
+            Map<String, ChannelCounter> channelCounters = new LinkedHashMap<>();
             while (itemPosition <= position) {
                 item = adapter.getItem(itemPosition);
                 //Log.d("indigenous_debug", "Position:" + itemPosition + " - " + item.getName());
@@ -601,22 +603,44 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     readEntries.add(item.getId());
                     item.setRead(true);
                     TimelineItems.set(itemPosition, item);
-                    counter -= 1;
+
+                    if (channelCounters.containsKey(item.getChannelId())) {
+                        ChannelCounter cc = channelCounters.get(item.getChannelId());
+                        cc.setCounter(cc.getCounter() - 1);
+                        channelCounters.put(item.getChannelId(), cc);
+                        //Log.d("indigenous_debug", "updated channel: " + item.getChannelId() + " - " + cc.getCounter());
+                    }
+                    else {
+                        ChannelCounter cc = new ChannelCounter();
+                        channelCounters.put(item.getChannelId(), cc);
+                        //Log.d("indigenous_debug", "added channel: " + item.getChannelId());
+                    }
+
+                    if (item.getSourceId().length() > 0 && Preferences.getPreference(TimelineActivity.this, "channel_show_sources", false)) {
+                        if (channelCounters.containsKey(item.getSourceId())) {
+                            ChannelCounter cc = channelCounters.get(item.getSourceId());
+                            cc.setCounter(cc.getCounter() - 1);
+                            channelCounters.put(item.getSourceId(), cc);
+                            //Log.d("indigenous_debug", "updated source: " + item.getSourceId() + " - " + cc.getCounter());
+                        }
+                        else {
+                            ChannelCounter cc = new ChannelCounter();
+                            cc.setSource(true);
+                            channelCounters.put(item.getSourceId(), cc);
+                            //Log.d("indigenous_debug", "added source: " + item.getSourceId() + " - " + cc.getCounter());
+                        }
+                    }
                 }
                 itemPosition++;
             }
 
             if (readEntries.size() > 0) {
-                //Log.d("indigenous_debug", "Counter: " + counter);
                 reader.markRead(channelId, readEntries, false, false);
-                Utility.notifyChannels(channelId, counter, false);
-                if (sourceId != null) {
-                    Utility.notifyChannels(sourceId, counter, true);
-                }
+                Utility.notifyChannels(channelCounters);
             }
         }
-        catch (Exception e) {
-            Log.d("indigenous_debug", "Exception marking read: " + e.getMessage());
+        catch (Exception ignored) {
+            //Log.d("indigenous_debug", "Exception marking read: " + e.getMessage());
         }
     }
 }

@@ -59,7 +59,7 @@ public class TimelineItem implements Serializable {
     }
 
     public String getSourceId() {
-        return sourceId;
+        return sourceId != null ? sourceId : "";
     }
 
     public void setSourceId(String sourceId) {

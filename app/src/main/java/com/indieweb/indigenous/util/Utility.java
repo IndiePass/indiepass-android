@@ -33,6 +33,7 @@ import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.model.Cache;
 import com.indieweb.indigenous.model.Channel;
+import com.indieweb.indigenous.model.ChannelCounter;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.reader.Reader;
 import com.indieweb.indigenous.reader.TimelineActivity;
@@ -51,7 +52,9 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Utility {
 
@@ -179,30 +182,51 @@ public class Utility {
     }
 
     /**
+     * Notify channels the counter has changed.
+     *
+     * @param item
+     *   A timeline item.
+     * @param counter
+     *   The counter
+     */
+    public static void notifyChannels(TimelineItem item, Integer counter) {
+        Map<String, ChannelCounter> channelCounters = new LinkedHashMap<>();
+        ChannelCounter cc = new ChannelCounter();
+        cc.setCounter(counter);
+        channelCounters.put(item.getChannelId(), cc);
+        if (item.getSourceId().length() > 0) {
+            cc = new ChannelCounter();
+            cc.setCounter(counter);
+            cc.setSource(true);
+            channelCounters.put(item.getSourceId(), cc);
+        }
+        notifyChannels(channelCounters);
+    }
+
+    /**
      * Notify channels the counter is changed.
      *
-     * @param channelId
-     *   The channel id.
-     * @param count
-     *   How many items to count up or down.
-     * @param isSource
-     *   whether to check on course.
+     * @param channelCounters
+     *   A list where key is channel/source and value read items.
      */
-    public static void notifyChannels(String channelId, int count, boolean isSource) {
+    public static void notifyChannels(Map<String, ChannelCounter> channelCounters) {
         try {
             Indigenous app = Indigenous.getInstance();
             app.setRefreshChannels(true);
-            for (Channel c: app.getChannelsList()) {
-                String uid;
-                if (isSource) {
-                    uid = c.getSourceId();
-                }
-                else {
-                    uid = c.getUid();
-                }
-                if (uid.equals(channelId)) {
-                    if (c.getUnread() != -1) {
-                        c.setUnread(c.getUnread() + count);
+
+            for (Map.Entry<String, ChannelCounter> pair : channelCounters.entrySet()) {
+                String id = pair.getKey();
+                ChannelCounter cc = pair.getValue();
+                //Log.d("indigenous_debug", "checking: " + id + ": " + cc.getCounter() + " / " + cc.isSource());
+                for (Channel c: app.getChannelsList()) {
+                    if (cc.isSource() && id.equals(c.getSourceId()) && c.getUnread() != -1) {
+                        //Log.d("indigenous_debug", "counting down source " + c.getSourceId() + " with " + cc.getCounter());
+                        c.setUnread(c.getUnread() + cc.getCounter());
+                        break;
+                    }
+                    else if (!cc.isSource() && id.equals(c.getUid()) && c.getUnread() != -1) {
+                        //Log.d("indigenous_debug", "counting down channel " + c.getUid() + " with " + cc.getCounter() + " (" + id + ")");
+                        c.setUnread(c.getUnread() + cc.getCounter());
                         break;
                     }
                 }

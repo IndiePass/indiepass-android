@@ -1204,7 +1204,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             final List<CharSequence> displayValues = new ArrayList<>();
                             for (Channel channel : channels) {
                                 String uid = channel.getUid();
-                                if (!uid.equals("notifications") && !uid.equals("global") && !uid.equals(channelId)) {
+                                if (!uid.equals("notifications") && !uid.equals("global") && !uid.equals(channelId) && channel.getSourceId().length() == 0) {
                                     displayValues.add(channel.getName());
                                 }
                             }
@@ -1236,7 +1236,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                                                     ms.markUnread(channel.getUid(), unreadEntries, false);
                                                 }
                                                 items.remove(position);
-                                                Utility.notifyChannels(channelId, -1, false);
+                                                Utility.notifyChannels(entry, -1);
                                                 notifyDataSetChanged();
                                                 break;
                                             }
@@ -1252,7 +1252,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             unreadEntries.add(entry.getId());
                             entry.setRead(false);
                             new MicrosubAction(context, user, layout).markUnread(channelId, unreadEntries, true);
-                            Utility.notifyChannels(channelId, 1, false);
+                            Utility.notifyChannels(entry, 1);
                             break;
 
                         case R.id.timeline_entry_mark_read:
@@ -1260,7 +1260,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             readEntries.add(entry.getId());
                             entry.setRead(true);
                             new MicrosubAction(context, user, layout).markRead(channelId, readEntries, false, true);
-                            Utility.notifyChannels(channelId, -1, false);
+                            Utility.notifyChannels(entry, -1);
                             break;
 
                         case R.id.timeline_entry_debug:
