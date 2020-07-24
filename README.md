@@ -147,3 +147,4 @@ Things I'd love to explore one day:
 - allow posting to multiple accounts at once
 - better UI/UX for managing feeds
 - detail views for Fediverse
+- cleaner account names (am.renameAccount())
