@@ -89,6 +89,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
                         public void onClick(DialogInterface dialog, int index) {
                             user = new Accounts(getApplicationContext()).getUser(accounts.get(index), false, false);
                             post = PostFactory.getPost(user, getApplicationContext());
+                            invalidateOptionsMenu();
                             setAccountPostInfo(user.getDisplayName());
                             prepareFields();
                         }
