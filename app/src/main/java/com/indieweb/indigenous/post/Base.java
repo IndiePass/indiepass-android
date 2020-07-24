@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -50,6 +49,7 @@ import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.model.Place;
 import com.indieweb.indigenous.model.Syndication;
 import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.util.NetworkResponseRequest;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
 import com.indieweb.indigenous.util.VolleyRequestListener;
@@ -478,6 +478,181 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     }
 
     /**
+     * Set the body params for a post request.
+     */
+    protected void setBodyParams() {
+        // Send along access token if configured.
+        if (user.isAuthenticated() && Preferences.getPreference(getApplicationContext(), "pref_key_access_token_body", false)) {
+            bodyParams.put("access_token", user.getAccessToken());
+        }
+
+        // h type.
+        if (!isMediaRequest && post.supportsPostParam(Post.POST_PARAM_H)) {
+            bodyParams.put("h", hType);
+        }
+
+        // Title
+        if (title != null && !TextUtils.isEmpty(title.getText())) {
+            bodyParams.put("name", title.getText().toString());
+        }
+
+        // Content
+        if (body != null) {
+            bodyParams.put(post.getPostParamName(Post.POST_PARAM_CONTENT), body.getText().toString());
+        }
+
+        if (spoiler != null && post.supports(Post.FEATURE_SPOILER) && !TextUtils.isEmpty(spoiler.getText())) {
+            bodyParams.put("spoiler_text", spoiler.getText().toString());
+        }
+
+        // url
+        if (url != null && urlPostKey.length() > 0) {
+            bodyParams.put(post.getPostParamName(urlPostKey), url.getText().toString());
+        }
+
+        // Tags
+        if (tags != null) {
+            List<String> tagsList = new ArrayList<>(Arrays.asList(tags.getText().toString().split(",")));
+            int i = 0;
+            for (String tag: tagsList) {
+                tag = tag.trim();
+                if (tag.length() > 0) {
+                    bodyParams.put("category_multiple_["+ i +"]", tag);
+                    i++;
+                }
+            }
+        }
+
+        // Publish date.
+        if (publishDate != null && !TextUtils.isEmpty(publishDate.getText())) {
+            bodyParams.put(post.getPostParamName(Post.POST_PARAM_PUBLISHED), publishDate.getText().toString());
+        }
+        else if (post.supportsPostParam("published")) {
+            Date date = Calendar.getInstance().getTime();
+            @SuppressLint("SimpleDateFormat")
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:00Z");
+            df.setTimeZone(TimeZone.getDefault());
+            bodyParams.put(post.getPostParamName(Post.POST_PARAM_PUBLISHED), df.format(date));
+        }
+
+        // Post status.
+        if (postStatus != null && post.supportsPostParam(Post.POST_PARAM_POST_STATUS)) {
+            String postStatusValue = "draft";
+            if (postStatus.isChecked()) {
+                postStatusValue = "published";
+            }
+            bodyParams.put("post-status", postStatusValue);
+        }
+
+        // Post visibility.
+        if (visibility != null && visibility.getVisibility() == View.VISIBLE) {
+            bodyParams.put("visibility", visibility.getSelectedItem().toString());
+        }
+
+        // Post sensitivity.
+        if (sensitivity != null && sensitivity.getVisibility() == View.VISIBLE) {
+            String s = sensitivity.isChecked() ? "true" : "false";
+            bodyParams.put("sensitive", s);
+        }
+
+        // Syndication targets.
+        if (syndicationTargets.size() > 0) {
+            CheckBox checkbox;
+            for (int j = 0, k = 0; j < syndicationTargets.size(); j++) {
+                checkbox = findViewById(j);
+                if (checkbox != null && checkbox.isChecked()) {
+                    bodyParams.put("mp-syndicate-to_multiple_[" + k + "]", syndicationTargets.get(j).getUid());
+                    k++;
+                }
+            }
+        }
+
+        // Image alt.
+        if (caption.size() > 0) {
+            int ia = 0;
+            for (String s: caption) {
+                String caption = "";
+                if (s.length() > 0) {
+                    caption = s;
+                }
+                bodyParams.put("mp-photo-alt_multiple_[" + ia + "]", caption);
+                ia++;
+            }
+        }
+
+        // Location.
+        if (canAddLocation && coordinates != null && coordinates.length() > 0) {
+            String payloadProperty = "location";
+            String geo = coordinates;
+
+            // Send along location label.
+            if (!TextUtils.isEmpty(locationName.getText())) {
+                geo += ";name=" + locationName.getText().toString();
+            }
+
+            // Checkin.
+            if (isCheckin) {
+                payloadProperty = "checkin";
+                if (!TextUtils.isEmpty(locationUrl.getText())) {
+                    geo += ";url=" + locationUrl.getText().toString();
+                }
+            }
+
+            bodyParams.put(payloadProperty, "geo:" + geo);
+
+            if (locationVisibility != null && locationVisibility.getVisibility() == View.VISIBLE) {
+                bodyParams.put("location-visibility", locationVisibility.getSelectedItem().toString());
+            }
+        }
+
+        // Media urls.
+        if (post.useMediaEndpoint() && uploadMediaDone && mediaUrls.size() > 0) {
+            int mi = 0;
+            for (Uri u: image) {
+                bodyParams.put(post.getPostParamName(Post.POST_PARAM_PHOTO) + "_multiple_[" + mi + "]", mediaUrls.get(u));
+                mi++;
+            }
+
+            int mv = 0;
+            for (Uri u: video) {
+                bodyParams.put(post.getPostParamName(Post.POST_PARAM_VIDEO) + "_multiple_[" + mv + "]", mediaUrls.get(u));
+                mv++;
+            }
+
+            int ma = 0;
+            for (Uri u: audio) {
+                bodyParams.put("audio_multiple_[" + ma + "]", mediaUrls.get(u));
+                ma++;
+            }
+        }
+    }
+
+    /**
+     * Set the headers for a post request.
+     *
+     * @return headers
+     */
+    public HashMap<String, String> setPostHeaders() {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Accept", "application/json");
+
+        String accessToken;
+        if (user.isAuthenticated()) {
+            accessToken = user.getAccessToken();
+        }
+        else {
+            accessToken = Preferences.getPreference(getApplicationContext(), "anonymous_micropub_token", "IndigenousAnonymous");
+        }
+
+        // Send access token in header by default.
+        if (!Preferences.getPreference(getApplicationContext(), "pref_key_access_token_body", false)) {
+            headers.put("Authorization", "Bearer " + accessToken);
+        }
+
+        return headers;
+    }
+
+    /**
      * Send post.
      *
      * This is used for all posts and the single media endpoint activity. In case the media endpoint
@@ -534,232 +709,145 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
         // Get the endpoint. The single media endpoint also uses this method.
         String endpoint = post.getEndpoint(isMediaRequest);
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, endpoint,
+
+        if (isMediaRequest || (!post.useMediaEndpoint() && (image.size() > 0 || video.size() > 0 || audio.size() > 0))) {
+            sendMultiPartRequest(endpoint);
+        }
+        else {
+            sendUrlEncodedRequest(endpoint);
+        }
+    }
+
+    /**
+     * Handle the post response.
+     *
+     * @param response
+     *   The response
+     */
+    public void handlePostResponse(NetworkResponse response) {
+        if (finishActivity) {
+
+            Intent returnIntent = new Intent();
+            setResult(RESULT_OK, returnIntent);
+
+            // Remove draft if needed.
+            if (draftId != null && draftId > 0) {
+                db = new DatabaseHelper(getApplicationContext());
+                db.deleteDraft(draftId);
+            }
+
+            hideProgressBar();
+            finish();
+        }
+
+        if (isMediaRequest) {
+            fileUrl = post.getFileFromMediaResponse(response);
+            if (fileUrl != null && fileUrl.length() > 0) {
+                Snackbar.make(layout, getString(R.string.media_upload_success), Snackbar.LENGTH_SHORT).show();
+                mediaUrl.setText(fileUrl);
+                mediaUrl.setVisibility(View.VISIBLE);
+                Utility.copyToClipboard(fileUrl, getString(R.string.clipboard_media_url), getApplicationContext());
+            }
+            else {
+                Snackbar.make(layout, getString(R.string.no_media_url_found), Snackbar.LENGTH_SHORT).show();
+            }
+
+            hideProgressBar();
+        }
+    }
+
+    /**
+     * Handle the post error response.
+     *
+     * @param error
+     *   The response error.
+     */
+    public void handlePostError(VolleyError error) {
+        hideProgressBar();
+        String message = Utility.parseNetworkError(error, getApplicationContext(), R.string.post_network_fail, R.string.post_fail);
+        final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
+        snack.setAction(getString(R.string.close), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snack.dismiss();
+                    }
+                }
+        );
+        snack.show();
+    }
+
+    /**
+     * Send URL encoded request.
+     *
+     * @param endpoint
+     *   The endpoint to send the request to.
+     */
+    public void sendUrlEncodedRequest(String endpoint) {
+        NetworkResponseRequest request = new NetworkResponseRequest(Request.Method.POST, endpoint,
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
-
-                        if (finishActivity) {
-
-                            Intent returnIntent = new Intent();
-                            setResult(RESULT_OK, returnIntent);
-
-                            // Remove draft if needed.
-                            if (draftId != null && draftId > 0) {
-                                db = new DatabaseHelper(getApplicationContext());
-                                db.deleteDraft(draftId);
-                            }
-
-                            hideProgressBar();
-                            finish();
-                        }
-
-                        if (isMediaRequest) {
-                            fileUrl = post.getFileFromMediaResponse(response);
-                            if (fileUrl != null && fileUrl.length() > 0) {
-                                Snackbar.make(layout, getString(R.string.media_upload_success), Snackbar.LENGTH_SHORT).show();
-                                mediaUrl.setText(fileUrl);
-                                mediaUrl.setVisibility(View.VISIBLE);
-                                Utility.copyToClipboard(fileUrl, getString(R.string.clipboard_media_url), getApplicationContext());
-                            }
-                            else {
-                                Snackbar.make(layout, getString(R.string.no_media_url_found), Snackbar.LENGTH_SHORT).show();
-                            }
-
-                            hideProgressBar();
-                        }
-
+                        handlePostResponse(response);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        hideProgressBar();
-                        String message = Utility.parseNetworkError(error, getApplicationContext(), R.string.post_network_fail, R.string.post_fail);
-                        final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
-                        snack.setAction(getString(R.string.close), new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    snack.dismiss();
-                                }
-                            }
-                        );
-                        snack.show();
+                        handlePostError(error);
                     }
                 }
         )
         {
             @Override
             protected Map<String, String> getParams() {
-
-                // Send along access token if configured.
-                if (user.isAuthenticated() && Preferences.getPreference(getApplicationContext(), "pref_key_access_token_body", false)) {
-                    bodyParams.put("access_token", user.getAccessToken());
-                }
-
-                // h type.
-                if (!isMediaRequest && post.supportsPostParam(Post.POST_PARAM_H)) {
-                    bodyParams.put("h", hType);
-                }
-
-                // Title
-                if (title != null && !TextUtils.isEmpty(title.getText())) {
-                  bodyParams.put("name", title.getText().toString());
-                }
-
-                // Content
-                if (body != null) {
-                    bodyParams.put(post.getPostParamName(Post.POST_PARAM_CONTENT), body.getText().toString());
-                }
-
-                if (spoiler != null && post.supports(Post.FEATURE_SPOILER) && !TextUtils.isEmpty(spoiler.getText())) {
-                    bodyParams.put("spoiler_text", spoiler.getText().toString());
-                }
-
-                // url
-                if (url != null && urlPostKey.length() > 0) {
-                    bodyParams.put(post.getPostParamName(urlPostKey), url.getText().toString());
-                }
-
-                // Tags
-                if (tags != null) {
-                    List<String> tagsList = new ArrayList<>(Arrays.asList(tags.getText().toString().split(",")));
-                    int i = 0;
-                    for (String tag: tagsList) {
-                        tag = tag.trim();
-                        if (tag.length() > 0) {
-                            bodyParams.put("category_multiple_["+ i +"]", tag);
-                            i++;
-                        }
-                    }
-                }
-
-                // Publish date.
-                if (publishDate != null && !TextUtils.isEmpty(publishDate.getText())) {
-                    bodyParams.put(post.getPostParamName(Post.POST_PARAM_PUBLISHED), publishDate.getText().toString());
-                }
-                else if (post.supportsPostParam("published")) {
-                    Date date = Calendar.getInstance().getTime();
-                    @SuppressLint("SimpleDateFormat")
-                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:00Z");
-                    df.setTimeZone(TimeZone.getDefault());
-                    bodyParams.put(post.getPostParamName(Post.POST_PARAM_PUBLISHED), df.format(date));
-                }
-
-                // Post status.
-                if (postStatus != null && post.supportsPostParam(Post.POST_PARAM_POST_STATUS)) {
-                    String postStatusValue = "draft";
-                    if (postStatus.isChecked()) {
-                        postStatusValue = "published";
-                    }
-                    bodyParams.put("post-status", postStatusValue);
-                }
-
-                // Post visibility.
-                if (visibility != null && visibility.getVisibility() == View.VISIBLE) {
-                    bodyParams.put("visibility", visibility.getSelectedItem().toString());
-                }
-
-                // Post sensitivity.
-                if (sensitivity != null && sensitivity.getVisibility() == View.VISIBLE) {
-                    String s = sensitivity.isChecked() ? "true" : "false";
-                    bodyParams.put("sensitive", s);
-                }
-
-                // Syndication targets.
-                if (syndicationTargets.size() > 0) {
-                    CheckBox checkbox;
-                    for (int j = 0, k = 0; j < syndicationTargets.size(); j++) {
-                        checkbox = findViewById(j);
-                        if (checkbox != null && checkbox.isChecked()) {
-                            bodyParams.put("mp-syndicate-to_multiple_[" + k + "]", syndicationTargets.get(j).getUid());
-                            k++;
-                        }
-                    }
-                }
-
-                // Image alt.
-                if (caption.size() > 0) {
-                    int ia = 0;
-                    for (String s: caption) {
-                        String caption = "";
-                        if (s.length() > 0) {
-                            caption = s;
-                        }
-                        bodyParams.put("mp-photo-alt_multiple_[" + ia + "]", caption);
-                        ia++;
-                    }
-                }
-
-                // Location.
-                if (canAddLocation && coordinates != null && coordinates.length() > 0) {
-                    String payloadProperty = "location";
-                    String geo = coordinates;
-
-                    // Send along location label.
-                    if (!TextUtils.isEmpty(locationName.getText())) {
-                        geo += ";name=" + locationName.getText().toString();
-                    }
-
-                    // Checkin.
-                    if (isCheckin) {
-                        payloadProperty = "checkin";
-                        if (!TextUtils.isEmpty(locationUrl.getText())) {
-                            geo += ";url=" + locationUrl.getText().toString();
-                        }
-                    }
-
-                    bodyParams.put(payloadProperty, "geo:" + geo);
-
-                    if (locationVisibility != null && locationVisibility.getVisibility() == View.VISIBLE) {
-                        bodyParams.put("location-visibility", locationVisibility.getSelectedItem().toString());
-                    }
-                }
-
-                // Media urls.
-                if (post.useMediaEndpoint() && uploadMediaDone && mediaUrls.size() > 0) {
-                    int mi = 0;
-                    for (Uri u: image) {
-                        bodyParams.put(post.getPostParamName(Post.POST_PARAM_PHOTO) + "_multiple_[" + mi + "]", mediaUrls.get(u));
-                        mi++;
-                    }
-
-                    int mv = 0;
-                    for (Uri u: video) {
-                        bodyParams.put(post.getPostParamName(Post.POST_PARAM_VIDEO) + "_multiple_[" + mv + "]", mediaUrls.get(u));
-                        mv++;
-                    }
-
-                    int ma = 0;
-                    for (Uri u: audio) {
-                        bodyParams.put("audio_multiple_[" + ma + "]", mediaUrls.get(u));
-                        ma++;
-                    }
-                }
-
+                setBodyParams();
                 return bodyParams;
             }
 
             @Override
             public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Accept", "application/json");
+                return setPostHeaders();
+            }
+        };
 
-                String accessToken;
-                if (user.isAuthenticated()) {
-                    accessToken = user.getAccessToken();
-                }
-                else {
-                    accessToken = Preferences.getPreference(getApplicationContext(), "anonymous_micropub_token", "IndigenousAnonymous");
-                }
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        request.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(request);
 
-                // Send access token in header by default.
-                if (!Preferences.getPreference(getApplicationContext(), "pref_key_access_token_body", false)) {
-                    headers.put("Authorization", "Bearer " + accessToken);
-                }
+    }
 
-                return headers;
+    /**
+     * Sends a multi-part request.
+     *
+     * @param endpoint
+     *   The endpoint to send the request to.
+     */
+    public void sendMultiPartRequest(String endpoint) {
+
+        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, endpoint,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        handlePostResponse(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        handlePostError(error);
+                    }
+                }
+        )
+        {
+            @Override
+            protected Map<String, String> getParams() {
+                setBodyParams();
+                return bodyParams;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                return setPostHeaders();
             }
 
             @Override
@@ -871,6 +959,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
             }
         };
 
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         request.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(request);
     }
@@ -1161,7 +1250,6 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
      * Hide progress bar and enable send menu item.
      */
     public void hideProgressBar() {
-
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
@@ -1169,7 +1257,6 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         if (sendItem != null) {
             sendItem.setEnabled(true);
         }
-
     }
 
     /**

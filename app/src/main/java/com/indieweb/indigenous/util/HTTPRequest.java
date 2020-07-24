@@ -33,7 +33,7 @@ public class HTTPRequest {
      *   The endpoint to query.
      */
     public void doGetRequest(final String endpoint) {
-        StringRequest getRequest = new StringRequest(Request.Method.GET, endpoint,
+        StringRequest request = new StringRequest(Request.Method.GET, endpoint,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -70,7 +70,7 @@ public class HTTPRequest {
         };
 
         RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(getRequest);
+        queue.add(request);
     }
 
     /**
@@ -82,7 +82,7 @@ public class HTTPRequest {
      *   The params to send.
      */
     public void doPostRequest(String endpoint, final Map<String, String> params) {
-        StringRequest getRequest = new StringRequest(Request.Method.POST, endpoint,
+        StringRequest request = new StringRequest(Request.Method.POST, endpoint,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -120,7 +120,7 @@ public class HTTPRequest {
         };
 
         RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(getRequest);
+        queue.add(request);
     }
 
     /**
@@ -132,7 +132,7 @@ public class HTTPRequest {
      *   The params to send.
      */
     public void doDeleteRequest(String endpoint, final Map<String, String> params) {
-        StringRequest getRequest = new StringRequest(Request.Method.DELETE, endpoint,
+        StringRequest request = new StringRequest(Request.Method.DELETE, endpoint,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -170,6 +170,6 @@ public class HTTPRequest {
         };
 
         RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(getRequest);
+        queue.add(request);
     }
 }
