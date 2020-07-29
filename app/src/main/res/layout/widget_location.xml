@@ -48,7 +48,8 @@
         android:layout_height="wrap_content"
         android:inputType="textUri"
         android:layout_marginStart="7sp"
-        android:layout_marginEnd="@dimen/box_padding" />
+        android:layout_marginEnd="@dimen/box_padding"
+        android:importantForAutofill="no" />
 
     <Button
         android:visibility="gone"

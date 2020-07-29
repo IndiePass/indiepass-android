@@ -1,5 +1,6 @@
 package com.indieweb.indigenous.indieweb.micropub.source;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -200,6 +201,7 @@ public class PostListFragment extends BaseFragment {
      * @param data
      *   The data to parse.
      */
+    @SuppressLint("ClickableViewAccessibility")
     private void parseSourceResponse(String data) {
         try {
             JSONObject object;
@@ -309,6 +311,7 @@ public class PostListFragment extends BaseFragment {
      * Load more touch button.
      */
     private final View.OnTouchListener loadMoreTouch = new View.OnTouchListener() {
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View v, MotionEvent motionEvent) {
             switch(motionEvent.getAction()) {

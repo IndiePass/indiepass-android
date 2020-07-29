@@ -12,12 +12,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_margin="20dp"
         android:background="@drawable/rounded_border_text_view"
         android:padding="10dp"
-        android:text="Done"
+        android:text="@string/done"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="15sp" />
@@ -25,6 +24,7 @@
     <EditText
         android:id="@+id/add_text_edit_text"
         style="@style/EditText"
+        android:hint="@string/label_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/add_text_color_picker_relative_layout"
@@ -32,7 +32,8 @@
         android:background="@null"
         android:gravity="center"
         android:inputType="textMultiLine"
-        android:textSize="40sp" />
+        android:textSize="40sp"
+        android:importantForAutofill="no" />
 
     <RelativeLayout
         android:id="@+id/add_text_color_picker_relative_layout"

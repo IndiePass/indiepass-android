@@ -30,7 +30,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/title"
-                android:inputType="text" />
+                android:inputType="text"
+                android:importantForAutofill="no" />
 
             <TextView
                 android:id="@+id/mediaUrl"

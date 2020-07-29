@@ -1,5 +1,6 @@
 package com.indieweb.indigenous.reader;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -12,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.reader.TimelineActivity;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.util.Preferences;
 
@@ -117,6 +117,7 @@ public class ChannelListAdapter extends BaseAdapter implements OnClickListener {
      * OnTouchListener for channel row.
      */
     private final View.OnTouchListener eventTouch = new View.OnTouchListener() {
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View v, MotionEvent motionEvent) {
             ViewHolder holder = (ViewHolder)v.getTag();

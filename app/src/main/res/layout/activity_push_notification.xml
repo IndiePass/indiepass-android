@@ -54,7 +54,9 @@
             android:id="@+id/siteApiToken"
             android:hint="@string/push_notification_site_api_token"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:importantForAutofill="no" />
 
         <Button
             android:layout_marginStart="10dp"

@@ -1,5 +1,6 @@
 package com.indieweb.indigenous.reader;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -786,6 +787,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
      * OnTouchListener for channel row.
      */
     private final View.OnTouchListener eventTouch = new View.OnTouchListener() {
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View v, MotionEvent motionEvent) {
             TimelineListAdapter.ViewHolder holder = (TimelineListAdapter.ViewHolder)v.getTag();

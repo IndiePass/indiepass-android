@@ -24,7 +24,8 @@
             android:minLines="4"
             android:gravity="top"
             android:hint="@string/spoiler"
-            android:inputType="textMultiLine|textAutoCorrect|textCapSentences" />
+            android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
+            android:importantForAutofill="no" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

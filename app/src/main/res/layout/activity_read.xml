@@ -34,7 +34,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:hint="@string/url_or_text_hint"
-                android:inputType="textUri|text" />
+                android:inputType="textUri|text"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/title"
@@ -45,7 +46,8 @@
                 android:layout_margin="5dp"
                 android:ems="10"
                 android:hint="@string/title"
-                android:inputType="text" />
+                android:inputType="text"
+                android:importantForAutofill="no" />
 
             <include layout="@layout/widget_body" />
 

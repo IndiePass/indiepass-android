@@ -3,13 +3,8 @@ package com.indieweb.indigenous.users;
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
-import android.accounts.AccountManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-
-import static com.indieweb.indigenous.users.AuthActivity.PLEROMA_ACCOUNT_TYPE;
-import static com.indieweb.indigenous.users.AuthActivity.PLEROMA_TOKEN_TYPE;
 
 abstract public class AuthenticatorBase extends AbstractAccountAuthenticator {
 

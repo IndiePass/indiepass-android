@@ -334,6 +334,9 @@
     <string name="msg_save_image">Are you want to exit without saving image ?</string>
     <string name="msg_save_image_to_share">Please save image to share</string>
     <string name="msg_share_image">Share Image</string>
+    <string name="rotate">Rotate</string>
+    <string name="done">Done</string>
+    <string name="opacity">Opacity</string>
     <!-- Contacts -->
     <string name="contact">Contact</string>
     <string name="contact_list_title">Contacts</string>

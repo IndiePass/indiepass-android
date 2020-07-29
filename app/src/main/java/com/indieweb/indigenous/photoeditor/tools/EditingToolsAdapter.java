@@ -31,7 +31,7 @@ public class EditingToolsAdapter extends RecyclerView.Adapter<EditingToolsAdapte
         void onToolSelected(ToolType toolType);
     }
 
-    class ToolModel {
+    static class ToolModel {
         private final String mToolName;
         private final int mToolIcon;
         private final ToolType mToolType;

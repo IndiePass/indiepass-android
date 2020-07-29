@@ -65,7 +65,8 @@
                 android:layout_margin="5dp"
                 android:ems="10"
                 android:hint="@string/title"
-                android:inputType="text" />
+                android:inputType="text"
+                android:importantForAutofill="no" />
 
             <include layout="@layout/widget_body" />
 

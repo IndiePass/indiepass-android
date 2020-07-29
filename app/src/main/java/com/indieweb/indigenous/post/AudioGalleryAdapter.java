@@ -25,7 +25,7 @@ public class AudioGalleryAdapter extends RecyclerView.Adapter<AudioGalleryAdapte
     private final Context context;
     private final boolean isMediaRequest;
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    static class MyViewHolder extends RecyclerView.ViewHolder {
         final ImageView thumbnail;
         final TextView audioName;
 

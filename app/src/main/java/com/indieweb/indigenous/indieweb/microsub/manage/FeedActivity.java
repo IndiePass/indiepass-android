@@ -241,7 +241,7 @@ public class FeedActivity extends AppCompatActivity implements View.OnClickListe
 
             final Feed item = items.get(position);
             if (item != null) {
-                holder.url.setText(item.getType() + "\n" + item.getUrl());
+                holder.url.setText(String.format("%s\n%s", item.getType(), item.getUrl()));
                 holder.subscribe.setOnClickListener(new FeedsResultAdapter.OnSubscribeClickListener(position));
                 holder.preview.setOnClickListener(new FeedsResultAdapter.OnPreviewClickListener(position));
             }

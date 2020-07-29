@@ -31,7 +31,9 @@
         android:layout_below="@+id/info"
         android:singleLine="true"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:inputType="textUri"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/post"
@@ -40,7 +42,9 @@
         android:hint="@string/anonymous_post_endpoint"
         android:layout_below="@+id/reader"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:inputType="textUri"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/token"
@@ -49,7 +53,9 @@
         android:hint="@string/anonymous_token"
         android:layout_below="@+id/post"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:importantForAutofill="no" />
 
     <Button
         android:layout_marginStart="@dimen/button_padding"

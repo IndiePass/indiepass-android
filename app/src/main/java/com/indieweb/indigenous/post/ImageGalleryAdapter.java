@@ -33,7 +33,7 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
     private final Context context;
     private final boolean isMediaRequest;
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    static class MyViewHolder extends RecyclerView.ViewHolder {
         final ImageView thumbnail;
 
         MyViewHolder(View view) {

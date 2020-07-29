@@ -16,7 +16,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/backgrounds/scenic" />
+        tools:src="@tools:sample/backgrounds/scenic"
+        android:contentDescription="@string/image_preview" />
 
     <TextView
         android:id="@+id/txtFilterName"
@@ -26,7 +27,7 @@
         android:gravity="center"
         android:padding="4dp"
         android:textColor="@android:color/white"
-        android:textSize="8dp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/imgFilterView"
         app:layout_constraintEnd_toEndOf="@+id/imgFilterView"
         app:layout_constraintStart_toStartOf="@+id/imgFilterView"

@@ -39,7 +39,8 @@
                 android:layout_margin="5dp"
                 android:ems="10"
                 android:hint="@string/title"
-                android:inputType="text" />
+                android:inputType="text"
+                android:importantForAutofill="no" />
 
             <Spinner
                 android:paddingTop="10dp"
@@ -59,7 +60,8 @@
                 android:hint="@string/start_date"
                 android:id="@+id/startDate"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:textColor="@color/textColor"
@@ -70,7 +72,8 @@
                 android:hint="@string/end_date"
                 android:id="@+id/endDate"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/cost"
@@ -81,7 +84,8 @@
                 android:layout_margin="5dp"
                 android:ems="10"
                 android:hint="@string/cost"
-                android:inputType="text" />
+                android:inputType="text"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/duration"
@@ -92,7 +96,8 @@
                 android:layout_margin="5dp"
                 android:ems="10"
                 android:hint="@string/duration"
-                android:inputType="text" />
+                android:inputType="text"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/distance"
@@ -103,7 +108,8 @@
                 android:layout_margin="5dp"
                 android:ems="10"
                 android:hint="@string/total_distance"
-                android:inputType="text" />
+                android:inputType="text"
+                android:importantForAutofill="no" />
 
             <include layout="@layout/widget_body" />
 

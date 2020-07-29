@@ -30,7 +30,8 @@
                 android:layout_margin="5dp"
                 android:ems="10"
                 android:hint="@string/title"
-                android:inputType="text" />
+                android:inputType="text"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:textColor="@color/textColor"
@@ -41,7 +42,8 @@
                 android:hint="@string/start_date"
                 android:id="@+id/startDate"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:textColor="@color/textColor"
@@ -52,7 +54,8 @@
                 android:hint="@string/end_date"
                 android:id="@+id/endDate"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:importantForAutofill="no" />
 
             <include layout="@layout/widget_body" />
 
