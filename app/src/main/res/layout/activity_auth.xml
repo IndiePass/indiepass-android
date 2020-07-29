@@ -55,7 +55,7 @@
                     android:contentDescription="@string/sign_in_with_mastodon" />
 
                 <TextView
-                    android:text="@string/sign_in_with_pleroma"
+                    android:text="@string/sign_in_with_mastodon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 

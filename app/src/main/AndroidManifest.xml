@@ -22,19 +22,20 @@
 
     <application
         android:name=".Indigenous"
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:allowBackup="false"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup"
         tools:targetApi="m">
 
         <service
             android:name=".indieweb.indieauth.AuthenticatorServiceIndieWeb"
             android:enabled="true"
-            android:exported="true">
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -46,7 +47,7 @@
         <service
             android:name=".pixelfed.AuthenticatorServicePixelfed"
             android:enabled="true"
-            android:exported="true">
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -58,7 +59,7 @@
         <service
             android:name=".mastodon.AuthenticatorServiceMastodon"
             android:enabled="true"
-            android:exported="true">
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -70,7 +71,7 @@
         <service
             android:name=".pleroma.AuthenticatorServicePleroma"
             android:enabled="true"
-            android:exported="true">
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>

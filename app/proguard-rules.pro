@@ -20,4 +20,5 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -dontwarn me.pushy.**
+#noinspection ShrinkerUnresolvedReference
 -keep class me.pushy.** { *; }
