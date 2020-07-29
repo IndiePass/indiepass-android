@@ -32,7 +32,7 @@ public class GeocacheActivity extends BaseCreate {
             return;
         }
 
-        bodyParams.put("geocache-log-type", geocacheLogType.getSelectedItem().toString());
+        bodyParams.put("geocache-log-type", getResources().getStringArray(R.array.geocache_array_values)[geocacheLogType.getSelectedItemPosition()]);
         sendBasePost(item);
     }
 

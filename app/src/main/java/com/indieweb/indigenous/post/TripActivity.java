@@ -226,8 +226,8 @@ public class TripActivity extends BaseCreate {
                 bodyParams.put("duration", duration.getText().toString());
             }
 
-            String t = transport.getSelectedItem().toString();
-            if (!t.equals("No transport")) {
+            if (transport.getSelectedItemPosition() != 0) {
+                String t = getResources().getStringArray(R.array.transport_array_values)[read.getSelectedItemPosition()];
                 bodyParams.put("transport", t);
             }
 

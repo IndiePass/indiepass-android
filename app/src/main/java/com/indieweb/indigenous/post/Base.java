@@ -546,7 +546,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
         // Post visibility.
         if (visibility != null && visibility.getVisibility() == View.VISIBLE) {
-            bodyParams.put("visibility", visibility.getSelectedItem().toString());
+            bodyParams.put("visibility", getResources().getStringArray(R.array.visibility_array_values)[visibility.getSelectedItemPosition()]);
         }
 
         // Post sensitivity.
@@ -601,7 +601,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
             bodyParams.put(payloadProperty, "geo:" + geo);
 
             if (locationVisibility != null && locationVisibility.getVisibility() == View.VISIBLE) {
-                bodyParams.put("location-visibility", locationVisibility.getSelectedItem().toString());
+                bodyParams.put("location-visibility", getResources().getStringArray(R.array.location_visibility_array_values)[locationVisibility.getSelectedItemPosition()]);
             }
         }
 

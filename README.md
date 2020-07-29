@@ -10,7 +10,7 @@ https://indigenous.realize.be
 iOS: https://github.com/swentel/indigenous-ios  
 Desktop: https://github.com/swentel/indigenous-desktop
 
-## Functionality
+## Features
 
 - Login with multiple domains and account types:
   - IndieWeb: discover IndieAuth, micropub, microsub and media endpoints. The
@@ -106,13 +106,19 @@ work fine.
 
 ## Translations
 
-Indigenous is currently only available in English. If you want to
-translate to another language (or make the default English better), the
-following file contains all strings used in the app. Either send a pull
-request or open an issue with the file attached. Some strings contain '%s'.
-These are placeholders and should be kept.
+Indigenous is available in English and Dutch. If you want to translate to
+another language, or improve the default English there are two options:
 
-https://github.com/swentel/indigenous-android/blob/master/app/src/main/res/values/strings.xml
+- create a pull request with a new file called 'strings-{langcode}.xml' and
+of course the translated strings in them: [strings.xml](https://github.com/swentel/indigenous-android/blob/master/app/src/main/res/values/strings.xml)
+- Join via Crowdin: [https://crowdin.com/project/indigenous](https://crowdin.com/project/indigenous/invite/public?show_welcome&d=f96bb15097617a94d765f3f95c7ed7331225908)
+It contains all strings used in Android and iOS.
+
+You can use informal tone for translating pronouns.
+
+## API
+
+If you'd like to add a new account type, checkout API.md for a quick guide.
 
 ## Credits
 
@@ -132,19 +138,15 @@ This app uses following external libraries:
 - Mastodon: https://joinmastodon.org/apps
 - Pleroma: https://docs.pleroma.social/clients.html
 
-## API
-
-If you'd like to add a new account type, checkout API.md for a quick guide.
-
 ## Issues
 
 If you found a bug, open a request. Feature requests might be closed as I love
-having a clean queue. Pull requests are welcome though :)
+having a clean queue. Pull requests are welcome though!
 
 Things I'd love to explore one day:
 
-- cleanup the various ways of requests
 - allow posting to multiple accounts at once
-- better UI/UX for managing feeds
 - detail views for Fediverse
 - cleaner account names (am.renameAccount())
+- better UI/UX for managing feeds
+- cleanup the various ways of requests

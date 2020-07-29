@@ -1,0 +1,72 @@
+<resources>
+
+    <string-array name="filter_post_limit">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
+    </string-array>
+
+    <string-array name="mark_read_array_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="read_array_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="read_array_post_values">
+        <item>none</item>
+        <item>to-read</item>
+        <item>reading</item>
+        <item>finished</item>
+    </string-array>
+
+    <string-array name="geocache_array_values">
+        <item>found</item>
+        <item>not-found</item>
+    </string-array>
+
+    <string-array name="rsvp_array_values">
+        <item>yes</item>
+        <item>no</item>
+        <item>maybe</item>
+        <item>interested</item>
+    </string-array>
+
+    <string-array name="location_visibility_array_values">
+        <item>public</item>
+        <item>private</item>
+        <item>protected</item>
+    </string-array>
+
+    <string-array name="visibility_array_values">
+        <item>public</item>
+        <item>private</item>
+        <item>unlisted</item>
+    </string-array>
+
+    <string-array name="transport_array_values">
+        <item>none</item>
+        <item>walk</item>
+        <item>run</item>
+        <item>bike</item>
+        <item>drive</item>
+        <item>train</item>
+        <item>flight</item>
+        <item>boat</item>
+        <item>other</item>
+    </string-array>
+
+</resources>

@@ -36,8 +36,9 @@ public class ReadActivity extends BaseCreate {
             url.setError(getString(R.string.required_field));
         }
         else {
-            if (!read.getSelectedItem().toString().equals("none")) {
-                bodyParams.put("read-status", read.getSelectedItem().toString());
+            if (read.getSelectedItemPosition() != 0) {
+                String readStatus = getResources().getStringArray(R.array.read_array_post_values)[read.getSelectedItemPosition()];
+                bodyParams.put("read-status", readStatus);
             }
             sendBasePost(item);
         }

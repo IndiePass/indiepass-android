@@ -32,7 +32,7 @@ public class RsvpActivity extends BaseCreate {
             url.setError(getString(R.string.required_field));
         }
         else {
-            bodyParams.put("rsvp", rsvp.getSelectedItem().toString());
+            bodyParams.put("rsvp", getResources().getStringArray(R.array.rsvp_array_values)[rsvp.getSelectedItemPosition()]);
             sendBasePost(item);
         }
     }

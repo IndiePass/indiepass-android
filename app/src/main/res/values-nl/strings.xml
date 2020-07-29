@@ -1,32 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!-- General -->
     <string name="app_name">Indigenous</string>
-    <string name="about">About</string>
-    <string name="main_menu">Main menu</string>
-    <string name="no_connection">No internet connection found</string>
-    <string name="no_connection_info">No internet connection\nCheck your mobile data or Wi-Fi.</string>
-    <string name="delete">Delete</string>
-    <string name="copy_to_clipboard">Copy to clipboard</string>
-    <string name="one_image">1 image</string>
+    <string name="about">Over</string>
+    <string name="main_menu">Hoofdmenu</string>
+    <string name="no_connection">Geen internetverbinding gevonden</string>
+    <string name="no_connection_info">Geen internetverbinding\nControleer uw mobiele data of wifi.</string>
+    <string name="delete">Verwijder</string>
+    <string name="copy_to_clipboard">Kopieer naar klembord</string>
+    <string name="one_image">1 afbeelding</string>
     <string name="debug">Debug</string>
     <string name="go_to_main_app">Go to main app</string>
-    <string name="cancel">Cancel</string>
-    <string name="close">Close</string>
+    <string name="cancel">Annuleren</string>
+    <string name="close">Sluiten</string>
     <string name="reset">Reset</string>
-    <string name="discard">Discard</string>
-    <string name="timeline">Timeline</string>
-    <string name="nav_reader">Reader</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="indigenous_version">Indigenous version: %s</string>
-    <string name="clipboard_error">Something went wrong to copy the text to the clipboard.</string>
-    <string name="clipboard_success">Copied to clipboard</string>
-    <string name="clipboard_label">Indigenous clipboard debug info</string>
+    <string name="discard">Negeren</string>
+    <string name="timeline">Tijdslijn</string>
+    <string name="nav_reader">Lezer</string>
+    <string name="navigation_drawer_open">Open navigatiebalk</string>
+    <string name="navigation_drawer_close">Sluit navigatiemenu</string>
+    <string name="nav_header_desc">Navigatie kop</string>
+    <string name="indigenous_version">Indigenous versie: %s</string>
+    <string name="clipboard_error">Er ging iets mis bij het kopiëren van de tekst naar het klembord.</string>
+    <string name="clipboard_success">Gekopieerd naar het klembord</string>
+    <string name="clipboard_label">Indigenous klembord foutopsporing informatie</string>
     <string name="clipboard_media_url">Media url</string>
     <string name="source_post_list">Posts</string>
-    <string name="save">Save</string>
+    <string name="save">Bewaren</string>
     <string name="search_hint">Search posts</string>
     <string name="no_microsub_endpoint">We did not find your reader endpoint. In the accounts section, you can synchronize your account to add it. You can also just use the app for posting only.</string>
     <string name="no_micropub_endpoint">We did not find your micropub endpoint. In the accounts section, you can synchronize your account to add it.</string>
@@ -35,12 +35,11 @@
     <string name="no_anonymous_posting">Please create an account first before you can post.</string>
     <string name="anonymous_microsub_endpoint">https://indigenous.realize.be/indieweb/microsub</string>
     <string name="anonymous_me">https://indigenous.realize.be</string>
-    <string name="anonymous">Anonymous</string>
-    <string name="items_refreshed">Items refreshed</string>
-    <string name="request_failed">Request failed. Status code: %d; message: %s</string>
-    <string name="request_failed_unknown">Request failed, unknown error</string>
+    <string name="anonymous">Anoniem</string>
+    <string name="items_refreshed">Items vernieuwd</string>
+    <string name="request_failed">Verzoek mislukt. Statuscode: %d; bericht: %s</string>
+    <string name="request_failed_unknown">Verzoek mislukt, onbekende fout</string>
     <string name="maps_info">Install a maps application to view this location</string>
-
     <!-- Authentication and accounts -->
     <string name="account_type_indieweb">IndieAuth</string>
     <string name="account_type_pixelfed">Pixelfed</string>
@@ -49,75 +48,72 @@
     <string name="accounts">Accounts</string>
     <string name="account_name">Account: %s</string>
     <string name="select_account_type">Select account type</string>
-    <string name="no_user">No account found</string>
-    <string name="default_user_select">Set default account</string>
-    <string name="select_account">Select account</string>
-    <string name="select_account_info">Set the default account by pressing the \"Select account\" button.</string>
+    <string name="no_user">Geen account gevonden</string>
+    <string name="default_user_select">Standaardaccount instellen</string>
+    <string name="select_account">Selecteer account</string>
+    <string name="select_account_info">Stel het standaardaccount in door op de \"Selecteer account\" knop te drukken.</string>
     <string name="url_hint">http://example.com</string>
-    <string name="url_or_text_hint">URL or title</string>
+    <string name="url_or_text_hint">Link of titel</string>
     <string name="url_repository_hint">http://example.com/repository</string>
-    <string name="sign_in">Sign in</string>
+    <string name="sign_in">Aanmelden</string>
     <string name="sign_in_with_indieweb">IndieWeb</string>
     <string name="sign_in_with_pixelfed">Pixelfed</string>
     <string name="sign_in_with_mastodon">Mastodon</string>
     <string name="sign_in_with_pleroma">Pleroma</string>
-    <string name="error_parsing_app_registration_response">Error parsing the app registration response</string>
+    <string name="error_parsing_app_registration_response">Fout bij het verwerken van de app registratie</string>
     <string name="sign_in_indieauth_info">This login uses IndieAuth and requires you to have a website on your domain that supports IndieAuth.\n\nThe authorization and token endpoints are required. The micropub or microsub endpoint are optional, but at least one needs to be found.</string>
     <string name="sign_in_mastodon_info">Enter the base URL of your Mastodon instance. You will be redirected to authorize on that instance.</string>
     <string name="sign_in_pixelfed_info">Enter the base URL of your Pixelfed instance. You will be redirected to authorize on that instance.</string>
     <string name="sign_in_pleroma_info">Enter the base URL of your Pleroma instance. You will be redirected to authorize on that instance.</string>
-    <string name="invalid_url">This is an invalid URl</string>
-    <string name="switch_account">Set</string>
-    <string name="account_delete_error">Error deleting account</string>
-    <string name="connecting">Connecting…</string>
-    <string name="connection_to_domain">Connecting to domain, one moment</string>
+    <string name="invalid_url">Dit is een ongeldige URL</string>
+    <string name="switch_account">Instellen</string>
+    <string name="account_delete_error">Fout bij verwijderen account</string>
+    <string name="connecting">Verbinden…</string>
+    <string name="connection_to_domain">Verbinden met domein, even geduld</string>
     <string name="endpoints">Endpoints</string>
     <string name="title_activity_auth">Sign in</string>
-    <string name="authentication_success">Authentication successful</string>
-    <string name="authentication_fail">Authentication failed: Status code: %d; message: %s</string>
-    <string name="authentication_fail_token">Authentication failed: %s</string>
-    <string name="network_error">Network error</string>
+    <string name="authentication_success">Authenticatie geslaagd</string>
+    <string name="authentication_fail">Authenticatie mislukt: statuscode: %d; bericht: %s</string>
+    <string name="authentication_fail_token">Authenticatie mislukt: %s</string>
+    <string name="network_error">Netwerkfout</string>
     <string name="missing_rel_links">We did not find the necessary endpoints on your domain.</string>
-    <string name="no_code_found">No code found in URL to validate</string>
-    <string name="validating_code">Validating code</string>
+    <string name="no_code_found">Geen code gevonden in URL om te valideren</string>
+    <string name="validating_code">Code valideren</string>
     <string name="account_sync_done">Endpoints and metadata updated. You might need to restart the app for some changes to see effect.</string>
     <string name="account_sync_error">Error syncing: %s</string>
-    <string name="domain_connect_error">Could not connect to domain: %s</string>
-    <string name="default_user">Default account</string>
+    <string name="domain_connect_error">Kan geen verbinding maken met domein: %s</string>
+    <string name="default_user">Standaard account</string>
     <string name="account_delete_confirm">Are you sure you want to delete account %s ?</string>
     <string name="account_sync">Syncing %s</string>
     <string name="account_removed">Account %s removed</string>
     <string name="account_select">Select account</string>
     <string name="account_select_to_post">Select account to post</string>
     <string name="account_selected">Default account set to %s</string>
-    <string name="account_switch">Set default account to %s ?</string>
+    <string name="account_switch">Standaard account instellen op %s?</string>
     <string name="user_exception">We ran into an exception getting the accounts. Please manage the accounts from the device accounts section.</string>
     <string name="anonymous_settings">Anonymous settings</string>
     <string name="anonymous_info">You are using the anonymous account in Indigenous. The reader is connected by default to a server on https://indigenous.realize.be.\n\nYou can change both the reader and post endpoint to a custom location so you can test yourself and even save posts on your own server without needing an IndieAuth enabled website.\n\nThe token will be send in the authentication header for both endpoints.</string>
-    <string name="anonymous_info_snack">You are using the anonymous account. Create an account via "Accounts" or the "User" icon at the top.</string>
+    <string name="anonymous_info_snack">You are using the anonymous account. Create an account via \"Accounts\" or the \"User\" icon at the top.</string>
     <string name="anonymous_reader_endpoint">Reader endpoint</string>
     <string name="anonymous_post_endpoint">Post endpoint</string>
     <string name="anonymous_token">Token</string>
     <string name="anonymous_saved">Settings saved</string>
     <string name="anonymous_reset">Settings reset</string>
     <string name="reset_confirm">Reset settings?</string>
-
     <string name="channel_unread_items">Unread items</string>
     <string name="channel_home">Home</string>
-    <string name="channel_public">Public</string>
-    <string name="channel_favourites">Favourites</string>
+    <string name="channel_public">Publiek</string>
+    <string name="channel_favourites">Favorieten</string>
     <string name="channel_reposts">Reposts</string>
     <string name="channel_bookmarks">Bookmarks</string>
     <string name="channel_my_posts">My posts</string>
-    <string name="channel_notifications">Notifications</string>
+    <string name="channel_notifications">Notificaties</string>
     <string name="channel_pixelfed">Pixelfed</string>
     <string name="channel_mastodon">Mastodon</string>
     <string name="channel_pleroma">Pleroma</string>
-
     <!-- About -->
     <string name="about_info"><![CDATA[Indigenous allows you to engage with the internet as you do on social media sites, but posts it all on your website or a federated instance like Mastodon, Pleroma or Pixelfed. Use the built-in reader to read and respond to posts across the internet. Indigenous doesn\'t track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/swentel/indigenous-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
     <string name="view_changelog">View changelog</string>
-
     <!-- Drafts -->
     <string name="drafts">Drafts</string>
     <string name="save_as_draft">Save as draft</string>
@@ -125,13 +121,12 @@
     <string name="draft_deleted">Draft deleted</string>
     <string name="no_drafts">Everything is posted!</string>
     <string name="draft_checked">Draft is enabled but not yet saved</string>
-
     <!-- Channels and timelines -->
     <string name="clear">Clear</string>
     <string name="clear_cache">Clear cache</string>
     <string name="clear_cache_confirm">Clear reader cache?</string>
     <string name="cache_cleared">Caches cleared</string>
-    <string name="reader_offline">Reading offline</string>
+    <string name="reader_offline">Offline lezen</string>
     <string name="channel_list_refresh">Refresh channels</string>
     <string name="channels_refreshed">Channels refreshed</string>
     <string name="feed_items_refreshed">Feeds refreshed</string>
@@ -156,11 +151,11 @@
     <string name="move_item">Move</string>
     <string name="title_activity_share">Share</string>
     <string name="audio">Listen to audio</string>
-    <string name="video">Watch video</string>
-    <string name="video_not_found">Video not found</string>
-    <string name="video_youtube">This is a Video from YouTube\nClick to open the video in either the YouTube app or the browser.</string>
-    <string name="map">Map view</string>
-    <string name="audio_not_loaded">Audio could not be loaded</string>
+    <string name="video">Bekijk video</string>
+    <string name="video_not_found">Video niet gevonden</string>
+    <string name="video_youtube">Dit is een video van YouTube\nKlik om de video te openen in de YouTube-app of de browser.</string>
+    <string name="map">Kaart weergave</string>
+    <string name="audio_not_loaded">Geluid kon niet worden geladen</string>
     <string name="audio_open">Open audio in favorite player</string>
     <string name="audio_no_app_found">No app found to handle audio</string>
     <string name="channel_not_found">Channel not found</string>
@@ -169,8 +164,8 @@
     <string name="author_photo">Author photo</string>
     <string name="timeline_image">Timeline image</string>
     <string name="share_post">Share</string>
-    <string name="timeline_style">Style</string>
-    <string name="unread">New</string>
+    <string name="timeline_style">Stijl</string>
+    <string name="unread">Nieuw</string>
     <string name="external_link">Opens this post in browser</string>
     <string name="title_activity_timeline_detail">Detail</string>
     <string name="title_activity_timeline_audio">Audio</string>
@@ -210,7 +205,7 @@
     <string name="timeline_parse_error">Error: %s</string>
     <string name="feed_searching">Searching, stay tuned</string>
     <string name="feed_no_results">No results found, please try again.</string>
-    <string name="feed_parse_error">Error: %s</string>
+    <string name="feed_parse_error">Fout: %s</string>
     <string name="feed_search_error">Something went wrong, please try again.</string>
     <string name="feed_subscribe">Subscribe to feed \'%s\' ?</string>
     <string name="channel_hide_read">Hide read channels</string>
@@ -221,7 +216,6 @@
     <string name="follow">Follow</string>
     <string name="unfollow">Unfollow</string>
     <string name="started_following">Started following you!</string>
-
     <!-- Micropub -->
     <string name="tags">Tags - separate with comma</string>
     <string name="image_preview">Image preview</string>
@@ -322,7 +316,6 @@
     <string name="duration">Duration</string>
     <string name="total_distance">Total distance</string>
     <string name="account_post_as">Posting as %s</string>
-
     <!-- Photoeditor -->
     <string name="editor">Editor</string>
     <string name="saving">Saving…</string>
@@ -340,8 +333,7 @@
     <string name="label_redo">Redo</string>
     <string name="msg_save_image">Are you want to exit without saving image ?</string>
     <string name="msg_save_image_to_share">Please save image to share</string>
-    <string name="msg_share_image">Share Image</string>>
-
+    <string name="msg_share_image">Share Image</string>
     <!-- Contacts -->
     <string name="contact">Contact</string>
     <string name="contact_list_title">Contacts</string>
@@ -356,7 +348,6 @@
     <string name="contact_website">Website</string>
     <string name="contact_photo_hint">Photo URL</string>
     <string name="contacts_offline">Showing contacts stored offline</string>
-
     <!-- Source lists -->
     <string name="source_post_list_refresh">Refresh posts</string>
     <string name="source_post_list_items_refreshed">Posts refreshed</string>
@@ -368,11 +359,9 @@
     <string name="apply_filter">Apply</string>
     <string name="applying_filter">Applying filter</string>
     <string name="source_found">Data fetched from server</string>
-
     <!-- Night mode -->
     <string name="night_mode_title">Enable night theme</string>
     <string name="night_mode_summary">If your device supports Night mode, this theme will be automatically used when enabling night time globally. But this toggle allows you to use the night theme as well. The app will restart when you enable or disable this feature.</string>
-
     <!-- Push notifications -->
     <string name="push_notifications">Push notifications</string>
     <string name="push_notifications_text">Receive push notifications via Pushy.me\nOnly available for IndieWeb accounts.</string>
@@ -394,7 +383,6 @@
     <string name="indigenous_unknown_error">unknown error</string>
     <string name="pushy_me_token_not_found">Pushy.me token not found to register on backend.</string>
     <string name="push_notification_label">Click to open Indigenous</string>
-
     <!-- Preferences: share -->
     <string name="pref_category_sharing_title">Share</string>
     <string name="pref_category_sharing_summary">You can share text, URL\'s and images from other applications to Indigenous. You can also expose several post types (like, bookmark ..) as share intents directly.</string>
@@ -410,7 +398,6 @@
     <string name="pref_summary_expose_upload">Expose upload in share intents. This will not immediately post to your media endpoint so you can verify. Only available for IndieWeb accounts.</string>
     <string name="pref_share_feed_enabled">Enable feed sharing</string>
     <string name="pref_summary_expose_feed">Expose feed in share intents. This allows you to insert a URL directly to add a feed to a channel. Only available for IndieWeb accounts.</string>
-
     <!-- Preferences: posts -->
     <string name="pref_category_posts_title">Posts</string>
     <string name="pref_category_posts_summary">Configure posts settings</string>
@@ -432,12 +419,11 @@
     <string name="pref_key_post_type_hide_summary">Hide post types in the menu which are not supported or enabled by your Micropub endpoint. Leave disabled if your endpoint does not send post-types in the ?q=config query. Only available for IndieWeb accounts.</string>
     <string name="pref_key_access_token_body_title">Send access token in body</string>
     <string name="pref_key_access_token_body_summary">The access token for a Micropub request is send along in the header by default. If enabled, this setting will send it in the body of the request instead of the header.</string>
-
     <!-- Preferences: Reader -->
     <string name="pref_category_reader_title">Reader</string>
     <string name="pref_category_reader_summary">Control reader settings</string>
     <string name="pref_key_reader_cache_title">Offline reading</string>
-    <string name="pref_key_reader_cache_summary">Stores the list of channels and items offline so you can read without connection and a cache item is available. A "Clear cache" action will be available in the menu of the channel list.</string>
+    <string name="pref_key_reader_cache_summary">Stores the list of channels and items offline so you can read without connection and a cache item is available. A \"Clear cache\" action will be available in the menu of the channel list.</string>
     <string name="pref_key_video_autoplay_title">Video autoplay</string>
     <string name="pref_key_timeline_summary_detail_click_title">Summary detail click</string>
     <string name="pref_key_timeline_summary_detail_click_summary">Clicking on an item in the summary style opens the full detail view of the post. In compact mode this is always the case.</string>
@@ -446,7 +432,7 @@
     <string name="pref_key_image_preview_compact_title">Image preview on compact</string>
     <string name="pref_key_image_preview_compact_summary">Show the first image per post in the compact style. The images are always visible on the full detail of the post.</string>
     <string name="pref_key_mark_read_title">Mark items read</string>
-    <string name="pref_key_mark_read_summary">Configure how items are marked as read.\n\n1: mark all items read when viewing a channel, which is per page.\n2: manually with a "Mark all read" button per channel (only shows up in case there are more than 20 items) and "Mark read" action in the item menu.\n3: mark read while scrolling.\n\nOnly available for IndieWeb accounts.</string>
+    <string name="pref_key_mark_read_summary">Configure how items are marked as read.\n\n1: mark all items read when viewing a channel, which is per page.\n2: manually with a \"Mark all read\" button per channel (only shows up in case there are more than 20 items) and \"Mark read\" action in the item menu.\n3: mark read while scrolling.\n\nOnly available for IndieWeb accounts.</string>
     <string name="pref_key_search_title">Channel search</string>
     <string name="pref_key_search_summary">Allows to search in a channel for posts</string>
     <string name="pref_key_search_global_title">Global search</string>
@@ -467,7 +453,6 @@
     <string name="pref_key_read_later_summary">Enter the id of the channel you use as a \'Read later\' channel. Marking items as read needs to happen manually. Only available for IndieWeb accounts.</string>
     <string name="pref_key_response_bookmark_title">Enable bookmark response</string>
     <string name="pref_key_response_read_title">Enable read response</string>
-
     <!-- Preferences: Media handling -->
     <string name="pref_category_media_title">Media</string>
     <string name="pref_category_media_summary">Control image and video settings for uploading</string>
@@ -481,21 +466,19 @@
     <string name="pref_key_media_name_summary">Exposes a textfield on the Upload screen so you can send a title for your uploaded file to the media endpoint. Only available for IndieWeb accounts.</string>
     <string name="pref_key_upload_media_endpoint_title">Use media endpoint to upload</string>
     <string name="pref_key_upload_media_endpoint_summary">Use the media endpoint, if available, when attaching media to a post.</string>
-
     <!-- Preferences: debugging -->
     <string name="pref_category_debug_title">Developer</string>
     <string name="pref_category_debug_summary">Add helper functionality to help debugging Indigenous or your application.</string>
     <string name="pref_key_debug_microsub_channels_json_title">Channels JSON</string>
-    <string name="pref_key_debug_microsub_channels_json_summary">Adds a "Debug" option to the channels list in the reader to view the JSON representation.</string>
+    <string name="pref_key_debug_microsub_channels_json_summary">Adds a \"Debug\" option to the channels list in the reader to view the JSON representation.</string>
     <string name="pref_key_debug_microsub_timeline_json_title">Timeline JSON</string>
-    <string name="pref_key_debug_microsub_timeline_json_summary">Adds a "Debug" option to every timeline in the reader to view the JSON representation.</string>
+    <string name="pref_key_debug_microsub_timeline_json_summary">Adds a \"Debug\" option to every timeline in the reader to view the JSON representation.</string>
     <string name="pref_key_debug_microsub_item_json_title">Reader item JSON</string>
-    <string name="pref_key_debug_microsub_item_json_summary">Adds a "Debug" option to every item in the reader to view the JSON representation.</string>
+    <string name="pref_key_debug_microsub_item_json_summary">Adds a \"Debug\" option to every item in the reader to view the JSON representation.</string>
     <string name="pref_key_debug_source_list_title">Posts lists JSON</string>
-    <string name="pref_key_debug_source_list_summary">Adds a "Debug" option to the posts lists to view the JSON representation.</string>
+    <string name="pref_key_debug_source_list_summary">Adds a \"Debug\" option to the posts lists to view the JSON representation.</string>
     <string name="pref_key_debug_contact_list_title">Contacts lists JSON</string>
-    <string name="pref_key_debug_contact_list_summary">Adds a "Debug" option to the contacts lists to view the JSON representation.</string>
-
+    <string name="pref_key_debug_contact_list_summary">Adds a \"Debug\" option to the contacts lists to view the JSON representation.</string>
     <!-- Preferences: contacts -->
     <string name="pref_category_contact_title">Contacts</string>
     <string name="pref_category_contact_summary">Leave disabled if your endpoint does not support the ?q=contact query. Only available for IndieWeb accounts.</string>
@@ -505,17 +488,15 @@
     <string name="pref_key_contact_body_autocomplete_value_summary">Contacts can have name and nickname. If a nickname is available, that value will be used for the suggestions instead of the full name.</string>
     <string name="pref_key_contact_manage_title">Manage contacts</string>
     <string name="pref_key_contact_manage_summary">This will add a menu item that allows you to manage your contacts. An action will be added to every timeline item too to save the author of a post to your contacts.</string>
-
     <!-- Preferences: experimental -->
     <string name="pref_category_experimental_title">Experimental</string>
     <string name="pref_category_experimental_summary">Experimental features which are either not fully mature yet from a spec perspective or have little support by servers. Only available for IndieWeb accounts.</string>
     <string name="pref_key_source_post_list_title">Posts list</string>
-    <string name="pref_key_source_post_list_summary">Expose a "Posts list" which lists the content of your site. Leave disabled if your micropub endpoint does not support the ?q=source query.</string>
+    <string name="pref_key_source_post_list_summary">Expose a \"Posts list\" which lists the content of your site. Leave disabled if your micropub endpoint does not support the ?q=source query.</string>
     <string name="pref_key_source_update_title">Update posts</string>
-    <string name="pref_key_source_update_summary">Expose an "Update" screen which allows you to update basic properties of a post.</string>
+    <string name="pref_key_source_update_summary">Expose an \"Update\" screen which allows you to update basic properties of a post.</string>
     <string name="pref_key_source_delete_title">Delete posts</string>
     <string name="pref_key_source_delete_summary">Expose a delete button on the update screen, or in the posts list.</string>
-
     <!-- Events and location -->
     <string name="settings">Settings</string>
     <string name="end_date">End date</string>
@@ -535,44 +516,37 @@
     <string name="location_no_results">No location name or venues found</string>
     <string name="places_found">Places found, the location name input will show suggestions when you type</string>
     <string name="read_new">new</string>
-
     <string-array name="mark_read_array">
         <item>Channel per page</item>
         <item>Mark manually</item>
         <item>Mark read while scrolling</item>
     </string-array>
-
     <string-array name="read_array">
         <item>No read setting</item>
         <item>To read</item>
         <item>Reading</item>
         <item>Finished</item>
     </string-array>
-
     <string-array name="geocache_array">
         <item>Found</item>
         <item>Not found</item>
     </string-array>
-
     <string-array name="rsvp_array">
         <item>Yes</item>
         <item>No</item>
         <item>Maybe</item>
         <item>Interested</item>
     </string-array>
-
     <string-array name="location_visibility_array">
         <item>Public</item>
         <item>Private</item>
         <item>Protected</item>
     </string-array>
-
     <string-array name="visibility_array">
         <item>Public</item>
         <item>Private</item>
         <item>Unlisted</item>
     </string-array>
-
     <string-array name="transport_array">
         <item>No transport</item>
         <item>Walk</item>
@@ -584,5 +558,4 @@
         <item>Boat</item>
         <item>Other</item>
     </string-array>
-
 </resources>

@@ -99,8 +99,8 @@
             android:key="pref_key_read_default"
             android:title="@string/pref_key_read_default_title"
             android:summary="@string/pref_key_read_default_summary"
-            android:entries="@array/read_default_array"
-            android:entryValues="@array/read_default_array_values"
+            android:entries="@array/read_array"
+            android:entryValues="@array/read_array_values"
             android:defaultValue="1" />
         <SwitchPreference
             app:iconSpaceReserved="false"
