@@ -109,8 +109,7 @@ work fine.
 Indigenous is available in English and Dutch. If you want to translate to
 another language, or improve the default English there are two options:
 
-- create a pull request with a new file called 'strings-{langcode}.xml' and
-of course the translated strings in them: [strings.xml](https://github.com/swentel/indigenous-android/blob/master/app/src/main/res/values/strings.xml)
+- Create a pull request with a strings.xml file in a directory named 'values-{langcode}' in app/src/main/res: [strings.xml](https://github.com/swentel/indigenous-android/blob/master/app/src/main/res/values/strings.xml)
 - Join via Crowdin: [https://crowdin.com/project/indigenous](https://crowdin.com/project/indigenous/invite/public?show_welcome&d=f96bb15097617a94d765f3f95c7ed7331225908)
 It contains all strings used in Android and iOS.
 
