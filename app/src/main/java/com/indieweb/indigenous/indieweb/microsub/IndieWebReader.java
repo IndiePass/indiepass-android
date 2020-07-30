@@ -115,11 +115,13 @@ public class IndieWebReader extends ReaderBase {
                     if (unreadCheck instanceof Integer) {
                         unread = (Integer) unreadCheck;
                         totalUnread += unread;
+                        channel.setCountInteger(true);
                         if (unread > 0) {
                             unreadChannels++;
                         }
                     }
                     if (unreadCheck instanceof Boolean) {
+                        channel.setCountNew(true);
                         if ((Boolean) unreadCheck) {
                             unread = -1;
                         }
@@ -154,12 +156,14 @@ public class IndieWebReader extends ReaderBase {
                         if (!fromCache && source.has("unread")) {
                             Object unreadCheck = source.get("unread");
                             if (unreadCheck instanceof Integer) {
+                                channelSource.setCountInteger(true);
                                 sourceUnread = (Integer) unreadCheck;
                                 if (sourceUnread > 0) {
                                     unreadSources++;
                                 }
                             }
                             if (unreadCheck instanceof Boolean) {
+                                channelSource.setCountNew(true);
                                 if ((Boolean) unreadCheck) {
                                     unreadSources++;
                                     sourceUnread = -1;

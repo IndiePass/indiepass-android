@@ -219,14 +219,39 @@ public class Utility {
                 ChannelCounter cc = pair.getValue();
                 //Log.d("indigenous_debug", "checking: " + id + ": " + cc.getCounter() + " / " + cc.isSource());
                 for (Channel c: app.getChannelsList()) {
-                    if (cc.isSource() && id.equals(c.getSourceId()) && c.getUnread() != -1) {
+                    if (cc.isSource() && id.equals(c.getSourceId())) {
                         //Log.d("indigenous_debug", "counting down source " + c.getSourceId() + " with " + cc.getCounter());
-                        c.setUnread(c.getUnread() + cc.getCounter());
+                        int count = 0;
+                        if (c.isCountInteger()) {
+                            count = c.getUnread() + cc.getCounter();
+                            if (count < 0) {
+                                count = 0;
+                            }
+                        }
+                        if (c.isCountNew()) {
+                            if (cc.getCounter() > 0) {
+                                count = -1;
+                            }
+                        }
+
+                        c.setUnread(count);
                         break;
                     }
-                    else if (!cc.isSource() && id.equals(c.getUid()) && c.getUnread() != -1) {
+                    else if (!cc.isSource() && id.equals(c.getUid())) {
                         //Log.d("indigenous_debug", "counting down channel " + c.getUid() + " with " + cc.getCounter() + " (" + id + ")");
-                        c.setUnread(c.getUnread() + cc.getCounter());
+                        int count = 0;
+                        if (c.isCountInteger()) {
+                            count = c.getUnread() + cc.getCounter();
+                            if (count < 0) {
+                                count = 0;
+                            }
+                        }
+                        if (c.isCountNew()) {
+                            if (cc.getCounter() > 0) {
+                                count = -1;
+                            }
+                        }
+                        c.setUnread(count);
                         break;
                     }
                 }
