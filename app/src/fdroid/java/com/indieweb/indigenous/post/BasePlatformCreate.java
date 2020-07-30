@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.post.Base;
 import com.indieweb.indigenous.util.Utility;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;

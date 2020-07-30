@@ -23,7 +23,6 @@ import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.micropub.Base;
 import com.indieweb.indigenous.util.Utility;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
