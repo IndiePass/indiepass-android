@@ -584,11 +584,7 @@ public class IndieWebReader extends ReaderBase {
                 TimelineItems.add(item);
             }
         }
-        catch (JSONException ignored) {
-            TimelineItem i = new TimelineItem();
-            i.setName(ignored.getMessage());
-            TimelineItems.add(i);
-        }
+        catch (JSONException ignored) { }
 
         return TimelineItems;
     }
