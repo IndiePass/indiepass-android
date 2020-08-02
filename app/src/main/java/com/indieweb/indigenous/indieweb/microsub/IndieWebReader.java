@@ -251,7 +251,7 @@ public class IndieWebReader extends ReaderBase {
     }
 
     @Override
-    public List<TimelineItem> parseTimelineResponse(String response, String channelId, String channelName, List<String> entries, boolean isGlobalUnread, boolean isSearch, boolean recursiveReference, String[] olderItems, Context context) {
+    public List<TimelineItem> parseTimelineResponse(String response, String channelId, String channelName, List<String> entries, boolean isGlobalUnread, boolean isSearch, boolean recursiveReference, String[] olderItems) {
         JSONObject object;
         JSONArray itemList;
         List<TimelineItem> TimelineItems = new ArrayList<>();
@@ -278,7 +278,7 @@ public class IndieWebReader extends ReaderBase {
             for (int i = 0; i < itemList.length(); i++) {
                 object = itemList.getJSONObject(i);
                 TimelineItem item = new TimelineItem();
-                item.setJson(itemList.getString(i));
+                item.setJson(itemList.get(i).toString());
 
                 boolean addContent = true;
                 boolean isRead = false;
@@ -364,14 +364,14 @@ public class IndieWebReader extends ReaderBase {
                     String value = getSingleJsonValueFromArrayOrString(type, object);
                     if (value.length() > 0) {
                         item.addToResponseType(type, value);
-                        checkReference(object, value, item, false, false, 0, context);
+                        checkReference(object, value, item, false, false, 0, getContext());
                     }
                 }
 
                 // Follow-of.
                 if (object.has("follow-of")) {
                     type = "follow-of";
-                    textContent = context.getString(R.string.started_following);
+                    textContent = getContext().getString(R.string.started_following);
                 }
 
                 // Repost.
@@ -381,7 +381,7 @@ public class IndieWebReader extends ReaderBase {
                     String value = getSingleJsonValueFromArrayOrString(type, object);
                     if (value.length() > 0) {
                         item.addToResponseType(type, value);
-                        checkReference(object, value, item, true, recursiveReference, 0, context);
+                        checkReference(object, value, item, true, recursiveReference, 0, getContext());
                     }
                 }
 
@@ -391,7 +391,7 @@ public class IndieWebReader extends ReaderBase {
                     String value = getSingleJsonValueFromArrayOrString(type, object);
                     if (value.length() > 0) {
                         item.addToResponseType(type, value);
-                        checkReference(object, value, item, true, false, 0, context);
+                        checkReference(object, value, item, true, false, 0, getContext());
                     }
                 }
 
@@ -402,7 +402,7 @@ public class IndieWebReader extends ReaderBase {
                     String value = getSingleJsonValueFromArrayOrString(type, object);
                     if (value.length() > 0) {
                         item.addToResponseType(type, value);
-                        checkReference(object, value, item, false, false, 0, context);
+                        checkReference(object, value, item, false, false, 0, getContext());
                     }
                 }
 
@@ -413,7 +413,7 @@ public class IndieWebReader extends ReaderBase {
                     String value = getSingleJsonValueFromArrayOrString(type, object);
                     if (value.length() > 0) {
                         item.addToResponseType(type, value);
-                        checkReference(object, value, item, false, false, 0, context);
+                        checkReference(object, value, item, false, false, 0, getContext());
                     }
                 }
 
@@ -564,7 +564,7 @@ public class IndieWebReader extends ReaderBase {
                 //Log.d("indigenous_debug", "reference before: " + item.getReference());
 
                 // Swap reference and content if content is empty.
-                if (item.swapReference() && Preferences.getPreference(context, "pref_key_timeline_author_original", false) && textContent.length() == 0 && htmlContent.length() == 0 && item.getReference().length() > 0) {
+                if (item.swapReference() && item.getReference().length() > 0 && Preferences.getPreference(getContext(), "pref_key_timeline_author_original", false) && textContent.length() == 0 && htmlContent.length() == 0) {
                     //Log.d("indigenous_debug", "swapping ref / content");
                     item.setTextContent(item.getReference());
                     item.setReference("");
@@ -584,7 +584,11 @@ public class IndieWebReader extends ReaderBase {
                 TimelineItems.add(item);
             }
         }
-        catch (JSONException ignored) {}
+        catch (JSONException ignored) {
+            TimelineItem i = new TimelineItem();
+            i.setName(ignored.getMessage());
+            TimelineItems.add(i);
+        }
 
         return TimelineItems;
     }

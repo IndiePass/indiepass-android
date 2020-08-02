@@ -164,7 +164,7 @@ public class PixelfedReader extends ReaderBase {
     }
 
     @Override
-    public List<TimelineItem> parseTimelineResponse(String response, String channelId, String channelName, List<String> entries, boolean isGlobalUnread, boolean isSearch, boolean recursiveReference, String[] olderItems, Context context) {
+    public List<TimelineItem> parseTimelineResponse(String response, String channelId, String channelName, List<String> entries, boolean isGlobalUnread, boolean isSearch, boolean recursiveReference, String[] olderItems) {
         JSONObject object;
         String maxId = "";
         List<TimelineItem> TimelineItems = new ArrayList<>();
@@ -216,7 +216,7 @@ public class PixelfedReader extends ReaderBase {
                             break;
                         case "follow":
                             type = "follow-of";
-                            item.setHtmlContent(context.getString(R.string.started_following));
+                            item.setHtmlContent(getContext().getString(R.string.started_following));
                             break;
                         case "mention":
                             type = "in-reply-to";

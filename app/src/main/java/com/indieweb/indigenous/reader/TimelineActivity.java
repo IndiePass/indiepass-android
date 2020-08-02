@@ -474,7 +474,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             }
 
             debugResponse = response;
-            List<TimelineItem> parseItems = reader.parseTimelineResponse(response, channelId, channelName, entries, isGlobalUnread, isSearch, recursiveReference, olderItems, getApplicationContext());
+            List<TimelineItem> parseItems = reader.parseTimelineResponse(response, channelId, channelName, entries, isGlobalUnread, isSearch, recursiveReference, olderItems);
             TimelineItems.addAll(parseItems);
 
             if (firstEntryId == null && parseItems.size() > 0) {

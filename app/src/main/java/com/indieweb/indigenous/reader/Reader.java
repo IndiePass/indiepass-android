@@ -178,12 +178,10 @@ public interface Reader {
      *   Whether to check recursive reference
      * @param olderItems
      *   Paging or not.
-     * @param context
-     *   The current context.
      *
      * @return List<TimelineItem>
      */
-    List<TimelineItem> parseTimelineResponse(String response, String channelId, String channelName, List<String> entries, boolean isGlobalUnread, boolean isSearch, boolean recursiveReference, String[] olderItems, Context context);
+    List<TimelineItem> parseTimelineResponse(String response, String channelId, String channelName, List<String> entries, boolean isGlobalUnread, boolean isSearch, boolean recursiveReference, String[] olderItems);
 
     /**
      * Mark items read.
