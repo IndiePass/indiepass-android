@@ -40,7 +40,10 @@ public class IndieWebPost extends PostBase {
             case FEATURE_SPOILER:
             case FEATURE_MEDIA_UPLOAD_DESCRIPTION:
                 supported = false;
-            break;
+                break;
+            case FEATURE_POST_SENSITIVITY:
+                supported = Preferences.getPreference(getContext(), "pref_key_post_sensitivity", false);
+                break;
         }
 
         return supported;

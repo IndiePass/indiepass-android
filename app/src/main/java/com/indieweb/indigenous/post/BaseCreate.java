@@ -113,7 +113,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
         }
 
         sensitivity = findViewById(R.id.postSensitivity);
-        if (sensitivity != null && Preferences.getPreference(getApplicationContext(), "pref_key_post_sensitivity", false)) {
+        if (sensitivity != null && post.supports(Post.FEATURE_POST_SENSITIVITY)) {
             sensitivity.setVisibility(View.VISIBLE);
         }
 

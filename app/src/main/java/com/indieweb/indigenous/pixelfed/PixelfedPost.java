@@ -64,6 +64,7 @@ public class PixelfedPost extends PostBase {
             case FEATURE_LOCATION:
             case FEATURE_POST_STATUS:
             case FEATURE_SPOILER:
+            case FEATURE_POST_SENSITIVITY:
                 supported = false;
         }
 

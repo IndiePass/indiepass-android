@@ -423,6 +423,7 @@ public class Utility {
             if (networkResponse != null && networkResponse.statusCode != 0 && networkResponse.data != null) {
                 int code = networkResponse.statusCode;
                 String result = new String(networkResponse.data).trim();
+                //Log.d("indigenous_debug", "Error: " + result);
                 returnMessage = String.format(context.getString(network_fail), code, result);
             }
         }
