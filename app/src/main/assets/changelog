@@ -1,6 +1,7 @@
 <h4>xx/xx/xxxx 2020 0.64</h4>
 <ul>
-    <li>Always show available accounts to set default account
+    <li>Fix IndieWeb global/channel search</li>
+    <li>Always show available accounts to set default account</li>
 </ul>
 <h4>02/08/2020 2020 0.63</h4>
 <ul>
