@@ -201,27 +201,33 @@ public class IndieWebReader extends ReaderBase {
 
     @Override
     public String getTimelineEndpoint(User user, String channelId, boolean isGlobalUnread, boolean showUnread, boolean isSourceView, String sourceId, boolean isTagView, String tag, boolean isSearch, String search, String pagerAfter) {
-        String endpoint =  user.getMicrosubEndpoint();
+        String endpoint = user.getMicrosubEndpoint();
 
         if (!isSearch) {
             endpoint += "?action=timeline&channel=" + channelId;
         }
-        else {
-            endpoint += "?";
-        }
 
         // Global unread.
         if ((isGlobalUnread || showUnread) && !isSearch) {
+            if (!endpoint.contains("?")) {
+                endpoint += "?";
+            }
             endpoint += "&is_read=false";
         }
 
         // Individual timeline.
         if (isSourceView) {
+            if (!endpoint.contains("?")) {
+                endpoint += "?";
+            }
             endpoint += "&source=" + sourceId;
         }
 
         // Pager.
         if (pagerAfter != null && pagerAfter.length() > 0) {
+            if (!endpoint.contains("?")) {
+                endpoint += "?";
+            }
             endpoint += "&after=" + pagerAfter;
         }
 
