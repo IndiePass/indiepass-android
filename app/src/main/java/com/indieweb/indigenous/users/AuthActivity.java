@@ -185,11 +185,9 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                             }
                         });
 
-                        // Show 'select account' button.
-                        SharedPreferences preferences = getSharedPreferences("indigenous", MODE_PRIVATE);
-                        String accountName = preferences.getString("account", "");
-                        int numberOfAccounts = new Accounts(AuthActivity.this).getCount();
-                        if (accountName.length() == 0 && numberOfAccounts > 0) {
+                        // Show 'select account' button. Always show as soon as there is one
+                        // account, in case there are problems with the default account.
+                        if (new Accounts(AuthActivity.this).getCount() > 0) {
                             LinearLayout selectContainer = findViewById(R.id.selectContainer);
                             selectContainer.setVisibility(View.VISIBLE);
                             Button selectAccount = findViewById(R.id.selectAccountButton);
