@@ -163,10 +163,12 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
             }
             if (endpoints.length() > 0) {
                 holder.endpointsTitle.setVisibility(VISIBLE);
+                holder.endpoints.setVisibility(VISIBLE);
                 holder.endpoints.setText(endpoints);
             }
             else {
                 holder.endpointsTitle.setVisibility(GONE);
+                holder.endpoints.setVisibility(GONE);
             }
 
             // Button listeners.

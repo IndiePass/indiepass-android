@@ -3,7 +3,6 @@
     android:id="@+id/auth_root"
     android:layout_height="wrap_content"
     android:layout_width="wrap_content"
-    android:padding="10dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ScrollView
@@ -12,6 +11,7 @@
         tools:ignore="UselessParent">
 
         <LinearLayout
+            android:padding="@dimen/box_padding"
             android:layout_width="match_parent"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
@@ -111,6 +111,15 @@
                     android:inputType="textUri"
                     android:importantForAutofill="no" />
 
+                <CheckBox
+                    android:visibility="gone"
+                    android:id="@+id/setAsDefault"
+                    android:textSize="@dimen/inputText"
+                    android:textColor="@color/textColor"
+                    android:text="@string/set_as_default"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
                 <Button
                     android:background="@color/buttonBackground"
                     android:textColor="@color/colorPrimary"
@@ -126,14 +135,21 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
                 android:layout_marginTop="30dp"
                 android:id="@+id/selectContainer"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
+                <View
+                    android:layout_marginTop="@dimen/box_padding"
+                    android:layout_marginBottom="@dimen/box_padding"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/list_divider_height"
+                    android:background="@color/listDividerColor" />
+
                 <TextView
+                    android:paddingTop="@dimen/box_padding"
                     android:text="@string/default_user_select"
                     android:textSize="@dimen/big_text"
                     android:textColor="@color/textColor"

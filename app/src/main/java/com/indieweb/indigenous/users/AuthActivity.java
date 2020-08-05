@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -84,6 +85,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     TextView info;
     String domainInput;
     LinearLayout signInContainer;
+    CheckBox setAsDefault;
     Document doc;
     String authorizationEndpoint;
     String tokenEndpoint;
@@ -140,6 +142,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                         codeVerifier = temp.replace("-", "");
 
                         signInContainer = findViewById(R.id.signInContainer);
+                        setAsDefault = findViewById(R.id.setAsDefault);
                         domain = findViewById(R.id.domain);
                         info = findViewById(R.id.info);
                         signIn = findViewById(R.id.signInButton);
@@ -192,6 +195,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                             selectContainer.setVisibility(View.VISIBLE);
                             Button selectAccount = findViewById(R.id.selectAccountButton);
                             selectAccount.setOnClickListener(selectAccountListener);
+                            setAsDefault.setVisibility(View.VISIBLE);
                         }
                     }
 
@@ -375,7 +379,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
      */
     public void setDefaultAccount() {
         int numberOfAccounts = new Accounts(AuthActivity.this).getCount();
-        if (numberOfAccounts == 0) {
+        if (numberOfAccounts == 0 || (setAsDefault.getVisibility() == View.VISIBLE && setAsDefault.isChecked())) {
             SharedPreferences.Editor editor = getSharedPreferences("indigenous", MODE_PRIVATE).edit();
             editor.putString("account", getAccountName());
             editor.apply();

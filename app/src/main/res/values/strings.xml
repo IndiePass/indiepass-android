@@ -52,7 +52,8 @@
     <string name="no_user">No account found</string>
     <string name="default_user_select">Set default account</string>
     <string name="select_account">Select account</string>
-    <string name="select_account_info">Set the default account by pressing the \"Select account\" button.</string>
+    <string name="set_as_default">Set as default after authentication</string>
+    <string name="select_account_info">In rare cases, the default account might not have been set or the current has connection problems. Click on the \"Select account\" button to set a default account.</string>
     <string name="url_hint">http://example.com</string>
     <string name="url_or_text_hint">URL or title</string>
     <string name="url_repository_hint">http://example.com/repository</string>

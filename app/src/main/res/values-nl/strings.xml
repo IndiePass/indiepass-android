@@ -48,6 +48,7 @@
     <string name="accounts">Accounts</string>
     <string name="account_name">Account: %s</string>
     <string name="select_account_type">Select account type</string>
+    <string name="set_as_default">Set as default after authentication</string>
     <string name="no_user">Geen account gevonden</string>
     <string name="default_user_select">Standaardaccount instellen</string>
     <string name="select_account">Selecteer account</string>
