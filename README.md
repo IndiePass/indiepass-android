@@ -149,3 +149,11 @@ Things I'd love to explore one day:
 - cleaner account names (am.renameAccount())
 - better UI/UX for managing feeds
 - cleanup the various ways of requests
+
+## Sponsors
+
+I would like to extend many thanks to the following sponsors for funding development.
+
+- [NLnet Foundation](https://nlnet.nl) and [NGI0
+Discovery](https://nlnet.nl/discovery/), part of the [Next Generation
+Internet](https://ngi.eu) initiative.
