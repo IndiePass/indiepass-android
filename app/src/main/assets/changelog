@@ -3,6 +3,7 @@
     <li>Fix IndieWeb global/channel search</li>
     <li>Always show available accounts to set default account</li>
     <li>Allow to set the new connection as the default account</li>
+    <li>Fix mp-photo-alt for uploads via IndieWeb media endpoint</li>
 </ul>
 <h4>02/08/2020 2020 0.63</h4>
 <ul>

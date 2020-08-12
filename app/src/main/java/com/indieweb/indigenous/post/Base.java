@@ -989,7 +989,9 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         for (Uri u : image) {
             if (caption.size() > 0) {
                 description = caption.get(index);
-                caption.remove(index);
+                if (post.supports(Post.FEATURE_MEDIA_UPLOAD_DESCRIPTION)) {
+                    caption.remove(index);
+                }
             }
             sendMediaRequest(u, description, endpoint, true, false);
             index++;
