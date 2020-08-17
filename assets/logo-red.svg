@@ -16,7 +16,7 @@
 		<clipPath id="SVGID_4_">
 			<use xlink:href="#SVGID_3_"  style="overflow:visible;"/>
 		</clipPath>
-		<rect x="-14.284" y="-14.284" style="clip-path:url(#SVGID_4_);fill:#EB5B59;" width="540.569" height="540.569"/>
+		<rect x="-14.284" y="-14.284" style="clip-path:url(#SVGID_4_);fill:#dd645e;" width="540.569" height="540.569"/>
 	</g>
 </g>
 <g>
@@ -52,7 +52,7 @@
 		<clipPath id="SVGID_12_">
 			<use xlink:href="#SVGID_11_"  style="overflow:visible;"/>
 		</clipPath>
-		<rect x="88.341" y="169.111" style="clip-path:url(#SVGID_12_);fill:#EB5B59;" width="55.649" height="113.689"/>
+		<rect x="88.341" y="169.111" style="clip-path:url(#SVGID_12_);fill:#dd645e;" width="55.649" height="113.689"/>
 	</g>
 </g>
 <g>
@@ -71,7 +71,7 @@
 		<clipPath id="SVGID_16_">
 			<use xlink:href="#SVGID_15_"  style="overflow:visible;"/>
 		</clipPath>
-		<rect x="297.392" y="189.541" style="clip-path:url(#SVGID_16_);fill:#EB5B59;" width="55.649" height="113.689"/>
+		<rect x="297.392" y="189.541" style="clip-path:url(#SVGID_16_);fill:#dd645e;" width="55.649" height="113.689"/>
 	</g>
 </g>
 <g>
@@ -90,7 +90,7 @@
 		<clipPath id="SVGID_20_">
 			<use xlink:href="#SVGID_19_"  style="overflow:visible;"/>
 		</clipPath>
-		<rect x="146.305" y="169.111" style="clip-path:url(#SVGID_20_);fill:#EB5B59;" width="55.649" height="113.689"/>
+		<rect x="146.305" y="169.111" style="clip-path:url(#SVGID_20_);fill:#dd645e;" width="55.649" height="113.689"/>
 	</g>
 </g>
 <g>
@@ -109,7 +109,7 @@
 		<clipPath id="SVGID_24_">
 			<use xlink:href="#SVGID_23_"  style="overflow:visible;"/>
 		</clipPath>
-		<rect x="355.356" y="189.541" style="clip-path:url(#SVGID_24_);fill:#EB5B59;" width="55.649" height="113.689"/>
+		<rect x="355.356" y="189.541" style="clip-path:url(#SVGID_24_);fill:#dd645e;" width="55.649" height="113.689"/>
 	</g>
 </g>
 </svg>
