@@ -377,6 +377,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
         String syndicationTargetsString = user.getSyndicationTargets();
         if (syndicationLayout != null) {
             syndicationLayout.removeAllViews();
+            syndicationTargets.clear();
             if (syndicationTargetsString.length() > 0) {
                 JSONObject object;
                 try {

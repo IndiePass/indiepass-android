@@ -1,3 +1,9 @@
+<h4>xx/xx/xxxx 2021 0.65</h4>
+<ul>
+    <li>Set a default account when deleting the current</li>
+    <li>Do not set the default microsub endpoint for privacy</li>
+    <li>Fix syndication targets switching with multiple accounts</li>
+</ul>
 <h4>16/08/2020 2020 0.64</h4>
 <ul>
     <li>Fix IndieWeb global/channel search</li>
