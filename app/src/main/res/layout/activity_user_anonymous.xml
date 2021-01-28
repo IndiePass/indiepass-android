@@ -16,13 +16,14 @@
 
     <TextView
         android:id="@+id/info"
-        android:layout_marginTop="@dimen/box_padding"
-        android:textSize="@dimen/info_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/title"
+        android:layout_marginTop="@dimen/box_padding"
         android:text="@string/anonymous_info"
         android:textColor="@color/textColor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:textIsSelectable="true"
+        android:textSize="@dimen/info_text" />
 
     <EditText
         android:id="@+id/reader"

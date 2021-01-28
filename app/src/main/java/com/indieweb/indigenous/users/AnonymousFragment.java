@@ -78,7 +78,7 @@ public class AnonymousFragment extends Fragment {
                 builder.setPositiveButton(getString(R.string.reset),new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
 
-                        Preferences.setPreference(getContext(), "anonymous_microsub_endpoint", getString(R.string.anonymous_microsub_endpoint));
+                        Preferences.setPreference(getContext(), "anonymous_microsub_endpoint", "");
                         Preferences.setPreference(getContext(), "anonymous_micropub_endpoint","");
                         Preferences.setPreference(getContext(), "anonymous_token", "");
                         user = new Accounts(getContext()).getDefaultUser();

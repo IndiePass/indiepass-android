@@ -64,7 +64,7 @@ public class Accounts {
             user.setAccountName(context.getString(R.string.anonymous_me));
             user.setName(context.getString(R.string.anonymous));
             user.setAccessToken(Preferences.getPreference(context, "anonymous_token", ""));
-            user.setMicrosubEndpoint(Preferences.getPreference(context, "anonymous_microsub_endpoint", context.getString(R.string.anonymous_microsub_endpoint)));
+            user.setMicrosubEndpoint(Preferences.getPreference(context, "anonymous_microsub_endpoint", ""));
             user.setMicropubEndpoint(Preferences.getPreference(context, "anonymous_micropub_endpoint", ""));
         }
 

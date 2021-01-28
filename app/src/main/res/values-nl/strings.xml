@@ -93,7 +93,7 @@
     <string name="account_switch">Standaard account instellen op %s?</string>
     <string name="user_exception">We ran into an exception getting the accounts. Please manage the accounts from the device accounts section.</string>
     <string name="anonymous_settings">Anonymous settings</string>
-    <string name="anonymous_info">You are using the anonymous account in Indigenous. The reader is connected by default to a server on https://indigenous.realize.be.\n\nYou can change both the reader and post endpoint to a custom location so you can test yourself and even save posts on your own server without needing an IndieAuth enabled website.\n\nThe token will be send in the authentication header for both endpoints.</string>
+    <string name="anonymous_info">This is the anonymous account in Indigenous. A read-only reader endpoint is available for testing:\nhttps://indigenous.realize.be/indieweb/microsub\n\nYou can change both the reader and post endpoint to a custom location so you can test yourself and even save posts on your own server without needing an IndieAuth enabled website.\n\nThe token will be send in the authentication header for both endpoints.</string>
     <string name="anonymous_info_snack">You are using the anonymous account. Create an account via \"Accounts\" or the \"User\" icon at the top.</string>
     <string name="anonymous_reader_endpoint">Reader endpoint</string>
     <string name="anonymous_post_endpoint">Post endpoint</string>
