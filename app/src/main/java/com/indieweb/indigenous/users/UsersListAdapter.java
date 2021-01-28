@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
@@ -34,6 +35,7 @@ import com.indieweb.indigenous.model.User;
 import java.io.IOException;
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
@@ -288,6 +290,20 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
         auth.revokeToken(user);
         if (user.getAccountName().equals(currentUser.getAccountName())) {
             Snackbar.make(layout, String.format(context.getString(R.string.account_removed), user.getDisplayName()), Snackbar.LENGTH_SHORT).show();
+
+            // Set a default account in case there still accounts available. Just pick the first one
+            // in the list.
+            try {
+                int numberOfAccounts = new Accounts(context).getCount();
+                if (numberOfAccounts > 0) {
+                    List<User> users = new Accounts(context).getAllUsers();
+                    SharedPreferences.Editor editor = context.getSharedPreferences("indigenous", MODE_PRIVATE).edit();
+                    editor.putString("account", users.get(0).getAccount().name);
+                    editor.apply();
+                }
+            }
+            catch (Exception ignored) {}
+
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
