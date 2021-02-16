@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -41,7 +42,15 @@ public class PushNotificationActivity extends AppCompatActivity {
     TextView info;
     TextView siteApiToken;
     Button buttonPushyMe;
+    Button buttonMqqt;
     ScrollView layout;
+    Spinner mqttServerType;
+    TextView mqttHost;
+    TextView mqttPort;
+    TextView mqttUsername;
+    TextView mqttPassword;
+    TextView mqttTopic;
+    public static final String MQTT5 = "MQTT 5.0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +60,24 @@ public class PushNotificationActivity extends AppCompatActivity {
         info = findViewById(R.id.pushNotificationsInfo);
         siteApiToken = findViewById(R.id.siteApiToken);
         buttonPushyMe = findViewById(R.id.buttonPushyMe);
+        buttonMqqt = findViewById(R.id.buttonMQtt);
         layout = findViewById(R.id.push_notification_root);
+        mqttServerType = findViewById(R.id.mqttServerType);
+        mqttHost = findViewById(R.id.mqttHost);
+        mqttPort = findViewById(R.id.mqttPort);
+        mqttUsername = findViewById(R.id.mqttUsername);
+        mqttPassword = findViewById(R.id.mqttPassword);
+        mqttTopic = findViewById(R.id.mqttTopic);
+
+        siteApiToken.setText(Preferences.getPreference(getApplicationContext(), "siteApiToken", ""));
+        mqttHost.setText(Preferences.getPreference(getApplicationContext(), "mqttHost", ""));
+        mqttPort.setText(Preferences.getPreference(getApplicationContext(), "mqttPort", ""));
+        mqttUsername.setText(Preferences.getPreference(getApplicationContext(), "mqttUsername", ""));
+        mqttPassword.setText(Preferences.getPreference(getApplicationContext(), "mqttPassword", ""));
+        mqttTopic.setText(Preferences.getPreference(getApplicationContext(), "mqttTopic", ""));
+        if (Preferences.getPreference(getApplicationContext(), "mqttServerType", "").equals(MQTT5)) {
+            mqttServerType.setSelection(1);
+        }
 
         setConfigurationInfo(Preferences.getPreference(getApplicationContext(), "push_notification_type", "none"));
     }
@@ -67,6 +93,19 @@ public class PushNotificationActivity extends AppCompatActivity {
             buttonPushyMe.setText(R.string.disable_pushy_me_button);
             buttonPushyMe.setOnClickListener(null);
             buttonPushyMe.setOnClickListener(new disablePushyMeOnClickListener());
+            buttonMqqt.setText(R.string.register_mqtt);
+            buttonMqqt.setOnClickListener(null);
+            buttonMqqt.setOnClickListener(new registerDeviceOnMQTTServerClickListener());
+        }
+        else if (type.equals("mqtt")) {
+            info.setText(R.string.push_notification_configuration_mqtt);
+            siteApiToken.setVisibility(View.VISIBLE);
+            buttonMqqt.setText(R.string.disable_mqtt_button);
+            buttonMqqt.setOnClickListener(null);
+            buttonMqqt.setOnClickListener(new disableMqttOnClickListener());
+            buttonPushyMe.setText(R.string.register_device);
+            buttonPushyMe.setOnClickListener(null);
+            buttonPushyMe.setOnClickListener(new registerDeviceOnPushyMeOnClickListener());
         }
         else {
             info.setText(R.string.push_notification_no_configuration);
@@ -74,6 +113,9 @@ public class PushNotificationActivity extends AppCompatActivity {
             buttonPushyMe.setText(R.string.register_device);
             buttonPushyMe.setOnClickListener(null);
             buttonPushyMe.setOnClickListener(new registerDeviceOnPushyMeOnClickListener());
+            buttonMqqt.setText(R.string.register_mqtt);
+            buttonMqqt.setOnClickListener(null);
+            buttonMqqt.setOnClickListener(new registerDeviceOnMQTTServerClickListener());
         }
 
     }
@@ -89,6 +131,26 @@ public class PushNotificationActivity extends AppCompatActivity {
             builder.setPositiveButton(getApplicationContext().getString(android.R.string.yes),new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog,int id) {
                     disablePushyMe();
+                }
+            });
+            builder.setNegativeButton(getApplicationContext().getString(android.R.string.no), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.show();
+        }
+    }
+
+    class disableMqttOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(PushNotificationActivity.this);
+            builder.setTitle(R.string.disable_mqtt_title);
+            builder.setPositiveButton(getApplicationContext().getString(android.R.string.yes),new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog,int id) {
+                    disableMqtt();
                 }
             });
             builder.setNegativeButton(getApplicationContext().getString(android.R.string.no), new DialogInterface.OnClickListener() {
@@ -118,6 +180,9 @@ public class PushNotificationActivity extends AppCompatActivity {
                 return;
             }
 
+            // Save API token.
+            Preferences.setPreference(getApplicationContext(), "siteApiToken", siteApiToken.getText().toString());
+
             Snackbar.make(layout, getString(R.string.push_notifications_registering), Snackbar.LENGTH_SHORT).show();
             if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 // Request both READ_EXTERNAL_STORAGE and WRITE_EXTERNAL_STORAGE so that the
@@ -144,11 +209,68 @@ public class PushNotificationActivity extends AppCompatActivity {
     }
 
     /**
+     * Register device on custom MQTT server.
+     */
+    class registerDeviceOnMQTTServerClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+
+            boolean hasErrors = false;
+            if (TextUtils.isEmpty(mqttHost.getText())) {
+                hasErrors = true;
+                mqttHost.setError(getString(R.string.required_field));
+            }
+
+            if (TextUtils.isEmpty(mqttPort.getText())) {
+                hasErrors = true;
+                mqttPort.setError(getString(R.string.required_field));
+            }
+
+            if (TextUtils.isEmpty(mqttUsername.getText())) {
+                hasErrors = true;
+                mqttUsername.setError(getString(R.string.required_field));
+            }
+
+            if (TextUtils.isEmpty(mqttPassword.getText())) {
+                hasErrors = true;
+                mqttPassword.setError(getString(R.string.required_field));
+            }
+
+            if (TextUtils.isEmpty(mqttTopic.getText())) {
+                hasErrors = true;
+                mqttTopic.setError(getString(R.string.required_field));
+            }
+
+            if (hasErrors) {
+                return;
+            }
+
+            if (!Utility.hasConnection(getApplicationContext())) {
+                Snackbar.make(layout, getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Save all values.
+            Preferences.setPreference(getApplicationContext(), "mqttServerType", mqttServerType.getSelectedItem().toString());
+            Preferences.setPreference(getApplicationContext(), "mqttHost", mqttHost.getText().toString());
+            Preferences.setPreference(getApplicationContext(), "mqttPort", mqttPort.getText().toString());
+            Preferences.setPreference(getApplicationContext(), "mqttUsername", mqttUsername.getText().toString());
+            Preferences.setPreference(getApplicationContext(), "mqttPassword", mqttPassword.getText().toString());
+            Preferences.setPreference(getApplicationContext(), "mqttTopic", mqttTopic.getText().toString());
+
+            Snackbar.make(layout, getString(R.string.push_notifications_registering), Snackbar.LENGTH_SHORT).show();
+            enableMqtt();
+        }
+    }
+
+    /**
      * Enable Pushy.me
      */
     public void enablePushyMe() {
+        if (Preferences.getPreference(getApplicationContext(), "push_notification_type", "none").equals("mqtt")) {
+            stopMqttService();
+        }
         setConfigurationInfo("pushy");
-        PushyServiceManager.start(getApplicationContext());
         Preferences.setPreference(getApplicationContext(), "push_notification_type", "pushy");
     }
 
@@ -156,9 +278,42 @@ public class PushNotificationActivity extends AppCompatActivity {
      * Disable Pushy.me
      */
     public void disablePushyMe() {
+        stopPushyMeService();
         setConfigurationInfo("none");
-        PushyServiceManager.stop(getApplicationContext());
         Preferences.setPreference(getApplicationContext(), "push_notification_type", "none");
+    }
+
+    /**
+     * Stop Pushy.me service.
+     */
+    public void stopPushyMeService() {
+        PushyServiceManager.start(getApplicationContext());
+    }
+
+    /**
+     * Enable MQTT
+     */
+    public void enableMqtt() {
+        if (Preferences.getPreference(getApplicationContext(), "push_notification_type", "none").equals("pushy")) {
+            stopPushyMeService();
+        }
+        setConfigurationInfo("mqtt");
+        Preferences.setPreference(getApplicationContext(), "push_notification_type", "mqtt");
+    }
+
+    /**
+     * Disable MQTT
+     */
+    public void disableMqtt() {
+        stopMqttService();
+        setConfigurationInfo("none");
+        Preferences.setPreference(getApplicationContext(), "push_notification_type", "none");
+    }
+
+    /**
+     * Stop MQTT service.
+     */
+    public void stopMqttService() {
     }
 
     /**

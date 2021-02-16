@@ -368,7 +368,7 @@
     <string name="night_mode_summary">If your device supports Night mode, this theme will be automatically used when enabling night time globally. But this toggle allows you to use the night theme as well. The app will restart when you enable or disable this feature.</string>
     <!-- Push notifications -->
     <string name="push_notifications">Push notifications</string>
-    <string name="push_notifications_text">Receive push notifications via Pushy.me\nOnly available for IndieWeb accounts.</string>
+    <string name="push_notifications_text">Receive push notifications via Pushy.me or your own MQTT server. Pushy.me is only available for IndieWeb accounts.</string>
     <string name="push_notifications_title_pushy">Pushy.me and Indigenous site</string>
     <string name="push_notifications_text_pushy">Send push notifications with your account at https://indigenous.realize.be. The backend uses Pushy.me to send notifications. We will first check if your account exists before registering your device at Pushy.me.</string>
     <string name="push_notifications_summary">Setup push notifications</string>
@@ -379,6 +379,7 @@
     <string name="disable_pushy_me_title">Disable push notifications from Pushy.me ?</string>
     <string name="push_notification_no_configuration">No push notifications have been configured</string>
     <string name="push_notification_configuration_pushy">You are using Indigenous and Pushy.me to receive notifications</string>
+    <string name="push_notification_configuration_mqtt">You are using an MQTT server to receive notifications</string>
     <string name="indigenous_account_not_found">Account not found</string>
     <string name="indigenous_account_blocked">Account is blocked</string>
     <string name="indigenous_account_error">Error checking account: %s</string>
@@ -387,6 +388,16 @@
     <string name="indigenous_unknown_error">unknown error</string>
     <string name="pushy_me_token_not_found">Pushy.me token not found to register on backend.</string>
     <string name="push_notification_label">Click to open Indigenous</string>
+    <string name="push_notifications_title_mqtt">MQTT</string>
+    <string name="push_notifications_text_mqtt">Subscribe to your MQTT server of choice to receive messages.</string>
+    <string name="register_mqtt">Register to server</string>
+    <string name="disable_mqtt_button">Disable MQTT</string>
+    <string name="disable_mqtt_title">Disable push notifications MQTT server ?</string>
+    <string name="push_notification_mqtt_host">Host - without scheme</string>
+    <string name="push_notification_mqtt_port">Port</string>
+    <string name="push_notification_mqtt_user">Username</string>
+    <string name="push_notification_mqtt_password">Password</string>
+    <string name="push_notification_mqtt_topic">Topic</string>
     <!-- Preferences: share -->
     <string name="pref_category_sharing_title">Share</string>
     <string name="pref_category_sharing_summary">You can share text, URL\'s and images from other applications to Indigenous. You can also expose several post types (like, bookmark ..) as share intents directly.</string>
@@ -561,5 +572,9 @@
         <item>Flight</item>
         <item>Boat</item>
         <item>Other</item>
+    </string-array>
+    <string-array name="mqtt_server_type">
+        <item>MQTT 3.1.1</item>
+        <item>MQTT 5.0</item>
     </string-array>
 </resources>

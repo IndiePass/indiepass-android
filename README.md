@@ -51,6 +51,7 @@ Desktop: https://github.com/swentel/indigenous-desktop
 - Share intents: receive text or images to directly share
 - Push notifications: receive push notifications if you have an account
   on https://indigenous.realize.be. Only for IndieWeb accounts.
+  You can also use your own custom MQTT server to receive notifications.
 
 Checkin, Geocache and Venue are experimental and pass on all information
 into a Geo URI in the geo property, e.g.
@@ -130,6 +131,7 @@ This app uses following external libraries:
 - https://github.com/bumptech/glide
 - https://jsoup.org/download
 - https://github.com/ticofab/android-gpx-parser
+- https://github.com/hivemq/hivemq-mqtt-client
 
 ## Other IndieWeb and Fediverse clients
 
