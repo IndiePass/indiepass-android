@@ -1,17 +1,18 @@
-<h4>xx/xx/xxxx 2021 0.65</h4>
+<h4>xx/xx/2021 0.65</h4>
 <ul>
+    <li>Use a custom MQTT server to receive push notifications</li>
     <li>Set a default account when deleting the current</li>
     <li>Do not set the default microsub endpoint for privacy</li>
     <li>Fix syndication targets switching with multiple accounts</li>
 </ul>
-<h4>16/08/2020 2020 0.64</h4>
+<h4>16/08/2020 0.64</h4>
 <ul>
     <li>Fix IndieWeb global/channel search</li>
     <li>Always show available accounts to set default account</li>
     <li>Allow to set the new connection as the default account</li>
     <li>Fix mp-photo-alt for uploads via IndieWeb media endpoint</li>
 </ul>
-<h4>02/08/2020 2020 0.63</h4>
+<h4>02/08/2020 0.63</h4>
 <ul>
     <li>Fix preview of a feed</li>
     <li>Add Pixelfed, Pleroma and Mastodon Account types</li>
@@ -24,7 +25,7 @@
     <li>View sources on channel overview in case the server supports the method=tree call</li>
     <li>Quickly switch accounts from navigation bar for reader, or while creating a post</li>
 </ul>
-<h4>24/04/2020 2020 0.62</h4>
+<h4>24/04/2020 0.62</h4>
 <ul>
     <li>Fix crash in going back from trip</li>
 </ul>
