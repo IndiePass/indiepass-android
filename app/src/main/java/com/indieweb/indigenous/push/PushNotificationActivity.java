@@ -271,6 +271,7 @@ public class PushNotificationActivity extends AppCompatActivity {
             stopMqttService();
         }
         setConfigurationInfo("pushy");
+        PushyServiceManager.start(getApplicationContext());
         Preferences.setPreference(getApplicationContext(), "push_notification_type", "pushy");
     }
 
@@ -287,7 +288,7 @@ public class PushNotificationActivity extends AppCompatActivity {
      * Stop Pushy.me service.
      */
     public void stopPushyMeService() {
-        PushyServiceManager.start(getApplicationContext());
+        PushyServiceManager.stop(getApplicationContext());
     }
 
     /**
