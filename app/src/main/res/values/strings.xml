@@ -378,7 +378,7 @@
 
     <!-- Push notifications -->
     <string name="push_notifications">Push notifications</string>
-    <string name="push_notifications_text">Receive push notifications via Pushy.me or your own MQTT server. Pushy.me is only available for IndieWeb accounts.</string>
+    <string name="push_notifications_text">Receive push notifications via Pushy.me Pushy.me is only available for IndieWeb accounts.</string>
     <string name="push_notifications_title_pushy">Pushy.me and Indigenous site</string>
     <string name="push_notifications_text_pushy">Send push notifications with your account at https://indigenous.realize.be. The backend uses Pushy.me to send notifications. We will first check if your account exists before registering your device at Pushy.me.</string>
     <string name="push_notifications_summary">Setup push notifications</string>

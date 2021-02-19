@@ -79,7 +79,7 @@
         </LinearLayout>
 
         <!-- MQTT -->
-        <LinearLayout
+        <!--<LinearLayout
             android:id="@+id/mqttConfiguration"
             android:orientation="vertical"
             android:paddingBottom="@dimen/box_padding"
@@ -191,7 +191,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-        </LinearLayout>
+        </LinearLayout>-->
 
     </LinearLayout>
 
