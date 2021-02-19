@@ -1,6 +1,5 @@
 <h4>xx/xx/2021 0.65</h4>
 <ul>
-    <li>Use a custom MQTT server to receive push notifications</li>
     <li>Set a default account when deleting the current</li>
     <li>Do not set the default microsub endpoint for privacy</li>
     <li>Fix syndication targets switching with multiple accounts</li>
