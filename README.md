@@ -159,3 +159,7 @@ I would like to extend many thanks to the following sponsors for funding develop
 - [NLnet Foundation](https://nlnet.nl) and [NGI0
 Discovery](https://nlnet.nl/discovery/), part of the [Next Generation
 Internet](https://ngi.eu) initiative.
+
+## License information
+
+This project is available as open source under the terms of the GPLv3.0. However, some elements such as icons in the assets/ directory are license under Apache2.0 and CC0. For accurate information, please check individual files. As well as for accurate information regarding copyrights.

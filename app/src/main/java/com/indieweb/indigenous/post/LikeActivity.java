@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2021 Kristof De Jaeger <swentel@realize.be>
+// SPDX-License-Identifier: GPL-3.0-only
+
 package com.indieweb.indigenous.post;
 
 import android.os.Bundle;

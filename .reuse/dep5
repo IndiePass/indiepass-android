@@ -1,0 +1,10 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: indigenous-android
+Upstream-Contact: Kristof De Jaeger <swentel@realize.be>
+Source: https://github.com/swentel/indigenous-android
+
+Files: assets/*
+Copyright: material.io AND Open Clipart
+License: Apache-2.0 AND CC0-1.0
+
+
