@@ -9,7 +9,6 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.push.PushNotificationActivity;
 
 @SuppressWarnings("ConstantConditions")
 public class SettingsFragment extends PreferenceFragmentCompat {
@@ -106,16 +105,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 boolean checked = Boolean.parseBoolean(newValue.toString());
                 if (checked) toggleAliasSetting("FeedAlias", 1);
                 else toggleAliasSetting("FeedAlias", 2);
-                return true;
-            }
-        });
-
-        Preference pushNotifications = findPreference("pref_key_push_notifications");
-        pushNotifications.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Intent i = new Intent(requireContext(), PushNotificationActivity.class);
-                startActivity(i);
                 return true;
             }
         });

@@ -11,12 +11,12 @@
         android:layout_height="match_parent">
 
         <ListView
-            android:divider="@color/listDividerColor"
-            android:dividerHeight="@dimen/list_divider_height"
-            android:background="@color/listBackgroundColor"
             android:id="@+id/channel_list"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_height="fill_parent"
+            android:background="@color/listBackgroundColor"
+            android:divider="@color/listDividerColor"
+            android:dividerHeight="@dimen/list_divider_height" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -45,6 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/button_create_white"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:contentDescription="TODO" />
 
 </RelativeLayout>
