@@ -5,10 +5,10 @@ An open social app with support for IndieWeb, Mastodon, Pleroma and Pixelfed.
 <a href='https://play.google.com/store/apps/details?id=com.indieweb.indigenous'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="100"/></a> <a href="https://f-droid.org/app/com.indieweb.indigenous"><img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="100"></a>
 
 More information at https://indieweb.org/Indigenous and
-https://indigenous.realize.be
+https://indigenous.marksuth.dev
 
-iOS: https://github.com/swentel/indigenous-ios  
-Desktop: https://github.com/swentel/indigenous-desktop
+iOS: https://github.com/marksuth/indigenous-ios  
+Desktop: https://github.com/marksuth/indigenous-desktop
 
 ## Features
 
@@ -19,7 +19,7 @@ Desktop: https://github.com/swentel/indigenous-desktop
     additional security when authenticating.
   - Fediverse: Mastodon, Pleroma and Pixelfed.
 - Comes with a built-in anonymous user which allows reading channels and
-  posts coming from https://indigenous.realize.be, https://mastodon.social,
+  posts coming from https://mastodon.social,
   https://pleroma.site or https://pixelfed.social. Posts can be send to a custom
   endpoint and token.
 - Posting
@@ -49,9 +49,6 @@ Desktop: https://github.com/swentel/indigenous-desktop
   - Main content becomes selectable after long click
   - Browse by tag for Mastodon
 - Share intents: receive text or images to directly share
-- Push notifications: receive push notifications if you have an account
-  on https://indigenous.realize.be. Only for IndieWeb accounts.
-  You can also use your own custom MQTT server to receive notifications.
 
 Checkin, Geocache and Venue are experimental and pass on all information
 into a Geo URI in the geo property, e.g.
@@ -73,8 +70,6 @@ Pleroma: not found yet (info welcome!)
 
 <img src="https://realize.be/sites/default/files/2019-02/1550590120900.jpg" width="400" />
 
-More screenshots at https://indigenous.realize.be
-
 ## Known issues
 
 #### Authentication loop
@@ -84,12 +79,12 @@ When authenticating for the first time, you might see a message
 While the account has been created, the default was not set. In this
 case, the sign in screen will allow you to select the account.
 
-See https://github.com/swentel/indigenous-android/issues/84  
+See https://github.com/marksuth/indigenous-android/issues/84  
 This happens sometimes, but not always.
 
 #### Known syndication targets not parsed
 
-See https://github.com/swentel/indigenous-android/issues/152
+See https://github.com/marksuth/indigenous-android/issues/152
 
 #### Authenticating
 
@@ -97,7 +92,7 @@ See https://github.com/swentel/indigenous-android/issues/152
   Indigenous to listen to the callback to verify the authorization code.
   Install a browser like Firefox (any flavor) so you can login.
 - When your account requires 2FA, put the apps in split screen mode, see
-https://github.com/swentel/indigenous-android/issues/210
+https://github.com/marksuth/indigenous-android/issues/210
 
 #### Notifications don't arrive after the app is closed
 
@@ -107,14 +102,7 @@ work fine.
 
 ## Translations
 
-Indigenous is available in English and Dutch. If you want to translate to
-another language, or improve the default English there are two options:
-
-- Create a pull request with a strings.xml file in a directory named 'values-{langcode}' in app/src/main/res: [strings.xml](https://github.com/swentel/indigenous-android/blob/master/app/src/main/res/values/strings.xml)
-- Join via Crowdin: [https://crowdin.com/project/indigenous](https://crowdin.com/project/indigenous/invite/public?show_welcome&d=f96bb15097617a94d765f3f95c7ed7331225908)
-It contains all strings used in Android and iOS.
-
-You can use informal tone for translating pronouns.
+Thanks to everyone who has contributed to the translation project so far. The translation project will restart in 2022.
 
 ## API
 
