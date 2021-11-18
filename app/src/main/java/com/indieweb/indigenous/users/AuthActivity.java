@@ -104,8 +104,8 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     String pleromaClientSecret;
     protected VolleyRequestListener volleyRequestListener;
 
-    final String ClientId = "https://indigenous.realize.be/";
-    final String RedirectUri = "https://indigenous.realize.be/indigenous-callback.php";
+    final String ClientId = "https://indigenous.marksuth.dev/";
+    final String RedirectUri = "https://indigenous.marksuth.dev/android-callback";
 
     /**
      * Set request listener.
