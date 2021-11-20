@@ -61,8 +61,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.pushy.sdk.Pushy;
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DraftFragment.OnDraftChangedListener, SettingsFragment.onPreferenceChangeListener {
 
     User user;
@@ -137,17 +135,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         accountCount = new Accounts(this).getCount();
         user = new Accounts(this).getDefaultUser();
         general = GeneralFactory.getGeneral(user, null, MainActivity.this);
-
-        // Let pushy listener restart if necessary, and if configured.
-        //noinspection ConstantConditions
-        if (
-            BuildConfig.SITE_DEVICE_REGISTRATION_ENDPOINT.length() > 0 &&
-            BuildConfig.SITE_ACCOUNT_CHECK_ENDPOINT.length() > 0 &&
-            Preferences.getPreference(getApplicationContext(), "push_notification_type", "none").equals("pushy") &&
-            user.isAuthenticated()
-        ) {
-            Pushy.listen(this);
-        }
 
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

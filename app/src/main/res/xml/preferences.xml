@@ -12,16 +12,6 @@
 
     <PreferenceCategory
         android:layout="@layout/preference_category_custom"
-        android:title="@string/push_notifications"
-        android:summary="@string/push_notifications_text">
-        <Preference
-            app:iconSpaceReserved="false"
-            android:key="pref_key_push_notifications"
-            android:summary="@string/push_notifications_summary" />
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:layout="@layout/preference_category_custom"
         android:title="@string/pref_category_sharing_title"
         android:summary="@string/pref_category_sharing_summary">
 

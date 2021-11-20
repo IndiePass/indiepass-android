@@ -33,8 +33,8 @@
     <string name="no_micropub_media_endpoint">We did not find your media endpoint. In the accounts section, you can synchronize your account to add it.</string>
     <string name="no_micropub_endpoint_anonymous">You need to configure an endpoint in Accounts before Indigenous can post.</string>
     <string name="no_anonymous_posting">Please create an account first before you can post.</string>
-    <string name="anonymous_microsub_endpoint">https://indigenous.realize.be/indieweb/microsub</string>
-    <string name="anonymous_me">https://indigenous.realize.be</string>
+    <string name="anonymous_microsub_endpoint"></string>
+    <string name="anonymous_me"></string>
     <string name="anonymous">Anonymous</string>
     <string name="items_refreshed">Items refreshed</string>
     <string name="request_failed">Request failed. Status code: %d; message: %s</string>
@@ -94,7 +94,7 @@
     <string name="account_switch">Set default account to %s ?</string>
     <string name="user_exception">We ran into an exception getting the accounts. Please manage the accounts from the device accounts section.</string>
     <string name="anonymous_settings">Anonymous settings</string>
-    <string name="anonymous_info">This is the anonymous account in Indigenous. A read-only reader endpoint is available for testing:\nhttps://indigenous.realize.be/indieweb/microsub\n\nYou can change both the reader and post endpoint to a custom location so you can test yourself and even save posts on your own server without needing an IndieAuth enabled website.\n\nThe token will be send in the authentication header for both endpoints.</string>
+    <string name="anonymous_info">This is the anonymous account in Indigenous. You can change both the reader and post endpoint to a custom location so you can test yourself and even save posts on your own server without needing an IndieAuth enabled website.\n\nThe token will be send in the authentication header for both endpoints.</string>
     <string name="anonymous_info_snack">You are using the anonymous account. Create an account via "Accounts" or the "User" icon at the top.</string>
     <string name="anonymous_reader_endpoint">Reader endpoint</string>
     <string name="anonymous_post_endpoint">Post endpoint</string>
@@ -116,7 +116,7 @@
     <string name="channel_pleroma">Pleroma</string>
 
     <!-- About -->
-    <string name="about_info"><![CDATA[Indigenous allows you to engage with the internet as you do on social media sites, and post on your website or a federated instance like Mastodon, Pleroma or Pixelfed. Use the built-in reader to read and respond to posts across the internet. Indigenous doesn\'t track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/swentel/indigenous-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
+    <string name="about_info"><![CDATA[Indigenous allows you to engage with the internet as you do on social media sites, and post on your website or a federated instance like Mastodon, Pleroma or Pixelfed. Use the built-in reader to read and respond to posts across the internet. Indigenous doesn\'t track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/marksuth/indigenous-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
     <string name="view_changelog">View changelog</string>
 
     <!-- Drafts -->
@@ -376,38 +376,6 @@
     <string name="night_mode_title">Enable night theme</string>
     <string name="night_mode_summary">If your device supports Night mode, this theme will be automatically used when enabling night time globally. But this toggle allows you to use the night theme as well. The app will restart when you enable or disable this feature.</string>
 
-    <!-- Push notifications -->
-    <string name="push_notifications">Push notifications</string>
-    <string name="push_notifications_text">Receive push notifications via Pushy.me Pushy.me is only available for IndieWeb accounts.</string>
-    <string name="push_notifications_title_pushy">Pushy.me and Indigenous site</string>
-    <string name="push_notifications_text_pushy">Send push notifications with your account at https://indigenous.realize.be. The backend uses Pushy.me to send notifications. We will first check if your account exists before registering your device at Pushy.me.</string>
-    <string name="push_notifications_summary">Setup push notifications</string>
-    <string name="push_notifications_registering">Registering your device, one second</string>
-    <string name="push_notification_site_api_token">Indigenous API token</string>
-    <string name="register_device">Register device</string>
-    <string name="disable_pushy_me_button">Disable Pushy.me</string>
-    <string name="disable_pushy_me_title">Disable push notifications from Pushy.me ?</string>
-    <string name="push_notification_no_configuration">No push notifications have been configured</string>
-    <string name="push_notification_configuration_pushy">You are using Indigenous and Pushy.me to receive notifications</string>
-    <string name="push_notification_configuration_mqtt">You are using an MQTT server to receive notifications</string>
-    <string name="indigenous_account_not_found">Account not found</string>
-    <string name="indigenous_account_blocked">Account is blocked</string>
-    <string name="indigenous_account_error">Error checking account: %s</string>
-    <string name="indigenous_registration_success">Registration success</string>
-    <string name="indigenous_device_store_error">Error storing device: %s</string>
-    <string name="indigenous_unknown_error">unknown error</string>
-    <string name="pushy_me_token_not_found">Pushy.me token not found to register on backend.</string>
-    <string name="push_notification_label">Click to open Indigenous</string>
-    <string name="push_notifications_title_mqtt">MQTT</string>
-    <string name="push_notifications_text_mqtt">Subscribe to your MQTT server of choice to receive messages.</string>
-    <string name="register_mqtt">Register to server</string>
-    <string name="disable_mqtt_button">Disable MQTT</string>
-    <string name="disable_mqtt_title">Disable push notifications MQTT server ?</string>
-    <string name="push_notification_mqtt_host">Host - without scheme</string>
-    <string name="push_notification_mqtt_port">Port</string>
-    <string name="push_notification_mqtt_user">Username</string>
-    <string name="push_notification_mqtt_password">Password</string>
-    <string name="push_notification_mqtt_topic">Topic</string>
     <!-- Preferences: share -->
     <string name="pref_category_sharing_title">Share</string>
     <string name="pref_category_sharing_summary">You can share text, URL\'s and images from other applications to Indigenous. You can also expose several post types (like, bookmark ..) as share intents directly.</string>
