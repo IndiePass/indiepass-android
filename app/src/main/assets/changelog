@@ -1,3 +1,9 @@
+<h4>24/11/2021 0.70</h4>
+<ul>
+    <li>Change app name to IndiePass</li>
+    <li>Update app URLs to https://indiepass.marksuth.dev</li>
+    <li>Hopefully not break anything in the process</li>
+</ul>
 <h4>20/11/2021 0.65</h4>
 <ul>
     <li>Set a default account when deleting the current</li>

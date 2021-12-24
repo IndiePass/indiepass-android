@@ -1,7 +1,7 @@
 <resources>
 
     <!-- General -->
-    <string name="app_name">Indigenous</string>
+    <string name="app_name">IndiePass</string>
     <string name="about">About</string>
     <string name="main_menu">Main menu</string>
     <string name="no_connection">No internet connection found</string>
@@ -20,10 +20,10 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="indigenous_version">Indigenous version: %s</string>
+    <string name="indigenous_version">IndiePass version: %s</string>
     <string name="clipboard_error">Something went wrong to copy the text to the clipboard.</string>
     <string name="clipboard_success">Copied to clipboard</string>
-    <string name="clipboard_label">Indigenous clipboard debug info</string>
+    <string name="clipboard_label">IndiePass clipboard debug info</string>
     <string name="clipboard_media_url">Media url</string>
     <string name="source_post_list">Posts</string>
     <string name="save">Save</string>
@@ -31,7 +31,7 @@
     <string name="no_microsub_endpoint">We did not find your reader endpoint. In the accounts section, you can synchronize your account to add it. You can also just use the app for posting only.</string>
     <string name="no_micropub_endpoint">We did not find your micropub endpoint. In the accounts section, you can synchronize your account to add it.</string>
     <string name="no_micropub_media_endpoint">We did not find your media endpoint. In the accounts section, you can synchronize your account to add it.</string>
-    <string name="no_micropub_endpoint_anonymous">You need to configure an endpoint in Accounts before Indigenous can post.</string>
+    <string name="no_micropub_endpoint_anonymous">You need to configure an endpoint in Accounts before IndiePass can post.</string>
     <string name="no_anonymous_posting">Please create an account first before you can post.</string>
     <string name="anonymous_microsub_endpoint"></string>
     <string name="anonymous_me"></string>
@@ -94,7 +94,7 @@
     <string name="account_switch">Set default account to %s ?</string>
     <string name="user_exception">We ran into an exception getting the accounts. Please manage the accounts from the device accounts section.</string>
     <string name="anonymous_settings">Anonymous settings</string>
-    <string name="anonymous_info">This is the anonymous account in Indigenous. You can change both the reader and post endpoint to a custom location so you can test yourself and even save posts on your own server without needing an IndieAuth enabled website.\n\nThe token will be send in the authentication header for both endpoints.</string>
+    <string name="anonymous_info">This is the anonymous account in IndiePass. You can change both the reader and post endpoint to a custom location so you can test yourself and even save posts on your own server without needing an IndieAuth enabled website.\n\nThe token will be send in the authentication header for both endpoints.</string>
     <string name="anonymous_info_snack">You are using the anonymous account. Create an account via "Accounts" or the "User" icon at the top.</string>
     <string name="anonymous_reader_endpoint">Reader endpoint</string>
     <string name="anonymous_post_endpoint">Post endpoint</string>
@@ -116,7 +116,7 @@
     <string name="channel_pleroma">Pleroma</string>
 
     <!-- About -->
-    <string name="about_info"><![CDATA[Indigenous allows you to engage with the internet as you do on social media sites, and post on your website or a federated instance like Mastodon, Pleroma or Pixelfed. Use the built-in reader to read and respond to posts across the internet. Indigenous doesn\'t track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/marksuth/indigenous-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
+    <string name="about_info"><![CDATA[IndiePass allows you to engage with the internet as you do on social media sites, and post on your website or a federated instance like Mastodon, Pleroma or Pixelfed. Use the built-in reader to read and respond to posts across the internet. IndiePass doesn\'t track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/marksuth/indigenous-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
     <string name="view_changelog">View changelog</string>
 
     <!-- Drafts -->
@@ -465,7 +465,7 @@
 
     <!-- Preferences: debugging -->
     <string name="pref_category_debug_title">Developer</string>
-    <string name="pref_category_debug_summary">Add helper functionality to help debugging Indigenous or your application.</string>
+    <string name="pref_category_debug_summary">Add helper functionality to help debugging IndiePass or your application.</string>
     <string name="pref_key_debug_microsub_channels_json_title">Channels JSON</string>
     <string name="pref_key_debug_microsub_channels_json_summary">Adds a "Debug" option to the channels list in the reader to view the JSON representation.</string>
     <string name="pref_key_debug_microsub_timeline_json_title">Timeline JSON</string>
