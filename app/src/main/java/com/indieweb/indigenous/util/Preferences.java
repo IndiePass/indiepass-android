@@ -25,7 +25,7 @@ public class Preferences {
     }
 
     /**
-     * Get a string preference, casted to an integer.
+     * Get a string preference, cast to an integer.
      *
      * @param context
      *   The current context

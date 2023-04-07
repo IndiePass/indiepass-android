@@ -299,10 +299,10 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     };
 
     /**
-     * Change the sign in button.
+     * Change the sign-in button.
      *
      * @param text
-     *   The text to change the sign in button to.
+     *   The text to change the sign-in button to.
      */
     public void changeSignInButton(int text) {
         signIn.setText(text);
@@ -592,7 +592,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                             errorMessage = e.getMessage();
 
                             // Known, and maybe other projects, do not return a json response (yet),
-                            // so the access token might be in the body as an URL-encoded query
+                            // so the access token might be in the body as a URL-encoded query
                             // string.
                             // @see https://github.com/idno/Known/issues/1986
                             try {

@@ -208,7 +208,7 @@ public class MicropubAction {
     }
 
     /**
-     * Sets tags autcomplete.
+     * Sets tags autocomplete.
      */
     private void setTagsAutocomplete(MultiAutoCompleteTextView tags, ArrayList<String> items) {
         tags.setThreshold(1);

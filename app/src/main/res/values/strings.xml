@@ -54,9 +54,9 @@
     <string name="select_account">Select account</string>
     <string name="set_as_default">Set as default after authentication</string>
     <string name="select_account_info">In rare cases, the default account might not have been set or the current has connection problems. Click on the \"Select account\" button to set a default account.</string>
-    <string name="url_hint">http://example.com</string>
+    <string name="url_hint">https://example.com</string>
     <string name="url_or_text_hint">URL or title</string>
-    <string name="url_repository_hint">http://example.com/repository</string>
+    <string name="url_repository_hint">https://example.com/repository</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_in_with_indieweb">IndieWeb</string>
     <string name="sign_in_with_pixelfed">Pixelfed</string>
@@ -94,7 +94,7 @@
     <string name="account_switch">Set default account to %s ?</string>
     <string name="user_exception">We ran into an exception getting the accounts. Please manage the accounts from the device accounts section.</string>
     <string name="anonymous_settings">Anonymous settings</string>
-    <string name="anonymous_info">This is the anonymous account in IndiePass. You can change both the reader and post endpoint to a custom location so you can test yourself and even save posts on your own server without needing an IndieAuth enabled website.\n\nThe token will be send in the authentication header for both endpoints.</string>
+    <string name="anonymous_info">This is the anonymous account in IndiePass. You can change both the reader and post endpoint to a custom location, so you can test yourself and even save posts on your own server without needing an IndieAuth enabled website.\n\nThe token will be sent in the authentication header for both endpoints.</string>
     <string name="anonymous_info_snack">You are using the anonymous account. Create an account via "Accounts" or the "User" icon at the top.</string>
     <string name="anonymous_reader_endpoint">Reader endpoint</string>
     <string name="anonymous_post_endpoint">Post endpoint</string>
@@ -305,7 +305,7 @@
     <string name="post_types_parse_error">Error parsing post types: %s</string>
     <string name="post_list_parse_error">Error: %s</string>
     <string name="url_update_info_label">Url to update:</string>
-    <string name="update_info">Elements left empty will not be send to the server</string>
+    <string name="update_info">Elements left empty will not be sent to the server</string>
     <string name="channel_list_parse_error">Error: %s</string>
     <string name="bitmap_error">Error generating bitmap from image</string>
     <string name="media_network_fail">Uploading media failed. Status code: %d; message: %s</string>
@@ -324,7 +324,7 @@
     <string name="total_distance">Total distance</string>
     <string name="account_post_as">Posting as %s</string>
 
-    <!-- Photoeditor -->
+    <!-- Photo Editor -->
     <string name="editor">Editor</string>
     <string name="saving">Saving…</string>
     <string name="save_success">Image saved successfully</string>
@@ -374,7 +374,7 @@
 
     <!-- Night mode -->
     <string name="night_mode_title">Enable night theme</string>
-    <string name="night_mode_summary">If your device supports Night mode, this theme will be automatically used when enabling night time globally. But this toggle allows you to use the night theme as well. The app will restart when you enable or disable this feature.</string>
+    <string name="night_mode_summary">If your device supports Night mode, this theme will be automatically used when enabling nighttime globally. But this toggle allows you to use the night theme as well. The app will restart when you enable or disable this feature.</string>
 
     <!-- Preferences: share -->
     <string name="pref_category_sharing_title">Share</string>
@@ -388,7 +388,7 @@
     <string name="pref_summary_expose_reply">Expose reply in share intents. This will not immediately post to your post endpoint as you still need to add a message.</string>
     <string name="pref_share_reply_enabled">Enable reply sharing</string>
     <string name="pref_share_upload_enabled">Enable upload sharing</string>
-    <string name="pref_summary_expose_upload">Expose upload in share intents. This will not immediately post to your media endpoint so you can verify. Only available for IndieWeb accounts.</string>
+    <string name="pref_summary_expose_upload">Expose upload in share intents. This will not immediately post to your media endpoint, so you can verify. Only available for IndieWeb accounts.</string>
     <string name="pref_share_feed_enabled">Enable feed sharing</string>
     <string name="pref_summary_expose_feed">Expose feed in share intents. This allows you to insert a URL directly to add a feed to a channel. Only available for IndieWeb accounts.</string>
 
@@ -408,7 +408,7 @@
     <string name="pref_key_location_label_query_title">Location name query</string>
     <string name="pref_key_location_label_query_summary">Allow querying for a location name based on the found coordinates. Leave disabled if your endpoint does not support the ?q=geo query.</string>
     <string name="pref_key_tags_list_title">Category list</string>
-    <string name="pref_key_tags_list_summary">Get a list of categories from your endpoint for autocompletion. They will be saved so they can be used offline as well. Leave disabled if your endpoint does not support the ?q=category query. Only available for IndieWeb accounts.</string>
+    <string name="pref_key_tags_list_summary">Get a list of categories from your endpoint for autocompletion. They will be saved, so they can be used offline as well. Leave disabled if your endpoint does not support the ?q=category query. Only available for IndieWeb accounts.</string>
     <string name="pref_key_post_type_hide_title">Hide post types</string>
     <string name="pref_key_post_type_hide_summary">Hide post types in the menu which are not supported or enabled by your Micropub endpoint. Leave disabled if your endpoint does not send post-types in the ?q=config query. Only available for IndieWeb accounts.</string>
     <string name="pref_key_access_token_body_title">Send access token in body</string>
@@ -418,7 +418,7 @@
     <string name="pref_category_reader_title">Reader</string>
     <string name="pref_category_reader_summary">Control reader settings</string>
     <string name="pref_key_reader_cache_title">Offline reading</string>
-    <string name="pref_key_reader_cache_summary">Stores the list of channels and items offline so you can read without connection and a cache item is available. A "Clear cache" action will be available in the menu of the channel list.</string>
+    <string name="pref_key_reader_cache_summary">Stores the list of channels and items offline, so you can read without connection and a cache item is available. A "Clear cache" action will be available in the menu of the channel list.</string>
     <string name="pref_key_video_autoplay_title">Video autoplay</string>
     <string name="pref_key_timeline_summary_detail_click_title">Summary detail click</string>
     <string name="pref_key_timeline_summary_detail_click_summary">Clicking on an item in the summary style opens the full detail view of the post. In compact mode this is always the case.</string>
@@ -457,9 +457,9 @@
     <string name="pref_key_image_quality_title">Image upload quality</string>
     <string name="pref_key_image_quality_summary">Define the quality for image manipulations. Ranges from 0 to 100. Higher values mean better image quality but bigger files.</string>
     <string name="pref_key_image_size_title">Image upload size</string>
-    <string name="pref_key_image_size_summary">Maximum image size in for width or height. In case the preview is blank, set the default size lower as this indicates the phone has ran out of memory.</string>
+    <string name="pref_key_image_size_summary">Maximum image size in for width or height. In case the preview is blank, set the default size lower as this indicates the phone has run out of memory.</string>
     <string name="pref_key_media_name_title">Add name to upload</string>
-    <string name="pref_key_media_name_summary">Exposes a textfield on the Upload screen so you can send a title for your uploaded file to the media endpoint. Only available for IndieWeb accounts.</string>
+    <string name="pref_key_media_name_summary">Exposes a text field on the Upload screen, so you can send a title for your uploaded file to the media endpoint. Only available for IndieWeb accounts.</string>
     <string name="pref_key_upload_media_endpoint_title">Use media endpoint to upload</string>
     <string name="pref_key_upload_media_endpoint_summary">Use the media endpoint, if available, when attaching media to a post.</string>
 
@@ -481,7 +481,7 @@
     <string name="pref_category_contact_title">Contacts</string>
     <string name="pref_category_contact_summary">Leave disabled if your endpoint does not support the ?q=contact query. Only available for IndieWeb accounts.</string>
     <string name="pref_key_contact_body_autocomplete_title">Contact body autocomplete</string>
-    <string name="pref_key_contact_body_autocomplete_summary">Get a list of contacts from your endpoint for autocompletion in body fields when you start typing an @. They will be saved so they can be used offline as well.</string>
+    <string name="pref_key_contact_body_autocomplete_summary">Get a list of contacts from your endpoint for autocompletion in body fields when you start typing an @. They will be saved, so they can be used offline as well.</string>
     <string name="pref_key_contact_body_autocomplete_value_title">Use nickname for autocomplete</string>
     <string name="pref_key_contact_body_autocomplete_value_summary">Contacts can have name and nickname. If a nickname is available, that value will be used for the suggestions instead of the full name.</string>
     <string name="pref_key_contact_manage_title">Manage contacts</string>

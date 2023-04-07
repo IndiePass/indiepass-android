@@ -28,4 +28,4 @@ If applicable, add screenshots to help explain your problem.
  - Android version: [e.g. 8.0.0]
 
 **Additional context**
-Add any other context about the problem here. This may contain strack traces if available
+Add any other context about the problem here. This may contain stack traces if available

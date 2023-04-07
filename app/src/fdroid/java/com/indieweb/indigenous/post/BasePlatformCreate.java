@@ -119,7 +119,7 @@ abstract public class BasePlatformCreate extends Base {
     /**
      * Update the UI displaying the location data.
      *
-     * We have the same function in the playstore implementation. So don't forget to update in
+     * We have the same function in the play store implementation. So don't forget to update in
      * case something changes here.
      */
     public void updateLocationUI() {
