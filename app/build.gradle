@@ -29,6 +29,7 @@ android {
             dimension "target"
         }
     }
+    namespace 'com.indieweb.indigenous'
 }
 
 ext.supportLibVersion = '27.1.1'
