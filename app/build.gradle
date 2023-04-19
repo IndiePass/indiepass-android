@@ -4,7 +4,7 @@ android {
     compileSdk 33
     defaultConfig {
         applicationId "com.indieweb.indigenous"
-        minSdk 21
+        minSdk 22
         targetSdk 33
         versionCode 65
         versionName "0.65"
