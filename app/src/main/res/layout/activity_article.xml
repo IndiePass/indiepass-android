@@ -22,16 +22,17 @@
             <include layout="@layout/widget_location" />
 
             <EditText
-                android:id="@+id/title"
-                android:textColor="@color/textColor"
-                android:textSize="@dimen/inputText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:ems="10"
-                android:hint="@string/title"
-                android:inputType="text"
-                android:importantForAutofill="no" />
+                    android:id="@+id/title"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/inputText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="@string/title"
+                    android:inputType="text"
+                    android:importantForAutofill="no"
+                    android:minHeight="48dp"/>
 
             <include layout="@layout/widget_body" />
 

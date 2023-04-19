@@ -20,27 +20,29 @@
             <include layout="@layout/widget_post_options" />
 
             <EditText
-                android:textColor="@color/textColor"
-                android:textSize="@dimen/inputText"
-                android:id="@+id/url"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:hint="@string/url_hint"
-                android:inputType="textUri"
-                android:importantForAutofill="no" />
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/inputText"
+                    android:id="@+id/url"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:hint="@string/url_hint"
+                    android:inputType="textUri"
+                    android:importantForAutofill="no"
+                    android:minHeight="48dp"/>
 
             <EditText
-                android:id="@+id/title"
-                android:textColor="@color/textColor"
-                android:textSize="@dimen/inputText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:ems="10"
-                android:hint="@string/title"
-                android:inputType="text"
-                android:importantForAutofill="no" />
+                    android:id="@+id/title"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/inputText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="@string/title"
+                    android:inputType="text"
+                    android:importantForAutofill="no"
+                    android:minHeight="48dp"/>
 
             <include layout="@layout/widget_category" />
 

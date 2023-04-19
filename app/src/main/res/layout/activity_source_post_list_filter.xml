@@ -12,20 +12,22 @@
         android:padding="5dp">
 
         <Spinner
-            android:id="@+id/postTypes"
-            android:layout_marginBottom="@dimen/box_padding"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:prompt="@string/select_post_type" />
+                android:id="@+id/postTypes"
+                android:layout_marginBottom="@dimen/box_padding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/select_post_type"
+                android:minHeight="48dp"/>
 
         <Spinner
-            android:id="@+id/postLimit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:prompt="@string/select_post_limit"
-            android:entries="@array/filter_post_limit"
-            android:paddingStart="5dp"
-            tools:ignore="RtlSymmetry" />
+                android:id="@+id/postLimit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/select_post_limit"
+                android:entries="@array/filter_post_limit"
+                android:paddingStart="5dp"
+                tools:ignore="RtlSymmetry"
+                android:minHeight="48dp"/>
 
         <Button
             android:layout_marginTop="@dimen/box_padding"

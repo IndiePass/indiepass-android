@@ -44,6 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/button_add_account"
+        android:contentDescription="@string/add_account"
         android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

@@ -146,8 +146,8 @@ public class Mf2Parser {
                 return names.get(0);
         }
         // else if it's an e-* property element, re-use its { } structure with existing value: inside.
-        // not-sure: implement this or find out if its handled by default case below
-        // else if it's a u-* property element and the h-* child has a u-url, use the first such u-url
+        // not-sure: implement this or find out if it's handled by default case below
+        // else if it's an u-* property element and the h-* child has an u-url, use the first such u-url
         if (className.startsWith("u-") && properties.containsKey("url")) {
             JsonList urls = (JsonList) properties.get("url");
             if (urls.size() > 0)
@@ -360,8 +360,8 @@ public class Mf2Parser {
             }
         }
 
-        // else use the textContent of the .h-x for name
-        // drop leading & trailing white-space from name, including nbsp
+        // else use the textContent of the .h-x for name-drop
+        // leading & trailing white-space from name, including nbsp
         return elem.text().trim();
     }
 

@@ -10,15 +10,17 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".Indigenous"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:allowBackup="false"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme"
@@ -73,7 +75,7 @@
                 android:resource="@xml/authenticator_pleroma" />
         </service>
 
-        <activity android:name=".LaunchActivity">
+        <activity android:name=".LaunchActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -85,9 +87,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".users.AuthActivity"
-            android:label="@string/title_activity_auth"
-            android:launchMode="singleTask">
+                android:name=".users.AuthActivity"
+                android:label="@string/title_activity_auth"
+                android:launchMode="singleTask" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -108,10 +110,10 @@
         </activity>
 
         <activity-alias
-            android:name=".FeedAlias"
-            android:enabled="false"
-            android:label="@string/add_feed"
-            android:targetActivity=".indieweb.microsub.manage.ManageChannelActivity">
+                android:name=".FeedAlias"
+                android:enabled="false"
+                android:label="@string/add_feed"
+                android:targetActivity=".indieweb.microsub.manage.ManageChannelActivity" android:exported="true">
             <intent-filter android:label="@string/add_feed">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -185,8 +187,8 @@
         </activity>
 
         <activity
-            android:name=".post.ShareActivity"
-            android:label="@string/title_activity_share">
+                android:name=".post.ShareActivity"
+                android:label="@string/title_activity_share" android:exported="true">
             <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -250,10 +252,10 @@
         </activity>
 
         <activity-alias
-            android:name=".RepostAlias"
-            android:enabled="false"
-            android:label="@string/add_repost"
-            android:targetActivity=".post.RepostActivity">
+                android:name=".RepostAlias"
+                android:enabled="false"
+                android:label="@string/add_repost"
+                android:targetActivity=".post.RepostActivity" android:exported="true">
             <intent-filter android:label="@string/add_repost">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -271,10 +273,10 @@
         </activity>
 
         <activity-alias
-            android:name=".LikeAlias"
-            android:enabled="false"
-            android:label="@string/add_like"
-            android:targetActivity=".post.LikeActivity">
+                android:name=".LikeAlias"
+                android:enabled="false"
+                android:label="@string/add_like"
+                android:targetActivity=".post.LikeActivity" android:exported="true">
             <intent-filter android:label="@string/add_like">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -292,10 +294,10 @@
         </activity>
 
         <activity-alias
-            android:name=".ReplyAlias"
-            android:enabled="false"
-            android:label="@string/add_reply"
-            android:targetActivity=".post.ReplyActivity">
+                android:name=".ReplyAlias"
+                android:enabled="false"
+                android:label="@string/add_reply"
+                android:targetActivity=".post.ReplyActivity" android:exported="true">
             <intent-filter android:label="@string/add_reply">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -313,10 +315,10 @@
         </activity>
 
         <activity-alias
-            android:name=".BookmarkAlias"
-            android:enabled="false"
-            android:label="@string/add_bookmark"
-            android:targetActivity=".post.BookmarkActivity">
+                android:name=".BookmarkAlias"
+                android:enabled="false"
+                android:label="@string/add_bookmark"
+                android:targetActivity=".post.BookmarkActivity" android:exported="true">
             <intent-filter android:label="@string/add_bookmark">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -343,9 +345,9 @@
         </activity>
 
         <activity
-            android:name=".post.TripActivity"
-            android:label="@string/add_trip"
-            android:parentActivityName=".LaunchActivity">
+                android:name=".post.TripActivity"
+                android:label="@string/add_trip"
+                android:parentActivityName=".LaunchActivity" android:exported="true">
             <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -384,16 +386,6 @@
         </activity>
 
         <activity
-            android:name=".photoeditor.EditImageActivity"
-            android:label="@string/image_edit"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".LaunchActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
-        </activity>
-
-        <activity
             android:name=".post.UploadActivity"
             android:label="@string/upload"
             android:parentActivityName=".LaunchActivity">
@@ -403,10 +395,10 @@
         </activity>
 
         <activity-alias
-            android:name=".UploadAlias"
-            android:enabled="false"
-            android:label="@string/upload"
-            android:targetActivity=".post.UploadActivity">
+                android:name=".UploadAlias"
+                android:enabled="false"
+                android:label="@string/upload"
+                android:targetActivity=".post.UploadActivity" android:exported="true">
             <intent-filter android:label="@string/upload">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />

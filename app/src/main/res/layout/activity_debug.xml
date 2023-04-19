@@ -7,10 +7,11 @@
     tools:context="com.indieweb.indigenous.general.DebugActivity">
 
     <TextView
-        android:padding="15dp"
-        android:id="@+id/debug"
-        android:textIsSelectable="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            android:padding="15dp"
+            android:id="@+id/debug"
+            android:textIsSelectable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="32dp"/>
 
 </ScrollView>

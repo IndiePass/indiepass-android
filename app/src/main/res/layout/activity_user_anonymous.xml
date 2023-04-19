@@ -26,37 +26,40 @@
         android:textSize="@dimen/info_text" />
 
     <EditText
-        android:id="@+id/reader"
-        android:layout_marginTop="@dimen/box_padding"
-        android:hint="@string/anonymous_reader_endpoint"
-        android:layout_below="@+id/info"
-        android:singleLine="true"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textUri"
-        android:importantForAutofill="no" />
+            android:id="@+id/reader"
+            android:layout_marginTop="@dimen/box_padding"
+            android:hint="@string/anonymous_reader_endpoint"
+            android:layout_below="@+id/info"
+            android:singleLine="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textUri"
+            android:importantForAutofill="no"
+            android:minHeight="48dp"/>
 
     <EditText
-        android:id="@+id/post"
-        android:singleLine="true"
-        android:layout_marginTop="@dimen/box_padding"
-        android:hint="@string/anonymous_post_endpoint"
-        android:layout_below="@+id/reader"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textUri"
-        android:importantForAutofill="no" />
+            android:id="@+id/post"
+            android:singleLine="true"
+            android:layout_marginTop="@dimen/box_padding"
+            android:hint="@string/anonymous_post_endpoint"
+            android:layout_below="@+id/reader"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textUri"
+            android:importantForAutofill="no"
+            android:minHeight="48dp"/>
 
     <EditText
-        android:id="@+id/token"
-        android:singleLine="true"
-        android:layout_marginTop="@dimen/box_padding"
-        android:hint="@string/anonymous_token"
-        android:layout_below="@+id/post"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:importantForAutofill="no" />
+            android:id="@+id/token"
+            android:singleLine="true"
+            android:layout_marginTop="@dimen/box_padding"
+            android:hint="@string/anonymous_token"
+            android:layout_below="@+id/post"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:importantForAutofill="no"
+            android:minHeight="48dp"/>
 
     <Button
         android:layout_marginStart="@dimen/button_padding"

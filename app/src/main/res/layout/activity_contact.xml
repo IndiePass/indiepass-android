@@ -18,48 +18,52 @@
             <include layout="@layout/widget_post_account" />
 
             <EditText
-                android:textColor="@color/textColor"
-                android:textSize="@dimen/inputText"
-                android:id="@+id/contactName"
-                android:hint="@string/contact_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:inputType="text"
-                android:importantForAutofill="no" />
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/inputText"
+                    android:id="@+id/contactName"
+                    android:hint="@string/contact_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:inputType="text"
+                    android:importantForAutofill="no"
+                    android:minHeight="48dp"/>
 
             <EditText
-                android:textColor="@color/textColor"
-                android:textSize="@dimen/inputText"
-                android:id="@+id/contactNickname"
-                android:hint="@string/contact_nickname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:inputType="text"
-                android:importantForAutofill="no" />
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/inputText"
+                    android:id="@+id/contactNickname"
+                    android:hint="@string/contact_nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:inputType="text"
+                    android:importantForAutofill="no"
+                    android:minHeight="48dp"/>
 
             <EditText
-                android:textColor="@color/textColor"
-                android:textSize="@dimen/inputText"
-                android:id="@+id/contactUrl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:hint="@string/contact_website"
-                android:inputType="textUri"
-                android:importantForAutofill="no" />
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/inputText"
+                    android:id="@+id/contactUrl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:hint="@string/contact_website"
+                    android:inputType="textUri"
+                    android:importantForAutofill="no"
+                    android:minHeight="48dp"/>
 
             <EditText
-                android:textColor="@color/textColor"
-                android:textSize="@dimen/inputText"
-                android:id="@+id/contactPhoto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:hint="@string/contact_photo_hint"
-                android:inputType="textUri"
-                android:importantForAutofill="no" />
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/inputText"
+                    android:id="@+id/contactPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:hint="@string/contact_photo_hint"
+                    android:inputType="textUri"
+                    android:importantForAutofill="no"
+                    android:minHeight="48dp"/>
 
         </LinearLayout>
     </ScrollView>

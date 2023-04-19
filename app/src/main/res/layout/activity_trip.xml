@@ -31,85 +31,92 @@
             <include layout="@layout/widget_post_options" />
 
             <EditText
-                android:id="@+id/title"
-                android:textColor="@color/textColor"
-                android:textSize="@dimen/inputText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:ems="10"
-                android:hint="@string/title"
-                android:inputType="text"
-                android:importantForAutofill="no" />
+                    android:id="@+id/title"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/inputText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="@string/title"
+                    android:inputType="text"
+                    android:importantForAutofill="no"
+                    android:minHeight="48dp"/>
 
             <Spinner
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:id="@+id/transport"
-                android:entries="@array/transport_array"
-                android:prompt="@string/transport"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:id="@+id/transport"
+                    android:entries="@array/transport_array"
+                    android:prompt="@string/transport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"/>
 
             <EditText
-                android:textColor="@color/textColor"
-                android:textSize="@dimen/inputText"
-                android:inputType="date"
-                android:focusable="false"
-                android:layout_margin="5dp"
-                android:hint="@string/start_date"
-                android:id="@+id/startDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:importantForAutofill="no" />
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/inputText"
+                    android:inputType="date"
+                    android:focusable="false"
+                    android:layout_margin="5dp"
+                    android:hint="@string/start_date"
+                    android:id="@+id/startDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAutofill="no"
+                    android:minHeight="48dp"/>
 
             <EditText
-                android:textColor="@color/textColor"
-                android:textSize="@dimen/inputText"
-                android:inputType="date"
-                android:focusable="false"
-                android:layout_margin="5dp"
-                android:hint="@string/end_date"
-                android:id="@+id/endDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:importantForAutofill="no" />
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/inputText"
+                    android:inputType="date"
+                    android:focusable="false"
+                    android:layout_margin="5dp"
+                    android:hint="@string/end_date"
+                    android:id="@+id/endDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAutofill="no"
+                    android:minHeight="48dp"/>
 
             <EditText
-                android:id="@+id/cost"
-                android:textColor="@color/textColor"
-                android:textSize="@dimen/inputText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:ems="10"
-                android:hint="@string/cost"
-                android:inputType="text"
-                android:importantForAutofill="no" />
+                    android:id="@+id/cost"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/inputText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="@string/cost"
+                    android:inputType="text"
+                    android:importantForAutofill="no"
+                    android:minHeight="48dp"/>
 
             <EditText
-                android:id="@+id/duration"
-                android:textColor="@color/textColor"
-                android:textSize="@dimen/inputText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:ems="10"
-                android:hint="@string/duration"
-                android:inputType="text"
-                android:importantForAutofill="no" />
+                    android:id="@+id/duration"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/inputText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="@string/duration"
+                    android:inputType="text"
+                    android:importantForAutofill="no"
+                    android:minHeight="48dp"/>
 
             <EditText
-                android:id="@+id/distance"
-                android:textColor="@color/textColor"
-                android:textSize="@dimen/inputText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:ems="10"
-                android:hint="@string/total_distance"
-                android:inputType="text"
-                android:importantForAutofill="no" />
+                    android:id="@+id/distance"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/inputText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:ems="10"
+                    android:hint="@string/total_distance"
+                    android:inputType="text"
+                    android:importantForAutofill="no"
+                    android:minHeight="48dp"/>
 
             <include layout="@layout/widget_body" />
 

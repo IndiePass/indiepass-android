@@ -5,7 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent">
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:padding="@dimen/box_padding"
         android:textSize="@dimen/inputText"
         android:id="@+id/saveAsDraft"
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:padding="@dimen/box_padding"
         android:textSize="@dimen/inputText"
         android:textColor="@color/textColor"
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:padding="@dimen/box_padding"
         android:textSize="@dimen/inputText"
         android:textColor="@color/textColor"

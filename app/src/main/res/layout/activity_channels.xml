@@ -46,6 +46,6 @@
         android:layout_height="wrap_content"
         android:src="@drawable/button_create_white"
         android:layout_alignParentEnd="true"
-        android:contentDescription="TODO" />
+        android:contentDescription="@string/write" />
 
 </RelativeLayout>

@@ -27,65 +27,70 @@
                 android:layout_height="wrap_content" />
 
             <LinearLayout
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
                 <ImageButton
-                    android:id="@+id/indieweb"
-                    android:layout_width="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/indieweb"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/sign_in_with_indieweb" />
+                        android:id="@+id/indieweb"
+                        android:layout_width="match_parent"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/indieweb"
+                        android:layout_height="65dp"
+                        android:contentDescription="@string/sign_in_with_indieweb"/>
 
                 <TextView
-                    android:text="@string/sign_in_with_indieweb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                        android:text="@string/sign_in_with_indieweb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"/>
 
                 <ImageButton
-                    android:layout_marginTop="20dp"
-                    android:background="@android:color/transparent"
-                    android:id="@+id/mastodon"
-                    android:src="@drawable/mastodon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/sign_in_with_mastodon" />
+                        android:layout_marginTop="10dp"
+                        android:background="@android:color/transparent"
+                        android:id="@+id/mastodon"
+                        android:src="@drawable/mastodon"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/sign_in_with_mastodon"/>
 
                 <TextView
-                    android:text="@string/sign_in_with_mastodon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                        android:text="@string/sign_in_with_mastodon"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"/>
 
                 <ImageButton
-                    android:layout_marginTop="20dp"
-                    android:background="@android:color/transparent"
-                    android:id="@+id/pleroma"
-                    android:src="@drawable/pleroma"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/sign_in_with_pleroma" />
+                        android:layout_marginTop="10dp"
+                        android:background="@android:color/transparent"
+                        android:id="@+id/pleroma"
+                        android:src="@drawable/pleroma"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/sign_in_with_pleroma"
+                        android:minWidth="48dp"/>
 
                 <TextView
-                    android:text="@string/sign_in_with_pleroma"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                        android:text="@string/sign_in_with_pleroma"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"/>
 
                 <ImageButton
-                    android:layout_marginTop="20dp"
-                    android:background="@android:color/transparent"
-                    android:id="@+id/pixelfed"
-                    android:src="@drawable/pixelfed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/sign_in_with_pixelfed" />
+                        android:layout_marginTop="10dp"
+                        android:background="@android:color/transparent"
+                        android:id="@+id/pixelfed"
+                        android:src="@drawable/pixelfed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/sign_in_with_pixelfed"/>
 
                 <TextView
-                    android:text="@string/sign_in_with_pixelfed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                        android:text="@string/sign_in_with_pixelfed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"/>
 
             </LinearLayout>
 

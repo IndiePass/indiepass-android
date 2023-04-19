@@ -35,21 +35,22 @@
         android:orientation="horizontal">
 
         <Button
-            android:background="@drawable/button_update"
-            android:id="@+id/draftUpdate"
-            android:hint="@string/update_post"
-            android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/list_item_icon_size"
-            android:layout_height="@dimen/list_item_icon_size" />
+                android:background="@drawable/button_update"
+                android:id="@+id/draftUpdate"
+                android:hint="@string/update_post"
+                android:textColorHint="@android:color/transparent"
+                android:layout_width="@dimen/list_item_icon_size"
+                android:layout_height="@dimen/list_item_icon_size" style="?android:attr/buttonBarButtonStyle"/>
 
         <Button
-            android:background="@drawable/button_delete"
-            android:id="@+id/draftDelete"
-            android:hint="@string/delete_post"
-            android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/list_item_icon_size"
-            android:layout_height="@dimen/list_item_icon_size"
-            android:layout_marginStart="@dimen/list_item_icon_margin_left" />
+                android:background="@drawable/button_delete"
+                android:id="@+id/draftDelete"
+                android:hint="@string/delete_post"
+                android:textColorHint="@android:color/transparent"
+                android:layout_width="@dimen/list_item_icon_size"
+                android:layout_height="@dimen/list_item_icon_size"
+                android:layout_marginStart="@dimen/list_item_icon_margin_left"
+                style="?android:attr/buttonBarButtonStyle"/>
 
     </LinearLayout>
 

@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.SwitchCompat;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -39,7 +40,7 @@ import java.util.Map;
 public class UpdateActivity extends AppCompatActivity implements SendPostInterface, VolleyRequestListener {
 
     private TextView url;
-    private Switch postStatus;
+    private SwitchCompat postStatus;
     private EditText title;
     private EditText body;
     private MenuItem sendItem;

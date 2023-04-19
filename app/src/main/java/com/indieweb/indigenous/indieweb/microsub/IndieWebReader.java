@@ -24,7 +24,7 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.safety.Whitelist;
+import org.jsoup.safety.Safelist;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
@@ -499,14 +499,14 @@ public class IndieWebReader extends ReaderBase {
                         // Clean html, remove images and put them in photo.
                         try {
                             Document doc = Jsoup.parse(htmlContent);
-                            Elements imgs = doc.select("img");
-                            for (Element img : imgs) {
+                            Elements images = doc.select("img");
+                            for (Element img : images) {
                                 String photoUrl = img.absUrl("src");
                                 if (!photoUrl.contains("spacer.gif") && !photoUrl.contains("spacer.png")) {
                                     item.addPhoto(photoUrl);
                                 }
                             }
-                            htmlContent = Jsoup.clean(htmlContent, Whitelist.basic());
+                            htmlContent = Jsoup.clean(htmlContent, Safelist.basic());
                         }
                         catch (Exception ignored) {}
                     }

@@ -30,7 +30,7 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="colorControlHighlight">@color/drawerTintcolor</item>
+        <item name="colorControlHighlight">@color/drawerTintColor</item>
     </style>
 
     <style name="SpinnerItem">

@@ -6,8 +6,8 @@
         android:bottomRightRadius="10dp"
         android:bottomLeftRadius="10dp" />
     <gradient
-        android:startColor="@color/borderStartcolor"
-        android:endColor="@color/borderStartcolor"
+        android:startColor="@color/borderStartColor"
+        android:endColor="@color/borderStartColor"
         android:angle="-90" />
     <stroke
         android:width="2dp"

@@ -10,7 +10,6 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.indieweb.indigenous.R;
 
-@SuppressWarnings("ConstantConditions")
 public class SettingsFragment extends PreferenceFragmentCompat {
 
     private SettingsFragment.onPreferenceChangeListener callback;

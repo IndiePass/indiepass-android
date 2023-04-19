@@ -650,7 +650,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else {
             if (authorAvatar != null) {
-                authorAvatar.setImageDrawable(getResources().getDrawable(R.drawable.avatar));
+                // Set author avatar to default drawable.
+                authorAvatar.setImageResource(R.drawable.avatar);
+
             }
         }
     }

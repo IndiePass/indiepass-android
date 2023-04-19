@@ -121,7 +121,7 @@ public class MicropubAction {
      * Prepare tags autocomplete.
      *
      * @param tags
-     *   The tags widget.
+     *   The tag widget.
      */
     public void prepareTagsAutocomplete(final MultiAutoCompleteTextView tags) {
 
@@ -208,7 +208,7 @@ public class MicropubAction {
     }
 
     /**
-     * Sets tags autcomplete.
+     * Sets tags autocomplete.
      */
     private void setTagsAutocomplete(MultiAutoCompleteTextView tags, ArrayList<String> items) {
         tags.setThreshold(1);

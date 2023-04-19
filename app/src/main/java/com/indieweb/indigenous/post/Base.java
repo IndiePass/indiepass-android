@@ -10,6 +10,7 @@ import android.location.Location;
 import android.net.Uri;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -85,7 +86,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public MultiAutoCompleteTextView body;
     public EditText title;
     public EditText spoiler;
-    public Switch saveAsDraft;
+    public SwitchCompat saveAsDraft;
     public DatabaseHelper db;
     public User user;
     public MultiAutoCompleteTextView tags;
@@ -103,7 +104,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public final List<Syndication> syndicationTargets = new ArrayList<>();
     private MenuItem sendItem;
     public LinearLayout mediaPreviewGallery;
-    public Switch postStatus;
+    public SwitchCompat postStatus;
     private final int PICK_IMAGE_REQUEST = 1;
     private final int PICK_VIDEO_REQUEST = 2;
     private final int PICK_AUDIO_REQUEST = 3;
@@ -113,7 +114,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public Spinner rsvp;
     public Spinner read;
     public Spinner visibility;
-    public Switch sensitivity;
+    public SwitchCompat sensitivity;
     public TextView publishDate;
     public String urlPostKey;
     public String autoSubmit = "";

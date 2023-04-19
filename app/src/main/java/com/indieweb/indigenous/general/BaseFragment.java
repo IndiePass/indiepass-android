@@ -96,7 +96,7 @@ abstract public class BaseFragment extends Fragment implements VolleyRequestList
     }
 
     /**
-     * Set the value of the the refresh layout.
+     * Set the value of the refresh layout.
      *
      * @param refresh
      *   Whether to layout refreshing or not.

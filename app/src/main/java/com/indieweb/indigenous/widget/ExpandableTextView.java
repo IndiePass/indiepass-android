@@ -82,7 +82,7 @@ public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextV
     protected void onMeasure(final int widthMeasureSpec, int heightMeasureSpec)
     {
         // if this TextView is collapsed and maxLines = 0,
-        // than make its height equals to zero
+        // then make its height equals to zero
         if (this.maxLines == 0 && !this.expanded && !this.animating)
         {
             heightMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY);
@@ -306,7 +306,7 @@ public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextV
     }
 
     /**
-     * Sets a {@link TimeInterpolator} for collpasing.
+     * Sets a {@link TimeInterpolator} for collapsing.
      * @param collapseInterpolator the interpolator
      */
     public void setCollapseInterpolator(final TimeInterpolator collapseInterpolator)

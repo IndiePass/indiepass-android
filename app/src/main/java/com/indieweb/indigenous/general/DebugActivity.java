@@ -30,7 +30,7 @@ public class DebugActivity extends AppCompatActivity {
         String appDebug = app.getDebug();
         if (appDebug != null) {
 
-            // Try parsing with JSON, in case it fails, we'll fallback to the default string.
+            // Try parsing with JSON, in case it fails, we'll fall back to the default string.
             try {
                 debugString = new JSONObject(appDebug).toString(4);
             }

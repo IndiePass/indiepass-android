@@ -20,7 +20,7 @@ Desktop: https://github.com/marksuth/indigenous-desktop
   - Fediverse: Mastodon, Pleroma and Pixelfed.
 - Comes with a built-in anonymous user which allows reading channels and
   posts coming from https://mastodon.social,
-  https://pleroma.site or https://pixelfed.social. Posts can be send to a custom
+  https://pleroma.site or https://pixelfed.social. Posts can be sent to a custom
   endpoint and token.
 - Posting
   - post types: article, note, reply, repost, like, bookmark, event,
@@ -90,7 +90,7 @@ See https://github.com/marksuth/indigenous-android/issues/152
 
 - Some browsers (e.g. the default browser on LineageOS), won't allow
   Indigenous to listen to the callback to verify the authorization code.
-  Install a browser like Firefox (any flavor) so you can login.
+  Install a browser like Firefox (any flavor) so you can sign in.
 - When your account requires 2FA, put the apps in split screen mode, see
 https://github.com/marksuth/indigenous-android/issues/210
 

@@ -3,7 +3,7 @@
 
     <color name="colorPrimary">#1f1a24</color>
     <color name="colorPrimaryDark">#151921</color>
-    <color name="colorAccent">#7bb6ff</color>
+    <color name="colorAccent">#C62828</color>
     <color name="iconTint">#cbcbcb</color>
 
     <color name="listBackgroundColor">#202531</color>
@@ -11,12 +11,12 @@
     <color name="listRowBackgroundColor">#2d3445</color>
 
     <color name="borderColor">#423d46</color>
-    <color name="borderStartcolor">@color/iconTint</color>
-    <color name="borderEndcolor">@color/iconTint</color>
+    <color name="borderStartColor">@color/iconTint</color>
+    <color name="borderEndColor">@color/iconTint</color>
     <color name="categoryTitle">@color/textColor</color>
 
-    <color name="menuTextcolor">#424242</color>
-    <color name="drawerTintcolor">#424242</color>
+    <color name="menuTextColor">#424242</color>
+    <color name="drawerTintColor">#424242</color>
     <color name="shareMenuColor">#cbcbcb</color>
     <color name="paneColor">#cbcbcb</color>
     <color name="paneColorDivider">#474d5c</color>
@@ -33,7 +33,7 @@
 
     <!-- image buttons -->
     <color name="idleColor">#666666</color>
-    <color name="pressedColor">#DD645E</color>
+    <color name="pressedColor">#C62828</color>
 
     <!-- photo editor -->
     <color name="tool_bg">#1f1a24</color>

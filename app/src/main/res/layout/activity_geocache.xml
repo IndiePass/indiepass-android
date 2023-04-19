@@ -20,11 +20,12 @@
             <include layout="@layout/widget_post_options" />
 
             <Spinner
-                android:id="@+id/geocacheLogType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/geocache_array"
-                android:prompt="@string/geocache_select" />
+                    android:id="@+id/geocacheLogType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/geocache_array"
+                    android:prompt="@string/geocache_select"
+                    android:minHeight="48dp"/>
 
             <include layout="@layout/widget_location" />
 
