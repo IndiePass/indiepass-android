@@ -469,36 +469,33 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
 
             if (response.hasHeader("Link")) {
                 String[] headers = response.header("Link").split(",");
-                if (headers.length > 0) {
+                for (String link : headers) {
+                    String[] split = link.split(";");
+                    String endpoint = split[0].replace("<", "").replace(">", "").trim();
+                    String rel = split[1].trim().replace("rel=", "").replace("\"", "");
 
-                    for (String link: headers) {
-                        String[] split = link.split(";");
-                        String endpoint = split[0].replace("<", "").replace(">", "").trim();
-                        String rel = split[1].trim().replace("rel=", "").replace("\"", "");
+                    endpoint = Utility.checkAbsoluteUrl(endpoint, $domain);
 
-                        endpoint = Utility.checkAbsoluteUrl(endpoint, $domain);
-
-                        switch (rel) {
-                            case "authorization_endpoint":
-                                authorizationEndpoint = endpoint;
-                                numberOfAuthEndpoints++;
-                                break;
-                            case "token_endpoint":
-                                tokenEndpoint = endpoint;
-                                numberOfAuthEndpoints++;
-                                break;
-                            case "micropub":
-                                micropubEndpoint = endpoint;
-                                hasMicropubOrMicrosub = true;
-                                break;
-                            case "microsub":
-                                microsubEndpoint = endpoint;
-                                hasMicropubOrMicrosub = true;
-                                break;
-                            case "micropub_media":
-                                micropubMediaEndpoint = endpoint;
-                                break;
-                        }
+                    switch (rel) {
+                        case "authorization_endpoint":
+                            authorizationEndpoint = endpoint;
+                            numberOfAuthEndpoints++;
+                            break;
+                        case "token_endpoint":
+                            tokenEndpoint = endpoint;
+                            numberOfAuthEndpoints++;
+                            break;
+                        case "micropub":
+                            micropubEndpoint = endpoint;
+                            hasMicropubOrMicrosub = true;
+                            break;
+                        case "microsub":
+                            microsubEndpoint = endpoint;
+                            hasMicropubOrMicrosub = true;
+                            break;
+                        case "micropub_media":
+                            micropubMediaEndpoint = endpoint;
+                            break;
                     }
                 }
             }

@@ -67,29 +67,26 @@ public class Endpoints {
 
             if (response.hasHeader("Link")) {
                 String[] headers = response.header("Link").split(",");
-                if (headers.length > 0) {
+                for (String link : headers) {
+                    String[] split = link.split(";");
+                    String endpoint = split[0].replace("<", "").replace(">", "").trim();
+                    String rel = split[1].trim().replace("rel=", "").replace("\"", "");
 
-                    for (String link: headers) {
-                        String[] split = link.split(";");
-                        String endpoint = split[0].replace("<", "").replace(">", "").trim();
-                        String rel = split[1].trim().replace("rel=", "").replace("\"", "");
+                    endpoint = Utility.checkAbsoluteUrl(endpoint, url);
 
-                        endpoint = Utility.checkAbsoluteUrl(endpoint, url);
-
-                        switch (rel) {
-                            case "micropub":
-                                foundInfo = true;
-                                micropubEndpoint = endpoint;
-                                break;
-                            case "microsub":
-                                foundInfo = true;
-                                microsubEndpoint = endpoint;
-                                break;
-                            case "micropub_media":
-                                foundInfo = true;
-                                micropubMediaEndpoint = endpoint;
-                                break;
-                        }
+                    switch (rel) {
+                        case "micropub":
+                            foundInfo = true;
+                            micropubEndpoint = endpoint;
+                            break;
+                        case "microsub":
+                            foundInfo = true;
+                            microsubEndpoint = endpoint;
+                            break;
+                        case "micropub_media":
+                            foundInfo = true;
+                            micropubMediaEndpoint = endpoint;
+                            break;
                     }
                 }
             }

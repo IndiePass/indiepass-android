@@ -166,10 +166,7 @@ public class PleromaReader extends ReaderBase {
 
     @Override
     public boolean sendTimelineAccessToken(String channelId) {
-        boolean send = true;
-        if (channelId.equals(CHANNEL_NAME_PLEROMA_ANONYMOUS)) {
-            send = false;
-        }
+        boolean send = !channelId.equals(CHANNEL_NAME_PLEROMA_ANONYMOUS);
         return send;
     }
 

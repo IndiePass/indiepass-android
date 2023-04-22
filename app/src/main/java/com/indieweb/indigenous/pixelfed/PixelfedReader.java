@@ -156,10 +156,7 @@ public class PixelfedReader extends ReaderBase {
 
     @Override
     public boolean sendTimelineAccessToken(String channelId) {
-        boolean send = true;
-        if (channelId.equals(CHANNEL_NAME_PIXELFED_ANONYMOUS)) {
-            send = false;
-        }
+        boolean send = !channelId.equals(CHANNEL_NAME_PIXELFED_ANONYMOUS);
         return send;
     }
 

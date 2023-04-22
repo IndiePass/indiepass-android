@@ -1344,7 +1344,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 MicropubEndpoint += "&lat=" + mCurrentLocation.getLatitude() + "&lon=" + mCurrentLocation.getLongitude();
             }
             else if (latitude != null && longitude != null) {
-                MicropubEndpoint += "&lat=" + latitude.toString() + "&lon=" + longitude.toString();
+                MicropubEndpoint += "&lat=" + latitude + "&lon=" + longitude.toString();
             }
 
             Snackbar.make(layout, getString(R.string.location_get), Snackbar.LENGTH_SHORT).show();

@@ -389,12 +389,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
                 if (Preferences.getPreference(getApplicationContext(), "pref_key_response_bookmark", false)) {
                     bookmark.setOnClickListener(new OnBookmarkClickListener());
-                    if (item.isBookmarked()) {
-                        bookmark.setActivated(true);
-                    }
-                    else {
-                        bookmark.setActivated(false);
-                    }
+                    bookmark.setActivated(item.isBookmarked());
                 }
                 else {
                     bookmark.setVisibility(View.GONE);
@@ -403,20 +398,10 @@ public class TimelineDetailActivity extends AppCompatActivity {
                 reply.setOnClickListener(new OnReplyClickListener());
 
                 like.setOnClickListener(new OnLikeClickListener());
-                if (item.isLiked()) {
-                    like.setActivated(true);
-                }
-                else {
-                    like.setActivated(false);
-                }
+                like.setActivated(item.isLiked());
 
                 repost.setOnClickListener(new OnRepostClickListener());
-                if (item.isReposted()) {
-                    repost.setActivated(true);
-                }
-                else {
-                    repost.setActivated(false);
-                }
+                repost.setActivated(item.isReposted());
 
 
                 external.setOnClickListener(new OnExternalClickListener());

@@ -459,12 +459,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
 
             // Post status.
             if (postStatus != null) {
-                if (draft.getPublished() == 1) {
-                    postStatus.setChecked(true);
-                }
-                else {
-                    postStatus.setChecked(false);
-                }
+                postStatus.setChecked(draft.getPublished() == 1);
             }
 
             // Visibility.
@@ -765,7 +760,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
             StringBuilder captions = new StringBuilder();
             for (Uri uri : this.image) {
                 if (uri != null && uri.toString().length() > 0) {
-                    images.append(uri.toString()).append(";");
+                    images.append(uri).append(";");
                     String imageCaption = this.caption.get(index);
                     if (imageCaption.length() == 0) {
                         imageCaption = EMPTY_CAPTION;
@@ -782,7 +777,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
             StringBuilder video = new StringBuilder();
             for (Uri uri : this.video) {
                 if (uri != null && uri.toString().length() > 0) {
-                    video.append(uri.toString()).append(";");
+                    video.append(uri).append(";");
                 }
             }
             draft.setVideo(video.toString());
@@ -792,7 +787,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
             StringBuilder audio = new StringBuilder();
             for (Uri uri : this.audio) {
                 if (uri != null && uri.toString().length() > 0) {
-                    audio.append(uri.toString()).append(";");
+                    audio.append(uri).append(";");
                 }
             }
             draft.setAudio(audio.toString());

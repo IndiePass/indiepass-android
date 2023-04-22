@@ -329,12 +329,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 if (Preferences.getPreference(context, "pref_key_response_bookmark", false)) {
                     holder.bookmark.setVisibility(View.VISIBLE);
                     holder.bookmark.setOnClickListener(new OnBookmarkClickListener(position));
-                    if (item.isBookmarked()) {
-                        holder.bookmark.setActivated(true);
-                    }
-                    else {
-                        holder.bookmark.setActivated(false);
-                    }
+                    holder.bookmark.setActivated(item.isBookmarked());
                 }
                 else {
                     holder.bookmark.setVisibility(View.GONE);
@@ -342,20 +337,10 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
                 holder.reply.setVisibility(View.VISIBLE);
                 holder.like.setVisibility(View.VISIBLE);
-                if (item.isLiked()) {
-                    holder.like.setActivated(true);
-                }
-                else {
-                    holder.like.setActivated(false);
-                }
+                holder.like.setActivated(item.isLiked());
 
                 holder.repost.setVisibility(View.VISIBLE);
-                if (item.isReposted()) {
-                    holder.repost.setActivated(true);
-                }
-                else {
-                    holder.repost.setActivated(false);
-                }
+                holder.repost.setActivated(item.isReposted());
 
                 holder.external.setVisibility(View.VISIBLE);
 
