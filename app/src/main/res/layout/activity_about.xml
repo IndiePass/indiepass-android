@@ -4,7 +4,7 @@
             android:id="@+id/scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context="com.indieweb.indigenous.general.AboutFragment">
+            tools:context="com.indieweb.indiepass.general.AboutFragment">
 
     <LinearLayout
             android:orientation="vertical"

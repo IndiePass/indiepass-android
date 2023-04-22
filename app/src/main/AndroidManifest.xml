@@ -17,7 +17,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
-        android:name=".Indigenous"
+        android:name=".IndiePass"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:allowBackup="false"
@@ -96,7 +96,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:host="oauthcallback"
-                    android:scheme="indigenous-android" />
+                    android:scheme="indiepass-android" />
             </intent-filter>
         </activity>
 
@@ -106,7 +106,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity-alias
@@ -127,7 +127,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity
@@ -136,7 +136,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity
@@ -145,7 +145,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity
@@ -154,7 +154,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity
@@ -163,7 +163,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity
@@ -173,7 +173,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity
@@ -183,7 +183,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity
@@ -203,7 +203,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity
@@ -212,7 +212,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity
@@ -221,7 +221,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity
@@ -230,7 +230,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity
@@ -239,7 +239,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity
@@ -248,7 +248,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity-alias
@@ -269,7 +269,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity-alias
@@ -290,7 +290,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity-alias
@@ -311,7 +311,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity-alias
@@ -332,7 +332,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity
@@ -341,7 +341,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity
@@ -355,7 +355,7 @@
             </intent-filter>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity
@@ -364,7 +364,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity
@@ -373,7 +373,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity
@@ -382,7 +382,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity
@@ -391,7 +391,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity-alias
@@ -412,7 +412,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity
@@ -421,7 +421,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
         <activity
@@ -430,7 +430,7 @@
             android:parentActivityName=".LaunchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.indieweb.indigenous.LaunchActivity" />
+                android:value="com.indieweb.indiepass.LaunchActivity" />
         </activity>
 
     </application>

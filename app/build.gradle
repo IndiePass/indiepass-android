@@ -3,11 +3,11 @@ apply plugin: 'com.android.application'
 android {
     compileSdk 33
     defaultConfig {
-        applicationId "com.indieweb.indigenous"
+        applicationId "com.indieweb.indiepass"
         minSdk 22
         targetSdk 33
-        versionCode 65
-        versionName "0.65"
+        versionCode 80
+        versionName "0.80"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -28,7 +28,7 @@ android {
             dimension "target"
         }
     }
-    namespace 'com.indieweb.indigenous'
+    namespace 'com.indieweb.indiepass'
 }
 
 ext.supportLibVersion = '27.1.1'
