@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/source_post_list_root"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+                android:id="@+id/source_post_list_root"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/refreshList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            android:id="@+id/refreshList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <ListView
-            android:divider="@color/listDividerColor"
-            android:dividerHeight="@dimen/list_divider_height"
-            android:background="@color/listBackgroundColor"
-            android:id="@+id/source_post_list"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+                android:divider="@color/listDividerColor"
+                android:dividerHeight="@dimen/list_divider_height"
+                android:background="@color/listBackgroundColor"
+                android:id="@+id/source_post_list"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <include layout="@layout/widget_no_connection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+    <include
+            layout="@layout/widget_no_connection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
 
 </RelativeLayout>

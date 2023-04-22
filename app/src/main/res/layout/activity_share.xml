@@ -1,85 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/share_root"
-    android:layout_width="fill_parent"
-    android:layout_height="match_parent">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/share_root"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:padding="10dp"
-            android:id="@+id/createTitle"
-            android:textSize="18sp"
-            android:visibility="gone"
-            android:text="@string/select_post_type"
+            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
 
         <TextView
-            android:padding="10dp"
-            android:visibility="gone"
-            android:textStyle="italic"
-            android:id="@+id/previewTitle"
-            android:textColor="@color/textColor"
-            android:textSize="@dimen/preview_text_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+                android:padding="10dp"
+                android:id="@+id/createTitle"
+                android:textSize="18sp"
+                android:visibility="gone"
+                android:text="@string/select_post_type"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"/>
 
         <TextView
-            android:padding="10dp"
-            android:visibility="gone"
-            android:textStyle="italic"
-            android:id="@+id/previewText"
-            android:textColor="@color/textColor"
-            android:textSize="@dimen/preview_text_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+                android:padding="10dp"
+                android:visibility="gone"
+                android:textStyle="italic"
+                android:id="@+id/previewTitle"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/preview_text_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:padding="10dp"
+                android:visibility="gone"
+                android:textStyle="italic"
+                android:id="@+id/previewText"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/preview_text_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
         <androidx.cardview.widget.CardView
-            android:visibility="gone"
-            android:layout_margin="10dp"
-            android:layout_width="fill_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/previewCard"
-            app:cardCornerRadius="8dp">
+                android:visibility="gone"
+                android:layout_margin="10dp"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/previewCard"
+                app:cardCornerRadius="8dp">
 
             <ImageView
-                android:scaleType="centerCrop"
-                android:id="@+id/previewImage"
-                android:contentDescription="@string/image_preview"
-                android:layout_width="fill_parent"
-                android:layout_height="230dp" />
+                    android:scaleType="centerCrop"
+                    android:id="@+id/previewImage"
+                    android:contentDescription="@string/image_preview"
+                    android:layout_width="fill_parent"
+                    android:layout_height="230dp"/>
 
         </androidx.cardview.widget.CardView>
 
         <com.google.android.material.navigation.NavigationView
-            android:id="@+id/postMenu"
-            android:fitsSystemWindows="true"
-            app:theme="@style/NavigationDrawerStyle"
-            android:background="@android:color/transparent"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="start"
-            app:itemIconTint="@color/iconTint"
-            app:itemTextColor="@color/shareMenuColor"
-            app:menu="@menu/share_menu"
-            app:itemBackground="@drawable/nav_item_background" />
+                android:id="@+id/postMenu"
+                android:fitsSystemWindows="true"
+                app:theme="@style/NavigationDrawerStyle"
+                android:background="@android:color/transparent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="start"
+                app:itemIconTint="@color/iconTint"
+                app:itemTextColor="@color/shareMenuColor"
+                app:menu="@menu/share_menu"
+                app:itemBackground="@drawable/nav_item_background"/>
 
         <Button
-            android:background="@color/buttonBackground"
-            android:textColor="@color/colorPrimary"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_margin="10dp"
-            android:paddingStart="@dimen/box_padding"
-            android:paddingEnd="@dimen/box_padding"
-            android:text="@string/go_to_main_app"
-            android:id="@+id/goToMainApp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+                android:background="@color/buttonBackground"
+                android:textColor="@color/colorPrimary"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_margin="10dp"
+                android:paddingStart="@dimen/box_padding"
+                android:paddingEnd="@dimen/box_padding"
+                android:text="@string/go_to_main_app"
+                android:id="@+id/goToMainApp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

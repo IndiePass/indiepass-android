@@ -1,57 +1,57 @@
 <LinearLayout
 
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:id="@+id/channel_row"
-    android:layout_height="wrap_content"
-    android:background="@color/listRowBackgroundColor"
-    android:orientation="vertical">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:id="@+id/channel_row"
+        android:layout_height="wrap_content"
+        android:background="@color/listRowBackgroundColor"
+        android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1.0"
-        android:orientation="horizontal">
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1.0"
+            android:orientation="horizontal">
 
         <Button
-            android:background="@drawable/button_drag"
-            android:id="@+id/channelDrag"
-            android:hint="@string/move_item"
-            android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/list_item_icon_size"
-            android:layout_height="@dimen/list_item_icon_size" />
+                android:background="@drawable/button_drag"
+                android:id="@+id/channelDrag"
+                android:hint="@string/move_item"
+                android:textColorHint="@android:color/transparent"
+                android:layout_width="@dimen/list_item_icon_size"
+                android:layout_height="@dimen/list_item_icon_size"/>
 
         <TextView
-            android:id="@+id/channel_name"
-            android:textColor="@color/textColor"
-            android:padding="@dimen/list_item_padding"
-            android:textSize="@dimen/list_item_text_size"
-            android:layout_weight="0.98"
-            android:layout_height="wrap_content"
-            android:layout_width="0dp" />
+                android:id="@+id/channel_name"
+                android:textColor="@color/textColor"
+                android:padding="@dimen/list_item_padding"
+                android:textSize="@dimen/list_item_text_size"
+                android:layout_weight="0.98"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"/>
 
         <Button
-            android:background="@drawable/button_update"
-            android:id="@+id/channelUpdate"
-            android:hint="@string/update_post"
-            android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/list_item_icon_size"
-            android:layout_height="@dimen/list_item_icon_size" />
+                android:background="@drawable/button_update"
+                android:id="@+id/channelUpdate"
+                android:hint="@string/update_post"
+                android:textColorHint="@android:color/transparent"
+                android:layout_width="@dimen/list_item_icon_size"
+                android:layout_height="@dimen/list_item_icon_size"/>
 
         <Button
-            android:background="@drawable/button_delete"
-            android:id="@+id/channelDelete"
-            android:hint="@string/delete_post"
-            android:textColorHint="@android:color/transparent"
-            android:layout_width="@dimen/list_item_icon_size"
-            android:layout_height="@dimen/list_item_icon_size"
-            android:layout_marginStart="@dimen/list_item_icon_margin_left" />
+                android:background="@drawable/button_delete"
+                android:id="@+id/channelDelete"
+                android:hint="@string/delete_post"
+                android:textColorHint="@android:color/transparent"
+                android:layout_width="@dimen/list_item_icon_size"
+                android:layout_height="@dimen/list_item_icon_size"
+                android:layout_marginStart="@dimen/list_item_icon_margin_left"/>
 
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/listDividerColor" />
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/listDividerColor"/>
 
 </LinearLayout>

@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+      xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/channel_list_refresh"
-        android:title="@string/channel_list_refresh"
-        app:showAsAction="never" />
+            android:id="@+id/channel_list_refresh"
+            android:title="@string/channel_list_refresh"
+            app:showAsAction="never"/>
 
     <item
-        android:id="@+id/channel_hide_read"
-        android:title="@string/channel_hide_read"
-        app:showAsAction="never" />
+            android:id="@+id/channel_hide_read"
+            android:title="@string/channel_hide_read"
+            app:showAsAction="never"/>
 
     <item
-        android:id="@+id/channel_show_sources"
-        android:title="@string/channel_show_sources"
-        app:showAsAction="never" />
+            android:id="@+id/channel_show_sources"
+            android:title="@string/channel_show_sources"
+            app:showAsAction="never"/>
 
     <item
-        android:visible="false"
-        android:id="@+id/user_add"
-        android:icon="@drawable/button_add_account"
-        app:showAsAction="always"
-        android:title="@string/select_account_type" />
+            android:visible="false"
+            android:id="@+id/user_add"
+            android:icon="@drawable/button_add_account"
+            app:showAsAction="always"
+            android:title="@string/select_account_type"/>
 
     <item
-        android:visible="false"
-        android:id="@+id/channel_search"
-        android:title="@string/search"
-        android:icon="@drawable/search_white"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="always" />
+            android:visible="false"
+            android:id="@+id/channel_search"
+            android:title="@string/search"
+            android:icon="@drawable/search_white"
+            app:actionViewClass="androidx.appcompat.widget.SearchView"
+            app:showAsAction="always"/>
 
     <item
-        android:icon="@drawable/settings_white"
-        android:id="@+id/channels_manage"
-        android:title="@string/channel_manage"
-        app:showAsAction="ifRoom" />
+            android:icon="@drawable/settings_white"
+            android:id="@+id/channels_manage"
+            android:title="@string/channel_manage"
+            app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/clear_cache"
-        android:title="@string/clear_cache"
-        android:visible="false"
-        app:showAsAction="never" />
+            android:id="@+id/clear_cache"
+            android:title="@string/clear_cache"
+            android:visible="false"
+            app:showAsAction="never"/>
 
     <item
-        android:id="@+id/channels_debug"
-        android:title="@string/debug"
-        android:visible="false"
-        app:showAsAction="never" />
+            android:id="@+id/channels_debug"
+            android:title="@string/debug"
+            android:visible="false"
+            app:showAsAction="never"/>
 
 </menu>

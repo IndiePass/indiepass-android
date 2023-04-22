@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:id="@+id/post_root"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <ScrollView
-        android:id="@+id/scroll"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/post_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+    <ScrollView
+            android:id="@+id/scroll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/box_padding">
+            android:layout_height="match_parent">
 
-            <include layout="@layout/widget_post_account" />
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/box_padding">
 
-            <include layout="@layout/widget_post_options" />
+            <include layout="@layout/widget_post_account"/>
 
-            <include layout="@layout/widget_location" />
+            <include layout="@layout/widget_post_options"/>
+
+            <include layout="@layout/widget_location"/>
 
             <EditText
                     android:id="@+id/title"
@@ -34,13 +35,13 @@
                     android:importantForAutofill="no"
                     android:minHeight="48dp"/>
 
-            <include layout="@layout/widget_body" />
+            <include layout="@layout/widget_body"/>
 
-            <include layout="@layout/widget_category" />
+            <include layout="@layout/widget_category"/>
 
-            <include layout="@layout/widget_targets" />
+            <include layout="@layout/widget_targets"/>
 
-            <include layout="@layout/widget_media_preview" />
+            <include layout="@layout/widget_media_preview"/>
 
         </LinearLayout>
     </ScrollView>

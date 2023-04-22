@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/auth_root"
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/auth_root"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="UselessParent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="UselessParent">
 
         <LinearLayout
-            android:padding="@dimen/box_padding"
-            android:layout_width="match_parent"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+                android:padding="@dimen/box_padding"
+                android:layout_width="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
             <TextView
-                android:layout_marginTop="10dp"
-                android:text="@string/select_account_type"
-                android:textSize="@dimen/big_text"
-                android:textColor="@color/textColor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                    android:layout_marginTop="10dp"
+                    android:text="@string/select_account_type"
+                    android:textSize="@dimen/big_text"
+                    android:textColor="@color/textColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
             <LinearLayout
-                android:layout_marginTop="10dp"
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
 
                 <ImageButton
                         android:id="@+id/indieweb"
@@ -95,90 +95,90 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/signInContainer"
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+                    android:visibility="gone"
+                    android:id="@+id/signInContainer"
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/info"
-                    android:layout_marginTop="20dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                        android:id="@+id/info"
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
                 <EditText
-                    android:layout_marginStart="-3dp"
-                    android:id="@+id/domain"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/url_hint"
-                    android:inputType="textUri"
-                    android:importantForAutofill="no" />
+                        android:layout_marginStart="-3dp"
+                        android:id="@+id/domain"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/url_hint"
+                        android:inputType="textUri"
+                        android:importantForAutofill="no"/>
 
                 <CheckBox
-                    android:visibility="gone"
-                    android:id="@+id/setAsDefault"
-                    android:textSize="@dimen/inputText"
-                    android:textColor="@color/textColor"
-                    android:text="@string/set_as_default"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                        android:visibility="gone"
+                        android:id="@+id/setAsDefault"
+                        android:textSize="@dimen/inputText"
+                        android:textColor="@color/textColor"
+                        android:text="@string/set_as_default"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
                 <Button
-                    android:background="@color/buttonBackground"
-                    android:textColor="@color/colorPrimary"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_marginTop="10dp"
-                    android:paddingStart="@dimen/box_padding"
-                    android:paddingEnd="@dimen/box_padding"
-                    android:id="@+id/signInButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/sign_in" />
+                        android:background="@color/buttonBackground"
+                        android:textColor="@color/colorPrimary"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_marginTop="10dp"
+                        android:paddingStart="@dimen/box_padding"
+                        android:paddingEnd="@dimen/box_padding"
+                        android:id="@+id/signInButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sign_in"/>
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="30dp"
-                android:id="@+id/selectContainer"
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                    android:layout_marginTop="30dp"
+                    android:id="@+id/selectContainer"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
                 <View
-                    android:layout_marginTop="@dimen/box_padding"
-                    android:layout_marginBottom="@dimen/box_padding"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/list_divider_height"
-                    android:background="@color/listDividerColor" />
+                        android:layout_marginTop="@dimen/box_padding"
+                        android:layout_marginBottom="@dimen/box_padding"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/list_divider_height"
+                        android:background="@color/listDividerColor"/>
 
                 <TextView
-                    android:paddingTop="@dimen/box_padding"
-                    android:text="@string/default_user_select"
-                    android:textSize="@dimen/big_text"
-                    android:textColor="@color/textColor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                        android:paddingTop="@dimen/box_padding"
+                        android:text="@string/default_user_select"
+                        android:textSize="@dimen/big_text"
+                        android:textColor="@color/textColor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:layout_marginTop="10dp"
-                    android:id="@+id/selectAccountButtonInfo"
-                    android:text="@string/select_account_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/selectAccountButtonInfo"
+                        android:text="@string/select_account_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
                 <Button
-                    android:background="@color/buttonBackground"
-                    android:textColor="@color/colorPrimary"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_marginTop="10dp"
-                    android:paddingStart="@dimen/box_padding"
-                    android:paddingEnd="@dimen/box_padding"
-                    android:id="@+id/selectAccountButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/select_account" />
+                        android:background="@color/buttonBackground"
+                        android:textColor="@color/colorPrimary"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_marginTop="10dp"
+                        android:paddingStart="@dimen/box_padding"
+                        android:paddingEnd="@dimen/box_padding"
+                        android:id="@+id/selectAccountButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/select_account"/>
 
             </LinearLayout>
 

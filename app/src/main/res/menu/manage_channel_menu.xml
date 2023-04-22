@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+      xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/channel_list_refresh"
-        android:title="@string/channel_list_refresh"
-        app:showAsAction="never" />
+            android:id="@+id/channel_list_refresh"
+            android:title="@string/channel_list_refresh"
+            app:showAsAction="never"/>
 
     <item
-        android:icon="@drawable/button_add"
-        android:id="@+id/channel_add"
-        android:title="@string/add_channel"
-        app:showAsAction="ifRoom" />
+            android:icon="@drawable/button_add"
+            android:id="@+id/channel_add"
+            android:title="@string/add_channel"
+            app:showAsAction="ifRoom"/>
 
 </menu>

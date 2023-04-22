@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+      xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/source_post_list_filter"
-        android:title="@string/source_post_list_filter"
-        android:icon="@drawable/button_filter_white"
-        app:showAsAction="ifRoom" />
+            android:id="@+id/source_post_list_filter"
+            android:title="@string/source_post_list_filter"
+            android:icon="@drawable/button_filter_white"
+            app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/source_post_list_refresh"
-        android:title="@string/source_post_list_refresh"
-        app:showAsAction="never" />
+            android:id="@+id/source_post_list_refresh"
+            android:title="@string/source_post_list_refresh"
+            app:showAsAction="never"/>
 
     <item
-        android:id="@+id/source_list_debug"
-        android:title="@string/debug"
-        android:visible="false"
-        app:showAsAction="never" />
+            android:id="@+id/source_list_debug"
+            android:title="@string/debug"
+            android:visible="false"
+            app:showAsAction="never"/>
 
 </menu>

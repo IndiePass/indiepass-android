@@ -1,63 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:id="@+id/postStatusPublishDateWrapper"
-    android:layout_width="fill_parent"
-    android:layout_height="match_parent">
+              android:orientation="vertical"
+              android:id="@+id/postStatusPublishDateWrapper"
+              android:layout_width="fill_parent"
+              android:layout_height="match_parent">
 
     <androidx.appcompat.widget.SwitchCompat
-        android:padding="@dimen/box_padding"
-        android:textSize="@dimen/inputText"
-        android:id="@+id/saveAsDraft"
-        android:checked="false"
-        android:textColor="@color/textColor"
-        android:text="@string/save_as_draft"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            android:padding="@dimen/box_padding"
+            android:textSize="@dimen/inputText"
+            android:id="@+id/saveAsDraft"
+            android:checked="false"
+            android:textColor="@color/textColor"
+            android:text="@string/save_as_draft"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     <androidx.appcompat.widget.SwitchCompat
-        android:padding="@dimen/box_padding"
-        android:textSize="@dimen/inputText"
-        android:textColor="@color/textColor"
-        android:id="@+id/postStatus"
-        android:checked="true"
-        android:text="@string/published"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            android:padding="@dimen/box_padding"
+            android:textSize="@dimen/inputText"
+            android:textColor="@color/textColor"
+            android:id="@+id/postStatus"
+            android:checked="true"
+            android:text="@string/published"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     <androidx.appcompat.widget.SwitchCompat
-        android:padding="@dimen/box_padding"
-        android:textSize="@dimen/inputText"
-        android:textColor="@color/textColor"
-        android:id="@+id/postSensitivity"
-        android:checked="false"
-        android:visibility="gone"
-        android:text="@string/sensitivity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            android:padding="@dimen/box_padding"
+            android:textSize="@dimen/inputText"
+            android:textColor="@color/textColor"
+            android:id="@+id/postSensitivity"
+            android:checked="false"
+            android:visibility="gone"
+            android:text="@string/sensitivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     <Spinner
-        android:paddingTop="@dimen/box_padding"
-        android:paddingBottom="@dimen/box_padding"
-        android:visibility="gone"
-        android:entries="@array/visibility_array"
-        android:id="@+id/postVisibility"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            android:paddingTop="@dimen/box_padding"
+            android:paddingBottom="@dimen/box_padding"
+            android:visibility="gone"
+            android:entries="@array/visibility_array"
+            android:id="@+id/postVisibility"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     <EditText
-        android:textColor="@color/textColor"
-        android:textSize="@dimen/inputText"
-        android:inputType="date"
-        android:focusable="false"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginBottom="5dp"
-        android:hint="@string/publish_date_hint"
-        android:id="@+id/publishDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:importantForAutofill="no" />
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/inputText"
+            android:inputType="date"
+            android:focusable="false"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="5dp"
+            android:hint="@string/publish_date_hint"
+            android:id="@+id/publishDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:importantForAutofill="no"/>
 
 </LinearLayout>
 

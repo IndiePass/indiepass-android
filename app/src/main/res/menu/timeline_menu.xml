@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+      xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:visible="false"
-        android:id="@+id/timeline_search"
-        android:title="@string/search"
-        android:icon="@drawable/search_white"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="always" />
+            android:visible="false"
+            android:id="@+id/timeline_search"
+            android:title="@string/search"
+            android:icon="@drawable/search_white"
+            app:actionViewClass="androidx.appcompat.widget.SearchView"
+            app:showAsAction="always"/>
 
     <item
-        android:visible="false"
-        android:id="@+id/timeline_mark_all_read"
-        android:title="@string/mark_all_read"
-        android:icon="@drawable/button_mark_all_read"
-        app:showAsAction="ifRoom" />
+            android:visible="false"
+            android:id="@+id/timeline_mark_all_read"
+            android:title="@string/mark_all_read"
+            android:icon="@drawable/button_mark_all_read"
+            app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/timeline_item_status"
-        android:title="@string/timeline_item_status_unread"
-        app:showAsAction="never" />
+            android:id="@+id/timeline_item_status"
+            android:title="@string/timeline_item_status_unread"
+            app:showAsAction="never"/>
 
     <item
-        android:id="@+id/timeline_list_refresh"
-        android:title="@string/timeline_list_refresh"
-        app:showAsAction="never" />
+            android:id="@+id/timeline_list_refresh"
+            android:title="@string/timeline_list_refresh"
+            app:showAsAction="never"/>
 
     <item
-        android:id="@+id/timeline_style"
-        android:title="@string/timeline_style"
-        app:showAsAction="never" />
+            android:id="@+id/timeline_style"
+            android:title="@string/timeline_style"
+            app:showAsAction="never"/>
 
     <item
-        android:id="@+id/timeline_debug"
-        android:title="@string/debug"
-        android:visible="false"
-        app:showAsAction="never" />
+            android:id="@+id/timeline_debug"
+            android:title="@string/debug"
+            android:visible="false"
+            app:showAsAction="never"/>
 
 </menu>

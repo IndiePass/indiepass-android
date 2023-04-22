@@ -1,75 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:id="@+id/locationWrapper"
-    android:visibility="gone"
-    android:background="@color/paneColor"
-    android:layout_width="fill_parent"
-    android:layout_margin="@dimen/box_padding"
-    android:layout_height="match_parent">
+              android:orientation="vertical"
+              android:id="@+id/locationWrapper"
+              android:visibility="gone"
+              android:background="@color/paneColor"
+              android:layout_width="fill_parent"
+              android:layout_margin="@dimen/box_padding"
+              android:layout_height="match_parent">
 
     <TextView
-        android:padding="@dimen/box_padding"
-        android:textSize="16sp"
-        android:textColor="@color/textColor"
-        android:text="@string/location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            android:padding="@dimen/box_padding"
+            android:textSize="16sp"
+            android:textColor="@color/textColor"
+            android:text="@string/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     <TextView
-        android:padding="@dimen/box_padding"
-        android:textSize="16sp"
-        android:visibility="gone"
-        android:textColor="@color/textColor"
-        android:text="@string/getting_coordinates"
-        android:id="@+id/locationCoordinates"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            android:padding="@dimen/box_padding"
+            android:textSize="16sp"
+            android:visibility="gone"
+            android:textColor="@color/textColor"
+            android:text="@string/getting_coordinates"
+            android:id="@+id/locationCoordinates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     <AutoCompleteTextView
-        android:visibility="gone"
-        android:id="@+id/locationName"
-        android:textColor="@color/textColor"
-        android:textSize="@dimen/inputText"
-        android:hint="@string/location_label"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:layout_marginStart="7sp"
-        android:layout_marginEnd="@dimen/box_padding" />
+            android:visibility="gone"
+            android:id="@+id/locationName"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/inputText"
+            android:hint="@string/location_label"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:layout_marginStart="7sp"
+            android:layout_marginEnd="@dimen/box_padding"/>
 
     <EditText
-        android:id="@+id/locationUrl"
-        android:visibility="gone"
-        android:textColor="@color/textColor"
-        android:textSize="@dimen/inputText"
-        android:hint="@string/url_hint"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textUri"
-        android:layout_marginStart="7sp"
-        android:layout_marginEnd="@dimen/box_padding"
-        android:importantForAutofill="no" />
+            android:id="@+id/locationUrl"
+            android:visibility="gone"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/inputText"
+            android:hint="@string/url_hint"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textUri"
+            android:layout_marginStart="7sp"
+            android:layout_marginEnd="@dimen/box_padding"
+            android:importantForAutofill="no"/>
 
     <Button
-        android:visibility="gone"
-        android:padding="@dimen/box_padding"
-        android:id="@+id/locationQuery"
-        android:textColor="@color/colorPrimary"
-        style="?android:attr/borderlessButtonStyle"
-        android:text="@string/location_label_query"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            android:visibility="gone"
+            android:padding="@dimen/box_padding"
+            android:id="@+id/locationQuery"
+            android:textColor="@color/colorPrimary"
+            style="?android:attr/borderlessButtonStyle"
+            android:text="@string/location_label_query"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     <Spinner
-        android:visibility="gone"
-        android:id="@+id/locationVisibility"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/box_padding"
-        android:layout_marginBottom="@dimen/box_padding"
-        android:entries="@array/location_visibility_array"
-        android:prompt="@string/location_visibility_select" />
+            android:visibility="gone"
+            android:id="@+id/locationVisibility"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/box_padding"
+            android:layout_marginBottom="@dimen/box_padding"
+            android:entries="@array/location_visibility_array"
+            android:prompt="@string/location_visibility_select"/>
 
 </LinearLayout>
 
