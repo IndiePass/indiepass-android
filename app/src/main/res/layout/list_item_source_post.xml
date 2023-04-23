@@ -36,7 +36,7 @@
             android:textSize="@dimen/list_item_text_size"
             android:layout_width="fill_parent"/>
 
-    <com.indieweb.indigenous.widget.ExpandableTextView
+    <com.indieweb.indiepass.widget.ExpandableTextView
             android:id="@+id/source_post_list_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
