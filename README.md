@@ -5,7 +5,7 @@ An open social app with support for IndieWeb, Mastodon, Pleroma and Pixelfed.
 <a href='https://play.google.com/store/apps/details?id=com.indieweb.indigenous'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="100"/></a> <a href="https://f-droid.org/app/com.indieweb.indigenous"><img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="100"></a>
 
 More information at https://indieweb.org/Indigenous and
-https://indiepass.marksuth.dev
+https://indigenous.marksuth.dev
 
 iOS: https://github.com/marksuth/indigenous-ios  
 Desktop: https://github.com/marksuth/indigenous-desktop
