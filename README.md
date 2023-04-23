@@ -20,8 +20,8 @@ Desktop: https://github.com/marksuth/indigenous-desktop
   - Fediverse: Mastodon, Pleroma and Pixelfed.
 - Comes with a built-in anonymous user which allows reading channels and
   posts coming from https://mastodon.social,
-  https://pleroma.site or https://pixelfed.social.
-  Posts can be sent to a custom endpoint and token.
+  https://pleroma.site or https://pixelfed.social. Posts can be sent to a custom
+  endpoint and token.
 - Posting
   - post types: article, note, reply, repost, like, bookmark, event,
     issue, rsvp, geocache, read, checkin, trip and venue (h-card).
