@@ -1,41 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <color name="colorPrimary">#1f1a24</color>
-    <color name="colorPrimaryDark">#151921</color>
+    <color name="colorPrimary">#141414</color>
+    <color name="colorPrimaryDark">#141414</color>
     <color name="colorAccent">#C62828</color>
-    <color name="iconTint">#cbcbcb</color>
-
-    <color name="listBackgroundColor">#202531</color>
-    <color name="textColor">#e6e6e7</color>
-    <color name="listRowBackgroundColor">#2d3445</color>
-
-    <color name="borderColor">#423d46</color>
+    <color name="iconTint">#f5f5f5</color>
+    <color name="inverseColor">#f5f5f5</color>
+    <color name="listBackgroundColor">#141414</color>
+    <color name="textColor">#f5f5f5</color>
+    <color name="listRowBackgroundColor">#1E1E1E</color>
+    <color name="borderColor">#141414</color>
     <color name="borderStartColor">@color/iconTint</color>
     <color name="borderEndColor">@color/iconTint</color>
-    <color name="categoryTitle">@color/textColor</color>
-
-    <color name="menuTextColor">#424242</color>
-    <color name="drawerTintColor">#424242</color>
-    <color name="shareMenuColor">#cbcbcb</color>
-    <color name="paneColor">#cbcbcb</color>
-    <color name="paneColorDivider">#474d5c</color>
-    <color name="listDividerColor">#474d5c</color>
-    <color name="buttonBackground">#cbcbcb</color>
-
-    <color name="listRowBackgroundColorTouched">#6d6d6d</color>
-    <color name="loadMoreButtonBackgroundColorTouched">#6d6d6d</color>
-
-    <color name="loadMoreButtonBackgroundColor">#423d46</color>
-    <color name="micropubActionTouched">#e2e6e9</color>
+    <color name="categoryTitle">@color/colorAccent</color>
+    <color name="menuTextColor">#141414</color>
+    <color name="drawerTintColor">#141414</color>
+    <color name="shareMenuColor">#141414</color>
+    <color name="paneColor">#141414</color>
+    <color name="paneColorDivider">#141414</color>
+    <color name="listDividerColor">#141414</color>
+    <color name="buttonBackground">#C62828</color>
+    <color name="listRowBackgroundColorTouched">#141414</color>
+    <color name="loadMoreButtonBackgroundColorTouched">#141414</color>
+    <color name="loadMoreButtonBackgroundColor">#141414</color>
+    <color name="micropubActionTouched">#f5f5f5</color>
     <color name="transparentProgress">#80000000</color>
     <color name="progressWidget">@color/colorAccent</color>
-
-    <!-- image buttons -->
-    <color name="idleColor">#666666</color>
+    <color name="idleColor">#141414</color>
     <color name="pressedColor">#C62828</color>
-
-    <!-- photo editor -->
-    <color name="tool_bg">#1f1a24</color>
-
 </resources>
