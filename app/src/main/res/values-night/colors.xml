@@ -18,7 +18,6 @@
     <color name="paneColor">#141414</color>
     <color name="paneColorDivider">#141414</color>
     <color name="listDividerColor">#141414</color>
-    <color name="buttonBackground">#C62828</color>
     <color name="listRowBackgroundColorTouched">#141414</color>
     <color name="loadMoreButtonBackgroundColorTouched">#141414</color>
     <color name="loadMoreButtonBackgroundColor">#141414</color>

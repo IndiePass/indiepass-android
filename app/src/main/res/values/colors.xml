@@ -15,7 +15,8 @@
     <color name="paneColorDivider">#e2e6e9</color>
     <color name="listBackgroundColor">#f5f5f5</color>
     <color name="listDividerColor">#e2e6e9</color>
-    <color name="buttonBackground">#ebf2f7</color>
+    <color name="buttonBackground">@color/colorAccent</color>
+    <color name="buttonText">@android:color/white</color>
     <color name="listRowBackgroundColor">@android:color/white</color>
     <color name="listRowBackgroundColorTouched">#e2e6e9</color>
     <color name="loadMoreButtonBackgroundColor">#f5f5f5</color>
