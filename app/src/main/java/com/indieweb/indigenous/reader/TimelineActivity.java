@@ -6,51 +6,34 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-
+import android.view.*;
+import android.widget.*;
 import androidx.appcompat.app.AlertDialog;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.AbsListView;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
-import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.model.Cache;
-import com.indieweb.indigenous.model.ChannelCounter;
-import com.indieweb.indigenous.model.TimelineItem;
-import com.indieweb.indigenous.model.TimelineStyle;
-import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.model.*;
 import com.indieweb.indigenous.users.Accounts;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TimelineActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
+    public static final int MARK_READ_CHANNEL_CLICK = 1;
+    public static final int MARK_READ_MANUAL = 2;
+    public static final int MARK_READ_SCROLL = 3;
+    final List<String> entries = new ArrayList<>();
     public String firstEntryId;
+    public List<TimelineItem> TimelineItems = new ArrayList<>();
     String channelId;
     String channelName;
     String sourceId;
@@ -60,7 +43,6 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     boolean isTag = false;
     String tag;
     boolean allReadVisible = false;
-    final List<String> entries = new ArrayList<>();
     Integer unread;
     boolean showUnread = false;
     Menu mainMenu;
@@ -69,8 +51,6 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     boolean preview = false;
     String previewUrl;
     boolean showRefreshMessage = false;
-    private TimelineListAdapter adapter;
-    public List<TimelineItem> TimelineItems = new ArrayList<>();
     SwipeRefreshLayout refreshLayout;
     ListView listView;
     Button loadMoreButton;
@@ -80,19 +60,15 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     String debugResponse;
     User user;
     Integer style;
+    private TimelineListAdapter adapter;
     private Reader reader;
     private String readLater;
     private LinearLayout noConnection;
     private RelativeLayout layout;
     private boolean hasCache = false;
     private boolean recursiveReference = false;
-
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
-
-    public static final int MARK_READ_CHANNEL_CLICK = 1;
-    public static final int MARK_READ_MANUAL = 2;
-    public static final int MARK_READ_SCROLL = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,8 +109,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             if (preview) {
                 channelId = "preview";
                 this.setTitle("Preview");
-            }
-            else {
+            } else {
 
                 // Looking at source.
                 if (sourceName != null && sourceName.length() > 0) {
@@ -148,8 +123,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 // Tag view
                 else if (isTag) {
                     this.setTitle("#" + tag);
-                }
-                else {
+                } else {
                     this.setTitle(channelName);
                 }
                 loadMoreButton = new Button(this);
@@ -183,17 +157,17 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
 
                         if (reader.supports(Reader.READER_MARK_READ) && markReadScroll && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                             markItemsReadWhileScrolling();
-                         }
+                        }
                     }
 
                     @Override
-                    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) { }
+                    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                    }
                 });
             }
 
             startTimeline();
-        }
-        else {
+        } else {
             Snackbar.make(layout, getString(R.string.channel_not_found), Snackbar.LENGTH_SHORT).show();
         }
 
@@ -222,6 +196,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                         public boolean onQueryTextChange(String newText) {
                             return true;
                         }
+
                         @Override
                         public boolean onQueryTextSubmit(String query) {
                             if (query.length() > 0) {
@@ -272,8 +247,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 showUnread = !showUnread;
                 if (showUnread) {
                     item.setTitle(getString(R.string.timeline_item_status_all));
-                }
-                else {
+                } else {
                     item.setTitle(getString(R.string.timeline_item_status_unread));
                 }
                 refreshLayout.setRefreshing(true);
@@ -371,14 +345,12 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
             Cache cache = user.isAuthenticated() ? Utility.getCache(getApplicationContext(), user.getAccountNameWithoutProtocol(), "timeline", channelId, pagerAfter) : null;
             if (cache != null && cache.getData().length() > 0) {
                 parseTimelineResponse(cache.getData(), true);
-            }
-            else {
+            } else {
                 if (hasCache) {
                     if (loadMoreButtonAdded) {
                         listView.removeFooterView(loadMoreButton);
                     }
-                }
-                else {
+                } else {
                     noConnection.setVisibility(View.VISIBLE);
                 }
                 checkRefreshingStatus();
@@ -414,17 +386,16 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                         String message = Utility.parseNetworkError(error, getApplicationContext(), R.string.request_failed, R.string.request_failed_unknown);
                         final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
                         snack.setAction(getString(R.string.close), new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    snack.dismiss();
+                                    @Override
+                                    public void onClick(View v) {
+                                        snack.dismiss();
+                                    }
                                 }
-                            }
                         );
                         snack.show();
                     }
                 }
-        )
-        {
+        ) {
             @Override
             protected Map<String, String> getParams() {
                 return reader.getTimelineParams(preview, isSearch, channelId, previewUrl, searchQuery);
@@ -459,10 +430,8 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
     /**
      * Parse timeline response.
      *
-     * @param response
-     *   The response
-     * @param fromCache
-     *   Whether it came from cache
+     * @param response  The response
+     * @param fromCache Whether it came from cache
      */
     @SuppressLint("ClickableViewAccessibility")
     protected void parseTimelineResponse(String response, boolean fromCache) {
@@ -513,56 +482,28 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                     loadMoreButton.setOnTouchListener(loadMoreTouch);
                 }
 
-            }
-            else {
+            } else {
                 if (loadMoreButtonAdded) {
                     listView.removeFooterView(loadMoreButton);
                 }
             }
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             showRefreshMessage = false;
             String message = String.format(getString(R.string.timeline_parse_error), e.getMessage());
             final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
             snack.setAction(getString(R.string.close), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        snack.dismiss();
+                        @Override
+                        public void onClick(View v) {
+                            snack.dismiss();
+                        }
                     }
-                }
             );
             snack.show();
         }
 
         checkRefreshingStatus();
     }
-
-    /**
-     * Load more touch button.
-     */
-    private final View.OnTouchListener loadMoreTouch = new View.OnTouchListener() {
-        @SuppressLint("ClickableViewAccessibility")
-        @Override
-        public boolean onTouch(View v, MotionEvent motionEvent) {
-            switch(motionEvent.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    int downColorTouch = getResources().getColor(R.color.loadMoreButtonBackgroundColorTouched);
-                    loadMoreButton.setBackgroundColor(downColorTouch);
-                    break;
-                case MotionEvent.ACTION_CANCEL:
-                    loadMoreButton.setBackgroundColor(getResources().getColor(R.color.loadMoreButtonBackgroundColor));
-                    break;
-                case MotionEvent.ACTION_UP:
-                    if (!loadMoreClicked) {
-                        loadMoreItems();
-                    }
-                    break;
-
-            }
-            return true;
-        }
-    };
 
     /**
      * Load more items.
@@ -608,8 +549,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                         cc.setCounter(cc.getCounter() - 1);
                         channelCounters.put(item.getChannelId(), cc);
                         //Log.d("indigenous_debug", "updated channel: " + item.getChannelId() + " - " + cc.getCounter());
-                    }
-                    else {
+                    } else {
                         ChannelCounter cc = new ChannelCounter();
                         channelCounters.put(item.getChannelId(), cc);
                         //Log.d("indigenous_debug", "added channel: " + item.getChannelId());
@@ -621,8 +561,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                             cc.setCounter(cc.getCounter() - 1);
                             channelCounters.put(item.getSourceId(), cc);
                             //Log.d("indigenous_debug", "updated source: " + item.getSourceId() + " - " + cc.getCounter());
-                        }
-                        else {
+                        } else {
                             ChannelCounter cc = new ChannelCounter();
                             cc.setSource(true);
                             channelCounters.put(item.getSourceId(), cc);
@@ -637,9 +576,36 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 reader.markRead(channelId, readEntries, false, false);
                 Utility.notifyChannels(channelCounters);
             }
-        }
-        catch (Exception ignored) {
+        } catch (Exception ignored) {
             //Log.d("indigenous_debug", "Exception marking read: " + e.getMessage());
         }
-    }
+    }    /**
+     * Load more touch button.
+     */
+    private final View.OnTouchListener loadMoreTouch = new View.OnTouchListener() {
+        @SuppressLint("ClickableViewAccessibility")
+        @Override
+        public boolean onTouch(View v, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    int downColorTouch = getResources().getColor(R.color.loadMoreButtonBackgroundColorTouched);
+                    loadMoreButton.setBackgroundColor(downColorTouch);
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    loadMoreButton.setBackgroundColor(getResources().getColor(R.color.loadMoreButtonBackgroundColor));
+                    break;
+                case MotionEvent.ACTION_UP:
+                    if (!loadMoreClicked) {
+                        loadMoreItems();
+                    }
+                    break;
+
+            }
+            return true;
+        }
+    };
+
+
+
+
 }

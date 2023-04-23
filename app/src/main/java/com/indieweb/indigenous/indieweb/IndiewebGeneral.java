@@ -1,7 +1,6 @@
 package com.indieweb.indigenous.indieweb;
 
 import android.content.Context;
-
 import com.indieweb.indigenous.GeneralBase;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;

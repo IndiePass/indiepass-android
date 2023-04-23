@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RelativeLayout;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -22,7 +21,6 @@ import com.indieweb.indigenous.model.Contact;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,243 +43,11 @@ public class MicropubAction {
     }
 
     /**
-     * Delete an item.
-     *
-     * @param url
-     *   The url to delete.
-     */
-    public void deleteItem(final String url) {
-
-        if (!Utility.hasConnection(context)) {
-            Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
-            return;
-        }
-
-        Snackbar.make(layout, context.getString(R.string.sending_please_wait), Snackbar.LENGTH_SHORT).show();
-        String MicropubEndpoint = user.getMicropubEndpoint();
-        StringRequest getRequest = new StringRequest(Request.Method.POST, MicropubEndpoint,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Snackbar.make(layout, context.getString(R.string.delete_item_success), Snackbar.LENGTH_SHORT).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        String message = Utility.parseNetworkError(error, context, R.string.request_failed, R.string.request_failed_unknown);
-                        final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
-                        snack.setAction(context.getString(R.string.close), new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    snack.dismiss();
-                                }
-                            }
-                        );
-                        snack.show();
-                    }
-                }
-        )
-        {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-
-                // Send along access token if configured.
-                if (Preferences.getPreference(context, "pref_key_access_token_body", false)) {
-                    params.put("access_token", user.getAccessToken());
-                }
-
-                // Put url and action.
-                params.put("url", url);
-                params.put("action", "delete");
-
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Accept", "application/json");
-
-                // Send access token in header by default.
-                if (!Preferences.getPreference(context, "pref_key_access_token_body", false)) {
-                    headers.put("Authorization", "Bearer " + user.getAccessToken());
-                }
-
-                return headers;
-            }
-        };
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(getRequest);
-    }
-
-    /**
-     * Prepare tags autocomplete.
-     *
-     * @param tags
-     *   The tag widget.
-     */
-    public void prepareTagsAutocomplete(final MultiAutoCompleteTextView tags) {
-
-        // If there's no connection, get it from local.
-        if (!Utility.hasConnection(context)) {
-            AccountManager am = AccountManager.get(context);
-            String response = am.getUserData(user.getAccount(), "tags_list");
-            parseTagsResponse(response, tags, false, null);
-            return;
-        }
-
-        // Get tags from the endpoint.
-        String MicropubEndpoint = user.getMicropubEndpoint();
-        if (MicropubEndpoint.contains("?")) {
-            MicropubEndpoint += "&q=category";
-        }
-        else {
-            MicropubEndpoint += "?q=category";
-        }
-
-        StringRequest getRequest = new StringRequest(Request.Method.GET, MicropubEndpoint,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        parseTagsResponse(response, tags, true, user);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {}
-                }
-        )
-        {
-            @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Accept", "application/json");
-                headers.put("Authorization", "Bearer " + user.getAccessToken());
-                return headers;
-            }
-        };
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(getRequest);
-    }
-
-    /**
-     * Parse tags response.
-     *
-     * @param response
-     *   Parse tags response.
-     * @param tags
-     *   The autocomplete field
-     * @param saveInAccount
-     *   Whether to set the tags list or not.
-     * @param user
-     *   The user.
-     */
-    private void parseTagsResponse(String response, MultiAutoCompleteTextView tags, boolean saveInAccount, User user) {
-        ArrayList<String> items = new ArrayList<>();
-
-        try {
-            JSONObject categoryResponse = new JSONObject(response);
-            if (categoryResponse.has("categories")) {
-                JSONArray tagsList = categoryResponse.getJSONArray("categories");
-                if (tagsList.length() > 0) {
-                    for (int i = 0; i < tagsList.length(); i++) {
-                        items.add(tagsList.getString(i));
-                    }
-                }
-            }
-        }
-        catch (JSONException ignored) {}
-
-        if (items.size() > 0) {
-            setTagsAutocomplete(tags, items);
-
-            if (saveInAccount) {
-                AccountManager am = AccountManager.get(context);
-                am.setUserData(user.getAccount(), "tags_list", response);
-            }
-        }
-
-    }
-
-    /**
-     * Sets tags autocomplete.
-     */
-    private void setTagsAutocomplete(MultiAutoCompleteTextView tags, ArrayList<String> items) {
-        tags.setThreshold(1);
-        tags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-        tags.setAdapter(new ArrayAdapter<>(context, R.layout.popup_item, items));
-    }
-
-    /**
-     * Prepare contact autocomplete.
-     *
-     * @param body
-     *   The body widget.
-     */
-    public void prepareContactAutocomplete(final MultiAutoCompleteTextView body) {
-
-        // If there's no connection, get it from local.
-        if (!Utility.hasConnection(context)) {
-            AccountManager am = AccountManager.get(context);
-            String response = am.getUserData(user.getAccount(), "contact_list");
-            List<Contact> contactItemsOffline = parseContactsResponse(response, context, true);
-            setContactsAutocomplete(body, contactItemsOffline);
-            return;
-        }
-
-        // Get contacts from the endpoint.
-        String MicropubEndpoint = user.getMicropubEndpoint();
-        if (MicropubEndpoint.contains("?")) {
-            MicropubEndpoint += "&q=contact";
-        }
-        else {
-            MicropubEndpoint += "?q=contact";
-        }
-
-        StringRequest getRequest = new StringRequest(Request.Method.GET, MicropubEndpoint,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        List<Contact> contactItems = parseContactsResponse(response, context, true);
-                        if (contactItems.size() > 0) {
-                            setContactsAutocomplete(body, contactItems);
-                            AccountManager am = AccountManager.get(context);
-                            am.setUserData(user.getAccount(), "contact_list", response);
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {}
-                }
-        )
-        {
-            @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Accept", "application/json");
-                headers.put("Authorization", "Bearer " + user.getAccessToken());
-                return headers;
-            }
-        };
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-        queue.add(getRequest);
-    }
-
-    /**
      * Parse contacts response.
      *
-     * @param response
-     *   Parse tags response.
-     * @param context
-     *   The current context.
-     * @param postContext
-     *   Whether this is for posting or not.
+     * @param response    Parse tags response.
+     * @param context     The current context.
+     * @param postContext Whether this is for posting or not.
      */
     public static List<Contact> parseContactsResponse(String response, Context context, boolean postContext) {
         List<Contact> contactItems = new ArrayList<>();
@@ -322,10 +88,229 @@ public class MicropubAction {
                     }
                 }
             }
+        } catch (JSONException ignored) {
         }
-        catch (JSONException ignored) { }
 
         return contactItems;
+    }
+
+    /**
+     * Delete an item.
+     *
+     * @param url The url to delete.
+     */
+    public void deleteItem(final String url) {
+
+        if (!Utility.hasConnection(context)) {
+            Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        Snackbar.make(layout, context.getString(R.string.sending_please_wait), Snackbar.LENGTH_SHORT).show();
+        String MicropubEndpoint = user.getMicropubEndpoint();
+        StringRequest getRequest = new StringRequest(Request.Method.POST, MicropubEndpoint,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Snackbar.make(layout, context.getString(R.string.delete_item_success), Snackbar.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        String message = Utility.parseNetworkError(error, context, R.string.request_failed, R.string.request_failed_unknown);
+                        final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
+                        snack.setAction(context.getString(R.string.close), new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        snack.dismiss();
+                                    }
+                                }
+                        );
+                        snack.show();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+
+                // Send along access token if configured.
+                if (Preferences.getPreference(context, "pref_key_access_token_body", false)) {
+                    params.put("access_token", user.getAccessToken());
+                }
+
+                // Put url and action.
+                params.put("url", url);
+                params.put("action", "delete");
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json");
+
+                // Send access token in header by default.
+                if (!Preferences.getPreference(context, "pref_key_access_token_body", false)) {
+                    headers.put("Authorization", "Bearer " + user.getAccessToken());
+                }
+
+                return headers;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(getRequest);
+    }
+
+    /**
+     * Prepare tags autocomplete.
+     *
+     * @param tags The tag widget.
+     */
+    public void prepareTagsAutocomplete(final MultiAutoCompleteTextView tags) {
+
+        // If there's no connection, get it from local.
+        if (!Utility.hasConnection(context)) {
+            AccountManager am = AccountManager.get(context);
+            String response = am.getUserData(user.getAccount(), "tags_list");
+            parseTagsResponse(response, tags, false, null);
+            return;
+        }
+
+        // Get tags from the endpoint.
+        String MicropubEndpoint = user.getMicropubEndpoint();
+        if (MicropubEndpoint.contains("?")) {
+            MicropubEndpoint += "&q=category";
+        } else {
+            MicropubEndpoint += "?q=category";
+        }
+
+        StringRequest getRequest = new StringRequest(Request.Method.GET, MicropubEndpoint,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        parseTagsResponse(response, tags, true, user);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json");
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
+                return headers;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(getRequest);
+    }
+
+    /**
+     * Parse tags response.
+     *
+     * @param response      Parse tags response.
+     * @param tags          The autocomplete field
+     * @param saveInAccount Whether to set the tag list or not.
+     * @param user          The user.
+     */
+    private void parseTagsResponse(String response, MultiAutoCompleteTextView tags, boolean saveInAccount, User user) {
+        ArrayList<String> items = new ArrayList<>();
+
+        try {
+            JSONObject categoryResponse = new JSONObject(response);
+            if (categoryResponse.has("categories")) {
+                JSONArray tagsList = categoryResponse.getJSONArray("categories");
+                if (tagsList.length() > 0) {
+                    for (int i = 0; i < tagsList.length(); i++) {
+                        items.add(tagsList.getString(i));
+                    }
+                }
+            }
+        } catch (JSONException ignored) {
+        }
+
+        if (items.size() > 0) {
+            setTagsAutocomplete(tags, items);
+
+            if (saveInAccount) {
+                AccountManager am = AccountManager.get(context);
+                am.setUserData(user.getAccount(), "tags_list", response);
+            }
+        }
+
+    }
+
+    /**
+     * Sets tags autocomplete.
+     */
+    private void setTagsAutocomplete(MultiAutoCompleteTextView tags, ArrayList<String> items) {
+        tags.setThreshold(1);
+        tags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+        tags.setAdapter(new ArrayAdapter<>(context, R.layout.popup_item, items));
+    }
+
+    /**
+     * Prepare contact autocomplete.
+     *
+     * @param body The body widget.
+     */
+    public void prepareContactAutocomplete(final MultiAutoCompleteTextView body) {
+
+        // If there's no connection, get it from local.
+        if (!Utility.hasConnection(context)) {
+            AccountManager am = AccountManager.get(context);
+            String response = am.getUserData(user.getAccount(), "contact_list");
+            List<Contact> contactItemsOffline = parseContactsResponse(response, context, true);
+            setContactsAutocomplete(body, contactItemsOffline);
+            return;
+        }
+
+        // Get contacts from the endpoint.
+        String MicropubEndpoint = user.getMicropubEndpoint();
+        if (MicropubEndpoint.contains("?")) {
+            MicropubEndpoint += "&q=contact";
+        } else {
+            MicropubEndpoint += "?q=contact";
+        }
+
+        StringRequest getRequest = new StringRequest(Request.Method.GET, MicropubEndpoint,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        List<Contact> contactItems = parseContactsResponse(response, context, true);
+                        if (contactItems.size() > 0) {
+                            setContactsAutocomplete(body, contactItems);
+                            AccountManager am = AccountManager.get(context);
+                            am.setUserData(user.getAccount(), "contact_list", response);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json");
+                headers.put("Authorization", "Bearer " + user.getAccessToken());
+                return headers;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(getRequest);
     }
 
     /**
@@ -366,7 +351,7 @@ public class MicropubAction {
                     i--;
                 }
 
-                // Check if token really started with @, else we don't have a valid token.
+                // Check if the token really started with @, else we don't have a valid token.
                 if (i < 1 || text.charAt(i - 1) != '@') {
                     return cursor;
                 }
@@ -401,8 +386,7 @@ public class MicropubAction {
         // Some endpoints already contain GET params.
         if (MicropubEndpoint.contains("?")) {
             MicropubEndpoint += "&q=config";
-        }
-        else {
+        } else {
             MicropubEndpoint += "?q=config";
         }
 
@@ -419,8 +403,8 @@ public class MicropubAction {
                                 AccountManager am = AccountManager.get(context);
                                 am.setUserData(user.getAccount(), "syndication_targets", itemList.toString());
                             }
+                        } catch (JSONException ignored) {
                         }
-                        catch (JSONException ignored) { }
 
                         // Media endpoint.
                         try {
@@ -432,8 +416,8 @@ public class MicropubAction {
                                     am.setUserData(user.getAccount(), "micropub_media_endpoint", micropubMediaEndpoint);
                                 }
                             }
+                        } catch (JSONException ignored) {
                         }
-                        catch (JSONException ignored) { }
 
                         // Post types.
                         try {
@@ -445,8 +429,8 @@ public class MicropubAction {
                                     am.setUserData(user.getAccount(), "post_types", itemList.toString());
                                 }
                             }
+                        } catch (JSONException ignored) {
                         }
-                        catch (JSONException ignored) { }
                     }
                 },
                 new Response.ErrorListener() {
@@ -456,19 +440,18 @@ public class MicropubAction {
                             String message = Utility.parseNetworkError(error, context, R.string.micropub_config_network_error, R.string.micropub_config_error);
                             final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
                             snack.setAction(context.getString(R.string.close), new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        snack.dismiss();
+                                        @Override
+                                        public void onClick(View v) {
+                                            snack.dismiss();
+                                        }
                                     }
-                                }
                             );
                             snack.show();
+                        } catch (Exception ignored) {
                         }
-                        catch (Exception ignored) {}
                     }
                 }
-        )
-        {
+        ) {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();

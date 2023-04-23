@@ -1,7 +1,6 @@
 package com.indieweb.indigenous.post;
 
 import android.widget.MultiAutoCompleteTextView;
-
 import com.android.volley.NetworkResponse;
 
 public interface Post {
@@ -26,19 +25,15 @@ public interface Post {
     /**
      * Get post endpoint
      *
-     * @param isMediaRequest
-     *   Whether this is a media request or not.
-     *
+     * @param isMediaRequest Whether this is a media request or not.
      * @return String
      */
     String getEndpoint(boolean isMediaRequest);
 
     /**
-     * Get file from the media response.
+     * Get a file from the media response.
      *
-     * @param response
-     *   The current response
-     *
+     * @param response The current response
      * @return String
      */
     String getFileFromMediaResponse(NetworkResponse response);
@@ -60,19 +55,15 @@ public interface Post {
     /**
      * Delete a post.
      *
-     * @param channelId
-     *   The current channel id.
-     * @param id
-     *   The post id
+     * @param channelId The current channel id.
+     * @param id        The post id
      */
     void deletePost(String channelId, String id);
 
     /**
      * Whether the post supports a certain feature.
      *
-     * @param feature
-     *   The feature to check
-     *
+     * @param feature The feature to check
      * @return boolean
      */
     boolean supports(String feature);
@@ -80,9 +71,7 @@ public interface Post {
     /**
      * Whether a post param is supported or not
      *
-     * @param name
-     *   The post parameter name
-
+     * @param name The post parameter name
      * @return boolean
      */
     boolean supportsPostParam(String name);
@@ -90,9 +79,7 @@ public interface Post {
     /**
      * Get the name of a post param.
      *
-     * @param name
-     *   The name of the post param. Defaults to the one used by IndieWeb
-     *
+     * @param name The name of the post param. Defaults to the one used by IndieWeb
      * @return String
      */
     String getPostParamName(String name);
@@ -100,16 +87,14 @@ public interface Post {
     /**
      * Prepare the autocomplete tags field.
      *
-     * @param tags
-     *   The tags field
+     * @param tags The tag field
      */
     void prepareTagsAutocomplete(MultiAutoCompleteTextView tags);
 
     /**
      * Prepare the autocomplete body field.
      *
-     * @param body
-     *   The body field
+     * @param body The body field
      */
     void prepareContactsAutocomplete(MultiAutoCompleteTextView body);
 

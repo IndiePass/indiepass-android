@@ -3,7 +3,6 @@ package com.indieweb.indigenous.post;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.util.Preferences;
@@ -27,8 +26,7 @@ public class UploadActivity extends BaseCreate {
     public void onPostButtonClick(MenuItem item) {
         if (image.size() == 1 || video.size() == 1 || audio.size() == 1) {
             sendBasePost(item);
-        }
-        else {
+        } else {
             Snackbar.make(layout, getString(R.string.required_select_media), Snackbar.LENGTH_SHORT).show();
         }
     }

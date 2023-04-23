@@ -9,12 +9,18 @@ import java.util.List;
 public class JsonDict extends HashMap<String, Object> {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 3604372225030827955L;
 
     public JsonDict() {
         super();
+    }
+
+    public static String escapeString(String str) {
+        return str.replace("\"", "\\\"")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r");
     }
 
     public JsonDict getDict(String key) {
@@ -37,12 +43,6 @@ public class JsonDict extends HashMap<String, Object> {
         return list;
     }
 
-    public static String escapeString(String str) {
-        return str.replace("\"", "\\\"")
-                .replace("\n", "\\n")
-                .replace("\r", "\\r");
-    }
-
     public String toString() {
         StringBuilder sb = new StringBuilder("{");
         boolean first = true;
@@ -51,14 +51,15 @@ public class JsonDict extends HashMap<String, Object> {
         Collections.sort(keys);
 
         for (String key : keys) {
-            if (!first) { sb.append(",");}
+            if (!first) {
+                sb.append(",");
+            }
             first = false;
             sb.append("\"" + escapeString(key) + "\":");
             Object value = get(key);
             if (value instanceof String) {
                 sb.append("\"" + escapeString((String) value) + "\"");
-            }
-            else {
+            } else {
                 sb.append(value);
             }
         }

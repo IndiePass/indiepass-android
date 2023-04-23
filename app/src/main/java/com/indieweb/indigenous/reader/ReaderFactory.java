@@ -1,9 +1,7 @@
 package com.indieweb.indigenous.reader;
 
 import android.content.Context;
-
 import androidx.annotation.NonNull;
-
 import com.indieweb.indigenous.indieweb.microsub.IndieWebReader;
 import com.indieweb.indigenous.mastodon.MastodonReader;
 import com.indieweb.indigenous.model.User;
@@ -13,9 +11,7 @@ import com.indieweb.indigenous.pleroma.PleromaReader;
 import static com.indieweb.indigenous.mastodon.MastodonReader.CHANNEL_NAME_MASTODON_ANONYMOUS;
 import static com.indieweb.indigenous.pixelfed.PixelfedReader.CHANNEL_NAME_PIXELFED_ANONYMOUS;
 import static com.indieweb.indigenous.pleroma.PleromaReader.CHANNEL_NAME_PLEROMA_ANONYMOUS;
-import static com.indieweb.indigenous.users.AuthActivity.MASTODON_ACCOUNT_TYPE;
-import static com.indieweb.indigenous.users.AuthActivity.PIXELFED_ACCOUNT_TYPE;
-import static com.indieweb.indigenous.users.AuthActivity.PLEROMA_ACCOUNT_TYPE;
+import static com.indieweb.indigenous.users.AuthActivity.*;
 
 public class ReaderFactory {
 

@@ -15,26 +15,24 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.general.DebugActivity;
-import com.indieweb.indigenous.post.ReadActivity;
-import com.indieweb.indigenous.post.ReplyActivity;
-import com.indieweb.indigenous.post.RsvpActivity;
 import com.indieweb.indigenous.indieweb.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.post.ReadActivity;
+import com.indieweb.indigenous.post.ReplyActivity;
+import com.indieweb.indigenous.post.RsvpActivity;
 import com.indieweb.indigenous.users.Accounts;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
@@ -54,8 +52,8 @@ import static com.indieweb.indigenous.util.Utility.dateFormatStrings;
 
 public class TimelineDetailActivity extends AppCompatActivity {
 
-    RelativeLayout layout;
     protected TimelineItem item;
+    RelativeLayout layout;
     User user;
     private Reader reader;
 
@@ -71,8 +69,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
         if (item == null) {
             Snackbar.make(layout, getString(R.string.no_item_found), Snackbar.LENGTH_SHORT).show();
             finish();
-        }
-        else {
+        } else {
 
             user = new Accounts(this).getDefaultUser();
             reader = ReaderFactory.getReader(user, item.getChannelId(), TimelineDetailActivity.this);
@@ -81,8 +78,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
             TextView channel = findViewById(R.id.timeline_channel);
             if (item.getChannelName().length() > 0) {
                 channel.setText(item.getChannelName());
-            }
-            else {
+            } else {
                 channel.setVisibility(View.GONE);
             }
 
@@ -90,8 +86,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
             TextView name = findViewById(R.id.timeline_name);
             if ((item.getType().equals("entry") || item.getType().equals("event")) && item.getName().length() > 0) {
                 name.setText(item.getName());
-            }
-            else {
+            } else {
                 name.setVisibility(View.GONE);
             }
 
@@ -105,13 +100,12 @@ public class TimelineDetailActivity extends AppCompatActivity {
                         break;
                     }
                     dateResult = new SimpleDateFormat(formatString).parse(item.getPublished());
+                } catch (ParseException ignored) {
                 }
-                catch (ParseException ignored) {}
             }
             if (dateResult != null) {
                 published.setText(formatOut.format(dateResult));
-            }
-            else {
+            } else {
                 published.setVisibility(View.GONE);
             }
 
@@ -126,8 +120,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
             TextView authorName = findViewById(R.id.timeline_author);
             if (item.getAuthorName().length() > 0) {
                 authorName.setText(item.getAuthorName());
-            }
-            else {
+            } else {
                 authorName.setVisibility(View.GONE);
             }
 
@@ -141,19 +134,17 @@ public class TimelineDetailActivity extends AppCompatActivity {
                             break;
                         }
                         startDate = new SimpleDateFormat(formatString).parse(item.getStart());
+                    } catch (ParseException ignored) {
                     }
-                    catch (ParseException ignored) {}
                 }
 
                 if (startDate != null) {
                     start.setVisibility(View.VISIBLE);
                     start.setText(String.format(getString(R.string.start_date_event), formatOut.format(startDate)));
-                }
-                else {
+                } else {
                     start.setVisibility(View.GONE);
                 }
-            }
-            else {
+            } else {
                 start.setVisibility(View.GONE);
             }
 
@@ -167,19 +158,17 @@ public class TimelineDetailActivity extends AppCompatActivity {
                             break;
                         }
                         endDate = new SimpleDateFormat(formatString).parse(item.getEnd());
+                    } catch (ParseException ignored) {
                     }
-                    catch (ParseException ignored) {}
                 }
 
                 if (endDate != null) {
                     end.setVisibility(View.VISIBLE);
                     end.setText(String.format(getString(R.string.end_date_event), formatOut.format(endDate)));
-                }
-                else {
+                } else {
                     end.setVisibility(View.GONE);
                 }
-            }
-            else {
+            } else {
                 end.setVisibility(View.GONE);
             }
 
@@ -191,8 +180,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
                 try {
                     new URL(item.getLocation()).toURI();
                     locationString += "<a href=\"" + item.getLocation() + "\">" + item.getLocation() + "</a>";
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     locationString += item.getLocation();
                 }
 
@@ -206,8 +194,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
                 location.setMovementMethod(LinkMovementMethod.getInstance());
                 location.setVisibility(View.VISIBLE);
                 location.setText(strBuilder);
-            }
-            else {
+            } else {
                 location.setMovementMethod(null);
                 location.setVisibility(View.GONE);
             }
@@ -261,8 +248,8 @@ public class TimelineDetailActivity extends AppCompatActivity {
                             ResponseData += " " + ResponseSuffix;
                         }
                     }
+                } catch (Exception ignored) {
                 }
-                catch (Exception ignored) { }
             }
 
             TextView response = findViewById(R.id.timeline_response);
@@ -277,8 +264,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
                 response.setText(strBuilder);
                 response.setMovementMethod(LinkMovementMethod.getInstance());
-            }
-            else {
+            } else {
                 response.setVisibility(View.GONE);
             }
 
@@ -305,8 +291,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
                     }
                     content.setText(strBuilder);
                     content.setMovementMethod(LinkMovementMethod.getInstance());
-                }
-                else {
+                } else {
                     content.setMovementMethod(null);
                     content.setText(item.getTextContent().trim());
                 }
@@ -321,8 +306,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
                     }
                 });
 
-            }
-            else {
+            } else {
                 content.setMovementMethod(null);
                 content.setVisibility(View.GONE);
             }
@@ -331,8 +315,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
             TextView reference = findViewById(R.id.timeline_reference);
             if (item.getReference().length() > 0) {
                 reference.setText(item.getReference());
-            }
-            else {
+            } else {
                 reference.setVisibility(View.GONE);
             }
 
@@ -350,16 +333,13 @@ public class TimelineDetailActivity extends AppCompatActivity {
                 if (item.getPhotos().size() > 1) {
                     if (item.getPhotos().size() > 1) {
                         imageCount.setText(String.format(getString(R.string.number_of_images), item.getPhotos().size()));
-                    }
-                    else {
+                    } else {
                         imageCount.setText(R.string.one_image);
                     }
-                }
-                else {
+                } else {
                     imageCount.setVisibility(View.GONE);
                 }
-            }
-            else {
+            } else {
                 image.setVisibility(View.GONE);
                 card.setVisibility(View.GONE);
                 imageCount.setVisibility(View.GONE);
@@ -380,8 +360,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
             if (Preferences.getPreference(getApplicationContext(), "pref_key_response_read", false)) {
                 read.setOnClickListener(new OnReadClickListener());
-            }
-            else {
+            } else {
                 read.setVisibility(View.GONE);
             }
 
@@ -390,8 +369,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
                 if (Preferences.getPreference(getApplicationContext(), "pref_key_response_bookmark", false)) {
                     bookmark.setOnClickListener(new OnBookmarkClickListener());
                     bookmark.setActivated(item.isBookmarked());
-                }
-                else {
+                } else {
                     bookmark.setVisibility(View.GONE);
                 }
 
@@ -409,15 +387,13 @@ public class TimelineDetailActivity extends AppCompatActivity {
                 if (item.getType().equals("event")) {
                     rsvp.setVisibility(View.VISIBLE);
                     rsvp.setOnClickListener(new OnRsvpClickListener());
-                }
-                else {
+                } else {
                     rsvp.setVisibility(View.GONE);
                 }
 
                 boolean debugItemJSON = Preferences.getPreference(TimelineDetailActivity.this, "pref_key_debug_microsub_item_json", false);
                 menu.setOnClickListener(new OnMenuClickListener(debugItemJSON));
-            }
-            else {
+            } else {
                 bookmark.setVisibility(View.GONE);
                 reply.setVisibility(View.GONE);
                 like.setVisibility(View.GONE);
@@ -430,24 +406,21 @@ public class TimelineDetailActivity extends AppCompatActivity {
             // Audio.
             if (item.getAudio().length() > 0) {
                 audio.setOnClickListener(new OnAudioClickListener());
-            }
-            else {
+            } else {
                 audio.setVisibility(View.GONE);
             }
 
             // Video.
             if (item.getVideo().length() > 0) {
                 video.setOnClickListener(new OnVideoClickListener());
-            }
-            else {
+            } else {
                 video.setVisibility(View.GONE);
             }
 
             // Map.
             if (item.getLatitude().length() > 0 && item.getLongitude().length() > 0) {
                 map.setOnClickListener(new OnMapClickListener());
-            }
-            else {
+            } else {
                 map.setVisibility(View.GONE);
             }
 
@@ -472,14 +445,12 @@ public class TimelineDetailActivity extends AppCompatActivity {
         public void onClick(View v) {
             if (!reader.supports(RESPONSE_LIKE)) {
                 Snackbar.make(layout, getString(R.string.no_anonymous_posting), Snackbar.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 boolean liked = reader.doResponse(item, Reader.RESPONSE_LIKE);
                 if (liked) {
                     item.setLiked(true);
                     v.setActivated(true);
-                }
-                else {
+                } else {
                     item.setLiked(false);
                     v.setActivated(false);
                 }
@@ -494,14 +465,12 @@ public class TimelineDetailActivity extends AppCompatActivity {
         public void onClick(View v) {
             if (!reader.supports(RESPONSE_REPOST)) {
                 Snackbar.make(layout, getString(R.string.no_anonymous_posting), Snackbar.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 boolean reposted = reader.doResponse(item, Reader.RESPONSE_REPOST);
                 if (reposted) {
                     item.setReposted(true);
                     v.setActivated(true);
-                }
-                else {
+                } else {
                     item.setReposted(false);
                     v.setActivated(false);
                 }
@@ -516,14 +485,12 @@ public class TimelineDetailActivity extends AppCompatActivity {
         public void onClick(View v) {
             if (!reader.supports(Reader.RESPONSE_BOOKMARK)) {
                 Snackbar.make(layout, getString(R.string.no_anonymous_posting), Snackbar.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 boolean bookmarked = reader.doResponse(item, Reader.RESPONSE_BOOKMARK);
                 if (bookmarked) {
                     item.setBookmarked(true);
                     v.setActivated(true);
-                }
-                else {
+                } else {
                     item.setBookmarked(false);
                     v.setActivated(false);
                 }
@@ -539,8 +506,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
             String text = "";
             if (item.getUrl().length() > 0) {
                 text = item.getUrl();
-            }
-            else if (item.getName().length() > 0) {
+            } else if (item.getName().length() > 0) {
                 text = item.getName();
             }
             i.putExtra("incomingText", text);
@@ -573,8 +539,8 @@ public class TimelineDetailActivity extends AppCompatActivity {
                 customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 customTabsIntent.launchUrl(TimelineDetailActivity.this, Uri.parse(item.getUrl()));
+            } catch (Exception ignored) {
             }
-            catch (Exception ignored) { }
 
         }
     }
@@ -625,8 +591,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
             intent.setData(geoLocation);
             if (intent.resolveActivity(getPackageManager()) != null) {
                 startActivity(intent);
-            }
-            else {
+            } else {
                 Snackbar.make(layout, getString(R.string.maps_info), Snackbar.LENGTH_SHORT).show();
             }
         }
@@ -666,8 +631,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
                 if (itemMarkUnread != null) {
                     itemMarkUnread.setVisible(false);
                 }
-            }
-            else {
+            } else {
                 if (!entry.isRead() && (item.getChannelId().equals(Preferences.getPreference(getApplicationContext(), "pref_key_read_later", "")) && item.getChannelId().equals("global") || Preferences.getPreference(TimelineDetailActivity.this, "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_MANUAL)) {
                     MenuItem itemMarkRead = menu.findItem(R.id.timeline_entry_mark_read);
                     if (itemMarkRead != null) {
@@ -702,8 +666,8 @@ public class TimelineDetailActivity extends AppCompatActivity {
                     switch (item.getItemId()) {
                         case R.id.timeline_entry_delete:
                             builder.setTitle(getString(R.string.delete_post_confirm));
-                            builder.setPositiveButton(getString(R.string.delete_post),new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,int id) {
+                            builder.setPositiveButton(getString(R.string.delete_post), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
                                     new MicrosubAction(TimelineDetailActivity.this, user, layout).deletePost(entry.getChannelId(), entry.getId());
                                 }
                             });
@@ -738,8 +702,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
                         case R.id.timeline_save_author:
                             if (entry.getAuthorName().length() > 0) {
                                 reader.doResponse(entry, Reader.RESPONSE_CONTACT);
-                            }
-                            else {
+                            } else {
                                 Snackbar.make(layout, getString(R.string.contact_no_name), Snackbar.LENGTH_SHORT).show();
                             }
                             break;

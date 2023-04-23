@@ -2,7 +2,6 @@ package com.indieweb.indigenous.reader;
 
 import android.content.Context;
 import android.view.MenuItem;
-
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.TimelineItem;
@@ -110,10 +109,12 @@ abstract public class ReaderBase implements Reader {
     }
 
     @Override
-    public void markRead(String channelId, List<String> entries, boolean markAllRead, boolean showMessage) { }
+    public void markRead(String channelId, List<String> entries, boolean markAllRead, boolean showMessage) {
+    }
 
     @Override
-    public void setContactLabel(MenuItem menuItem, TimelineItem item) { }
+    public void setContactLabel(MenuItem menuItem, TimelineItem item) {
+    }
 
     @Override
     public boolean canContact(String channelId) {

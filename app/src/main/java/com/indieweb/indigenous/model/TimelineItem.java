@@ -7,6 +7,9 @@ import java.util.Map;
 
 public class TimelineItem implements Serializable {
 
+    private final ArrayList<String> photos = new ArrayList<>();
+    private final ArrayList<String> tags = new ArrayList<>();
+    private final Map<String, String> responseType = new LinkedHashMap<>();
     private boolean isRead;
     private String sourceId;
     private String id;
@@ -33,13 +36,10 @@ public class TimelineItem implements Serializable {
     private String audio = "";
     private String video = "";
     private String json;
-    private final ArrayList<String> photos = new ArrayList<>();
-    private final ArrayList<String> tags = new ArrayList<>();
     private boolean liked = false;
     private boolean reposted = false;
     private boolean bookmarked = false;
     private int numberOfComments = -1;
-    private final Map<String, String> responseType = new LinkedHashMap<>();
     private boolean swapReference = true;
 
     public boolean isRead() {

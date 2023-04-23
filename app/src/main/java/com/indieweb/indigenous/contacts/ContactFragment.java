@@ -3,24 +3,17 @@ package com.indieweb.indigenous.contacts;
 import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.general.BaseFragment;
 import com.indieweb.indigenous.indieweb.micropub.MicropubAction;
-import com.indieweb.indigenous.post.ContactActivity;
 import com.indieweb.indigenous.model.Contact;
+import com.indieweb.indigenous.post.ContactActivity;
 import com.indieweb.indigenous.util.HTTPRequest;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
@@ -30,9 +23,9 @@ import java.util.List;
 
 public class ContactFragment extends BaseFragment implements View.OnClickListener {
 
+    private final List<Contact> Contacts = new ArrayList<>();
     private ListView listContact;
     private ContactListAdapter adapter;
-    private final List<Contact> Contacts = new ArrayList<>();
 
     @Nullable
     @Override
@@ -60,8 +53,7 @@ public class ContactFragment extends BaseFragment implements View.OnClickListene
             showRefreshLayout();
             listContact.setVisibility(View.VISIBLE);
             startContacts();
-        }
-        else {
+        } else {
             listContact.setVisibility(View.GONE);
             noMicropubEndpoint.setVisibility(View.VISIBLE);
         }
@@ -109,8 +101,7 @@ public class ContactFragment extends BaseFragment implements View.OnClickListene
                 Contacts.addAll(ContactsOffline);
                 adapter.notifyDataSetChanged();
                 Snackbar.make(layout, getString(R.string.contacts_offline), Snackbar.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 showNoConnection();
             }
 
@@ -121,8 +112,7 @@ public class ContactFragment extends BaseFragment implements View.OnClickListene
         String MicropubEndpoint = user.getMicropubEndpoint();
         if (MicropubEndpoint.contains("?")) {
             MicropubEndpoint += "&q=contact";
-        }
-        else {
+        } else {
             MicropubEndpoint += "?q=contact";
         }
 

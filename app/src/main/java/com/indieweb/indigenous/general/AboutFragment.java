@@ -1,9 +1,6 @@
 package com.indieweb.indigenous.general;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -11,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import com.indieweb.indigenous.BuildConfig;
 import com.indieweb.indigenous.R;
 
@@ -41,8 +40,7 @@ public class AboutFragment extends Fragment {
         String aboutInfo = getString(R.string.about_info);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             about.setText(Html.fromHtml(aboutInfo, Html.FROM_HTML_MODE_LEGACY));
-        }
-        else {
+        } else {
             about.setText(Html.fromHtml(aboutInfo));
         }
 
@@ -73,7 +71,8 @@ public class AboutFragment extends Fragment {
                 text.append(line);
                 text.append('\n');
             }
-        } catch (IOException ignored) { }
+        } catch (IOException ignored) {
+        }
 
         TextView t = currentView.findViewById(R.id.about_changelog);
         t.setMovementMethod(LinkMovementMethod.getInstance());

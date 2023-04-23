@@ -3,19 +3,11 @@ package com.indieweb.indigenous.indieweb.micropub.source;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.Button;
 import android.widget.ListView;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.general.BaseFragment;
@@ -23,7 +15,6 @@ import com.indieweb.indigenous.model.PostListItem;
 import com.indieweb.indigenous.util.HTTPRequest;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,13 +26,38 @@ import static android.app.Activity.RESULT_OK;
 
 public class PostListFragment extends BaseFragment {
 
+    private static final int FILTER_REQUEST_CODE = 1;
     private PostListAdapter adapter;
     private List<PostListItem> PostListItems = new ArrayList<>();
     private ListView listView;
     private Button loadMoreButton;
     private boolean loadMoreButtonAdded = false;
     private String[] olderItems;
-    private static final int FILTER_REQUEST_CODE = 1;
+    /**
+     * Load more touch button.
+     */
+    private final View.OnTouchListener loadMoreTouch = new View.OnTouchListener() {
+        @SuppressLint("ClickableViewAccessibility")
+        @Override
+        public boolean onTouch(View v, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    int downColorTouch = getResources().getColor(R.color.loadMoreButtonBackgroundColorTouched);
+                    loadMoreButton.setBackgroundColor(downColorTouch);
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    loadMoreButton.setBackgroundColor(getResources().getColor(R.color.loadMoreButtonBackgroundColor));
+                    break;
+                case MotionEvent.ACTION_UP:
+                    int downColor = getResources().getColor(R.color.loadMoreButtonBackgroundColor);
+                    loadMoreButton.setBackgroundColor(downColor);
+                    getSourcePostListItems(olderItems[0]);
+                    break;
+
+            }
+            return true;
+        }
+    };
 
     @Nullable
     @Override
@@ -171,8 +187,7 @@ public class PostListFragment extends BaseFragment {
         // just check it here.
         if (MicropubEndpoint.contains("?")) {
             MicropubEndpoint += "&q=source";
-        }
-        else {
+        } else {
             MicropubEndpoint += "?q=source";
         }
 
@@ -198,8 +213,7 @@ public class PostListFragment extends BaseFragment {
     /**
      * Parse source response.
      *
-     * @param data
-     *   The data to parse.
+     * @param data The data to parse.
      */
     @SuppressLint("ClickableViewAccessibility")
     private void parseSourceResponse(String data) {
@@ -215,8 +229,8 @@ public class PostListFragment extends BaseFragment {
                     if (root.getJSONObject("paging").has("after")) {
                         olderItems[0] = root.getJSONObject("paging").getString("after");
                     }
+                } catch (JSONException ignored) {
                 }
-                catch (JSONException ignored) {}
             }
 
             for (int i = 0; i < itemList.length(); i++) {
@@ -256,20 +270,19 @@ public class PostListFragment extends BaseFragment {
                         if (c.has("text")) {
                             hasContent = true;
                             content = c.getString("text");
-                        }
-                        else if (c.has("html")) {
+                        } else if (c.has("html")) {
                             hasContent = true;
                             content = c.getString("html");
                         }
+                    } catch (JSONException ignored) {
                     }
-                    catch (JSONException ignored) {}
 
                     // No content yet, content might be just a string in the first key.
                     if (!hasContent) {
                         try {
                             content = object.getJSONArray("content").get(0).toString();
+                        } catch (JSONException ignored) {
                         }
-                        catch (JSONException ignored) {}
                     }
                 }
                 item.setContent(content);
@@ -293,44 +306,16 @@ public class PostListFragment extends BaseFragment {
                 }
 
                 loadMoreButton.setOnTouchListener(loadMoreTouch);
-            }
-            else {
+            } else {
                 hideFooterView(false);
             }
 
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             setShowRefreshedMessage(false);
             Snackbar.make(layout, String.format(getString(R.string.post_list_parse_error), e.getMessage()), Snackbar.LENGTH_SHORT).show();
         }
 
         checkRefreshingStatus();
     }
-
-    /**
-     * Load more touch button.
-     */
-    private final View.OnTouchListener loadMoreTouch = new View.OnTouchListener() {
-        @SuppressLint("ClickableViewAccessibility")
-        @Override
-        public boolean onTouch(View v, MotionEvent motionEvent) {
-            switch(motionEvent.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    int downColorTouch = getResources().getColor(R.color.loadMoreButtonBackgroundColorTouched);
-                    loadMoreButton.setBackgroundColor(downColorTouch);
-                    break;
-                case MotionEvent.ACTION_CANCEL:
-                    loadMoreButton.setBackgroundColor(getResources().getColor(R.color.loadMoreButtonBackgroundColor));
-                    break;
-                case MotionEvent.ACTION_UP:
-                    int downColor = getResources().getColor(R.color.loadMoreButtonBackgroundColor);
-                    loadMoreButton.setBackgroundColor(downColor);
-                    getSourcePostListItems(olderItems[0]);
-                    break;
-
-            }
-            return true;
-        }
-    };
 
 }

@@ -4,12 +4,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
@@ -20,12 +18,12 @@ import com.indieweb.indigenous.util.VolleyRequestListener;
 
 abstract public class BaseFragment extends Fragment implements VolleyRequestListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private boolean showRefreshMessage = false;
     protected VolleyRequestListener volleyRequestListener;
     protected RelativeLayout layout;
-    private SwipeRefreshLayout refreshLayout;
     protected User user;
     protected String debugResponse;
+    private boolean showRefreshMessage = false;
+    private SwipeRefreshLayout refreshLayout;
     private int refreshedMessage = R.string.items_refreshed;
     private LinearLayout noConnection;
 
@@ -38,21 +36,22 @@ abstract public class BaseFragment extends Fragment implements VolleyRequestList
         // Refresh layout.
         try {
             refreshLayout = view.findViewById(R.id.refreshList);
+        } catch (Exception ignored) {
         }
-        catch (Exception ignored) {}
 
         // No connection widget.
         try {
             noConnection = view.findViewById(R.id.noConnection);
+        } catch (Exception ignored) {
         }
-        catch (Exception ignored) {}
 
         // Set listener.
         VolleyRequestListener(this);
     }
 
     @Override
-    public void OnSuccessRequest(String response) { }
+    public void OnSuccessRequest(String response) {
+    }
 
     @Override
     public void OnFailureRequest(VolleyError error) {
@@ -61,16 +60,15 @@ abstract public class BaseFragment extends Fragment implements VolleyRequestList
         String message = getString(R.string.request_failed_unknown);
         try {
             message = Utility.parseNetworkError(error, requireContext(), R.string.request_failed, R.string.request_failed_unknown);
+        } catch (Exception ignored) {
         }
-        catch (Exception ignored) {}
         Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
     }
 
     /**
      * Set the refreshed message.
      *
-     * @param id
-     *   The id of the refresh message.
+     * @param id The id of the refresh message.
      */
     protected void setRefreshedMessage(int id) {
         this.refreshedMessage = id;
@@ -88,8 +86,7 @@ abstract public class BaseFragment extends Fragment implements VolleyRequestList
     /**
      * Set the value of the show refresh message variable.
      *
-     * @param show
-     *   Whether to show or not.
+     * @param show Whether to show or not.
      */
     protected void setShowRefreshedMessage(boolean show) {
         this.showRefreshMessage = show;
@@ -98,8 +95,7 @@ abstract public class BaseFragment extends Fragment implements VolleyRequestList
     /**
      * Set the value of the refresh layout.
      *
-     * @param refresh
-     *   Whether to layout refreshing or not.
+     * @param refresh Whether to layout refreshing or not.
      */
     protected void setLayoutRefreshing(boolean refresh) {
         this.refreshLayout.setRefreshing(refresh);
@@ -166,8 +162,8 @@ abstract public class BaseFragment extends Fragment implements VolleyRequestList
                 // (java.lang.IllegalStateException)
                 try {
                     Snackbar.make(layout, getString(refreshedMessage), Snackbar.LENGTH_SHORT).show();
+                } catch (Exception ignored) {
                 }
-                catch (Exception ignored) { }
             }
             setLayoutRefreshing(false);
         }
@@ -176,8 +172,7 @@ abstract public class BaseFragment extends Fragment implements VolleyRequestList
     /**
      * Set request listener.
      *
-     * @param volleyRequestListener
-     *   The volley request listener.
+     * @param volleyRequestListener The volley request listener.
      */
     private void VolleyRequestListener(VolleyRequestListener volleyRequestListener) {
         this.volleyRequestListener = volleyRequestListener;

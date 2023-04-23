@@ -7,11 +7,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import androidx.appcompat.app.AlertDialog;
-
 import android.os.Handler;
 import android.widget.RelativeLayout;
-
+import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.LaunchActivity;
 import com.indieweb.indigenous.R;
@@ -23,10 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.indieweb.indigenous.users.AuthActivity.INDIEWEB_ACCOUNT_TYPE;
-import static com.indieweb.indigenous.users.AuthActivity.MASTODON_ACCOUNT_TYPE;
-import static com.indieweb.indigenous.users.AuthActivity.PIXELFED_ACCOUNT_TYPE;
-import static com.indieweb.indigenous.users.AuthActivity.PLEROMA_ACCOUNT_TYPE;
+import static com.indieweb.indigenous.users.AuthActivity.*;
 
 public class Accounts {
 
@@ -84,18 +79,15 @@ public class Accounts {
     /**
      * Switch account dialog.
      *
-     * @param activity
-     *   The current activity
-     * @param user
-     *   The user to switch to.
-     * @param layout
-     *   The current layout.
+     * @param activity The current activity
+     * @param user     The user to switch to.
+     * @param layout   The current layout.
      */
     public void switchAccount(final Activity activity, final User user, final RelativeLayout layout) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(String.format(context.getString(R.string.account_switch), user.getDisplayName()));
-        builder.setPositiveButton(context.getString(R.string.switch_account),new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int id) {
+        builder.setPositiveButton(context.getString(R.string.switch_account), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
                 Snackbar.make(layout, String.format(context.getString(R.string.account_selected), user.getDisplayName()), Snackbar.LENGTH_SHORT).show();
                 SharedPreferences.Editor editor = context.getSharedPreferences("indigenous", MODE_PRIVATE).edit();
                 editor.putString("account", user.getAccount().name);
@@ -123,15 +115,13 @@ public class Accounts {
     /**
      * Select account dialog.
      *
-     * @param activity
-     *   The current activity
-     * @param layout
-     *   The current layout
+     * @param activity The current activity
+     * @param layout   The current layout
      */
     public void selectAccount(final Activity activity, final RelativeLayout layout) {
         final List<String> accounts = new ArrayList<>();
         final List<User> users = new Accounts(context).getAllUsers();
-        for (User user: users) {
+        for (User user : users) {
             accounts.add(user.getDisplayName());
         }
 
@@ -191,8 +181,8 @@ public class Accounts {
             String token = "";
             try {
                 token = accountManager.peekAuthToken(a, AuthActivity.INDIEWEB_TOKEN_TYPE);
+            } catch (Exception ignored) {
             }
-            catch (Exception ignored) {}
 
             user.setAccessToken(token);
             user.setAccountType(INDIEWEB_ACCOUNT_TYPE);
@@ -217,8 +207,8 @@ public class Accounts {
             String token = "";
             try {
                 token = accountManager.peekAuthToken(a, AuthActivity.PIXELFED_TOKEN_TYPE);
+            } catch (Exception ignored) {
             }
-            catch (Exception ignored) {}
 
             user.setAccessToken(token);
             user.setAvatar(accountManager.getUserData(a, "author_avatar"));
@@ -244,8 +234,8 @@ public class Accounts {
             String token = "";
             try {
                 token = accountManager.peekAuthToken(a, AuthActivity.MASTODON_TOKEN_TYPE);
+            } catch (Exception ignored) {
             }
-            catch (Exception ignored) {}
 
             user.setAccessToken(token);
             user.setAvatar(accountManager.getUserData(a, "author_avatar"));
@@ -271,8 +261,8 @@ public class Accounts {
             String token = "";
             try {
                 token = accountManager.peekAuthToken(a, AuthActivity.PLEROMA_TOKEN_TYPE);
+            } catch (Exception ignored) {
             }
-            catch (Exception ignored) {}
 
             user.setAccessToken(token);
             user.setAvatar(accountManager.getUserData(a, "author_avatar"));
@@ -298,19 +288,15 @@ public class Accounts {
     /**
      * Return a specific user.
      *
-     * @param name
-     *   The user to get.
-     * @param useAccountName
-     *   Whether to use the internal account name.
-     * @param checkWithoutProtocol
-     *   Whether to seek based on the protocol or not.
-     *
+     * @param name                 The user to get.
+     * @param useAccountName       Whether to use the internal account name.
+     * @param checkWithoutProtocol Whether to seek based on the protocol or not.
      * @return User
      */
     public User getUser(String name, boolean useAccountName, boolean checkWithoutProtocol) {
         User user = null;
         List<User> users = this.getAllUsers();
-        for (User u: users) {
+        for (User u : users) {
 
             if (useAccountName) {
                 if (checkWithoutProtocol) {
@@ -318,15 +304,13 @@ public class Accounts {
                         user = u;
                         break;
                     }
-                }
-                else {
+                } else {
                     if (u.getAccountName().equals(name)) {
                         user = u;
                         break;
                     }
                 }
-            }
-            else {
+            } else {
                 if (u.getDisplayName().equals(name)) {
                     user = u;
                     break;

@@ -1,7 +1,6 @@
 package com.indieweb.indigenous.pixelfed;
 
 import android.content.Context;
-
 import com.indieweb.indigenous.GeneralBase;
 import com.indieweb.indigenous.MainActivity;
 import com.indieweb.indigenous.R;

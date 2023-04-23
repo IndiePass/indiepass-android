@@ -3,21 +3,14 @@ package com.indieweb.indigenous.users;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
@@ -75,11 +68,11 @@ public class AnonymousFragment extends Fragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                 builder.setTitle(getString(R.string.reset_confirm));
                 builder.setCancelable(true);
-                builder.setPositiveButton(getString(R.string.reset),new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
+                builder.setPositiveButton(getString(R.string.reset), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
 
                         Preferences.setPreference(getContext(), "anonymous_microsub_endpoint", "");
-                        Preferences.setPreference(getContext(), "anonymous_micropub_endpoint","");
+                        Preferences.setPreference(getContext(), "anonymous_micropub_endpoint", "");
                         Preferences.setPreference(getContext(), "anonymous_token", "");
                         user = new Accounts(getContext()).getDefaultUser();
                         setValues();

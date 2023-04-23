@@ -5,20 +5,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputLayout;
-
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.model.Draft;
@@ -27,7 +23,6 @@ import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.users.Accounts;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,7 +53,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
 
             final List<String> accounts = new ArrayList<>();
             final List<User> users = new Accounts(BaseCreate.this).getAllUsers();
-            for (User user: users) {
+            for (User user : users) {
                 accounts.add(user.getDisplayName());
             }
 
@@ -176,17 +171,16 @@ abstract public class BaseCreate extends BasePlatformCreate {
                                         if (incomingTitle.length() > 0 && title != null) {
                                             title.setText(incomingTitle);
                                         }
+                                    } catch (NullPointerException ignored) {
                                     }
-                                    catch (NullPointerException ignored) { }
-                                }
-                                else if (extras.containsKey(Intent.EXTRA_TITLE)) {
+                                } else if (extras.containsKey(Intent.EXTRA_TITLE)) {
                                     try {
                                         String incomingTitle = extras.get(Intent.EXTRA_TITLE).toString();
                                         if (incomingTitle.length() > 0 && title != null) {
                                             title.setText(incomingTitle);
                                         }
+                                    } catch (NullPointerException ignored) {
                                     }
-                                    catch (NullPointerException ignored) { }
                                 }
 
                                 setUrlAndFocusOnMessage(incomingData);
@@ -195,7 +189,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
                                         if (new Accounts(this).getCount() > 1) {
                                             final List<String> accounts = new ArrayList<>();
                                             final List<User> users = new Accounts(BaseCreate.this).getAllUsers();
-                                            for (User user: users) {
+                                            for (User user : users) {
                                                 accounts.add(user.getDisplayName());
                                             }
                                             final CharSequence[] accountItems = accounts.toArray(new CharSequence[0]);
@@ -210,8 +204,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
                                                 }
                                             });
                                             builder.show();
-                                        }
-                                        else {
+                                        } else {
                                             sendBasePost(null);
                                         }
                                     }
@@ -229,20 +222,17 @@ abstract public class BaseCreate extends BasePlatformCreate {
                         prepareImagePreview();
                     }
 
+                } catch (NullPointerException ignored) {
                 }
-                catch (NullPointerException ignored) { }
-            }
-            else {
+            } else {
                 String incomingText = extras.getString("incomingText");
                 if (incomingText != null && incomingText.length() > 0 && (body != null || url != null || locationUrl != null)) {
                     setChanges(true);
                     if (isCheckin && locationUrl != null) {
                         setUrlAndFocusOnMessage(incomingText);
-                    }
-                    else if (url != null) {
+                    } else if (url != null) {
                         setUrlAndFocusOnMessage(incomingText);
-                    }
-                    else {
+                    } else {
                         body.setText(incomingText);
                     }
                 }
@@ -290,8 +280,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
         if (title != null) {
             if (!post.supports(Post.FEATURE_TITLE)) {
                 title.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 title.setVisibility(View.VISIBLE);
             }
         }
@@ -300,8 +289,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
         if (postStatus != null) {
             if (!post.supports(Post.FEATURE_POST_STATUS)) {
                 postStatus.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 postStatus.setVisibility(View.VISIBLE);
             }
         }
@@ -310,8 +298,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
         if (tags != null) {
             if (!post.supports(Post.FEATURE_CATEGORIES)) {
                 tags.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 tags.setVisibility(View.VISIBLE);
             }
         }
@@ -320,8 +307,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
         if (url != null) {
             if (post.hideUrlField()) {
                 url.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 url.setVisibility(View.VISIBLE);
             }
         }
@@ -331,8 +317,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
             LinearLayout spoilerWrapper = findViewById(R.id.spoilerWrapper);
             if (post.supports(Post.FEATURE_SPOILER)) {
                 spoilerWrapper.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 spoilerWrapper.setVisibility(View.GONE);
             }
         }
@@ -390,7 +375,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
                         syn.setTextSize(15);
                         syn.setTextColor(getResources().getColor(R.color.textColor));
                         syndicationLayout.addView(syn);
-                        syndicationLayout.setPadding(10, 0,0, 0 );
+                        syndicationLayout.setPadding(10, 0, 0, 0);
                     }
 
                     for (int i = 0; i < itemList.length(); i++) {
@@ -415,8 +400,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
                         syndicationLayout.addView(ch);
                     }
 
-                }
-                catch (JSONException e) {
+                } catch (JSONException e) {
                     String message = String.format(getString(R.string.syndication_targets_parse_error), e.getMessage());
                     final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
                     snack.setAction(getString(R.string.close), new View.OnClickListener() {
@@ -435,8 +419,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
     /**
      * Set account posting info.
      *
-     * @param userName
-     *   The user who is posting.
+     * @param userName The user who is posting.
      */
     public void setAccountPostInfo(@NonNull String userName) {
         accountPost.setText(String.format(getString(R.string.account_post_as), Utility.stripEndingSlash(userName)));
@@ -445,8 +428,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
     /**
      * Prepares the activity with the draft.
      *
-     * @param draftId
-     *   The draft id.
+     * @param draftId The draft id.
      */
     public void prepareDraft(Integer draftId) {
         db = new DatabaseHelper(this);
@@ -600,8 +582,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
                 int visibility = 0;
                 if (draft.getLocationVisibility().equals("private")) {
                     visibility = 1;
-                }
-                else if (draft.getLocationVisibility().equals("protected")) {
+                } else if (draft.getLocationVisibility().equals("protected")) {
                     visibility = 2;
                 }
 
@@ -637,7 +618,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
                 String[] captionsList = draft.getCaption().split(";");
                 caption.addAll(Arrays.asList(captionsList));
                 int index = 0;
-                for (String c: caption) {
+                for (String c : caption) {
                     if (c.equals(EMPTY_CAPTION)) {
                         caption.set(index, "");
                     }

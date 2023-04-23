@@ -6,12 +6,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
@@ -19,7 +14,6 @@ import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Contact;
 import com.indieweb.indigenous.util.Utility;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,14 +23,14 @@ import java.util.Map;
 
 public class ContactActivity extends BaseCreate {
 
+    protected Contact contact;
     TextView contactName;
     TextView contactNickname;
     TextView contactUrl;
     TextView contactPhoto;
     boolean update = false;
-    protected Contact contact;
-    private MenuItem sendItem;
     RelativeLayout layout;
+    private MenuItem sendItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +82,7 @@ public class ContactActivity extends BaseCreate {
 
             if (update) {
                 updateContact(item);
-            }
-            else {
+            } else {
 
                 bodyParams.put("name", contactName.getText().toString());
 
@@ -148,8 +141,7 @@ public class ContactActivity extends BaseCreate {
                         Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
                     }
                 }
-        )
-        {
+        ) {
             @Override
             public byte[] getBody() {
 
@@ -191,8 +183,8 @@ public class ContactActivity extends BaseCreate {
 
                     root.put("replace", replace);
                     return root.toString().getBytes();
+                } catch (JSONException ignored) {
                 }
-                catch (JSONException ignored) { }
 
                 String root = "{}";
                 return root.getBytes();

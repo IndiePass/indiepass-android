@@ -3,7 +3,6 @@ package com.indieweb.indigenous.post;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
-
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Draft;
 
@@ -30,8 +29,7 @@ public class RsvpActivity extends BaseCreate {
 
         if (TextUtils.isEmpty(url.getText())) {
             url.setError(getString(R.string.required_field));
-        }
-        else {
+        } else {
             bodyParams.put("rsvp", getResources().getStringArray(R.array.rsvp_array_values)[rsvp.getSelectedItemPosition()]);
             sendBasePost(item);
         }

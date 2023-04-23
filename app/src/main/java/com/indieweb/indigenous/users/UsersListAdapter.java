@@ -12,19 +12,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.appcompat.app.AlertDialog;
-
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
+import android.widget.*;
+import androidx.appcompat.app.AlertDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
@@ -54,7 +48,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
         this.currentUser = currentUser;
         this.activity = activity;
         this.layout = layout;
-        this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public int getCount() {
@@ -69,20 +63,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
         return position;
     }
 
-    public void onClick(View view) {}
-
-    public static class ViewHolder {
-        public TextView name;
-        public TextView url;
-        TextView userCurrent;
-        TextView accountType;
-        ImageView avatar;
-        TextView endpoints;
-        TextView endpointsTitle;
-        RelativeLayout row;
-        Button sync;
-        Button switchAccount;
-        public Button delete;
+    public void onClick(View view) {
     }
 
     @SuppressLint("InflateParams")
@@ -104,9 +85,8 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
             holder.switchAccount = convertView.findViewById(R.id.itemSwitch);
             holder.row = convertView.findViewById(R.id.user_list_row);
             convertView.setTag(holder);
-        }
-        else {
-            holder = (ViewHolder)convertView.getTag();
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
         final User item = items.get(position);
@@ -116,8 +96,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
                 holder.userCurrent.setVisibility(View.VISIBLE);
                 holder.userCurrent.setText(R.string.default_user);
                 holder.switchAccount.setVisibility(GONE);
-            }
-            else {
+            } else {
                 holder.userCurrent.setVisibility(GONE);
                 holder.switchAccount.setVisibility(View.VISIBLE);
                 holder.switchAccount.setOnClickListener(new OnSwitchClickListener(position));
@@ -141,8 +120,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
             if (item.getName().length() > 0) {
                 holder.name.setVisibility(VISIBLE);
                 holder.name.setText(item.getName());
-            }
-            else {
+            } else {
                 holder.name.setVisibility(GONE);
             }
 
@@ -167,8 +145,7 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
                 holder.endpointsTitle.setVisibility(VISIBLE);
                 holder.endpoints.setVisibility(VISIBLE);
                 holder.endpoints.setText(endpoints);
-            }
-            else {
+            } else {
                 holder.endpointsTitle.setVisibility(GONE);
                 holder.endpoints.setVisibility(GONE);
             }
@@ -179,6 +156,60 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
         }
 
         return convertView;
+    }
+
+    /**
+     * Handle success removal.
+     *
+     * @param user     The user that was removed.
+     * @param position The position in the adapter.
+     */
+    private void handleSuccessRemoval(User user, int position) {
+        Auth auth = AuthFactory.getAuth(user, context);
+        auth.revokeToken(user);
+        if (user.getAccountName().equals(currentUser.getAccountName())) {
+            Snackbar.make(layout, String.format(context.getString(R.string.account_removed), user.getDisplayName()), Snackbar.LENGTH_SHORT).show();
+
+            // Set a default account in case there still accounts available. Just pick the first one
+            // in the list.
+            try {
+                int numberOfAccounts = new Accounts(context).getCount();
+                if (numberOfAccounts > 0) {
+                    List<User> users = new Accounts(context).getAllUsers();
+                    SharedPreferences.Editor editor = context.getSharedPreferences("indigenous", MODE_PRIVATE).edit();
+                    editor.putString("account", users.get(0).getAccount().name);
+                    editor.apply();
+                }
+            } catch (Exception ignored) {
+            }
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent main = new Intent(context, LaunchActivity.class);
+                    context.startActivity(main);
+                    activity.finish();
+                }
+            }, 700);
+        } else {
+            Snackbar.make(layout, String.format(context.getString(R.string.account_removed), user.getDisplayName()), Snackbar.LENGTH_SHORT).show();
+            items.remove(position);
+            notifyDataSetChanged();
+        }
+    }
+
+    public static class ViewHolder {
+        public TextView name;
+        public TextView url;
+        public Button delete;
+        TextView userCurrent;
+        TextView accountType;
+        ImageView avatar;
+        TextView endpoints;
+        TextView endpointsTitle;
+        RelativeLayout row;
+        Button sync;
+        Button switchAccount;
     }
 
     // Switch listener.
@@ -230,8 +261,8 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(String.format(context.getString(R.string.account_delete_confirm), user.getDisplayName()));
-            builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog,int id) {
+            builder.setPositiveButton(context.getString(R.string.delete_post), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
 
                     AccountManager accountManager = AccountManager.get(context);
 
@@ -243,14 +274,13 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
                                     if (accountManagerFuture.getResult()) {
                                         handleSuccessRemoval(user, position);
                                     }
-                                }
-                                catch (android.accounts.OperationCanceledException | IOException | AuthenticatorException e) {
+                                } catch (android.accounts.OperationCanceledException | IOException |
+                                         AuthenticatorException e) {
                                     Snackbar.make(layout, context.getString(R.string.account_delete_error), Snackbar.LENGTH_SHORT).show();
                                 }
                             }
                         }, null);
-                    }
-                    else {
+                    } else {
                         accountManager.removeAccount(user.getAccount(), activity, new AccountManagerCallback<Bundle>() {
                             @Override
                             public void run(AccountManagerFuture<Bundle> accountManagerFuture) {
@@ -258,8 +288,8 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
                                     if (accountManagerFuture.getResult() != null) {
                                         handleSuccessRemoval(user, position);
                                     }
-                                }
-                                catch (android.accounts.OperationCanceledException | AuthenticatorException | IOException e) {
+                                } catch (android.accounts.OperationCanceledException | AuthenticatorException |
+                                         IOException e) {
                                     Snackbar.make(layout, context.getString(R.string.account_delete_error), Snackbar.LENGTH_SHORT).show();
                                 }
                             }
@@ -274,49 +304,6 @@ public class UsersListAdapter extends BaseAdapter implements OnClickListener {
                 }
             });
             builder.show();
-        }
-    }
-
-    /**
-     * Handle success removal.
-     *
-     * @param user
-     *   The user that was removed.
-     * @param position
-     *   The position in the adapter.
-     */
-    private void handleSuccessRemoval(User user, int position) {
-        Auth auth = AuthFactory.getAuth(user, context);
-        auth.revokeToken(user);
-        if (user.getAccountName().equals(currentUser.getAccountName())) {
-            Snackbar.make(layout, String.format(context.getString(R.string.account_removed), user.getDisplayName()), Snackbar.LENGTH_SHORT).show();
-
-            // Set a default account in case there still accounts available. Just pick the first one
-            // in the list.
-            try {
-                int numberOfAccounts = new Accounts(context).getCount();
-                if (numberOfAccounts > 0) {
-                    List<User> users = new Accounts(context).getAllUsers();
-                    SharedPreferences.Editor editor = context.getSharedPreferences("indigenous", MODE_PRIVATE).edit();
-                    editor.putString("account", users.get(0).getAccount().name);
-                    editor.apply();
-                }
-            }
-            catch (Exception ignored) {}
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent main = new Intent(context, LaunchActivity.class);
-                    context.startActivity(main);
-                    activity.finish();
-                }
-            }, 700);
-        }
-        else {
-            Snackbar.make(layout, String.format(context.getString(R.string.account_removed), user.getDisplayName()), Snackbar.LENGTH_SHORT).show();
-            items.remove(position);
-            notifyDataSetChanged();
         }
     }
 }

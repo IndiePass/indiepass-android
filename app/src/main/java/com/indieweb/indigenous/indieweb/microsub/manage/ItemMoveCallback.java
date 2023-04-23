@@ -1,8 +1,8 @@
 package com.indieweb.indigenous.indieweb.microsub.manage;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class ItemMoveCallback extends ItemTouchHelper.Callback {
 
@@ -21,7 +21,6 @@ public class ItemMoveCallback extends ItemTouchHelper.Callback {
     public boolean isItemViewSwipeEnabled() {
         return false;
     }
-
 
 
     @Override
@@ -49,7 +48,7 @@ public class ItemMoveCallback extends ItemTouchHelper.Callback {
 
         if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
             if (viewHolder instanceof ManageChannelListAdapter.ViewHolder) {
-                ManageChannelListAdapter.ViewHolder myViewHolder= (ManageChannelListAdapter.ViewHolder) viewHolder;
+                ManageChannelListAdapter.ViewHolder myViewHolder = (ManageChannelListAdapter.ViewHolder) viewHolder;
                 mAdapter.onRowSelected(myViewHolder);
             }
 
@@ -57,13 +56,14 @@ public class ItemMoveCallback extends ItemTouchHelper.Callback {
 
         super.onSelectedChanged(viewHolder, actionState);
     }
+
     @Override
     public void clearView(RecyclerView recyclerView,
                           RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
 
         if (viewHolder instanceof ManageChannelListAdapter.ViewHolder) {
-            ManageChannelListAdapter.ViewHolder myViewHolder=
+            ManageChannelListAdapter.ViewHolder myViewHolder =
                     (ManageChannelListAdapter.ViewHolder) viewHolder;
             mAdapter.onRowClear(myViewHolder);
         }
@@ -72,7 +72,9 @@ public class ItemMoveCallback extends ItemTouchHelper.Callback {
     public interface ItemTouchHelperContract {
 
         void onRowMoved(int fromPosition, int toPosition);
+
         void onRowSelected(ManageChannelListAdapter.ViewHolder myViewHolder);
+
         void onRowClear(ManageChannelListAdapter.ViewHolder myViewHolder);
 
     }

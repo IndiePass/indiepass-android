@@ -17,9 +17,7 @@ public interface General {
     /**
      * Whether the app supports a certain general feature.
      *
-     * @param feature
-     *   The feature to check.
-     *
+     * @param feature The feature to check.
      * @return boolean
      */
     boolean supports(String feature);

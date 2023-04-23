@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-
 import androidx.viewpager.widget.ViewPager;
 
 // See https://github.com/chrisbanes/PhotoView/issues/31#issuecomment-19803926
@@ -23,7 +22,8 @@ public class ViewPagerCatchException extends ViewPager {
     public boolean onTouchEvent(MotionEvent ev) {
         try {
             return super.onTouchEvent(ev);
-        } catch (IllegalArgumentException ignored) { }
+        } catch (IllegalArgumentException ignored) {
+        }
         return false;
     }
 
@@ -31,7 +31,8 @@ public class ViewPagerCatchException extends ViewPager {
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         try {
             return super.onInterceptTouchEvent(ev);
-        } catch (IllegalArgumentException ignored) { }
+        } catch (IllegalArgumentException ignored) {
+        }
         return false;
     }
 }

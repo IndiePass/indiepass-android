@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Draft;
 import com.indieweb.indigenous.util.Utility;

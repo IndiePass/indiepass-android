@@ -2,21 +2,15 @@ package com.indieweb.indigenous.indieweb.micropub.source;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ScrollView;
-import android.widget.Spinner;
-
+import android.widget.*;
+import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.PostType;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.users.Accounts;
 import com.indieweb.indigenous.util.Preferences;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,8 +64,7 @@ public class PostListFilterActivity extends AppCompatActivity {
                     }
                 }
 
-            }
-            catch (JSONException e) {
+            } catch (JSONException e) {
                 Snackbar.make(layout, String.format(getString(R.string.post_types_parse_error), e.getMessage()), Snackbar.LENGTH_LONG).show();
             }
         }
@@ -90,7 +83,8 @@ public class PostListFilterActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
 
         filterSourcePostListButton = findViewById(R.id.filterSourcePostListButton);

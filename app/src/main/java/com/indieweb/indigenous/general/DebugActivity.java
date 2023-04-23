@@ -1,17 +1,15 @@
 package com.indieweb.indigenous.general;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
+import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.util.Utility;
-
 import org.json.JSONObject;
 
 public class DebugActivity extends AppCompatActivity {
@@ -30,11 +28,10 @@ public class DebugActivity extends AppCompatActivity {
         String appDebug = app.getDebug();
         if (appDebug != null) {
 
-            // Try parsing with JSON, in case it fails, we'll fall back to the default string.
+            // Try parsing with JSON, in case it fails; we'll fall back to the default string.
             try {
                 debugString = new JSONObject(appDebug).toString(4);
-            }
-            catch (Exception ignored) {
+            } catch (Exception ignored) {
                 debugString = appDebug;
             }
         }
@@ -55,8 +52,7 @@ public class DebugActivity extends AppCompatActivity {
             try {
                 Utility.copyToClipboard(debugString, getString(R.string.clipboard_label), getApplicationContext());
                 Snackbar.make(layout, getString(R.string.clipboard_success), Snackbar.LENGTH_SHORT).show();
-            }
-            catch (Exception ignored) {
+            } catch (Exception ignored) {
                 Snackbar.make(layout, getString(R.string.clipboard_error), Snackbar.LENGTH_SHORT).show();
             }
 

@@ -28,8 +28,12 @@ public class User {
         return accountName;
     }
 
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
     public String getAccountNameWithoutProtocol() {
-        return accountName.replace("https://","").replace("http://", "");
+        return accountName.replace("https://", "").replace("http://", "");
     }
 
     public String getBaseUrl() {
@@ -42,11 +46,7 @@ public class User {
     }
 
     public String getBaseUrlWithoutProtocol() {
-        return  getBaseUrl().replace("https://","").replace("http://", "");
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
+        return getBaseUrl().replace("https://", "").replace("http://", "");
     }
 
     public String getAccessToken() {
@@ -117,12 +117,12 @@ public class User {
         return anonymous;
     }
 
-    public boolean isAuthenticated() {
-        return !anonymous;
-    }
-
     public void setAnonymous(boolean anonymous) {
         this.anonymous = anonymous;
+    }
+
+    public boolean isAuthenticated() {
+        return !anonymous;
     }
 
     public String getSyndicationTargets() {

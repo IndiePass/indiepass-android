@@ -2,10 +2,6 @@ package com.indieweb.indigenous.post;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.navigation.NavigationView;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,8 +9,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import com.bumptech.glide.Glide;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.General;
 import com.indieweb.indigenous.GeneralFactory;
@@ -23,7 +22,6 @@ import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.users.Accounts;
 import com.indieweb.indigenous.util.Utility;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,8 +59,7 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
 
                     if (extras.containsKey(Intent.EXTRA_SUBJECT)) {
                         incomingTitle = extras.get(Intent.EXTRA_SUBJECT).toString();
-                    }
-                    else if (extras.containsKey(Intent.EXTRA_TITLE)) {
+                    } else if (extras.containsKey(Intent.EXTRA_TITLE)) {
                         incomingTitle = extras.get(Intent.EXTRA_TITLE).toString();
                     }
 
@@ -73,8 +70,8 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                     if (extras.containsKey(Intent.EXTRA_STREAM)) {
                         incomingImage = extras.get(Intent.EXTRA_STREAM).toString();
                     }
+                } catch (NullPointerException ignored) {
                 }
-                catch (NullPointerException ignored) {}
             }
         }
 
@@ -141,13 +138,13 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                         postTypeList.add(type);
                     }
 
+                } catch (JSONException ignored) {
                 }
-                catch (JSONException ignored) { }
             }
 
             // Loop over menu items.
             Menu menu = navigationView.getMenu();
-            for (int i = 0; i < menu.size(); i++){
+            for (int i = 0; i < menu.size(); i++) {
                 String menuType = "";
                 Integer id = menu.getItem(i).getItemId();
                 if (!protectedTypes.contains(id)) {
@@ -201,16 +198,6 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
         }
 
         Utility.setNightTheme(getApplicationContext());
-    }
-
-    // Go to main app.
-    class goToMainAppOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            Intent i = new Intent(getApplicationContext(), LaunchActivity.class);
-            startActivity(i);
-            finish();
-        }
     }
 
     @Override
@@ -340,6 +327,16 @@ public class ShareActivity extends AppCompatActivity implements NavigationView.O
                 break;
         }
         return false;
+    }
+
+    // Go to main app.
+    class goToMainAppOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Intent i = new Intent(getApplicationContext(), LaunchActivity.class);
+            startActivity(i);
+            finish();
+        }
     }
 
 }

@@ -2,7 +2,6 @@ package com.indieweb.indigenous.indieweb.microsub;
 
 import android.content.Context;
 import android.widget.RelativeLayout;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Channel;
@@ -29,9 +28,7 @@ public class MicrosubAction {
     /**
      * Do Microsub request.
      *
-     * @param params
-     *   The params to send.
-     *
+     * @param params The params to send.
      * @return boolean
      */
     private boolean doMicrosubRequest(Map<String, String> params) {
@@ -39,8 +36,8 @@ public class MicrosubAction {
         if (!Utility.hasConnection(context)) {
             try {
                 Snackbar.make(layout, context.getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
+            } catch (Exception ignored) {
             }
-            catch (Exception ignored) {}
             return false;
         }
 
@@ -60,10 +57,9 @@ public class MicrosubAction {
         params.put("channel", channelId);
         if (all) {
             params.put("last_read_entry", entries.get(0));
-        }
-        else {
+        } else {
             int i = 0;
-            for (String entry: entries) {
+            for (String entry : entries) {
                 params.put("entry[" + i + "]", entry);
                 i++;
             }
@@ -72,8 +68,7 @@ public class MicrosubAction {
         if (success && showMessage) {
             if (all) {
                 Snackbar.make(layout, context.getString(R.string.marked_as_read), Snackbar.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 Snackbar.make(layout, context.getString(R.string.item_marked_read), Snackbar.LENGTH_SHORT).show();
             }
         }
@@ -88,7 +83,7 @@ public class MicrosubAction {
         params.put("method", "mark_unread");
         params.put("channel", channelId);
         int i = 0;
-        for (String entry: entries) {
+        for (String entry : entries) {
             params.put("entry[" + i + "]", entry);
             i++;
         }
@@ -215,8 +210,7 @@ public class MicrosubAction {
         if (success) {
             if (update) {
                 Snackbar.make(layout, context.getString(R.string.feed_updated), Snackbar.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 Snackbar.make(layout, context.getString(R.string.feed_subscribed), Snackbar.LENGTH_SHORT).show();
             }
         }

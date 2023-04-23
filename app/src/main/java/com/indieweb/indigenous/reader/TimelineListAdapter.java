@@ -5,47 +5,31 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
-import androidx.appcompat.widget.PopupMenu;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.URLSpan;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
+import android.widget.*;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
-import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.post.Post;
-import com.indieweb.indigenous.post.PostFactory;
-import com.indieweb.indigenous.post.ReadActivity;
-import com.indieweb.indigenous.post.ReplyActivity;
-import com.indieweb.indigenous.post.RsvpActivity;
+import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.indieweb.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.post.*;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
 import com.indieweb.indigenous.widget.ExpandableTextView;
@@ -57,12 +41,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_COMPACT;
+import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_SUMMARY;
 import static com.indieweb.indigenous.reader.Reader.RESPONSE_LIKE;
 import static com.indieweb.indigenous.reader.Reader.RESPONSE_REPOST;
 import static com.indieweb.indigenous.reader.TimelineActivity.MARK_READ_CHANNEL_CLICK;
 import static com.indieweb.indigenous.reader.TimelineActivity.MARK_READ_MANUAL;
-import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_COMPACT;
-import static com.indieweb.indigenous.model.TimelineStyle.TIMELINE_STYLE_SUMMARY;
 import static com.indieweb.indigenous.util.Utility.dateFormatStrings;
 
 /**
@@ -82,6 +66,37 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
     private final int Style;
     private final RelativeLayout layout;
     private final Reader reader;
+    /**
+     * OnTouchListener for channel row.
+     */
+    private final View.OnTouchListener eventTouch = new View.OnTouchListener() {
+        @SuppressLint("ClickableViewAccessibility")
+        @Override
+        public boolean onTouch(View v, MotionEvent motionEvent) {
+            TimelineListAdapter.ViewHolder holder = (TimelineListAdapter.ViewHolder) v.getTag();
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    int downColor = context.getResources().getColor(R.color.listRowBackgroundColorTouched);
+                    holder.row.setBackgroundColor(downColor);
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    int cancelColor = context.getResources().getColor(R.color.listRowBackgroundColor);
+                    holder.row.setBackgroundColor(cancelColor);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    int position = holder.position;
+                    int color = context.getResources().getColor(R.color.listRowBackgroundColor);
+                    TimelineItem item = items.get(position);
+                    holder.row.setBackgroundColor(color);
+                    Indigenous app = Indigenous.getInstance();
+                    app.setTimelineItem(item);
+                    Intent intent = new Intent(context, TimelineDetailActivity.class);
+                    context.startActivity(intent);
+                    break;
+            }
+            return true;
+        }
+    };
 
     TimelineListAdapter(Context context, Reader reader, List<TimelineItem> items, User user, String channelId, String channelName, ListView listView, boolean isSourceView, int style, RelativeLayout layout) {
         this.context = context;
@@ -95,7 +110,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         this.Style = style;
         this.layout = layout;
         this.debugItemJSON = Preferences.getPreference(context, "pref_key_debug_microsub_item_json", false);
-        this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public int getCount() {
@@ -110,43 +125,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         return position;
     }
 
-    public void onClick(View view) {}
-
-    public static class ViewHolder {
-        public int position;
-        public TextView meta;
-        public TextView unread;
-        public TextView channel;
-        public TextView author;
-        public ImageView authorPhoto;
-        public TextView name;
-        public TextView reference;
-        public TextView response;
-        public TextView published;
-        public Button expandSpoiler;
-        public LinearLayout spoilerWrapper;
-        public TextView spoiler;
-        public Button expandContent;
-        public ExpandableTextView content;
-        public ImageView image;
-        public TextView imageCount;
-        public TextView commentCount;
-        public CardView card;
-        public LinearLayout row;
-        public TextView start;
-        public TextView end;
-        public TextView location;
-        public Button reply;
-        public Button like;
-        public Button repost;
-        public Button bookmark;
-        public Button read;
-        public Button audio;
-        public Button video;
-        public Button external;
-        public Button rsvp;
-        public Button map;
-        public Button menu;
+    public void onClick(View view) {
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -156,8 +135,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
             if (Style == TIMELINE_STYLE_COMPACT) {
                 convertView = mInflater.inflate(R.layout.list_item_timeline_compact, null);
-            }
-            else {
+            } else {
                 convertView = mInflater.inflate(R.layout.list_item_timeline, null);
             }
 
@@ -201,8 +179,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
 
             convertView.setTag(holder);
-        }
-        else {
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
@@ -219,8 +196,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             SimpleDateFormat formatOut;
             if (Style == TIMELINE_STYLE_COMPACT) {
                 formatOut = new SimpleDateFormat("dd MM yyyy");
-            }
-            else {
+            } else {
                 formatOut = new SimpleDateFormat("dd MM yyyy HH:mm");
             }
 
@@ -231,8 +207,8 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                         break;
                     }
                     dateResult = new SimpleDateFormat(formatString).parse(item.getPublished());
+                } catch (ParseException ignored) {
                 }
-                catch (ParseException ignored) {}
             }
 
             // Author.
@@ -244,7 +220,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             // Meta
             if (Style == TIMELINE_STYLE_COMPACT) {
 
-                List<String>  meta = new ArrayList<>();
+                List<String> meta = new ArrayList<>();
                 if (!item.isRead()) {
                     meta.add(context.getString(R.string.unread));
                 }
@@ -260,8 +236,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 if (item.getPhotos().size() > 0) {
                     if (item.getPhotos().size() > 1) {
                         meta.add(String.format(context.getString(R.string.number_of_images), item.getPhotos().size()));
-                    }
-                    else {
+                    } else {
                         meta.add(context.getString(R.string.one_image));
                     }
                 }
@@ -272,8 +247,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             .into(holder.image);
                     holder.card.setVisibility(View.VISIBLE);
                     holder.image.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     holder.card.setVisibility(View.GONE);
                     holder.image.setVisibility(View.GONE);
                 }
@@ -281,8 +255,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 if (meta.size() > 0) {
                     holder.meta.setVisibility(View.VISIBLE);
                     holder.meta.setText(TextUtils.join(" - ", meta));
-                }
-                else {
+                } else {
                     holder.meta.setVisibility(View.GONE);
                 }
 
@@ -292,8 +265,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             if ((item.getType().equals("entry") || item.getType().equals("event")) && item.getName().length() > 0) {
                 holder.name.setVisibility(View.VISIBLE);
                 holder.name.setText(item.getName());
-            }
-            else if (Style == TIMELINE_STYLE_COMPACT && item.getTextContent().length() > 0) {
+            } else if (Style == TIMELINE_STYLE_COMPACT && item.getTextContent().length() > 0) {
                 String ellipsis = "";
                 // Replace first. Newlines are counted as a character too, so we could end up with
                 // an exception. Let's still use a try/catch block though to be sure.
@@ -307,20 +279,17 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 try {
                     holder.name.setVisibility(View.VISIBLE);
                     holder.name.setText(shortText);
-                }
-                catch (Exception ignored) {
+                } catch (Exception ignored) {
                     holder.name.setVisibility(View.GONE);
                 }
-            }
-            else {
+            } else {
                 holder.name.setVisibility(View.GONE);
             }
 
             // Button listeners.
             if (Preferences.getPreference(context, "pref_key_response_read", false)) {
                 holder.read.setOnClickListener(new OnReadClickListener(position));
-            }
-            else {
+            } else {
                 holder.read.setVisibility(View.GONE);
             }
 
@@ -330,8 +299,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     holder.bookmark.setVisibility(View.VISIBLE);
                     holder.bookmark.setOnClickListener(new OnBookmarkClickListener(position));
                     holder.bookmark.setActivated(item.isBookmarked());
-                }
-                else {
+                } else {
                     holder.bookmark.setVisibility(View.GONE);
                 }
 
@@ -352,15 +320,13 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 if (item.getType().equals("event")) {
                     holder.rsvp.setVisibility(View.VISIBLE);
                     holder.rsvp.setOnClickListener(new OnRsvpClickListener(position));
-                }
-                else {
+                } else {
                     holder.rsvp.setVisibility(View.GONE);
                 }
 
                 holder.menu.setVisibility(View.VISIBLE);
                 holder.menu.setOnClickListener(new OnMenuClickListener(position, this.debugItemJSON));
-            }
-            else {
+            } else {
                 holder.bookmark.setVisibility(View.GONE);
                 holder.reply.setVisibility(View.GONE);
                 holder.like.setVisibility(View.GONE);
@@ -374,8 +340,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             if (item.getAudio().length() > 0) {
                 holder.audio.setVisibility(View.VISIBLE);
                 holder.audio.setOnClickListener(new OnAudioClickListener(position));
-            }
-            else {
+            } else {
                 holder.audio.setVisibility(View.GONE);
             }
 
@@ -383,8 +348,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             if (item.getVideo().length() > 0) {
                 holder.video.setVisibility(View.VISIBLE);
                 holder.video.setOnClickListener(new OnVideoClickListener(position));
-            }
-            else {
+            } else {
                 holder.video.setVisibility(View.GONE);
             }
 
@@ -392,8 +356,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             if (item.getLatitude().length() > 0 && item.getLongitude().length() > 0) {
                 holder.map.setVisibility(View.VISIBLE);
                 holder.map.setOnClickListener(new OnMapClickListener(position));
-            }
-            else {
+            } else {
                 holder.map.setVisibility(View.GONE);
             }
 
@@ -404,16 +367,14 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 if (!item.isRead()) {
                     holder.unread.setVisibility(View.VISIBLE);
                     holder.unread.setText(R.string.unread);
-                }
-                else {
+                } else {
                     holder.unread.setVisibility(View.GONE);
                 }
 
                 if (dateResult != null) {
                     holder.published.setVisibility(View.VISIBLE);
                     holder.published.setText(formatOut.format(dateResult));
-                }
-                else {
+                } else {
                     holder.published.setVisibility(View.GONE);
                 }
 
@@ -426,19 +387,17 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                                 break;
                             }
                             startDate = new SimpleDateFormat(formatString).parse(item.getStart());
+                        } catch (ParseException ignored) {
                         }
-                        catch (ParseException ignored) {}
                     }
 
                     if (startDate != null) {
                         holder.start.setVisibility(View.VISIBLE);
                         holder.start.setText(String.format(context.getString(R.string.start_date_event), formatOut.format(startDate)));
-                    }
-                    else {
+                    } else {
                         holder.start.setVisibility(View.GONE);
                     }
-                }
-                else {
+                } else {
                     holder.start.setVisibility(View.GONE);
                 }
 
@@ -451,19 +410,17 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                                 break;
                             }
                             endDate = new SimpleDateFormat(formatString).parse(item.getEnd());
+                        } catch (ParseException ignored) {
                         }
-                        catch (ParseException ignored) {}
                     }
 
                     if (endDate != null) {
                         holder.end.setVisibility(View.VISIBLE);
                         holder.end.setText(String.format(context.getString(R.string.end_date_event), formatOut.format(endDate)));
-                    }
-                    else {
+                    } else {
                         holder.end.setVisibility(View.GONE);
                     }
-                }
-                else {
+                } else {
                     holder.end.setVisibility(View.GONE);
                 }
 
@@ -474,8 +431,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     try {
                         new URL(item.getLocation()).toURI();
                         location += "<a href=\"" + item.getLocation() + "\">" + item.getLocation() + "</a>";
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         location += item.getLocation();
                     }
 
@@ -489,8 +445,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     holder.location.setMovementMethod(LinkMovementMethod.getInstance());
                     holder.location.setVisibility(View.VISIBLE);
                     holder.location.setText(strBuilder);
-                }
-                else {
+                } else {
                     holder.location.setMovementMethod(null);
                     holder.location.setVisibility(View.GONE);
                 }
@@ -499,16 +454,14 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 if ((channelId.equals("global") || isSourceView) && item.getChannelName().length() > 0) {
                     holder.channel.setVisibility(View.VISIBLE);
                     holder.channel.setText(item.getChannelName());
-                }
-                else {
+                } else {
                     holder.channel.setVisibility(View.GONE);
                 }
 
                 if (author.length() > 0) {
                     holder.author.setVisibility(View.VISIBLE);
                     holder.author.setText(author);
-                }
-                else {
+                } else {
                     holder.author.setVisibility(View.GONE);
                 }
 
@@ -571,8 +524,8 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                                 ResponseData += " " + ResponseSuffix;
                             }
                         }
+                    } catch (Exception ignored) {
                     }
-                    catch (Exception ignored) { }
                 }
 
                 if (ResponseData.length() > 0) {
@@ -587,8 +540,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
 
                     holder.response.setText(strBuilder);
                     holder.response.setMovementMethod(LinkMovementMethod.getInstance());
-                }
-                else {
+                } else {
                     holder.response.setVisibility(View.GONE);
                 }
 
@@ -602,8 +554,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                         String html = item.getHtmlContent();
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                             sequence = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
-                        }
-                        else {
+                        } else {
                             sequence = Html.fromHtml(html);
                         }
 
@@ -617,8 +568,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                         }
                         holder.content.setText(strBuilder);
                         holder.content.setMovementMethod(LinkMovementMethod.getInstance());
-                    }
-                    else {
+                    } else {
                         holder.content.setMovementMethod(null);
                         holder.content.setText(item.getTextContent().trim());
                     }
@@ -641,8 +591,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                                 if (holder.content.isExpanded()) {
                                     holder.content.collapse();
                                     holder.expandContent.setText(R.string.read_more);
-                                }
-                                else {
+                                } else {
                                     holder.content.expand();
                                     holder.expandContent.setText(R.string.close);
                                 }
@@ -657,12 +606,10 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             }
                         });
 
-                    }
-                    else {
+                    } else {
                         holder.expandContent.setVisibility(View.GONE);
                     }
-                }
-                else {
+                } else {
                     holder.content.setMovementMethod(null);
                     holder.content.setVisibility(View.GONE);
                     holder.expandContent.setVisibility(View.GONE);
@@ -679,15 +626,13 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             if (holder.content.getVisibility() == View.GONE) {
                                 holder.content.setVisibility(View.VISIBLE);
                                 holder.expandSpoiler.setText(context.getString(R.string.show_less));
-                            }
-                            else {
+                            } else {
                                 holder.content.setVisibility(View.GONE);
                                 holder.expandSpoiler.setText(context.getString(R.string.show_more));
                             }
                         }
                     });
-                }
-                else {
+                } else {
                     holder.spoilerWrapper.setVisibility(View.GONE);
                     holder.content.setVisibility(holder.content.getVisibility());
                 }
@@ -696,8 +641,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 if (item.getReference().length() > 0) {
                     holder.reference.setVisibility(View.VISIBLE);
                     holder.reference.setText(item.getReference());
-                }
-                else {
+                } else {
                     holder.reference.setVisibility(View.GONE);
                 }
 
@@ -712,8 +656,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                         holder.image.setVisibility(View.VISIBLE);
                         holder.card.setVisibility(View.VISIBLE);
                         holder.image.setOnClickListener(new OnImageClickListener(position));
-                    }
-                    else {
+                    } else {
                         holder.image.setVisibility(View.GONE);
                         holder.card.setVisibility(View.GONE);
                         holder.imageCount.setOnClickListener(new OnImageClickListener(position));
@@ -723,16 +666,13 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                         holder.imageCount.setVisibility(View.VISIBLE);
                         if (item.getPhotos().size() > 1) {
                             holder.imageCount.setText(String.format(context.getString(R.string.number_of_images), item.getPhotos().size()));
-                        }
-                        else {
+                        } else {
                             holder.imageCount.setText(R.string.one_image);
                         }
-                    }
-                    else {
+                    } else {
                         holder.imageCount.setVisibility(View.GONE);
                     }
-                }
-                else {
+                } else {
                     holder.image.setVisibility(View.GONE);
                     holder.card.setVisibility(View.GONE);
                     holder.imageCount.setVisibility(View.GONE);
@@ -744,13 +684,11 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     String comment_text;
                     if (item.getNumberOfComments() == 1) {
                         comment_text = context.getString(R.string.comments_one);
-                    }
-                    else {
+                    } else {
                         comment_text = context.getString(R.string.comments_multiple);
                     }
                     holder.commentCount.setText(String.format(comment_text, item.getNumberOfComments()));
-                }
-                else {
+                } else {
                     holder.commentCount.setVisibility(View.GONE);
                 }
 
@@ -758,8 +696,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 if (reader.supports(Reader.READER_DETAIL_CLICK)) {
                     convertView.setOnTouchListener(eventTouch);
                 }
-            }
-            else {
+            } else {
                 // Set on touch listener.
                 convertView.setOnTouchListener(eventTouch);
             }
@@ -768,37 +705,42 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         return convertView;
     }
 
-    /**
-     * OnTouchListener for channel row.
-     */
-    private final View.OnTouchListener eventTouch = new View.OnTouchListener() {
-        @SuppressLint("ClickableViewAccessibility")
-        @Override
-        public boolean onTouch(View v, MotionEvent motionEvent) {
-            TimelineListAdapter.ViewHolder holder = (TimelineListAdapter.ViewHolder)v.getTag();
-            switch(motionEvent.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    int downColor = context.getResources().getColor(R.color.listRowBackgroundColorTouched);
-                    holder.row.setBackgroundColor(downColor);
-                    break;
-                case MotionEvent.ACTION_CANCEL:
-                    int cancelColor = context.getResources().getColor(R.color.listRowBackgroundColor);
-                    holder.row.setBackgroundColor(cancelColor);
-                    break;
-                case MotionEvent.ACTION_UP:
-                    int position = holder.position;
-                    int color = context.getResources().getColor(R.color.listRowBackgroundColor);
-                    TimelineItem item = items.get(position);
-                    holder.row.setBackgroundColor(color);
-                    Indigenous app = Indigenous.getInstance();
-                    app.setTimelineItem(item);
-                    Intent intent = new Intent(context, TimelineDetailActivity.class);
-                    context.startActivity(intent);
-                    break;
-            }
-            return true;
-        }
-    };
+    public static class ViewHolder {
+        public int position;
+        public TextView meta;
+        public TextView unread;
+        public TextView channel;
+        public TextView author;
+        public ImageView authorPhoto;
+        public TextView name;
+        public TextView reference;
+        public TextView response;
+        public TextView published;
+        public Button expandSpoiler;
+        public LinearLayout spoilerWrapper;
+        public TextView spoiler;
+        public Button expandContent;
+        public ExpandableTextView content;
+        public ImageView image;
+        public TextView imageCount;
+        public TextView commentCount;
+        public CardView card;
+        public LinearLayout row;
+        public TextView start;
+        public TextView end;
+        public TextView location;
+        public Button reply;
+        public Button like;
+        public Button repost;
+        public Button bookmark;
+        public Button read;
+        public Button audio;
+        public Button video;
+        public Button external;
+        public Button rsvp;
+        public Button map;
+        public Button menu;
+    }
 
     // Reply listener.
     class OnReplyClickListener implements OnClickListener {
@@ -831,15 +773,13 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public void onClick(View v) {
             if (!reader.supports(RESPONSE_LIKE)) {
                 Snackbar.make(layout, context.getString(R.string.no_anonymous_posting), Snackbar.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 TimelineItem item = items.get(this.position);
                 boolean liked = reader.doResponse(item, Reader.RESPONSE_LIKE);
                 if (liked) {
                     item.setLiked(true);
                     v.setActivated(true);
-                }
-                else {
+                } else {
                     item.setLiked(false);
                     v.setActivated(false);
                 }
@@ -860,15 +800,13 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public void onClick(View v) {
             if (!reader.supports(RESPONSE_REPOST)) {
                 Snackbar.make(layout, context.getString(R.string.no_anonymous_posting), Snackbar.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 TimelineItem item = items.get(this.position);
                 boolean reposted = reader.doResponse(item, Reader.RESPONSE_REPOST);
                 if (reposted) {
                     item.setReposted(true);
                     v.setActivated(true);
-                }
-                else {
+                } else {
                     item.setReposted(false);
                     v.setActivated(false);
                 }
@@ -889,15 +827,13 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
         public void onClick(View v) {
             if (!reader.supports(Reader.RESPONSE_BOOKMARK)) {
                 Snackbar.make(layout, context.getString(R.string.no_anonymous_posting), Snackbar.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 TimelineItem item = items.get(this.position);
                 boolean bookmarked = reader.doResponse(item, Reader.RESPONSE_BOOKMARK);
                 if (bookmarked) {
                     item.setBookmarked(true);
                     v.setActivated(true);
-                }
-                else {
+                } else {
                     item.setBookmarked(false);
                     v.setActivated(false);
                 }
@@ -921,8 +857,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             String text = "";
             if (item.getUrl().length() > 0) {
                 text = item.getUrl();
-            }
-            else if (item.getName().length() > 0) {
+            } else if (item.getName().length() > 0) {
                 text = item.getName();
             }
             i.putExtra("incomingText", text);
@@ -969,8 +904,8 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 customTabsIntent.launchUrl(context, Uri.parse(item.getUrl()));
+            } catch (Exception ignored) {
             }
-            catch (Exception ignored) { }
 
         }
     }
@@ -1048,9 +983,8 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             Uri geoLocation = Uri.parse("geo:" + item.getLatitude() + "," + item.getLongitude());
             intent.setData(geoLocation);
             if (intent.resolveActivity(context.getPackageManager()) != null) {
-                    context.startActivity(intent);
-            }
-            else {
+                context.startActivity(intent);
+            } else {
                 Snackbar.make(layout, context.getString(R.string.maps_info), Snackbar.LENGTH_SHORT).show();
             }
         }
@@ -1131,8 +1065,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 if (itemMarkUnread != null) {
                     itemMarkUnread.setVisible(false);
                 }
-            }
-            else {
+            } else {
                 if (!entry.isRead() && (channelId.equals(Preferences.getPreference(context, "pref_key_read_later", "")) || channelId.equals("global") || Preferences.getPreference(context, "pref_key_mark_read", MARK_READ_CHANNEL_CLICK) == MARK_READ_MANUAL)) {
                     MenuItem itemMarkRead = menu.findItem(R.id.timeline_entry_mark_read);
                     if (itemMarkRead != null) {
@@ -1168,8 +1101,8 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     switch (item.getItemId()) {
                         case R.id.timeline_entry_delete:
                             builder.setTitle(context.getString(R.string.delete_post_confirm));
-                            builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,int id) {
+                            builder.setPositiveButton(context.getString(R.string.delete_post), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
                                     Post post = PostFactory.getPost(user, context);
                                     post.deletePost(channelId, entry.getId());
                                     items.remove(position);
@@ -1196,8 +1129,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                                 }
                             }
 
-                            @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument")
-                            final CharSequence[] channelItems = displayValues.toArray(new CharSequence[displayValues.size()]);
+                            @SuppressWarnings("ToArrayCallWithZeroLengthArrayArgument") final CharSequence[] channelItems = displayValues.toArray(new CharSequence[displayValues.size()]);
 
                             builder.setTitle(context.getString(R.string.select_channel_move));
                             builder.setSingleChoiceItems(channelItems, -1, null);
@@ -1210,7 +1142,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                             builder.setPositiveButton(R.string.move_item, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    ListView lw = ((AlertDialog)dialog).getListView();
+                                    ListView lw = ((AlertDialog) dialog).getListView();
                                     Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
                                     if (checkedItem != null) {
                                         for (Channel channel : channels) {
@@ -1259,8 +1191,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                         case R.id.timeline_save_author:
                             if (entry.getAuthorName().length() > 0) {
                                 reader.doResponse(entry, Reader.RESPONSE_CONTACT);
-                            }
-                            else {
+                            } else {
                                 Snackbar.make(layout, context.getString(R.string.contact_no_name), Snackbar.LENGTH_SHORT).show();
                             }
                             break;

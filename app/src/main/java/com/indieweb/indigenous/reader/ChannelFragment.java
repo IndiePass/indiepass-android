@@ -5,31 +5,25 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.*;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
-
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.TextView;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.General;
 import com.indieweb.indigenous.GeneralFactory;
 import com.indieweb.indigenous.Indigenous;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
-import com.indieweb.indigenous.users.AuthActivity;
+import com.indieweb.indigenous.general.BaseFragment;
 import com.indieweb.indigenous.indieweb.microsub.manage.ManageChannelActivity;
 import com.indieweb.indigenous.model.Cache;
 import com.indieweb.indigenous.model.Channel;
-import com.indieweb.indigenous.general.BaseFragment;
+import com.indieweb.indigenous.users.AuthActivity;
 import com.indieweb.indigenous.util.HTTPRequest;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
@@ -77,8 +71,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
                 setLayoutRefreshing(true);
                 setOnRefreshListener();
                 showRefreshLayout();
-            }
-            else {
+            } else {
                 disableRefresh();
             }
             listChannel.setVisibility(View.VISIBLE);
@@ -86,12 +79,20 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
             hideRead = Preferences.getPreference(this.getContext(), "channel_hide_read", false);
             showSources = Preferences.getPreference(this.getContext(), "channel_show_sources", false);
             startChannels();
-        }
-        else {
+        } else {
             listChannel.setVisibility(View.GONE);
             hideRefreshLayout();
             TextView noMicrosubEndpoint = view.findViewById(R.id.noMicrosubEndpoint);
             noMicrosubEndpoint.setVisibility(View.VISIBLE);
+            Button addMicrosubEndpoint = view.findViewById(R.id.addMicrosubEndpoint);
+            addMicrosubEndpoint.setVisibility(View.VISIBLE);
+            addMicrosubEndpoint.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(requireContext(), AuthActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
     }
 
@@ -133,8 +134,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
             if (cache != null && cache.getData().length() > 0) {
                 parseChannelResponse(cache.getData(), true);
                 Snackbar.make(layout, getString(R.string.reader_offline), Snackbar.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 checkRefreshingStatus();
                 showNoConnection();
             }
@@ -145,8 +145,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
         if (channelEndpoint != null) {
             HTTPRequest r = new HTTPRequest(this.volleyRequestListener, user, requireContext());
             r.doGetRequest(channelEndpoint);
-        }
-        else {
+        } else {
             List<Channel> channelList = reader.getChannels();
             Channels.addAll(channelList);
             adapter.notifyDataSetChanged();
@@ -158,18 +157,16 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
     public void OnSuccessRequest(String response) {
         try {
             Utility.saveCache(requireContext(), user.getAccountNameWithoutProtocol(), "channels", response, "", "");
+        } catch (Exception ignored) {
         }
-        catch (Exception ignored) {}
         parseChannelResponse(response, false);
     }
 
     /**
      * Parse the channel data.
      *
-     * @param data
-     *   The data to parse.
-     * @param fromCache
-     *   Whether the response came from cache or not.
+     * @param data      The data to parse.
+     * @param fromCache Whether the response came from cache or not.
      */
     private void parseChannelResponse(String data, boolean fromCache) {
         boolean hasUnread = false;
@@ -195,7 +192,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
 
         // Remove channels if needed.
         if (hideRead && !fromCache && hasUnread) {
-            for (int j = Channels.size()-1; j >= 0; j--) {
+            for (int j = Channels.size() - 1; j >= 0; j--) {
                 Channel c = Channels.get(j);
                 if (c.getUnread() == 0 || (c.getSourceId().length() > 0 && c.getUnreadSources() < 2)) {
                     Channels.remove(j);
@@ -271,6 +268,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
                         public boolean onQueryTextChange(String newText) {
                             return true;
                         }
+
                         @Override
                         public boolean onQueryTextSubmit(String query) {
                             if (query.length() > 0) {
@@ -294,8 +292,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
                     item.setTitle(getString(R.string.channel_show_all));
                 }
             }
-        }
-        else {
+        } else {
             MenuItem item = menu.findItem(R.id.channel_hide_read);
             if (item != null) {
                 item.setVisible(false);
@@ -309,8 +306,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
                     item.setTitle(getString(R.string.channel_hide_sources));
                 }
             }
-        }
-        else {
+        } else {
             MenuItem item = menu.findItem(R.id.channel_show_sources);
             if (item != null) {
                 item.setVisible(false);
@@ -339,8 +335,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
                 hideRead = !hideRead;
                 if (hideRead) {
                     item.setTitle(getString(R.string.channel_show_all));
-                }
-                else {
+                } else {
                     item.setTitle(getString(R.string.channel_hide_read));
                 }
                 Preferences.setPreference(requireContext(), "channel_hide_read", hideRead);
@@ -351,8 +346,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
                 showSources = !showSources;
                 if (showSources) {
                     item.setTitle(getString(R.string.channel_hide_sources));
-                }
-                else {
+                } else {
                     item.setTitle(getString(R.string.channel_show_sources));
                 }
                 Preferences.setPreference(requireContext(), "channel_show_sources", showSources);
@@ -367,8 +361,8 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
                 builder.setTitle(getString(R.string.clear_cache_confirm));
                 builder.setCancelable(true);
-                builder.setPositiveButton(getString(R.string.clear),new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
+                builder.setPositiveButton(getString(R.string.clear), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
                         Snackbar.make(layout, getString(R.string.cache_cleared), Snackbar.LENGTH_SHORT).show();
                         DatabaseHelper db = new DatabaseHelper(requireContext());
                         db.clearCache();

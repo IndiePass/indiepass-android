@@ -1,16 +1,15 @@
 package com.indieweb.indigenous.draft;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.model.Draft;
@@ -25,10 +24,6 @@ public class DraftFragment extends Fragment {
 
     public void OnDraftChangedListener(OnDraftChangedListener callback) {
         this.callback = callback;
-    }
-
-    public interface OnDraftChangedListener {
-        void onDraftChanged();
     }
 
     @Nullable
@@ -54,11 +49,14 @@ public class DraftFragment extends Fragment {
         if (drafts.size() == 0) {
             listDraft.setVisibility(View.GONE);
             empty.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             DraftListAdapter adapter = new DraftListAdapter(requireContext(), drafts, callback, layout);
             listDraft.setAdapter(adapter);
             adapter.notifyDataSetChanged();
         }
+    }
+
+    public interface OnDraftChangedListener {
+        void onDraftChanged();
     }
 }

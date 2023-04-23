@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
 import com.indieweb.indigenous.model.Cache;
 import com.indieweb.indigenous.model.Draft;
 import com.indieweb.indigenous.model.TimelineStyle;
@@ -95,8 +94,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Saves a draft.
      *
-     * @param draft
-     *   The draft to save.
+     * @param draft The draft to save.
      */
     public void saveDraft(Draft draft) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -129,8 +127,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (draft.getId() > 0) {
             db.update(Draft.TABLE_NAME, values, Draft.COLUMN_ID + "=" + draft.getId(), null);
-        }
-        else {
+        } else {
             db.insert(Draft.TABLE_NAME, null, values);
         }
         db.close();
@@ -139,8 +136,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Deletes a draft.
      *
-     * @param id
-     *   The draft id to delete.
+     * @param id The draft id to delete.
      */
     public void deleteDraft(Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -151,9 +147,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Gets a single draft.
      *
-     * @param id
-     *   The draft id.
-     *
+     * @param id The draft id.
      * @return Draft
      */
     public Draft getDraft(long id) {
@@ -236,14 +230,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Get the number of drafts.
      *
      * @return int
-     *   The number of drafts.
+     * The number of drafts.
      */
     public int getDraftCount() {
         int count = 0;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor dataCount;
         if (db != null) {
-            dataCount = db.rawQuery("select "+ Draft.COLUMN_ID + " from " + Draft.TABLE_NAME, null);
+            dataCount = db.rawQuery("select " + Draft.COLUMN_ID + " from " + Draft.TABLE_NAME, null);
             count = dataCount.getCount();
             db.close();
         }
@@ -253,10 +247,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Set draft properties.
      *
-     * @param draft
-     *   The draft.
-     * @param cursor
-     *   The cursor
+     * @param draft  The draft.
+     * @param cursor The cursor
      */
     private void setDraftProperties(Draft draft, Cursor cursor) {
         draft.setId(cursor.getInt(cursor.getColumnIndexOrThrow(Draft.COLUMN_ID)));
@@ -290,15 +282,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Gets a cache item.
      *
-     * @param account
-     *   The account to get the cache for
-     * @param type
-     *   Type of cache item
-     * @param channelId
-     *   The channel id
-     * @param page
-     *   The page to get from cache
-     *
+     * @param account   The account to get the cache for
+     * @param type      Type of cache item
+     * @param channelId The channel id
+     * @param page      The page to get from cache
      * @return Cache
      */
     public Cache getCache(String account, String type, String channelId, String page) {
@@ -347,8 +334,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Saves a cache.
      *
-     * @param cache
-     *   A cache object.
+     * @param cache A cache object.
      */
     public void saveCache(Cache cache) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -362,8 +348,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cache.getId() > 0) {
             db.update(Cache.TABLE_NAME, values, Draft.COLUMN_ID + "=" + cache.getId(), null);
-        }
-        else {
+        } else {
             db.insert(Cache.TABLE_NAME, null, values);
         }
         db.close();

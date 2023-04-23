@@ -3,22 +3,16 @@ package com.indieweb.indigenous.post;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.URLUtil;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
-
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
@@ -29,7 +23,6 @@ import com.indieweb.indigenous.users.Accounts;
 import com.indieweb.indigenous.util.HTTPRequest;
 import com.indieweb.indigenous.util.Utility;
 import com.indieweb.indigenous.util.VolleyRequestListener;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,16 +32,16 @@ import java.util.Map;
 
 public class UpdateActivity extends AppCompatActivity implements SendPostInterface, VolleyRequestListener {
 
+    private final PostListItem item = new PostListItem();
+    public ProgressDialog progressDialog;
+    protected VolleyRequestListener volleyRequestListener;
     private TextView url;
     private SwitchCompat postStatus;
     private EditText title;
     private EditText body;
     private MenuItem sendItem;
     private User user;
-    public ProgressDialog progressDialog;
     private RelativeLayout layout;
-    protected VolleyRequestListener volleyRequestListener;
-    private final PostListItem item = new PostListItem();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +89,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
     public void onPostButtonClick(MenuItem item) {
         if (TextUtils.isEmpty(url.getText())) {
             url.setError(getString(R.string.required_field));
-        }
-        else {
+        } else {
             updatePost(item);
         }
     }
@@ -135,8 +127,7 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
                         hideProgressBar();
                     }
                 }
-        )
-        {
+        ) {
             @Override
             public byte[] getBody() {
 
@@ -175,8 +166,8 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
 
                     root.put("replace", replace);
                     return root.toString().getBytes();
+                } catch (JSONException ignored) {
                 }
-                catch (JSONException ignored) { }
 
                 String root = "{}";
                 return root.getBytes();
@@ -230,15 +221,13 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
     /**
      * Get data from server.
      *
-     * @param url
-     *   The url to fetch data from.
+     * @param url The url to fetch data from.
      */
     public void getPostFromServer(String url) {
         String MicropubEndpoint = user.getMicropubEndpoint();
         if (MicropubEndpoint.contains("?")) {
             MicropubEndpoint += "&q=source";
-        }
-        else {
+        } else {
             MicropubEndpoint += "?q=source";
         }
 
@@ -289,20 +278,19 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
                     if (c.has("text")) {
                         hasContent = true;
                         content = c.getString("text");
-                    }
-                    else if (c.has("html")) {
+                    } else if (c.has("html")) {
                         hasContent = true;
                         content = c.getString("html");
                     }
+                } catch (JSONException ignored) {
                 }
-                catch (JSONException ignored) {}
 
                 // No content yet, content might be just a string in the first key.
                 if (!hasContent) {
                     try {
                         content = object.getJSONArray("content").get(0).toString();
+                    } catch (JSONException ignored) {
                     }
-                    catch (JSONException ignored) {}
                 }
             }
             item.setContent(content);
@@ -312,8 +300,8 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
                 name = object.getJSONArray("name").get(0).toString();
             }
             item.setName(name);
+        } catch (JSONException ignored) {
         }
-        catch (JSONException ignored) {}
 
         if (item.getName().length() > 0 || item.getContent().length() > 0) {
             if (item.getName().length() > 0) {
@@ -334,16 +322,15 @@ public class UpdateActivity extends AppCompatActivity implements SendPostInterfa
         String message = getString(R.string.request_failed_unknown);
         try {
             message = Utility.parseNetworkError(error, getApplicationContext(), R.string.request_failed, R.string.request_failed_unknown);
+        } catch (Exception ignored) {
         }
-        catch (Exception ignored) {}
         Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
     }
 
     /**
      * Set request listener.
      *
-     * @param volleyRequestListener
-     *   The volley request listener.
+     * @param volleyRequestListener The volley request listener.
      */
     private void VolleyRequestListener(VolleyRequestListener volleyRequestListener) {
         this.volleyRequestListener = volleyRequestListener;

@@ -1,8 +1,6 @@
 package com.indieweb.indigenous.reader;
 
-import android.content.Context;
 import android.view.MenuItem;
-
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
@@ -29,9 +27,7 @@ public interface Reader {
     /**
      * Whether to hide the delete button.
      *
-     * @param channelId
-     *   The current channel id.
-     *
+     * @param channelId The current channel id.
      * @return boolean
      */
     boolean hideDelete(String channelId);
@@ -39,9 +35,7 @@ public interface Reader {
     /**
      * Whether the reader supports a certain feature.
      *
-     * @param feature
-     *   The feature to check.
-     *
+     * @param feature The feature to check.
      * @return boolean
      */
     boolean supports(String feature);
@@ -56,22 +50,20 @@ public interface Reader {
     /**
      * Get the channel endpoint.
      *
-     * @param showSources
-     *   Whether to show the sources or not
-     *
+     * @param showSources Whether to show the sources or not
      * @return string
      */
     String getChannelEndpoint(boolean showSources);
 
     /**
-     * Get list of channels.
+     * Get a list of channels.
      *
      * @return List<Channel>
      */
     List<Channel> getChannels();
 
     /**
-     * Get list of anonymous channels.
+     * Get a list of anonymous channels.
      *
      * @return List<Channel>
      */
@@ -80,11 +72,8 @@ public interface Reader {
     /**
      * Parse channel response
      *
-     * @param data
-     *   The data
-     * @param fromCache
-     *   Whether the response came from cache.
-     *
+     * @param data      The data
+     * @param fromCache Whether the response came from cache.
      * @return List<Channel>
      */
     List<Channel> parseChannelResponse(String data, boolean fromCache);
@@ -92,29 +81,17 @@ public interface Reader {
     /**
      * Get the timeline endpoint.
      *
-     * @param user
-     *   The current user
-     * @param channelId
-     *   The current channel id
-     * @param isGlobalUnread
-     *   Whether this is the global unread
-     * @param showUnread
-     *   Whether to show unread
-     * @param isSourceView
-     *   Whether this is the source view
-     * @param sourceId
-     *   The source id
-     * @param isTagView
-     *   Whether this is the tag view
-     * @param tag
-     *   The tag
-     * @param isSearch
-     *   Whether this is the search view
-     * @param search
-     *   The search
-     * @param pagerAfter
-     *   The pager value
-     *
+     * @param user           The current user
+     * @param channelId      The current channel id
+     * @param isGlobalUnread Whether this is the global unread
+     * @param showUnread     Whether to show unread
+     * @param isSourceView   Whether this is the source view
+     * @param sourceId       The source id
+     * @param isTagView      Whether this is the tag view
+     * @param tag            The tag
+     * @param isSearch       Whether this is the search view
+     * @param search         The search
+     * @param pagerAfter     The pager value
      * @return String
      */
     String getTimelineEndpoint(User user, String channelId, boolean isGlobalUnread, boolean showUnread, boolean isSourceView, String sourceId, boolean isTagView, String tag, boolean isSearch, String search, String pagerAfter);
@@ -122,9 +99,7 @@ public interface Reader {
     /**
      * Get the access token for the timeline.
      *
-     * @param channelId
-     *   The current channel id
-     *
+     * @param channelId The current channel id
      * @return boolean
      */
     boolean sendTimelineAccessToken(String channelId);
@@ -132,11 +107,8 @@ public interface Reader {
     /**
      * Return the timeline request method.
      *
-     * @param isPreview
-     *   Whether this is a preview or not.
-     * @param isSearch
-     *   Whether this is a search or not.
-     *
+     * @param isPreview Whether this is a preview or not.
+     * @param isSearch  Whether this is a search or not.
      * @return int
      */
     int getTimelineMethod(boolean isPreview, boolean isSearch);
@@ -144,17 +116,11 @@ public interface Reader {
     /**
      * Get timeline params.
      *
-     * @param isPreview
-     *   Whether this is a preview
-     * @param isSearch
-     *   Whether this is a search
-     * @param channelId
-     *   The current channel id
-     * @param previewUrl
-     *   The preview URL
-     * @param searchQuery
-     *   The search query.
-     *
+     * @param isPreview   Whether this is a preview
+     * @param isSearch    Whether this is a search
+     * @param channelId   The current channel id
+     * @param previewUrl  The preview URL
+     * @param searchQuery The search query.
      * @return Map
      */
     Map<String, String> getTimelineParams(boolean isPreview, boolean isSearch, String channelId, String previewUrl, String searchQuery);
@@ -162,23 +128,14 @@ public interface Reader {
     /**
      * Parse a timeline response.
      *
-     * @param response
-     *   The response to parse
-     * @param channelId
-     *   The current channel id
-     * @param channelName
-     *   The current channel name
-     * @param entries
-     *   Entries to mark read
-     * @param isGlobalUnread
-     *   Whether this is the global unread
-     * @param isSearch
-     *   Whether this is a search or not.
-     * @param recursiveReference
-     *   Whether to check recursive reference
-     * @param olderItems
-     *   Paging or not.
-     *
+     * @param response           The response to parse
+     * @param channelId          The current channel id
+     * @param channelName        The current channel name
+     * @param entries            Entries to mark read
+     * @param isGlobalUnread     Whether this is the global unread
+     * @param isSearch           Whether this is a search or not.
+     * @param recursiveReference Whether to check recursive reference
+     * @param olderItems         Paging or not.
      * @return List<TimelineItem>
      */
     List<TimelineItem> parseTimelineResponse(String response, String channelId, String channelName, List<String> entries, boolean isGlobalUnread, boolean isSearch, boolean recursiveReference, String[] olderItems);
@@ -186,25 +143,18 @@ public interface Reader {
     /**
      * Mark items read.
      *
-     * @param channelId
-     *   The current channel id
-     * @param entries
-     *   The entries to mark read
-     * @param markAllRead
-     *   Whether to mark everything read
-     * @param showMessage
-     *   Whether to show a snackbar message.
+     * @param channelId   The current channel id
+     * @param entries     The entries to mark read
+     * @param markAllRead Whether to mark everything read
+     * @param showMessage Whether to show a snackbar message.
      */
     void markRead(String channelId, List<String> entries, boolean markAllRead, boolean showMessage);
 
     /**
      * Perform a response.
      *
-     * @param item
-     *   The current timeline item.
-     * @param response
-     *   The response type.
-     *
+     * @param item     The current timeline item.
+     * @param response The response type.
      * @return boolean.
      */
     boolean doResponse(TimelineItem item, String response);
@@ -212,9 +162,7 @@ public interface Reader {
     /**
      * Whether contact can be used.
      *
-     * @param channelId
-     *   The current channel id.
-     *
+     * @param channelId The current channel id.
      * @return boolean
      */
     boolean canContact(String channelId);
@@ -222,32 +170,24 @@ public interface Reader {
     /**
      * Sets the contact label.
      *
-     * @param menuItem
-     *   Set the contact label.
-     * @param item
-     *   The timeline item.
+     * @param menuItem Set the contact label.
+     * @param item     The timeline item.
      */
     void setContactLabel(MenuItem menuItem, TimelineItem item);
 
     /**
      * Get the reply id.
      *
-     * @param item
-     *   The timeline item
-     *
-     * @return
-     *   The id for the reply.
+     * @param item The timeline item
+     * @return The id for the reply.
      */
     String getReplyId(TimelineItem item);
 
     /**
      * Return the tag from a URL.
      *
-     * @param url
-     *   The url to parse.
-     * @param item
-     *   The current timeline item
-     *
+     * @param url  The url to parse.
+     * @param item The current timeline item
      * @return String
      */
     String getTag(String url, TimelineItem item);

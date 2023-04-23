@@ -26,7 +26,7 @@ public class PostType {
         this.name = name;
     }
 
-    // To display object as a string in spinner.
+    // To display an object as a string in spinner.
     @Override
     public String toString() {
         return name;
@@ -34,7 +34,7 @@ public class PostType {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof PostType){
+        if (obj instanceof PostType) {
             PostType pt = (PostType) obj;
             return pt.getName().equals(name) && pt.getId().equals(id);
         }

@@ -1,14 +1,12 @@
 package com.indieweb.indigenous.pixelfed;
 
 import android.content.Context;
-
 import com.android.volley.NetworkResponse;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.post.PostBase;
 import com.indieweb.indigenous.util.HTTPRequest;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,16 +36,15 @@ public class PixelfedPost extends PostBase {
         String data;
         try {
             data = new String(response.data, HttpHeaderParser.parseCharset(response.headers, "utf-8"));
-        }
-        catch (UnsupportedEncodingException ignored) {
+        } catch (UnsupportedEncodingException ignored) {
             data = new String(response.data);
         }
         String fileId = "";
         try {
             JSONObject o = new JSONObject(data);
             fileId = o.getString("id");
+        } catch (JSONException ignored) {
         }
-        catch (JSONException ignored) {}
 
         return fileId;
     }

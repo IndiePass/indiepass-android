@@ -14,12 +14,13 @@ public class JsonList extends ArrayList<Object> {
         StringBuilder sb = new StringBuilder("[");
         boolean first = true;
         for (Object value : this) {
-            if (!first) { sb.append(",");}
+            if (!first) {
+                sb.append(",");
+            }
             first = false;
             if (value instanceof String) {
                 sb.append("\"" + JsonDict.escapeString((String) value) + "\"");
-            }
-            else {
+            } else {
                 sb.append(value);
             }
         }

@@ -2,7 +2,6 @@ package com.indieweb.indigenous.mastodon;
 
 import android.content.Context;
 import android.view.MenuItem;
-
 import com.android.volley.Request;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Channel;
@@ -11,7 +10,6 @@ import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.reader.ReaderBase;
 import com.indieweb.indigenous.util.HTTPRequest;
 import com.indieweb.indigenous.util.Utility;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -111,21 +109,16 @@ public class MastodonReader extends ReaderBase {
         if (channelId.equals(CHANNEL_NAME_MASTODON_ANONYMOUS)) {
             if (isSourceView && sourceId != null) {
                 endpoint = "https://mastodon.social/api/v1/accounts/" + sourceId + "/statuses?limit=" + LIMIT;
-            }
-            else {
+            } else {
                 endpoint = "https://mastodon.social/api/v1/timelines/public?limit=" + LIMIT;
             }
-        }
-        else if (isSourceView && sourceId != null) {
+        } else if (isSourceView && sourceId != null) {
             endpoint = this.getUser().getBaseUrl() + "/api/v1/accounts/" + sourceId + "/statuses";
-        }
-        else if (isSearch && search.length() > 0) {
+        } else if (isSearch && search.length() > 0) {
             endpoint = this.getUser().getBaseUrl() + "/api/v2/search?q=" + search;
-        }
-        else if (isTagView && tag.length() > 0) {
+        } else if (isTagView && tag.length() > 0) {
             endpoint = this.getUser().getBaseUrl() + "/api/v1/timelines/tag/" + tag;
-        }
-        else {
+        } else {
             switch (channelId) {
                 case CHANNEL_NAME_HOME:
                     endpoint = this.getUser().getBaseUrl() + "/api/v1/timelines/home";
@@ -183,8 +176,7 @@ public class MastodonReader extends ReaderBase {
             if (isSearch) {
                 JSONObject r = new JSONObject(response);
                 itemList = new JSONArray(r.get("statuses"));
-            }
-            else {
+            } else {
                 itemList = new JSONArray(response);
             }
 
@@ -250,7 +242,8 @@ public class MastodonReader extends ReaderBase {
                 // It's possible that _id is empty. Don't let readers choke on it.
                 try {
                     item.setId(object.getString("id"));
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
 
                 // Url.
                 if (object.has("uri")) {
@@ -262,7 +255,8 @@ public class MastodonReader extends ReaderBase {
                 if (object.has("account")) {
                     try {
                         item.setSourceId(object.getJSONObject("account").getString("id"));
-                    } catch (Exception ignored) {}
+                    } catch (Exception ignored) {
+                    }
                 }
 
                 // Photos.
@@ -272,8 +266,8 @@ public class MastodonReader extends ReaderBase {
                         for (int p = 0; p < photos.length(); p++) {
                             item.addPhoto(photos.getJSONObject(p).getString("url"));
                         }
+                    } catch (JSONException ignored) {
                     }
-                    catch (JSONException ignored) { }
                 }
 
                 // tags.
@@ -283,8 +277,8 @@ public class MastodonReader extends ReaderBase {
                         for (int p = 0; p < tags.length(); p++) {
                             item.addTag(tags.getJSONObject(p).getString("name"));
                         }
+                    } catch (JSONException ignored) {
                     }
-                    catch (JSONException ignored) { }
                 }
 
                 // Author.
@@ -333,8 +327,8 @@ public class MastodonReader extends ReaderBase {
                 olderItems[0] = maxId;
             }
 
+        } catch (JSONException ignored) {
         }
-        catch (JSONException ignored) { }
 
         return TimelineItems;
     }
@@ -348,8 +342,7 @@ public class MastodonReader extends ReaderBase {
             case RESPONSE_LIKE:
                 if (item.isLiked()) {
                     appUrl = getUser().getBaseUrl() + "/api/v1/statuses/" + item.getId() + "/unfavourite";
-                }
-                else {
+                } else {
                     appUrl = getUser().getBaseUrl() + "/api/v1/statuses/" + item.getId() + "/favourite";
                     isActive = true;
                 }
@@ -357,8 +350,7 @@ public class MastodonReader extends ReaderBase {
             case RESPONSE_BOOKMARK:
                 if (item.isBookmarked()) {
                     appUrl = getUser().getBaseUrl() + "/api/v1/statuses/" + item.getId() + "/unbookmark";
-                }
-                else {
+                } else {
                     appUrl = getUser().getBaseUrl() + "/api/v1/statuses/" + item.getId() + "/bookmark";
                     isActive = true;
                 }
@@ -366,8 +358,7 @@ public class MastodonReader extends ReaderBase {
             case RESPONSE_REPOST:
                 if (item.isReposted()) {
                     appUrl = getUser().getBaseUrl() + "/api/v1/statuses/" + item.getId() + "/unreblog";
-                }
-                else {
+                } else {
                     appUrl = getUser().getBaseUrl() + "/api/v1/statuses/" + item.getId() + "/reblog";
                     isActive = true;
                 }
@@ -375,8 +366,7 @@ public class MastodonReader extends ReaderBase {
             case RESPONSE_CONTACT:
                 if (item.getChannelId().equals(CHANNEL_NAME_HOME)) {
                     appUrl = getUser().getBaseUrl() + "/api/v1/accounts/" + item.getAuthorId() + "/unfollow";
-                }
-                else {
+                } else {
                     appUrl = getUser().getBaseUrl() + "/api/v1/accounts/" + item.getAuthorId() + "/follow";
                 }
                 break;
@@ -399,8 +389,7 @@ public class MastodonReader extends ReaderBase {
     public void setContactLabel(MenuItem menuItem, TimelineItem item) {
         if (item.getChannelId().equals(CHANNEL_NAME_HOME)) {
             menuItem.setTitle(getContext().getString(R.string.unfollow));
-        }
-        else {
+        } else {
             menuItem.setTitle(getContext().getString(R.string.follow));
         }
     }
@@ -420,8 +409,8 @@ public class MastodonReader extends ReaderBase {
             if (pathElements.length >= 2 && pathElements[0].equals("tags") && item.getTags().contains(pathElements[1].toLowerCase())) {
                 tag = pathElements[1].toLowerCase();
             }
+        } catch (MalformedURLException ignored) {
         }
-        catch (MalformedURLException ignored) { }
 
         return tag;
     }

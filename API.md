@@ -25,5 +25,5 @@ The authentication dance for a new account type is managed in AuthActivity.java
 This code will be updated in the future to become more abstract so more
 functions can be moved to the respective account type auth class.
 
-An authenticator (service) needs to created and registered in the Manifest.
+An authenticator (service) needs to create and registered in the Manifest.
 You can use the BaseAuthenticator class which handles most of the classes.

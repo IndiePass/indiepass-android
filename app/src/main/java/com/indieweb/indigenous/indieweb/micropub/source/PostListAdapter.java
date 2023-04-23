@@ -5,26 +5,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
+import android.widget.*;
+import androidx.appcompat.app.AlertDialog;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.core.content.ContextCompat;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.indieweb.micropub.MicropubAction;
-import com.indieweb.indigenous.post.ReplyActivity;
-import com.indieweb.indigenous.post.UpdateActivity;
 import com.indieweb.indigenous.model.PostListItem;
 import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.post.ReplyActivity;
+import com.indieweb.indigenous.post.UpdateActivity;
 import com.indieweb.indigenous.util.Utility;
 import com.indieweb.indigenous.widget.ExpandableTextView;
 
@@ -55,7 +50,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
         this.layout = layout;
         this.showUpdateButton = showUpdateButton;
         this.showDeleteButton = showDeleteButton;
-        this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public int getCount() {
@@ -70,20 +65,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
         return position;
     }
 
-    public void onClick(View view) {}
-
-    public static class ViewHolder {
-        public TextView name;
-        public TextView url;
-        public TextView published;
-        public TextView postStatus;
-        public Button expand;
-        public ExpandableTextView content;
-        public LinearLayout row;
-        public Button update;
-        public Button delete;
-        public Button external;
-        public Button reply;
+    public void onClick(View view) {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -104,9 +86,8 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             holder.reply = convertView.findViewById(R.id.itemReply);
             holder.row = convertView.findViewById(R.id.source_post_list_item_row);
             convertView.setTag(holder);
-        }
-        else {
-            holder = (ViewHolder)convertView.getTag();
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
         final PostListItem item = items.get(position);
@@ -124,8 +105,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
                 result = formatIn.parse(item.getPublished());
                 holder.published.setVisibility(View.VISIBLE);
                 holder.published.setText(formatOut.format(result));
-            }
-            catch (ParseException ignored) {
+            } catch (ParseException ignored) {
                 holder.published.setVisibility(View.GONE);
             }
 
@@ -133,8 +113,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             if (item.getPostStatus().length() > 0) {
                 holder.postStatus.setVisibility(View.VISIBLE);
                 holder.postStatus.setText(String.format(context.getString(R.string.post_status), item.getPostStatus()));
-            }
-            else {
+            } else {
                 holder.postStatus.setVisibility(View.GONE);
             }
 
@@ -142,8 +121,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             if (item.getUrl().length() > 0) {
                 holder.url.setVisibility(View.VISIBLE);
                 holder.url.setText(item.getUrl());
-            }
-            else {
+            } else {
                 holder.url.setVisibility(View.GONE);
             }
 
@@ -151,8 +129,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
             if (item.getName().length() > 0) {
                 holder.name.setVisibility(View.VISIBLE);
                 holder.name.setText(item.getName());
-            }
-            else {
+            } else {
                 holder.name.setVisibility(View.GONE);
             }
 
@@ -163,8 +140,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
                 String html = item.getContent();
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                     sequence = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
-                }
-                else {
+                } else {
                     sequence = Html.fromHtml(html);
                 }
 
@@ -175,27 +151,23 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
 
                 if (item.getContent().length() > 400) {
                     holder.expand.setVisibility(View.VISIBLE);
-                    holder.expand.setOnClickListener(new OnClickListener()
-                    {
+                    holder.expand.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(final View v) {
                             if (holder.content.isExpanded()) {
                                 holder.content.collapse();
                                 holder.expand.setText(R.string.read_more);
-                            }
-                            else {
+                            } else {
                                 holder.content.expand();
                                 holder.expand.setText(R.string.close);
                             }
                         }
                     });
 
-                }
-                else {
+                } else {
                     holder.expand.setVisibility(View.GONE);
                 }
-            }
-            else {
+            } else {
                 holder.content.setMovementMethod(null);
                 holder.content.setVisibility(View.GONE);
                 holder.expand.setVisibility(View.GONE);
@@ -215,8 +187,7 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
                     holder.delete.setVisibility(View.VISIBLE);
                     holder.delete.setOnClickListener(new OnDeleteClickListener(position));
                 }
-            }
-            else {
+            } else {
                 holder.update.setVisibility(View.GONE);
                 holder.external.setVisibility(View.GONE);
                 holder.reply.setVisibility(View.GONE);
@@ -224,6 +195,20 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
         }
 
         return convertView;
+    }
+
+    public static class ViewHolder {
+        public TextView name;
+        public TextView url;
+        public TextView published;
+        public TextView postStatus;
+        public Button expand;
+        public ExpandableTextView content;
+        public LinearLayout row;
+        public Button update;
+        public Button delete;
+        public Button external;
+        public Button reply;
     }
 
     // Update listener.
@@ -284,8 +269,8 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
                 customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 customTabsIntent.launchUrl(context, Uri.parse(item.getUrl()));
+            } catch (Exception ignored) {
             }
-            catch (Exception ignored) { }
 
         }
     }
@@ -305,8 +290,8 @@ public class PostListAdapter extends BaseAdapter implements OnClickListener {
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(context.getString(R.string.post_delete_confirm));
-            builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog,int id) {
+            builder.setPositiveButton(context.getString(R.string.delete_post), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
                     new MicropubAction(context, user, layout).deleteItem(item.getUrl());
                     items.remove(position);
                     notifyDataSetChanged();

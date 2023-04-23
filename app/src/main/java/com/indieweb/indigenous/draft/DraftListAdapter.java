@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,23 +13,12 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
-import com.indieweb.indigenous.post.ArticleActivity;
-import com.indieweb.indigenous.post.BookmarkActivity;
-import com.indieweb.indigenous.post.CheckinActivity;
-import com.indieweb.indigenous.post.EventActivity;
-import com.indieweb.indigenous.post.GeocacheActivity;
-import com.indieweb.indigenous.post.IssueActivity;
-import com.indieweb.indigenous.post.LikeActivity;
-import com.indieweb.indigenous.post.NoteActivity;
-import com.indieweb.indigenous.post.ReadActivity;
-import com.indieweb.indigenous.post.ReplyActivity;
-import com.indieweb.indigenous.post.RepostActivity;
-import com.indieweb.indigenous.post.RsvpActivity;
 import com.indieweb.indigenous.model.Draft;
+import com.indieweb.indigenous.post.*;
 import com.indieweb.indigenous.util.Utility;
 
 import java.text.ParseException;
@@ -56,7 +44,7 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
         this.drafts = drafts;
         this.callback = callback;
         this.layout = layout;
-        this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public int getCount() {
@@ -71,16 +59,7 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
         return position;
     }
 
-    public void onClick(View view) { }
-
-    public static class ViewHolder {
-        int position;
-        TextView account;
-        TextView label;
-        TextView published;
-        Button update;
-        Button delete;
-        LinearLayout row;
+    public void onClick(View view) {
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -96,8 +75,7 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
             holder.update = convertView.findViewById(R.id.draftUpdate);
             holder.delete = convertView.findViewById(R.id.draftDelete);
             convertView.setTag(holder);
-        }
-        else {
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
@@ -118,8 +96,7 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
             String label = "";
             if (draft.getName().length() > 0) {
                 label = draft.getName();
-            }
-            else if (draft.getBody().length() > 0) {
+            } else if (draft.getBody().length() > 0) {
                 label = draft.getBody();
             }
             if (label.length() > 40) {
@@ -136,8 +113,7 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
                 holder.published.setVisibility(View.VISIBLE);
                 Date result = formatIn.parse(draft.getTimestamp());
                 holder.published.setText(String.format(context.getString(R.string.draft_last_edit), draft.getType(), formatOut.format(result)));
-            }
-            catch (ParseException ignored) {
+            } catch (ParseException ignored) {
                 holder.published.setVisibility(View.GONE);
             }
 
@@ -147,6 +123,16 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
         }
 
         return convertView;
+    }
+
+    public static class ViewHolder {
+        int position;
+        TextView account;
+        TextView label;
+        TextView published;
+        Button update;
+        Button delete;
+        LinearLayout row;
     }
 
     // Update listener.
@@ -225,8 +211,8 @@ public class DraftListAdapter extends BaseAdapter implements OnClickListener {
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(context.getString(R.string.draft_delete_confirm));
-            builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog,int id) {
+            builder.setPositiveButton(context.getString(R.string.delete_post), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
                     DatabaseHelper db = new DatabaseHelper(context);
                     db.deleteDraft(draft.getId());
                     drafts.remove(position);
