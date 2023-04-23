@@ -39,7 +39,7 @@
     <string name="items_refreshed">Items refreshed</string>
     <string name="request_failed">Request failed. Status code: %d; message: %s</string>
     <string name="request_failed_unknown">Request failed, unknown error</string>
-    <string name="maps_info">Install a maps application to view this location</string>
+    <string name="maps_info">Install a map application to view this location</string>
 
     <!-- Authentication and accounts -->
     <string name="account_type_indieweb">IndieAuth</string>
@@ -89,12 +89,12 @@
     <string name="account_sync">Syncing %s</string>
     <string name="account_removed">Account %s removed</string>
     <string name="account_select">Select account</string>
-    <string name="account_select_to_post">Select account to post</string>
+    <string name="account_select_to_post">Select an account to post</string>
     <string name="account_selected">Default account set to %s</string>
     <string name="account_switch">Set default account to %s ?</string>
     <string name="user_exception">We ran into an exception getting the accounts. Please manage the accounts from the device accounts section.</string>
     <string name="anonymous_settings">Anonymous settings</string>
-    <string name="anonymous_info">This is the anonymous account in Indigenous. You can change both the reader and post endpoint to a custom location so you can test yourself and even save posts on your own server without needing an IndieAuth enabled website.\n\nThe token will be send in the authentication header for both endpoints.</string>
+    <string name="anonymous_info">This is the anonymous account in Indigenous. You can change both the reader and post endpoint to a custom location, so you can test yourself and even save posts on your own server without needing an IndieAuth enabled website.\n\nThe token will be sent in the authentication header for both endpoints.</string>
     <string name="anonymous_info_snack">You are using the anonymous account. Create an account via "Accounts" or the "User" icon at the top.</string>
     <string name="anonymous_reader_endpoint">Reader endpoint</string>
     <string name="anonymous_post_endpoint">Post endpoint</string>
@@ -116,7 +116,7 @@
     <string name="channel_pleroma">Pleroma</string>
 
     <!-- About -->
-    <string name="about_info"><![CDATA[Indigenous allows you to engage with the internet as you do on social media sites, and post on your website or a federated instance like Mastodon, Pleroma or Pixelfed. Use the built-in reader to read and respond to posts across the internet. Indigenous doesn\'t track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/marksuth/indigenous-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
+    <string name="about_info"><![CDATA[Indigenous allows you to engage with the internet as you do on social media sites, and post on your website or a federated instance like Mastodon, Pleroma or Pixelfed. Use the built-in reader to read and respond to posts across the internet. Indigenous does not track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/marksuth/indigenous-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
     <string name="view_changelog">View changelog</string>
 
     <!-- Drafts -->
@@ -144,8 +144,8 @@
     <string name="add_feed">Add feed</string>
     <string name="no_feeds_found">No feeds found</string>
     <string name="search_feed">Search feeds</string>
-    <string name="select_channel">Select channel to add the feed to</string>
-    <string name="select_channel_move">Select channel to move the item to</string>
+    <string name="select_channel">Select a channel to add the feed to</string>
+    <string name="select_channel_move">Select a channel to move the item to</string>
     <string name="subscribe">Subscribe</string>
     <string name="preview">Preview</string>
     <string name="results">Results</string>
@@ -305,7 +305,7 @@
     <string name="post_types_parse_error">Error parsing post types: %s</string>
     <string name="post_list_parse_error">Error: %s</string>
     <string name="url_update_info_label">Url to update:</string>
-    <string name="update_info">Elements left empty will not be send to the server</string>
+    <string name="update_info">Elements left empty will not be sent to the server</string>
     <string name="channel_list_parse_error">Error: %s</string>
     <string name="bitmap_error">Error generating bitmap from image</string>
     <string name="media_network_fail">Uploading media failed. Status code: %d; message: %s</string>
@@ -374,7 +374,7 @@
 
     <!-- Night mode -->
     <string name="night_mode_title">Enable night theme</string>
-    <string name="night_mode_summary">If your device supports Night mode, this theme will be automatically used when enabling night time globally. But this toggle allows you to use the night theme as well. The app will restart when you enable or disable this feature.</string>
+    <string name="night_mode_summary">If your device supports Night mode, this theme will be automatically used when enabling nighttime globally. But this toggle allows you to use the night theme as well. The app will restart when you enable or disable this feature.</string>
 
     <!-- Preferences: share -->
     <string name="pref_category_sharing_title">Share</string>
@@ -388,7 +388,7 @@
     <string name="pref_summary_expose_reply">Expose reply in share intents. This will not immediately post to your post endpoint as you still need to add a message.</string>
     <string name="pref_share_reply_enabled">Enable reply sharing</string>
     <string name="pref_share_upload_enabled">Enable upload sharing</string>
-    <string name="pref_summary_expose_upload">Expose upload in share intents. This will not immediately post to your media endpoint so you can verify. Only available for IndieWeb accounts.</string>
+    <string name="pref_summary_expose_upload">Expose upload in share intents. This will not immediately post to your media endpoint, so you can verify. Only available for IndieWeb accounts.</string>
     <string name="pref_share_feed_enabled">Enable feed sharing</string>
     <string name="pref_summary_expose_feed">Expose feed in share intents. This allows you to insert a URL directly to add a feed to a channel. Only available for IndieWeb accounts.</string>
 
