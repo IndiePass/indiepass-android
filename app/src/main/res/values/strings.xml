@@ -20,7 +20,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="indiepass_version">IndiePass version: %s</string>
+    <string name="indigenous_version">IndiePass version: %s</string>
     <string name="clipboard_error">Something went wrong to copy the text to the clipboard.</string>
     <string name="clipboard_success">Copied to clipboard</string>
     <string name="clipboard_label">IndiePass clipboard debug info</string>
@@ -116,7 +116,7 @@
     <string name="channel_pleroma">Pleroma</string>
 
     <!-- About -->
-    <string name="about_info"><![CDATA[IndiePass allows you to engage with the internet as you do on social media sites, and post on your website or a federated instance like Mastodon, Pleroma or Pixelfed. Use the built-in reader to read and respond to posts across the internet. IndiePass does not track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/marksuth/indiepass-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
+    <string name="about_info"><![CDATA[IndiePass allows you to engage with the internet as you do on social media sites, and post on your website or a federated instance like Mastodon, Pleroma or Pixelfed. Use the built-in reader to read and respond to posts across the internet. IndiePass does not track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/marksuth/indigenous-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
     <string name="view_changelog">View changelog</string>
 
     <!-- Drafts -->

@@ -130,7 +130,7 @@
 
         </LinearLayout>
 
-        <com.indieweb.indiepass.widget.ExpandableTextView
+        <com.indieweb.indigenous.widget.ExpandableTextView
                 android:id="@+id/timeline_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"

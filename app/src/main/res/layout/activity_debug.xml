@@ -4,7 +4,7 @@
             android:id="@+id/debug_root"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context="com.indieweb.indiepass.general.DebugActivity">
+            tools:context="com.indieweb.indigenous.general.DebugActivity">
 
     <TextView
             android:padding="15dp"

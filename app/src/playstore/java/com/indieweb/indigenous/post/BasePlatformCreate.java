@@ -1,4 +1,4 @@
-package com.indieweb.indiepass.post;
+package com.indieweb.indigenous.post;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -22,8 +22,8 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.indieweb.indiepass.R;
-import com.indieweb.indiepass.util.Utility;
+import com.indieweb.indigenous.R;
+import com.indieweb.indigenous.util.Utility;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;

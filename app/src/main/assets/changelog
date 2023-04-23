@@ -15,7 +15,7 @@
     <li>Do not set the default microsub endpoint for privacy</li>
     <li>Fix syndication targets switching with multiple accounts</li>
     <li>Temporarily removed push notifications</li>
-    <li>Updated app URLs to https://indiepass.marksuth.dev</li>
+    <li>Updated app URLs to https://indigenous.marksuth.dev</li>
     <li>Updated app icons</li>
     <li>Updated app accent colour</li>
 </ul>
@@ -31,7 +31,7 @@
     <li>Fix preview of a feed</li>
     <li>Add Pixelfed, Pleroma and Mastodon Account types</li>
     <li>Get more data from server for updating posts</li>
-    <li>Pull in more data when sharing to IndiePass</li>
+    <li>Pull in more data when sharing to Indigenous</li>
     <li>Fix move post presenting the full channel list</li>
     <li>Trip post can receive a GPX file from a share intent</li>
     <li>Do not auto hide error messages, they must be closed instead</li>
@@ -113,7 +113,7 @@
     <li>Fix setting latitude and longitude in drafts</li>
     <li>Use profile info from token request if available</li>
     <li>Code cleanup and better protection against crashes in rare cases</li>
-    <li>Manage contacts. The permission for contacts is not for this part, but for a fix to get IndiePass accounts in the app.</li>
+    <li>Manage contacts. The permission for contacts is not for this part, but for a fix to get Indigenous accounts in the app.</li>
 </ul>
 <h4>04/12/2019 - 0.50</h4>
 <ul>
@@ -184,8 +184,8 @@
 <h4>08/04/2019 - 0.39</h4>
 <ul>
     <li>Show the 'Mark all as read' button if there's at least 20 items</li>
-    <li>Switch authentication callback to https://indiepass.realize.be</li>
-    <li>Introducing push notifications. Visit https://indiepass.realize.be for all information. The polling functionality has been removed.</li>
+    <li>Switch authentication callback to https://indigenous.realize.be</li>
+    <li>Introducing push notifications. Visit https://indigenous.realize.be for all information. The polling functionality has been removed.</li>
 </ul>
 <h4>31/03/2019 - 0.38</h4>
 <ul>
@@ -372,7 +372,7 @@
 </ul>
 <h3>10/08/2018 - 0.10</h3>
 <ul>
-    <li>Use indiepass.abode.pub for authentication</li>
+    <li>Use indigenous.abode.pub for authentication</li>
     <li>Detect connection when trying to post or read channels</li>
     <li>Better styling of micropub overview screen</li>
     <li>A lot of cleanup in code</li>
