@@ -51,7 +51,7 @@
                 android:paddingStart="@dimen/box_padding"
                 android:paddingEnd="@dimen/box_padding"
                 style="?android:attr/borderlessButtonStyle"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/buttonText"
                 android:text="@string/audio_open"
                 android:id="@+id/audioExternal"
                 android:layout_width="wrap_content"

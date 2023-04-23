@@ -35,7 +35,7 @@
                 android:text="@string/apply_filter"
                 style="?android:attr/borderlessButtonStyle"
                 android:background="@color/buttonBackground"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/buttonText"
                 android:id="@+id/filterSourcePostListButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

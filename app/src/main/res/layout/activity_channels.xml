@@ -33,6 +33,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+    <Button
+            android:text="@string/add_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/noMicrosubEndpoint"
+            android:layout_marginTop="30dp"
+            android:padding="@dimen/box_padding"
+            android:id="@+id/addMicrosubEndpoint"
+            android:visibility="gone"
+            android:textColor="@color/buttonText"
+            android:background="@color/buttonBackground"/>
+
     <include
             layout="@layout/widget_no_connection"
             android:layout_width="wrap_content"
@@ -41,12 +54,16 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/actionButton"
-            android:layout_margin="10dp"
             android:layout_alignParentBottom="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/button_create_white"
             android:layout_alignParentEnd="true"
-            android:contentDescription="@string/write"/>
+            android:contentDescription="@string/write"
+            android:minHeight="48dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"/>
 
 </RelativeLayout>

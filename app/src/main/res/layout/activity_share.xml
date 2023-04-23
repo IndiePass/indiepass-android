@@ -71,7 +71,7 @@
 
         <Button
                 android:background="@color/buttonBackground"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/buttonText"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_margin="10dp"
                 android:paddingStart="@dimen/box_padding"

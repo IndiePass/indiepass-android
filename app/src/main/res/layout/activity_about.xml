@@ -28,7 +28,7 @@
         <Button
                 android:text="@string/view_changelog"
                 android:background="@color/buttonBackground"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/buttonText"
                 android:id="@+id/about_changelog_button"
                 android:paddingStart="@dimen/box_padding"
                 android:paddingEnd="@dimen/box_padding"
