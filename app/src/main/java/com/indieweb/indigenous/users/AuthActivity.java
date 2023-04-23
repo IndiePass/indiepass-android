@@ -134,7 +134,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
 
-                        // Generate state, use uuid and take first 10 chars.
+                        // Generate state, use uuid and take the first 10 chars.
                         state = UUID.randomUUID().toString().substring(0, 10);
 
                         // Generate a code verifier. concatenate 2 uuids.
@@ -439,7 +439,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     /**
      * Validates the domain for IndieWeb.
      *
-     * Checks the response of the URL or parse HTML to discover following rel links:
+     * Checks the response of the URL or parse HTML to discover the following rel links:
      *  - authorization_endpoint
      *  - token_endpoint
      *  - micropub
@@ -572,7 +572,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                             accessToken = indieAuthResponse.getString("access_token");
                             accessTokenFound = true;
 
-                            // Check profile key.
+                            // Check the profile key.
                             if (indieAuthResponse.has("profile")) {
                                 JSONObject profile = indieAuthResponse.getJSONObject("profile");
                                 if (profile.has("name")) {
@@ -612,7 +612,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
 
                         if (accessTokenFound && returnedState.equals(state)) {
 
-                            // If author name or avatar are still empty, try parsing the HTML.
+                            // If author name or avatar is still empty, try parsing the HTML.
                             if (authorName.length() == 0 || authorAvatar.length() == 0) {
                                 String noProtocolUrl = domainInput.replace("https://","").replace("http://", "");
                                 try {
@@ -640,7 +640,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
 
                             AccountManager am = AccountManager.get(getApplicationContext());
 
-                            // Create new account.
+                            // Create a new account.
                             Account account = new Account(getAccountName(), INDIEWEB_ACCOUNT_TYPE);
                             am.addAccountExplicitly(account, null, null);
                             am.setAuthToken(account, INDIEWEB_TOKEN_TYPE, accessToken);
@@ -840,7 +840,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
 
             AccountManager am = AccountManager.get(getApplicationContext());
 
-            // Create new account.
+            // Create a new account.
             Account account = new Account(getAccountName(), PIXELFED_ACCOUNT_TYPE);
             am.addAccountExplicitly(account, null, null);
             am.setAuthToken(account, PIXELFED_TOKEN_TYPE, accessToken);
@@ -1000,7 +1000,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
 
             AccountManager am = AccountManager.get(getApplicationContext());
 
-            // Create new account.
+            // Create a new account.
             Account account = new Account(getAccountName(), MASTODON_ACCOUNT_TYPE);
             am.addAccountExplicitly(account, null, null);
             am.setAuthToken(account, MASTODON_TOKEN_TYPE, accessToken);
@@ -1159,7 +1159,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
 
             AccountManager am = AccountManager.get(getApplicationContext());
 
-            // Create new account.
+            // Create a new account.
             Account account = new Account(getAccountName(), PLEROMA_ACCOUNT_TYPE);
             am.addAccountExplicitly(account, null, null);
             am.setAuthToken(account, PLEROMA_TOKEN_TYPE, accessToken);

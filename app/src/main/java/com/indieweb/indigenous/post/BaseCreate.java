@@ -62,7 +62,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
                 accounts.add(user.getDisplayName());
             }
 
-            // Check if account is passed in.
+            // Check if an account is passed in.
             Bundle extras = getIntent().getExtras();
             if (extras != null) {
                 String incomingAccount = extras.getString("account");
@@ -280,7 +280,7 @@ abstract public class BaseCreate extends BasePlatformCreate {
     }
 
     /**
-     * Prepare fields: hides or shows fields, adds autocomplete listeners etc.
+     * Prepare fields: hides or shows fields, add autocomplete listeners, etc.
      */
     void prepareFields() {
 
