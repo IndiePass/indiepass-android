@@ -25,7 +25,7 @@ import androidx.core.content.ContextCompat;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.indieweb.indigenous.BuildConfig;
-import com.indieweb.indigenous.Indigenous;
+import com.indieweb.indigenous.IndiePass;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.general.DebugActivity;
@@ -159,7 +159,7 @@ public class Utility {
      */
     public static void showDebugInfo(Context context, String debug) {
         Intent i = new Intent(context, DebugActivity.class);
-        Indigenous app = Indigenous.getInstance();
+        IndiePass app = IndiePass.getInstance();
         app.setDebug(debug);
         context.startActivity(i);
     }
@@ -191,7 +191,7 @@ public class Utility {
      */
     public static void notifyChannels(Map<String, ChannelCounter> channelCounters) {
         try {
-            Indigenous app = Indigenous.getInstance();
+            IndiePass app = IndiePass.getInstance();
             app.setRefreshChannels(true);
 
             for (Map.Entry<String, ChannelCounter> pair : channelCounters.entrySet()) {

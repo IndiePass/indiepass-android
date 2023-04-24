@@ -3,7 +3,7 @@ package com.indieweb.indigenous.indieweb.microsub;
 import android.content.Context;
 import android.content.Intent;
 import com.android.volley.Request;
-import com.indieweb.indigenous.Indigenous;
+import com.indieweb.indigenous.IndiePass;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.Contact;
@@ -611,7 +611,7 @@ public class IndieWebReader extends ReaderBase {
                 i.putExtra("incomingText", item.getUrl());
                 break;
             case RESPONSE_CONTACT:
-                Indigenous app2 = Indigenous.getInstance();
+                IndiePass app2 = IndiePass.getInstance();
                 Contact contact = new Contact();
                 contact.setName(item.getAuthorName());
                 if (item.getAuthorPhoto().length() > 0) {

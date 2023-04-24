@@ -16,7 +16,7 @@ import androidx.appcompat.widget.SearchView;
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.General;
 import com.indieweb.indigenous.GeneralFactory;
-import com.indieweb.indigenous.Indigenous;
+import com.indieweb.indigenous.IndiePass;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.general.BaseFragment;
@@ -99,7 +99,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onResume() {
         super.onResume();
-        Indigenous app = Indigenous.getInstance();
+        IndiePass app = IndiePass.getInstance();
         if (app.isRefreshChannels()) {
             adapter.notifyDataSetChanged();
         }
@@ -187,7 +187,7 @@ public class ChannelFragment extends BaseFragment implements View.OnClickListene
 
         // Set channels globally, make a copy as we need the full list for moving items, or managing
         // feeds.
-        Indigenous app = Indigenous.getInstance();
+        IndiePass app = IndiePass.getInstance();
         app.setChannels(new ArrayList<>(Channels));
 
         // Remove channels if needed.

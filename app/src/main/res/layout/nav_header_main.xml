@@ -18,7 +18,7 @@
             android:layout_height="120dp"
             android:contentDescription="@string/nav_header_desc"
             android:paddingTop="26dp"
-            app:srcCompat="@drawable/avatar"/>
+            app:srcCompat="@drawable/avatar_white"/>
 
     <TextView
             android:visibility="gone"

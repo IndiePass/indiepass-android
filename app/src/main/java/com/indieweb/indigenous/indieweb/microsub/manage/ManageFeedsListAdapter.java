@@ -8,7 +8,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.*;
 import androidx.appcompat.app.AlertDialog;
-import com.indieweb.indigenous.Indigenous;
+import com.indieweb.indigenous.IndiePass;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.indieweb.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.Channel;
@@ -126,7 +126,7 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
         @Override
         public void onClick(View v) {
             final Feed feed = items.get(this.position);
-            final Indigenous app = Indigenous.getInstance();
+            final IndiePass app = IndiePass.getInstance();
 
             final List<Channel> channels = app.getChannelsList();
             final List<CharSequence> displayValues = new ArrayList<>();

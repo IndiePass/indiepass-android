@@ -114,7 +114,8 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/url_hint"
                         android:inputType="textUri"
-                        android:importantForAutofill="no"/>
+                        android:importantForAutofill="no"
+                        android:minHeight="48dp"/>
 
                 <CheckBox
                         android:visibility="gone"
@@ -123,7 +124,8 @@
                         android:textColor="@color/textColor"
                         android:text="@string/set_as_default"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"/>
 
                 <Button
                         android:background="@color/buttonBackground"

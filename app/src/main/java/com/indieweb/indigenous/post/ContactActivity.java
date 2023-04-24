@@ -10,7 +10,7 @@ import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
-import com.indieweb.indigenous.Indigenous;
+import com.indieweb.indigenous.IndiePass;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Contact;
 import com.indieweb.indigenous.util.Utility;
@@ -50,7 +50,7 @@ public class ContactActivity extends BaseCreate {
             boolean addContact = extras.getBoolean("addContact");
             boolean updateContact = extras.getBoolean("updateContact");
             if (addContact || updateContact) {
-                Indigenous app = Indigenous.getInstance();
+                IndiePass app = IndiePass.getInstance();
                 contact = app.getContact();
                 if (contact != null) {
 

@@ -726,7 +726,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     private void registerPixelfedApp() {
         requestType = "pixelfedAppRegister";
         Map<String, String> params = new HashMap<>();
-        params.put("client_name", "Indigenous");
+        params.put("client_name", "IndiePass");
         params.put("website", ClientId);
         params.put("redirect_uris", RedirectUri);
         params.put("scopes", "read write follow push");
@@ -878,7 +878,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     private void registerMastodonApp() {
         requestType = "mastodonAppRegister";
         Map<String, String> params = new HashMap<>();
-        params.put("client_name", "Indigenous");
+        params.put("client_name", "IndiePass");
         params.put("website", ClientId);
         params.put("redirect_uris", RedirectUri);
         params.put("scopes", "read write follow push");
@@ -1029,7 +1029,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     private void registerPleromaApp() {
         requestType = "pleromaAppRegister";
         Map<String, String> params = new HashMap<>();
-        params.put("client_name", "Indigenous");
+        params.put("client_name", "IndiePass");
         params.put("website", ClientId);
         params.put("redirect_uris", RedirectUri);
         params.put("scopes", "read write follow push");

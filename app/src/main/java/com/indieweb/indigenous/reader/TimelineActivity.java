@@ -409,7 +409,7 @@ public class TimelineActivity extends AppCompatActivity implements SwipeRefreshL
                 String accessToken = user.getAccessToken();
 
                 // Send empty access token in case the user is anonymous and the microsub endpoint
-                // is still set to the Indigenous site.
+                // is still set to the IndiePass site.
                 if (user.isAnonymous() && finalReaderEndpoint.contains(getString(R.string.anonymous_microsub_endpoint))) {
                     accessToken = "";
                 }

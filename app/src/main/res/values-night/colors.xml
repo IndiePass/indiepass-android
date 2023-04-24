@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#141414</color>
     <color name="colorPrimaryDark">#141414</color>
-    <color name="colorAccent">#C62828</color>
+    <color name="colorAccent">#F44336</color>
     <color name="iconTint">#f5f5f5</color>
     <color name="inverseColor">#f5f5f5</color>
     <color name="listBackgroundColor">#141414</color>
@@ -24,6 +24,6 @@
     <color name="micropubActionTouched">#f5f5f5</color>
     <color name="transparentProgress">#80000000</color>
     <color name="progressWidget">@color/colorAccent</color>
-    <color name="idleColor">#141414</color>
-    <color name="pressedColor">#C62828</color>
+    <color name="idleColor">#666666</color>
+    <color name="pressedColor">@color/colorAccent</color>
 </resources>

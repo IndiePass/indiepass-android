@@ -12,7 +12,7 @@ import android.widget.*;
 import androidx.appcompat.app.AlertDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.indieweb.indigenous.Indigenous;
+import com.indieweb.indigenous.IndiePass;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.indieweb.micropub.MicropubAction;
 import com.indieweb.indigenous.model.Contact;
@@ -151,7 +151,7 @@ public class ContactListAdapter extends BaseAdapter implements OnClickListener {
         @Override
         public void onClick(View v) {
             Contact contact = contacts.get(this.position);
-            Indigenous app = Indigenous.getInstance();
+            IndiePass app = IndiePass.getInstance();
             app.setContact(contact);
             Intent startActivity = new Intent(context, ContactActivity.class);
             startActivity.putExtra("updateContact", true);

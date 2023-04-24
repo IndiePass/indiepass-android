@@ -13,7 +13,8 @@
             android:textColor="@color/textColor"
             android:text="@string/save_as_draft"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"/>
 
     <androidx.appcompat.widget.SwitchCompat
             android:padding="@dimen/box_padding"
@@ -23,7 +24,8 @@
             android:checked="true"
             android:text="@string/published"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"/>
 
     <androidx.appcompat.widget.SwitchCompat
             android:padding="@dimen/box_padding"
@@ -34,7 +36,8 @@
             android:visibility="gone"
             android:text="@string/sensitivity"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"/>
 
     <Spinner
             android:paddingTop="@dimen/box_padding"
@@ -43,7 +46,8 @@
             android:entries="@array/visibility_array"
             android:id="@+id/postVisibility"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"/>
 
     <EditText
             android:textColor="@color/textColor"
@@ -57,7 +61,8 @@
             android:id="@+id/publishDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:importantForAutofill="no"/>
+            android:importantForAutofill="no"
+            android:minHeight="48dp"/>
 
 </LinearLayout>
 

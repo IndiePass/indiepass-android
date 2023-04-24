@@ -24,7 +24,7 @@ import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
-import com.indieweb.indigenous.Indigenous;
+import com.indieweb.indigenous.IndiePass;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.indieweb.microsub.MicrosubAction;
@@ -64,7 +64,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
         layout = findViewById(R.id.timeline_detail_root);
 
-        Indigenous app = Indigenous.getInstance();
+        IndiePass app = IndiePass.getInstance();
         item = app.getTimelineItem();
         if (item == null) {
             Snackbar.make(layout, getString(R.string.no_item_found), Snackbar.LENGTH_SHORT).show();
@@ -694,7 +694,7 @@ public class TimelineDetailActivity extends AppCompatActivity {
 
                         case R.id.timeline_entry_debug:
                             Intent i = new Intent(TimelineDetailActivity.this, DebugActivity.class);
-                            Indigenous app = Indigenous.getInstance();
+                            IndiePass app = IndiePass.getInstance();
                             app.setDebug(entry.getJson());
                             startActivity(i);
                             break;

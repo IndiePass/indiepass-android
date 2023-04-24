@@ -8,16 +8,16 @@ import com.indieweb.indigenous.model.TimelineItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Indigenous extends Application {
+public class IndiePass extends Application {
 
     public static String debug;
     public static TimelineItem timelineItem;
     public static Contact contactItem;
     public static boolean refreshChannels;
     public static List<Channel> channelsList = new ArrayList<>();
-    private static Indigenous singleton;
+    private static IndiePass singleton;
 
-    public static Indigenous getInstance() {
+    public static IndiePass getInstance() {
         return singleton;
     }
 

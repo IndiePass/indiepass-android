@@ -22,7 +22,7 @@ import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
-import com.indieweb.indigenous.Indigenous;
+import com.indieweb.indigenous.IndiePass;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.general.DebugActivity;
 import com.indieweb.indigenous.indieweb.microsub.MicrosubAction;
@@ -88,7 +88,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                     int color = context.getResources().getColor(R.color.listRowBackgroundColor);
                     TimelineItem item = items.get(position);
                     holder.row.setBackgroundColor(color);
-                    Indigenous app = Indigenous.getInstance();
+                    IndiePass app = IndiePass.getInstance();
                     app.setTimelineItem(item);
                     Intent intent = new Intent(context, TimelineDetailActivity.class);
                     context.startActivity(intent);
@@ -1093,7 +1093,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
             }
 
             // Get static app.
-            final Indigenous app = Indigenous.getInstance();
+            final IndiePass app = IndiePass.getInstance();
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {

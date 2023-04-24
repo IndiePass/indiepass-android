@@ -7,7 +7,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.snackbar.Snackbar;
-import com.indieweb.indigenous.Indigenous;
+import com.indieweb.indigenous.IndiePass;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.util.Utility;
 import org.json.JSONObject;
@@ -24,7 +24,7 @@ public class DebugActivity extends AppCompatActivity {
 
         layout = findViewById(R.id.debug_root);
 
-        Indigenous app = Indigenous.getInstance();
+        IndiePass app = IndiePass.getInstance();
         String appDebug = app.getDebug();
         if (appDebug != null) {
 
