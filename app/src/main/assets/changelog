@@ -1,3 +1,19 @@
+<h4>24/04/23 0.81</h4>
+<ul>
+    <li>Minor UI tweaks</li>
+</ul>
+<h4>23/04/2023 0.80</h4>
+<ul>
+    <li>Renamed the app to IndiePass</li>
+    <li>Upgraded to Android SDK version 33</li>
+    <li>Increased the minimum SDK version to 22</li>
+    <li>Various accessibility improvements</li>
+    <li>Renamed Night theme to Dark mode</li>
+    <li>New dark mode theme</li>
+    <li>Improved experience if no account added</li>
+    <li>Adjusted app colour palette to improve contrast</li>
+    <li>Various minor bug fixes</li>
+</ul>
 <h4>20/11/2021 0.65</h4>
 <ul>
     <li>Set a default account when deleting the current</li>
