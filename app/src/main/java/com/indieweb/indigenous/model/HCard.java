@@ -6,7 +6,8 @@ public class HCard {
     private String avatar;
     private String url;
 
-    public HCard() {}
+    public HCard() {
+    }
 
     public String getName() {
         return name;

@@ -1,7 +1,6 @@
 package com.indieweb.indigenous.util;
 
 import android.content.Context;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -29,8 +28,7 @@ public class HTTPRequest {
     /**
      * Do a Volley String GET Request.
      *
-     * @param endpoint
-     *   The endpoint to query.
+     * @param endpoint The endpoint to query.
      */
     public void doGetRequest(final String endpoint) {
         StringRequest request = new StringRequest(Request.Method.GET, endpoint,
@@ -46,8 +44,7 @@ public class HTTPRequest {
                         volleyRequestListener.OnFailureRequest(error);
                     }
                 }
-        )
-        {
+        ) {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
@@ -57,7 +54,7 @@ public class HTTPRequest {
                     String accessToken = user.getAccessToken();
 
                     // Send empty access token in case the user is anonymous and the microsub endpoint
-                    // is still set to the Indigenous site.
+                    // is still set to the IndiePass site.
                     if (user.isAnonymous() && endpoint.contains(context.getString(R.string.anonymous_microsub_endpoint))) {
                         accessToken = "";
                     }
@@ -76,10 +73,8 @@ public class HTTPRequest {
     /**
      * Do a Volley String POST Request.
      *
-     * @param endpoint
-     *   The endpoint to query.
-     * @param params
-     *   The params to send.
+     * @param endpoint The endpoint to query.
+     * @param params   The params to send.
      */
     public void doPostRequest(String endpoint, final Map<String, String> params) {
         StringRequest request = new StringRequest(Request.Method.POST, endpoint,
@@ -99,8 +94,7 @@ public class HTTPRequest {
                         }
                     }
                 }
-        )
-        {
+        ) {
 
             @Override
             protected Map<String, String> getParams() {
@@ -126,10 +120,8 @@ public class HTTPRequest {
     /**
      * Do a Volley String DELETE Request.
      *
-     * @param endpoint
-     *   The endpoint to query.
-     * @param params
-     *   The params to send.
+     * @param endpoint The endpoint to query.
+     * @param params   The params to send.
      */
     public void doDeleteRequest(String endpoint, final Map<String, String> params) {
         StringRequest request = new StringRequest(Request.Method.DELETE, endpoint,
@@ -149,8 +141,7 @@ public class HTTPRequest {
                         }
                     }
                 }
-        )
-        {
+        ) {
 
             @Override
             protected Map<String, String> getParams() {

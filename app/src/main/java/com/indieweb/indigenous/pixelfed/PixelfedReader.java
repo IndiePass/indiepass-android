@@ -2,7 +2,6 @@ package com.indieweb.indigenous.pixelfed;
 
 import android.content.Context;
 import android.view.MenuItem;
-
 import com.android.volley.Request;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Channel;
@@ -10,7 +9,6 @@ import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.reader.ReaderBase;
 import com.indieweb.indigenous.util.HTTPRequest;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -109,14 +107,11 @@ public class PixelfedReader extends ReaderBase {
 
         if (channelId.equals(CHANNEL_NAME_PIXELFED_ANONYMOUS)) {
             endpoint = "https://pixelfed.social/api/v1/timelines/public?limit=" + LIMIT;
-        }
-        else if (isSourceView && sourceId != null) {
+        } else if (isSourceView && sourceId != null) {
             endpoint = this.getUser().getBaseUrl() + "/api/v1/accounts/" + sourceId + "/statuses";
-        }
-        else if (isSearch && search.length() > 0) {
+        } else if (isSearch && search.length() > 0) {
             endpoint = this.getUser().getBaseUrl() + "/api/v2/search?q=" + search;
-        }
-        else {
+        } else {
             switch (channelId) {
                 case CHANNEL_NAME_HOME:
                     endpoint = this.getUser().getBaseUrl() + "/api/v1/timelines/home";
@@ -156,10 +151,7 @@ public class PixelfedReader extends ReaderBase {
 
     @Override
     public boolean sendTimelineAccessToken(String channelId) {
-        boolean send = true;
-        if (channelId.equals(CHANNEL_NAME_PIXELFED_ANONYMOUS)) {
-            send = false;
-        }
+        boolean send = !channelId.equals(CHANNEL_NAME_PIXELFED_ANONYMOUS);
         return send;
     }
 
@@ -176,8 +168,7 @@ public class PixelfedReader extends ReaderBase {
             if (isSearch) {
                 JSONObject r = new JSONObject(response);
                 itemList = new JSONArray(r.get("statuses"));
-            }
-            else {
+            } else {
                 itemList = new JSONArray(response);
             }
 
@@ -241,7 +232,8 @@ public class PixelfedReader extends ReaderBase {
                 // It's possible that _id is empty. Don't let readers choke on it.
                 try {
                     item.setId(object.getString("id"));
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
 
                 // Url.
                 if (object.has("uri")) {
@@ -253,7 +245,8 @@ public class PixelfedReader extends ReaderBase {
                 if (object.has("account")) {
                     try {
                         item.setSourceId(object.getJSONObject("account").getString("id"));
-                    } catch (Exception ignored) {}
+                    } catch (Exception ignored) {
+                    }
                 }
 
                 // Photos.
@@ -263,8 +256,8 @@ public class PixelfedReader extends ReaderBase {
                         for (int p = 0; p < photos.length(); p++) {
                             item.addPhoto(photos.getJSONObject(p).getString("url"));
                         }
+                    } catch (JSONException ignored) {
                     }
-                    catch (JSONException ignored) { }
                 }
 
                 // Author.
@@ -313,8 +306,8 @@ public class PixelfedReader extends ReaderBase {
                 olderItems[0] = maxId;
             }
 
+        } catch (JSONException ignored) {
         }
-        catch (JSONException ignored) { }
 
         return TimelineItems;
     }
@@ -328,8 +321,7 @@ public class PixelfedReader extends ReaderBase {
             case RESPONSE_LIKE:
                 if (item.isLiked()) {
                     appUrl = getUser().getBaseUrl() + "/api/v1/statuses/" + item.getId() + "/unfavourite";
-                }
-                else {
+                } else {
                     appUrl = getUser().getBaseUrl() + "/api/v1/statuses/" + item.getId() + "/favourite";
                     isActive = true;
                 }
@@ -337,8 +329,7 @@ public class PixelfedReader extends ReaderBase {
             case RESPONSE_BOOKMARK:
                 if (item.isBookmarked()) {
                     appUrl = getUser().getBaseUrl() + "/api/v1/statuses/" + item.getId() + "/unbookmark";
-                }
-                else {
+                } else {
                     appUrl = getUser().getBaseUrl() + "/api/v1/statuses/" + item.getId() + "/bookmark";
                     isActive = true;
                 }
@@ -346,8 +337,7 @@ public class PixelfedReader extends ReaderBase {
             case RESPONSE_REPOST:
                 if (item.isReposted()) {
                     appUrl = getUser().getBaseUrl() + "/api/v1/statuses/" + item.getId() + "/unreblog";
-                }
-                else {
+                } else {
                     appUrl = getUser().getBaseUrl() + "/api/v1/statuses/" + item.getId() + "/reblog";
                     isActive = true;
                 }
@@ -355,8 +345,7 @@ public class PixelfedReader extends ReaderBase {
             case RESPONSE_CONTACT:
                 if (item.getChannelId().equals(CHANNEL_NAME_HOME)) {
                     appUrl = getUser().getBaseUrl() + "/api/v1/accounts/" + item.getAuthorId() + "/unfollow";
-                }
-                else {
+                } else {
                     appUrl = getUser().getBaseUrl() + "/api/v1/accounts/" + item.getAuthorId() + "/follow";
                 }
                 break;
@@ -379,8 +368,7 @@ public class PixelfedReader extends ReaderBase {
     public void setContactLabel(MenuItem menuItem, TimelineItem item) {
         if (item.getChannelId().equals(CHANNEL_NAME_HOME)) {
             menuItem.setTitle(getContext().getString(R.string.unfollow));
-        }
-        else {
+        } else {
             menuItem.setTitle(getContext().getString(R.string.follow));
         }
     }
@@ -389,7 +377,6 @@ public class PixelfedReader extends ReaderBase {
     public String getReplyId(TimelineItem item) {
         return item.getId();
     }
-
 
 
 }

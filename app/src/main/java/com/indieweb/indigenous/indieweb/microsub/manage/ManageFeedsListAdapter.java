@@ -2,18 +2,13 @@ package com.indieweb.indigenous.indieweb.microsub.manage;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.indieweb.indigenous.Indigenous;
+import android.widget.*;
+import androidx.appcompat.app.AlertDialog;
+import com.indieweb.indigenous.IndiePass;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.indieweb.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.Channel;
@@ -39,7 +34,7 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
         this.items = items;
         this.user = user;
         this.layout = layout;
-        this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public int getCount() {
@@ -54,12 +49,7 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
         return position;
     }
 
-    public void onClick(View view) {}
-
-    public static class ViewHolder {
-        public TextView url;
-        public Button delete;
-        public Button move;
+    public void onClick(View view) {
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -72,9 +62,8 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
             holder.move = convertView.findViewById(R.id.feedMove);
             holder.delete = convertView.findViewById(R.id.feedDelete);
             convertView.setTag(holder);
-        }
-        else {
-            holder = (ViewHolder)convertView.getTag();
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
         final Feed item = items.get(position);
@@ -85,6 +74,12 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
         }
 
         return convertView;
+    }
+
+    public static class ViewHolder {
+        public TextView url;
+        public Button delete;
+        public Button move;
     }
 
     // Delete listener.
@@ -102,8 +97,8 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(String.format(context.getString(R.string.delete_feed_confirm), feed.getUrl()));
-            builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog,int id) {
+            builder.setPositiveButton(context.getString(R.string.delete_post), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
                     new MicrosubAction(context, user, layout).deleteFeed(feed.getUrl(), feed.getChannel());
                     items.remove(position);
                     notifyDataSetChanged();
@@ -131,7 +126,7 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
         @Override
         public void onClick(View v) {
             final Feed feed = items.get(this.position);
-            final Indigenous app = Indigenous.getInstance();
+            final IndiePass app = IndiePass.getInstance();
 
             final List<Channel> channels = app.getChannelsList();
             final List<CharSequence> displayValues = new ArrayList<>();
@@ -146,9 +141,9 @@ public class ManageFeedsListAdapter extends BaseAdapter implements OnClickListen
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(context.getString(R.string.feed_move_to_channel));
             builder.setSingleChoiceItems(channelItems, -1, null);
-            builder.setPositiveButton(context.getString(R.string.move_item),new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(context.getString(R.string.move_item), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    ListView lw = ((AlertDialog)dialog).getListView();
+                    ListView lw = ((AlertDialog) dialog).getListView();
                     Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
                     if (checkedItem != null) {
                         for (Channel channel : channels) {

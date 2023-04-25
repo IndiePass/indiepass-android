@@ -8,11 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.indieweb.indigenous.R;
 
@@ -23,15 +21,6 @@ public class VideoGalleryAdapter extends RecyclerView.Adapter<VideoGalleryAdapte
     private final List<Uri> video;
     private final Context context;
     private final boolean isMediaRequest;
-
-    static class MyViewHolder extends RecyclerView.ViewHolder {
-        final ImageView thumbnail;
-
-        MyViewHolder(View view) {
-            super(view);
-            thumbnail = view.findViewById(R.id.imagePreview);
-        }
-    }
 
     public VideoGalleryAdapter(Activity activity, List<Uri> video, boolean isMediaRequest) {
         this.context = activity;
@@ -64,6 +53,15 @@ public class VideoGalleryAdapter extends RecyclerView.Adapter<VideoGalleryAdapte
         return video.size();
     }
 
+    static class MyViewHolder extends RecyclerView.ViewHolder {
+        final ImageView thumbnail;
+
+        MyViewHolder(View view) {
+            super(view);
+            thumbnail = view.findViewById(R.id.imagePreview);
+        }
+    }
+
     // Video click listener.
     class OnVideoClickListener implements View.OnClickListener {
 
@@ -78,8 +76,8 @@ public class VideoGalleryAdapter extends RecyclerView.Adapter<VideoGalleryAdapte
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(context.getString(R.string.delete_video_confirm));
-            builder.setPositiveButton(context.getString(R.string.delete),new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog,int id) {
+            builder.setPositiveButton(context.getString(R.string.delete), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
                     video.remove(position);
                     notifyDataSetChanged();
                 }

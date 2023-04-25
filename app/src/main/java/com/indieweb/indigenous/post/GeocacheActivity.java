@@ -2,7 +2,6 @@ package com.indieweb.indigenous.post;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Draft;
 

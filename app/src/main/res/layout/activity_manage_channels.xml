@@ -1,50 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/channel_manage_root"
-    android:layout_width="match_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/channel_manage_root"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
 
     <TextView
-        android:padding="10dp"
-        android:id="@+id/createFeedTitle"
-        android:textSize="18sp"
-        android:visibility="gone"
-        android:text="@string/select_channel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            android:padding="10dp"
+            android:id="@+id/createFeedTitle"
+            android:textSize="18sp"
+            android:visibility="gone"
+            android:text="@string/select_channel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     <TextView
-        android:layout_below="@+id/createFeedTitle"
-        android:padding="10dp"
-        android:visibility="gone"
-        android:textStyle="italic"
-        android:id="@+id/previewFeed"
-        android:textColor="@color/textColor"
-        android:textSize="@dimen/preview_text_size"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            android:layout_below="@+id/createFeedTitle"
+            android:padding="10dp"
+            android:visibility="gone"
+            android:textStyle="italic"
+            android:id="@+id/previewFeed"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/preview_text_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/refreshChannels"
-        android:layout_below="@+id/previewFeed"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            android:id="@+id/refreshChannels"
+            android:layout_below="@+id/previewFeed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:background="@color/listBackgroundColor"
-            android:id="@+id/channel_list"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+                android:background="@color/listBackgroundColor"
+                android:id="@+id/channel_list"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <include layout="@layout/widget_no_connection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+    <include
+            layout="@layout/widget_no_connection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
 
 </RelativeLayout>

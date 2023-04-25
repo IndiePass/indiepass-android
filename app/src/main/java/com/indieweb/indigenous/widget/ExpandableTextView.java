@@ -5,25 +5,25 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Copyright (C) 2017 Cliff Ophalvens (Blogc.at)
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,37 +31,32 @@ import java.util.List;
  * limitations under the License.
  *
  * @author Cliff Ophalvens (Blogc.at)
- *
+ * <p>
  * Modified (with modifications)
- *  - https://github.com/Blogcat/Android-ExpandableTextView/pull/19
- *
- *  remove unused listeners as well.
+ * - https://github.com/Blogcat/Android-ExpandableTextView/pull/19
+ * <p>
+ * remove unused listeners as well.
  */
-public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextView
-{
+public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextView {
     private static final int DEFAULT_ANIMATION_DURATION = 750;
     private final List<OnExpandListener> onExpandListeners;
+    private final int maxLines;
     private TimeInterpolator expandInterpolator;
     private TimeInterpolator collapseInterpolator;
-
-    private final int maxLines;
     private long animationDuration;
     private boolean animating;
     private boolean expanded;
     private int collapsedHeight;
 
-    public ExpandableTextView(final Context context)
-    {
+    public ExpandableTextView(final Context context) {
         this(context, null);
     }
 
-    public ExpandableTextView(final Context context, @Nullable final AttributeSet attrs)
-    {
+    public ExpandableTextView(final Context context, @Nullable final AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ExpandableTextView(final Context context, @Nullable final AttributeSet attrs, final int defStyle)
-    {
+    public ExpandableTextView(final Context context, @Nullable final AttributeSet attrs, final int defStyle) {
         super(context, attrs, defStyle);
 
         // read attributes
@@ -79,12 +74,10 @@ public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextV
     }
 
     @Override
-    protected void onMeasure(final int widthMeasureSpec, int heightMeasureSpec)
-    {
+    protected void onMeasure(final int widthMeasureSpec, int heightMeasureSpec) {
         // if this TextView is collapsed and maxLines = 0,
-        // than make its height equals to zero
-        if (this.maxLines == 0 && !this.expanded && !this.animating)
-        {
+        // then make its height equals to zero
+        if (this.maxLines == 0 && !this.expanded && !this.animating) {
             heightMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY);
         }
 
@@ -95,10 +88,10 @@ public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextV
 
     /**
      * Toggle the expanded state of this {@link ExpandableTextView}.
+     *
      * @return true if toggled, false otherwise.
      */
-    public boolean toggle()
-    {
+    public boolean toggle() {
         return this.expanded
                 ? this.collapse()
                 : this.expand();
@@ -106,12 +99,11 @@ public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextV
 
     /**
      * Expand this {@link ExpandableTextView}.
+     *
      * @return true if expanded, false otherwise.
      */
-    public boolean expand()
-    {
-        if (!this.expanded && !this.animating && this.maxLines >= 0)
-        {
+    public boolean expand() {
+        if (!this.expanded && !this.animating && this.maxLines >= 0) {
 
             // measure collapsed height
             this.measure
@@ -139,26 +131,22 @@ public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextV
 
             // animate from collapsed height to expanded height
             final ValueAnimator valueAnimator = ValueAnimator.ofInt(this.collapsedHeight, expandedHeight);
-            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
-            {
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
-                public void onAnimationUpdate(final ValueAnimator animation)
-                {
+                public void onAnimationUpdate(final ValueAnimator animation) {
                     ExpandableTextView.this.setHeight((int) animation.getAnimatedValue());
                 }
             });
 
             // wait for the animation to end
-            valueAnimator.addListener(new AnimatorListenerAdapter()
-            {
+            valueAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
-                public void onAnimationEnd(final Animator animation)
-                {
+                public void onAnimationEnd(final Animator animation) {
                     // reset min & max height (previously set with setHeight() method)
                     ExpandableTextView.this.setMaxHeight(Integer.MAX_VALUE);
                     ExpandableTextView.this.setMinHeight(0);
 
-                    // if fully expanded, set height to WRAP_CONTENT, because when rotating the device
+                    // if fully expanded, set height to WRAP_CONTENT, because, when rotating the device,
                     // the height calculated with this ValueAnimator isn't correct anymore
                     final ViewGroup.LayoutParams layoutParams = ExpandableTextView.this.getLayoutParams();
                     layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -186,12 +174,11 @@ public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextV
 
     /**
      * Collapse this {@link TextView}.
+     *
      * @return true if collapsed, false otherwise.
      */
-    public boolean collapse()
-    {
-        if (this.expanded && !this.animating && this.maxLines >= 0)
-        {
+    public boolean collapse() {
+        if (this.expanded && !this.animating && this.maxLines >= 0) {
 
             // measure expanded height
             final int expandedHeight = this.getMeasuredHeight();
@@ -201,21 +188,17 @@ public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextV
 
             // animate from expanded height to collapsed height
             final ValueAnimator valueAnimator = ValueAnimator.ofInt(expandedHeight, this.collapsedHeight);
-            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
-            {
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
-                public void onAnimationUpdate(final ValueAnimator animation)
-                {
+                public void onAnimationUpdate(final ValueAnimator animation) {
                     ExpandableTextView.this.setHeight((int) animation.getAnimatedValue());
                 }
             });
 
             // wait for the animation to end
-            valueAnimator.addListener(new AnimatorListenerAdapter()
-            {
+            valueAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
-                public void onAnimationEnd(final Animator animation)
-                {
+                public void onAnimationEnd(final Animator animation) {
                     // keep track of current status
                     ExpandableTextView.this.expanded = false;
                     ExpandableTextView.this.animating = false;
@@ -223,7 +206,7 @@ public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextV
                     // set maxLines back to original value
                     ExpandableTextView.this.setMaxLines(ExpandableTextView.this.maxLines);
 
-                    // if fully collapsed, set height back to WRAP_CONTENT, because when rotating the device
+                    // if fully collapsed, set height back to WRAP_CONTENT, because, when rotating the device,
                     // the height previously calculated with this ValueAnimator isn't correct anymore
                     final ViewGroup.LayoutParams layoutParams = ExpandableTextView.this.getLayoutParams();
                     layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -252,83 +235,83 @@ public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextV
 
     /**
      * Sets the duration of the expand / collapse animation.
+     *
      * @param animationDuration duration in milliseconds.
      */
-    public void setAnimationDuration(final long animationDuration)
-    {
+    public void setAnimationDuration(final long animationDuration) {
         this.animationDuration = animationDuration;
     }
 
     /**
      * Adds a listener which receives updates about this {@link ExpandableTextView}.
+     *
      * @param onExpandListener the listener.
      */
-    public void addOnExpandListener(final OnExpandListener onExpandListener)
-    {
+    public void addOnExpandListener(final OnExpandListener onExpandListener) {
         this.onExpandListeners.add(onExpandListener);
     }
 
     /**
      * Removes a listener which receives updates about this {@link ExpandableTextView}.
+     *
      * @param onExpandListener the listener.
      */
-    public void removeOnExpandListener(final OnExpandListener onExpandListener)
-    {
+    public void removeOnExpandListener(final OnExpandListener onExpandListener) {
         this.onExpandListeners.remove(onExpandListener);
     }
 
     /**
      * Sets a {@link TimeInterpolator} for expanding and collapsing.
+     *
      * @param interpolator the interpolator
      */
-    public void setInterpolator(final TimeInterpolator interpolator)
-    {
+    public void setInterpolator(final TimeInterpolator interpolator) {
         this.expandInterpolator = interpolator;
         this.collapseInterpolator = interpolator;
     }
 
     /**
-     * Sets a {@link TimeInterpolator} for expanding.
-     * @param expandInterpolator the interpolator
-     */
-    public void setExpandInterpolator(final TimeInterpolator expandInterpolator)
-    {
-        this.expandInterpolator = expandInterpolator;
-    }
-
-    /**
      * Returns the current {@link TimeInterpolator} for expanding.
+     *
      * @return the current interpolator, null by default.
      */
-    public TimeInterpolator getExpandInterpolator()
-    {
+    public TimeInterpolator getExpandInterpolator() {
         return this.expandInterpolator;
     }
 
     /**
-     * Sets a {@link TimeInterpolator} for collpasing.
-     * @param collapseInterpolator the interpolator
+     * Sets a {@link TimeInterpolator} for expanding.
+     *
+     * @param expandInterpolator the interpolator
      */
-    public void setCollapseInterpolator(final TimeInterpolator collapseInterpolator)
-    {
-        this.collapseInterpolator = collapseInterpolator;
+    public void setExpandInterpolator(final TimeInterpolator expandInterpolator) {
+        this.expandInterpolator = expandInterpolator;
     }
 
     /**
      * Returns the current {@link TimeInterpolator} for collapsing.
+     *
      * @return the current interpolator, null by default.
      */
-    public TimeInterpolator getCollapseInterpolator()
-    {
+    public TimeInterpolator getCollapseInterpolator() {
         return this.collapseInterpolator;
     }
 
     /**
+     * Sets a {@link TimeInterpolator} for collapsing.
+     *
+     * @param collapseInterpolator the interpolator
+     */
+    public void setCollapseInterpolator(final TimeInterpolator collapseInterpolator) {
+        this.collapseInterpolator = collapseInterpolator;
+    }
+
+    /**
      * Is this {@link ExpandableTextView} expanded or not?
+     *
      * @return true if expanded, false if collapsed.
      */
-    public boolean isExpanded()
-    {
+    public boolean isExpanded() {
         return this.expanded;
     }
 
@@ -337,10 +320,8 @@ public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextV
     /**
      * This method will notify the listener about this view finishes to collapse.
      */
-    private void notifyOnEndCollapse()
-    {
-        for (final OnExpandListener onExpandListener : this.onExpandListeners)
-        {
+    private void notifyOnEndCollapse() {
+        for (final OnExpandListener onExpandListener : this.onExpandListeners) {
             onExpandListener.onEndCollapse(this);
         }
     }
@@ -351,11 +332,11 @@ public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextV
      * Interface definition for a callback to be invoked when
      * a {@link ExpandableTextView} is expanded or collapsed.
      */
-    public interface OnExpandListener
-    {
+    public interface OnExpandListener {
 
         /**
          * The {@link ExpandableTextView} finishes to collapse.
+         *
          * @param view the textview
          */
         void onEndCollapse(@NonNull ExpandableTextView view);

@@ -3,19 +3,12 @@ package com.indieweb.indigenous.users;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.*;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
@@ -82,8 +75,7 @@ public class UsersFragment extends Fragment {
             List<User> users = new Accounts(getContext()).getAllUsers();
             UsersListAdapter adapter = new UsersListAdapter(requireContext(), getActivity(), users, currentUser, layout);
             listView.setAdapter(adapter);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Snackbar.make(layout, getString(R.string.user_exception), Snackbar.LENGTH_LONG).show();
         }
     }

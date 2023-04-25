@@ -3,7 +3,6 @@ package com.indieweb.indigenous.post;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
-
 import com.indieweb.indigenous.R;
 
 public class BookmarkActivity extends BaseCreate {
@@ -27,8 +26,7 @@ public class BookmarkActivity extends BaseCreate {
 
         if (TextUtils.isEmpty(url.getText())) {
             url.setError(getString(R.string.required_field));
-        }
-        else {
+        } else {
             sendBasePost(item);
         }
     }

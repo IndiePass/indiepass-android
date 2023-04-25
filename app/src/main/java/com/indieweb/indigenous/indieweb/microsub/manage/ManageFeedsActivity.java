@@ -2,20 +2,15 @@ package com.indieweb.indigenous.indieweb.microsub.manage;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
@@ -24,7 +19,6 @@ import com.indieweb.indigenous.model.Feed;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.users.Accounts;
 import com.indieweb.indigenous.util.Utility;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,12 +32,12 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
 
     String channelId;
     String channelName;
-    private ManageFeedsListAdapter adapter;
-    private List<Feed> FeedItems = new ArrayList<>();
     SwipeRefreshLayout refreshLayout;
     ListView listView;
     User user;
     boolean showRefreshMessage;
+    private ManageFeedsListAdapter adapter;
+    private List<Feed> FeedItems = new ArrayList<>();
     private RelativeLayout layout;
     private LinearLayout noConnection;
 
@@ -65,8 +59,7 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
             refreshLayout.setOnRefreshListener(this);
             user = new Accounts(this).getDefaultUser();
             startFeed();
-        }
-        else {
+        } else {
             Snackbar.make(layout, getString(R.string.channel_not_found), Snackbar.LENGTH_SHORT).show();
         }
     }
@@ -161,17 +154,16 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
                             }
 
                             adapter.notifyDataSetChanged();
-                        }
-                        catch (JSONException e) {
+                        } catch (JSONException e) {
                             showRefreshMessage = false;
                             String message = String.format(getString(R.string.feed_parse_error), e.getMessage());
                             final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
                             snack.setAction(getString(R.string.close), new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        snack.dismiss();
+                                        @Override
+                                        public void onClick(View v) {
+                                            snack.dismiss();
+                                        }
                                     }
-                                }
                             );
                             snack.show();
 
@@ -188,8 +180,7 @@ public class ManageFeedsActivity extends AppCompatActivity implements SwipeRefre
                         checkRefreshingStatus();
                     }
                 }
-        )
-        {
+        ) {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();

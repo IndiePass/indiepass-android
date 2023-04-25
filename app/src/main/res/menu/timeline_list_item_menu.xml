@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+      xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/timeline_entry_share"
-        android:title="@string/share_post"
-        app:showAsAction="never" />
+            android:id="@+id/timeline_entry_share"
+            android:title="@string/share_post"
+            app:showAsAction="never"/>
 
     <item
-        android:visible="false"
-        android:id="@+id/timeline_entry_mark_read"
-        android:title="@string/mark_read"
-        app:showAsAction="never" />
+            android:visible="false"
+            android:id="@+id/timeline_entry_mark_read"
+            android:title="@string/mark_read"
+            app:showAsAction="never"/>
 
     <item
-        android:id="@+id/timeline_entry_mark_unread"
-        android:title="@string/mark_unread"
-        app:showAsAction="never" />
+            android:id="@+id/timeline_entry_mark_unread"
+            android:title="@string/mark_unread"
+            app:showAsAction="never"/>
 
     <item
-        android:id="@+id/timeline_entry_move"
-        android:title="@string/move_item"
-        android:visible="false"
-        app:showAsAction="never" />
+            android:id="@+id/timeline_entry_move"
+            android:title="@string/move_item"
+            android:visible="false"
+            app:showAsAction="never"/>
 
     <item
-        android:id="@+id/timeline_save_author"
-        android:title="@string/save_author"
-        android:visible="false"
-        app:showAsAction="never" />
+            android:id="@+id/timeline_save_author"
+            android:title="@string/save_author"
+            android:visible="false"
+            app:showAsAction="never"/>
 
     <item
-        android:id="@+id/timeline_entry_delete"
-        android:title="@string/delete_post"
-        app:showAsAction="never" />
+            android:id="@+id/timeline_entry_delete"
+            android:title="@string/delete_post"
+            app:showAsAction="never"/>
 
     <item
-        android:id="@+id/timeline_entry_debug"
-        android:title="@string/debug"
-        android:visible="false"
-        app:showAsAction="never" />
+            android:id="@+id/timeline_entry_debug"
+            android:title="@string/debug"
+            android:visible="false"
+            app:showAsAction="never"/>
 
 </menu>

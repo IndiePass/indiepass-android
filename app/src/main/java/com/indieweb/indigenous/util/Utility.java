@@ -18,16 +18,14 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
-
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.indieweb.indigenous.BuildConfig;
-import com.indieweb.indigenous.Indigenous;
+import com.indieweb.indigenous.IndiePass;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.general.DebugActivity;
@@ -37,7 +35,6 @@ import com.indieweb.indigenous.model.ChannelCounter;
 import com.indieweb.indigenous.model.TimelineItem;
 import com.indieweb.indigenous.reader.Reader;
 import com.indieweb.indigenous.reader.TimelineActivity;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,12 +46,7 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Utility {
 
@@ -90,8 +82,7 @@ public class Utility {
     /**
      * Save cache.
      *
-     * @param data
-     *   The data to cache.
+     * @param data The data to cache.
      */
     public static void saveCache(Context context, String account, String type, String data, String channel_id, String page) {
         if (Preferences.getPreference(context, "pref_key_reader_cache", false)) {
@@ -112,14 +103,12 @@ public class Utility {
     /**
      * Set the night theme.
      *
-     * @param context
-     *   The current context.
+     * @param context The current context.
      */
     public static void setNightTheme(Context context) {
         if (Preferences.getPreference(context, "night_mode", false)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
-        else {
+        } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         }
     }
@@ -139,9 +128,7 @@ public class Utility {
     /**
      * Strip ending slash.
      *
-     * @param string
-     *   The string to strip the ending slash of.
-     *
+     * @param string The string to strip the ending slash of.
      * @return string
      */
     public static String stripEndingSlash(String string) {
@@ -154,9 +141,7 @@ public class Utility {
     /**
      * Strip start slash.
      *
-     * @param string
-     *   The string to strip the starting slash of.
-     *
+     * @param string The string to strip the starting slash of.
      * @return string
      */
     public static String stripStartSlash(String string) {
@@ -169,14 +154,12 @@ public class Utility {
     /**
      * Show debug info activity.
      *
-     * @param context
-     *   The current context.
-     * @param debug
-     *   The debug string.
+     * @param context The current context.
+     * @param debug   The debug string.
      */
     public static void showDebugInfo(Context context, String debug) {
         Intent i = new Intent(context, DebugActivity.class);
-        Indigenous app = Indigenous.getInstance();
+        IndiePass app = IndiePass.getInstance();
         app.setDebug(debug);
         context.startActivity(i);
     }
@@ -184,10 +167,8 @@ public class Utility {
     /**
      * Notify channels the counter has changed.
      *
-     * @param item
-     *   A timeline item.
-     * @param counter
-     *   The counter
+     * @param item    A timeline item.
+     * @param counter The counter
      */
     public static void notifyChannels(TimelineItem item, Integer counter) {
         Map<String, ChannelCounter> channelCounters = new LinkedHashMap<>();
@@ -206,19 +187,18 @@ public class Utility {
     /**
      * Notify channels the counter is changed.
      *
-     * @param channelCounters
-     *   A list where key is channel/source and value read items.
+     * @param channelCounters A list where key is channel/source and value read items.
      */
     public static void notifyChannels(Map<String, ChannelCounter> channelCounters) {
         try {
-            Indigenous app = Indigenous.getInstance();
+            IndiePass app = IndiePass.getInstance();
             app.setRefreshChannels(true);
 
             for (Map.Entry<String, ChannelCounter> pair : channelCounters.entrySet()) {
                 String id = pair.getKey();
                 ChannelCounter cc = pair.getValue();
                 //Log.d("indigenous_debug", "checking: " + id + ": " + cc.getCounter() + " / " + cc.isSource());
-                for (Channel c: app.getChannelsList()) {
+                for (Channel c : app.getChannelsList()) {
                     if (cc.isSource() && id.equals(c.getSourceId())) {
                         //Log.d("indigenous_debug", "counting down source " + c.getSourceId() + " with " + cc.getCounter());
                         int count = 0;
@@ -236,8 +216,7 @@ public class Utility {
 
                         c.setUnread(count);
                         break;
-                    }
-                    else if (!cc.isSource() && id.equals(c.getUid())) {
+                    } else if (!cc.isSource() && id.equals(c.getUid())) {
                         //Log.d("indigenous_debug", "counting down channel " + c.getUid() + " with " + cc.getCounter() + " (" + id + ")");
                         int count = 0;
                         if (c.isCountInteger()) {
@@ -256,19 +235,16 @@ public class Utility {
                     }
                 }
             }
+        } catch (Exception ignored) {
         }
-        catch (Exception ignored) { }
     }
 
     /**
      * Copy to clipboard.
      *
-     * @param copyText
-     *   The text to copy to clipboard.
-     * @param label
-     *   The clipboard label
-     * @param context
-     *   The current context.
+     * @param copyText The text to copy to clipboard.
+     * @param label    The clipboard label
+     * @param context  The current context.
      */
     @SuppressWarnings("deprecation")
     public static void copyToClipboard(String copyText, String label, Context context) {
@@ -278,8 +254,7 @@ public class Utility {
             if (clipboard != null) {
                 clipboard.setText(copyText);
             }
-        }
-        else {
+        } else {
             android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
             android.content.ClipData clip = android.content.ClipData.newPlainText(label, copyText);
             if (clipboard != null) {
@@ -291,11 +266,8 @@ public class Utility {
     /**
      * Get a filename.
      *
-     * @param u
-     *   The uri
-     * @param context
-     *   The current context
-     *
+     * @param u       The uri
+     * @param context The current context
      * @return string
      */
     public static String getFilename(Uri u, Context context) {
@@ -309,8 +281,8 @@ public class Utility {
                 filename = returnCursor.getString(nameIndex);
                 returnCursor.close();
             }
+        } catch (NullPointerException ignored) {
         }
-        catch (NullPointerException ignored) {}
 
         return filename;
     }
@@ -318,13 +290,9 @@ public class Utility {
     /**
      * Get filename extension.
      *
-     * @param u
-     *   The uri
-     * @param context
-     *   The current context
-     * @param defaultExtension
-     *   The default extension
-     *
+     * @param u                The uri
+     * @param context          The current context
+     * @param defaultExtension The default extension
      * @return string
      */
     public static String getExtension(Uri u, Context context, String defaultExtension) {
@@ -333,12 +301,10 @@ public class Utility {
         if (filename.length() > 0) {
             if (filename.indexOf(".") > 0) {
                 extension = filename.substring(filename.lastIndexOf(".") + 1);
-            }
-            else {
+            } else {
                 extension = defaultExtension;
             }
-        }
-        else {
+        } else {
             extension = defaultExtension;
         }
 
@@ -348,9 +314,7 @@ public class Utility {
     /**
      * Trim a char sequence.
      *
-     * @param text
-     *   The text to trim.
-     *
+     * @param text The text to trim.
      * @return text
      */
     public static CharSequence trim(CharSequence text) {
@@ -360,8 +324,8 @@ public class Utility {
                     text = text.subSequence(0, text.length() - 1);
                 }
             }
+        } catch (Exception ignored) {
         }
-        catch (Exception ignored) {}
 
         return text;
     }
@@ -375,7 +339,8 @@ public class Utility {
         cal.setTime(value[0]);
         new DatePickerDialog(context,
                 new DatePickerDialog.OnDateSetListener() {
-                    @Override public void onDateSet(DatePicker view, int y, int m, int d) {
+                    @Override
+                    public void onDateSet(DatePicker view, int y, int m, int d) {
                         cal.set(Calendar.YEAR, y);
                         cal.set(Calendar.MONTH, m);
                         cal.set(Calendar.DAY_OF_MONTH, d);
@@ -383,7 +348,8 @@ public class Utility {
                         // now show the time picker
                         new TimePickerDialog(context,
                                 new TimePickerDialog.OnTimeSetListener() {
-                                    @Override public void onTimeSet(TimePicker view, int h, int min) {
+                                    @Override
+                                    public void onTimeSet(TimePicker view, int h, int min) {
                                         cal.set(Calendar.HOUR_OF_DAY, h);
                                         cal.set(Calendar.MINUTE, min);
                                         value[0] = cal.getTime();
@@ -394,7 +360,8 @@ public class Utility {
                                         try {
                                             result = df.format(value[0]);
                                             t.setText(result);
-                                        } catch (Exception ignored) { }
+                                        } catch (Exception ignored) {
+                                        }
 
                                     }
                                 }, cal.get(Calendar.HOUR_OF_DAY),
@@ -407,14 +374,10 @@ public class Utility {
     /**
      * Parse network error
      *
-     * @param error
-     *   The VolleyError
-     * @param context
-     *   The current context
-     * @param network_fail
-     *   The string in case of network fail.
-     * @param fail
-     *   The string in case of general fail.
+     * @param error        The VolleyError
+     * @param context      The current context
+     * @param network_fail The string in case of network fail.
+     * @param fail         The string in case of general fail.
      */
     public static String parseNetworkError(VolleyError error, Context context, int network_fail, int fail) {
         String returnMessage = context.getString(fail);
@@ -426,8 +389,8 @@ public class Utility {
                 //Log.d("indigenous_debug", "Error: " + result);
                 returnMessage = String.format(context.getString(network_fail), code, result);
             }
+        } catch (Exception ignored) {
         }
-        catch (Exception ignored) { }
 
         return returnMessage;
     }
@@ -435,11 +398,8 @@ public class Utility {
     /**
      * Make sure url is an absolute URL.
      *
-     * @param url
-     *   The url to test.
-     * @param domain
-     *   The domain to prefix the url with.
-     *
+     * @param url    The url to test.
+     * @param domain The domain to prefix the url with.
      * @return string
      */
     public static String checkAbsoluteUrl(String url, String domain) {
@@ -452,14 +412,12 @@ public class Utility {
                 URI uri = baseUrl.toURI();
                 URI newUri = uri.resolve(domain + "/" + url);
                 returnUrl = newUri.normalize().toURL().toString();
-            }
-            catch (MalformedURLException | URISyntaxException e) {
+            } catch (MalformedURLException | URISyntaxException e) {
                 // This shouldn't happen. We concatenate although it will still likely fail.
                 returnUrl = domain + url;
             }
 
-        }
-        else {
+        } else {
             returnUrl = url;
         }
 
@@ -469,9 +427,7 @@ public class Utility {
     /**
      * Generate sha256
      *
-     * @param string
-     *   The string to hash.
-     *
+     * @param string The string to hash.
      * @return base64 encoded string
      */
     public static String sha256(String string) {
@@ -481,8 +437,7 @@ public class Utility {
             byte[] byteData = md.digest();
             String encoded = Base64.encodeToString(byteData, Base64.NO_WRAP);
             return encoded.trim().replace("=", "").replace("+", "-").replace("/", "_");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return string;
         }
     }
@@ -490,11 +445,8 @@ public class Utility {
     /**
      * Returns a string from either an array or string property.
      *
-     * @param property
-     *   The property on the object to get a value from.
-     * @param object
-     *   The json object.
-     *
+     * @param property The property on the object to get a value from.
+     * @param object   The json object.
      * @return value
      */
     public static String getSingleJsonValueFromArrayOrString(String property, JSONObject object) {
@@ -504,12 +456,11 @@ public class Utility {
             Object temp = object.get(property);
             if (temp instanceof JSONArray) {
                 value = object.getJSONArray(property).get(0).toString();
-            }
-            else {
+            } else {
                 value = object.getString(property);
             }
+        } catch (JSONException ignored) {
         }
-        catch (JSONException ignored) { }
 
         return value;
     }
@@ -517,20 +468,13 @@ public class Utility {
     /**
      * Returns the reference content.
      *
-     *  @param object
-     *   A JSON object.
-     * @param url
-     *   The url to find in references
-     * @param item
-     *   The current timeline item.
-     * @param swapAuthor
-     *   Whether to swap the author or not.
-     * @param checkRecursive
-     *   Whether to check further recursive.
-     * @param level
-     *   The recursive level
-     * @param context
-     *   The current context.
+     * @param object         A JSON object.
+     * @param url            The url to find in references
+     * @param item           The current timeline item.
+     * @param swapAuthor     Whether to swap the author or not.
+     * @param checkRecursive Whether to check further recursive.
+     * @param level          The recursive level
+     * @param context        The current context.
      */
     public static void checkReference(JSONObject object, String url, TimelineItem item, boolean swapAuthor, boolean checkRecursive, int level, Context context) {
 
@@ -552,8 +496,7 @@ public class Utility {
                             //Log.d("indigenous_debug", "content: " + content.getString("text"));
                             item.setReference(content.getString("text"));
                         }
-                    }
-                    else if (ref.has("summary")) {
+                    } else if (ref.has("summary")) {
                         if (level == 1 && item.getReference().length() > 0) {
                             //Log.d("indigenous_debug", "swap on level 1: " + item.getReference());
                             item.setSwapReference(false);
@@ -614,24 +557,19 @@ public class Utility {
                         }
                     }
                 }
+            } catch (JSONException ignored) {
             }
-            catch (JSONException ignored) { }
         }
     }
 
     /**
      * Link clickable.
      *
-     * @param strBuilder
-     *   A string builder.
-     * @param span
-     *   The span with url.
-     * @param context
-     *   The current context
-     * @param reader
-     *   The current reader
-     * @param item
-     *   The current timeline item.
+     * @param strBuilder A string builder.
+     * @param span       The span with url.
+     * @param context    The current context
+     * @param reader     The current reader
+     * @param item       The current timeline item.
      */
     public static void makeLinkClickable(SpannableStringBuilder strBuilder, final URLSpan span, final Context context, Reader reader, final TimelineItem item) {
         int start = strBuilder.getSpanStart(span);
@@ -652,8 +590,7 @@ public class Utility {
                     intent.putExtra("channelName", item.getChannelName());
                     intent.putExtra("tag", finalTag);
                     context.startActivity(intent);
-                }
-                else {
+                } else {
                     try {
                         CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
                         intentBuilder.setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary));
@@ -662,8 +599,8 @@ public class Utility {
                         customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         customTabsIntent.launchUrl(context, Uri.parse(span.getURL()));
+                    } catch (Exception ignored) {
                     }
-                    catch (Exception ignored) { }
                 }
 
             }

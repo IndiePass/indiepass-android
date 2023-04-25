@@ -3,10 +3,9 @@ package com.indieweb.indigenous;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.indieweb.indigenous.users.AuthActivity;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.users.Accounts;
+import com.indieweb.indigenous.users.AuthActivity;
 
 public class LaunchActivity extends AppCompatActivity {
 
@@ -18,8 +17,7 @@ public class LaunchActivity extends AppCompatActivity {
         if (user.isValid()) {
             Intent MainActivity = new Intent(getBaseContext(), MainActivity.class);
             startActivity(MainActivity);
-        }
-        else {
+        } else {
             Intent IndieAuth = new Intent(getBaseContext(), AuthActivity.class);
             startActivity(IndieAuth);
         }

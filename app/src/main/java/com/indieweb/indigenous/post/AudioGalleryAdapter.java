@@ -9,11 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.util.Utility;
 
@@ -24,17 +22,6 @@ public class AudioGalleryAdapter extends RecyclerView.Adapter<AudioGalleryAdapte
     private final List<Uri> audio;
     private final Context context;
     private final boolean isMediaRequest;
-
-    static class MyViewHolder extends RecyclerView.ViewHolder {
-        final ImageView thumbnail;
-        final TextView audioName;
-
-        MyViewHolder(View view) {
-            super(view);
-            thumbnail = view.findViewById(R.id.audioIcon);
-            audioName = view.findViewById(R.id.audioName);
-        }
-    }
 
     public AudioGalleryAdapter(Activity activity, List<Uri> audio, boolean isMediaRequest) {
         this.context = activity;
@@ -66,6 +53,17 @@ public class AudioGalleryAdapter extends RecyclerView.Adapter<AudioGalleryAdapte
         return audio.size();
     }
 
+    static class MyViewHolder extends RecyclerView.ViewHolder {
+        final ImageView thumbnail;
+        final TextView audioName;
+
+        MyViewHolder(View view) {
+            super(view);
+            thumbnail = view.findViewById(R.id.audioIcon);
+            audioName = view.findViewById(R.id.audioName);
+        }
+    }
+
     // Audio click listener.
     class OnAudioClickListener implements View.OnClickListener {
 
@@ -80,8 +78,8 @@ public class AudioGalleryAdapter extends RecyclerView.Adapter<AudioGalleryAdapte
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(context.getString(R.string.delete_audio_confirm));
-            builder.setPositiveButton(context.getString(R.string.delete),new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog,int id) {
+            builder.setPositiveButton(context.getString(R.string.delete), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
                     audio.remove(position);
                     notifyDataSetChanged();
                 }

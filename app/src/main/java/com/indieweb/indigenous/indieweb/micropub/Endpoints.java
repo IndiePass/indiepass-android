@@ -3,9 +3,7 @@ package com.indieweb.indigenous.indieweb.micropub;
 import android.accounts.AccountManager;
 import android.content.Context;
 import android.os.StrictMode;
-
 import android.widget.RelativeLayout;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -18,7 +16,6 @@ import com.indieweb.indigenous.model.HCard;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.util.Utility;
 import com.indieweb.indigenous.util.mf2.Mf2Parser;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -36,9 +33,9 @@ public class Endpoints {
 
     private final User user;
     private final Context context;
+    private final RelativeLayout layout;
     private Document doc;
     private String url;
-    private final RelativeLayout layout;
 
     public Endpoints(Context context, User user, RelativeLayout layout) {
         this.context = context;
@@ -67,29 +64,26 @@ public class Endpoints {
 
             if (response.hasHeader("Link")) {
                 String[] headers = response.header("Link").split(",");
-                if (headers.length > 0) {
+                for (String link : headers) {
+                    String[] split = link.split(";");
+                    String endpoint = split[0].replace("<", "").replace(">", "").trim();
+                    String rel = split[1].trim().replace("rel=", "").replace("\"", "");
 
-                    for (String link: headers) {
-                        String[] split = link.split(";");
-                        String endpoint = split[0].replace("<", "").replace(">", "").trim();
-                        String rel = split[1].trim().replace("rel=", "").replace("\"", "");
+                    endpoint = Utility.checkAbsoluteUrl(endpoint, url);
 
-                        endpoint = Utility.checkAbsoluteUrl(endpoint, url);
-
-                        switch (rel) {
-                            case "micropub":
-                                foundInfo = true;
-                                micropubEndpoint = endpoint;
-                                break;
-                            case "microsub":
-                                foundInfo = true;
-                                microsubEndpoint = endpoint;
-                                break;
-                            case "micropub_media":
-                                foundInfo = true;
-                                micropubMediaEndpoint = endpoint;
-                                break;
-                        }
+                    switch (rel) {
+                        case "micropub":
+                            foundInfo = true;
+                            micropubEndpoint = endpoint;
+                            break;
+                        case "microsub":
+                            foundInfo = true;
+                            microsubEndpoint = endpoint;
+                            break;
+                        case "micropub_media":
+                            foundInfo = true;
+                            micropubMediaEndpoint = endpoint;
+                            break;
                     }
                 }
             }
@@ -124,11 +118,9 @@ public class Endpoints {
             // Get token endpoint call to update avatar or name.
             checkProfileFromTokenEndpoint();
 
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             Snackbar.make(layout, String.format(context.getString(R.string.account_sync_error), e.getMessage()), Snackbar.LENGTH_SHORT).show();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             Snackbar.make(layout, String.format(context.getString(R.string.domain_connect_error), e.getMessage()), Snackbar.LENGTH_SHORT).show();
         }
     }
@@ -151,7 +143,7 @@ public class Endpoints {
                         try {
                             JSONObject indieAuthResponse = new JSONObject(response);
 
-                            // Check profile key.
+                            // Check the profile key.
                             if (indieAuthResponse.has("profile")) {
                                 JSONObject profile = indieAuthResponse.getJSONObject("profile");
                                 if (profile.has("name")) {
@@ -163,10 +155,10 @@ public class Endpoints {
                                     authorAvatar = profile.getString("photo");
                                 }
                             }
+                        } catch (JSONException ignored) {
                         }
-                        catch (JSONException ignored) { }
 
-                        // If author name or avatar are still empty, try parsing the HTML.
+                        // If author name or avatar is still empty, try parsing the HTML.
                         if (authorName.length() == 0 || authorAvatar.length() == 0) {
                             String noProtocolUrl = user.getBaseUrlWithoutProtocol();
                             try {
@@ -189,8 +181,8 @@ public class Endpoints {
                                         }
                                     }
                                 }
+                            } catch (Exception ignored) {
                             }
-                            catch (Exception ignored) { }
                         }
 
                         if (foundInfo) {
@@ -207,10 +199,10 @@ public class Endpoints {
                 },
                 new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) { }
+                    public void onErrorResponse(VolleyError error) {
+                    }
                 }
-        )
-        {
+        ) {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();

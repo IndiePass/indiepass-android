@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
 
     <com.github.chrisbanes.photoview.PhotoView
-        android:id="@+id/timeline_image_fullscreen"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:scaleType="centerInside"
-        android:contentDescription="@string/full_screen_image" />
+            android:id="@+id/timeline_image_fullscreen"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/full_screen_image"/>
 
 </RelativeLayout>

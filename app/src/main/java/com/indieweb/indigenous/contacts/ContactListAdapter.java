@@ -8,23 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
+import android.widget.*;
 import androidx.appcompat.app.AlertDialog;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.indieweb.indigenous.Indigenous;
+import com.indieweb.indigenous.IndiePass;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.indieweb.micropub.MicropubAction;
-import com.indieweb.indigenous.post.ContactActivity;
 import com.indieweb.indigenous.model.Contact;
 import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.post.ContactActivity;
 
 import java.util.List;
 
@@ -46,7 +39,7 @@ public class ContactListAdapter extends BaseAdapter implements OnClickListener {
         this.contacts = contacts;
         this.user = user;
         this.layout = layout;
-        this.mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public int getCount() {
@@ -61,17 +54,7 @@ public class ContactListAdapter extends BaseAdapter implements OnClickListener {
         return position;
     }
 
-    public void onClick(View view) { }
-
-    public static class ViewHolder {
-        int position;
-        TextView name;
-        TextView nickname;
-        TextView url;
-        ImageView photo;
-        Button update;
-        Button delete;
-        LinearLayout row;
+    public void onClick(View view) {
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -88,8 +71,7 @@ public class ContactListAdapter extends BaseAdapter implements OnClickListener {
             holder.update = convertView.findViewById(R.id.contactUpdate);
             holder.delete = convertView.findViewById(R.id.contactDelete);
             convertView.setTag(holder);
-        }
-        else {
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
@@ -119,8 +101,7 @@ public class ContactListAdapter extends BaseAdapter implements OnClickListener {
             if (contact.getNickname().length() > 0) {
                 holder.nickname.setVisibility(View.VISIBLE);
                 holder.nickname.setText(contact.getNickname());
-            }
-            else {
+            } else {
                 holder.nickname.setVisibility(View.GONE);
             }
 
@@ -128,8 +109,7 @@ public class ContactListAdapter extends BaseAdapter implements OnClickListener {
             if (contact.getUrl().length() > 0) {
                 holder.url.setVisibility(View.VISIBLE);
                 holder.url.setText(contact.getUrl());
-            }
-            else {
+            } else {
                 holder.url.setVisibility(View.GONE);
             }
 
@@ -138,8 +118,7 @@ public class ContactListAdapter extends BaseAdapter implements OnClickListener {
                 holder.delete.setVisibility(View.VISIBLE);
                 holder.update.setOnClickListener(new OnUpdateClickListener(position));
                 holder.delete.setOnClickListener(new OnDeleteClickListener(position));
-            }
-            else {
+            } else {
                 holder.update.setVisibility(View.GONE);
                 holder.delete.setVisibility(View.GONE);
             }
@@ -147,6 +126,17 @@ public class ContactListAdapter extends BaseAdapter implements OnClickListener {
         }
 
         return convertView;
+    }
+
+    public static class ViewHolder {
+        int position;
+        TextView name;
+        TextView nickname;
+        TextView url;
+        ImageView photo;
+        Button update;
+        Button delete;
+        LinearLayout row;
     }
 
     // Update listener.
@@ -161,9 +151,9 @@ public class ContactListAdapter extends BaseAdapter implements OnClickListener {
         @Override
         public void onClick(View v) {
             Contact contact = contacts.get(this.position);
-            Indigenous app = Indigenous.getInstance();
+            IndiePass app = IndiePass.getInstance();
             app.setContact(contact);
-            Intent startActivity =  new Intent(context, ContactActivity.class);
+            Intent startActivity = new Intent(context, ContactActivity.class);
             startActivity.putExtra("updateContact", true);
             ((Activity) context).startActivityForResult(startActivity, UPDATE_POST);
         }
@@ -184,8 +174,8 @@ public class ContactListAdapter extends BaseAdapter implements OnClickListener {
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(context.getString(R.string.contact_delete_confirm));
-            builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog,int id) {
+            builder.setPositiveButton(context.getString(R.string.delete_post), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
                     new MicropubAction(context, user, layout).deleteItem(contact.getInternalUrl());
                     contacts.remove(position);
                     notifyDataSetChanged();

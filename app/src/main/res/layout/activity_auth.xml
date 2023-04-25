@@ -1,179 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/auth_root"
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/auth_root"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="UselessParent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="UselessParent">
 
         <LinearLayout
-            android:padding="@dimen/box_padding"
-            android:layout_width="match_parent"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+                android:padding="@dimen/box_padding"
+                android:layout_width="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
             <TextView
-                android:layout_marginTop="10dp"
-                android:text="@string/select_account_type"
-                android:textSize="@dimen/big_text"
-                android:textColor="@color/textColor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <LinearLayout
-                android:layout_marginTop="20dp"
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <ImageButton
-                    android:id="@+id/indieweb"
-                    android:layout_width="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/indieweb"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/sign_in_with_indieweb" />
-
-                <TextView
-                    android:text="@string/sign_in_with_indieweb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <ImageButton
-                    android:layout_marginTop="20dp"
-                    android:background="@android:color/transparent"
-                    android:id="@+id/mastodon"
-                    android:src="@drawable/mastodon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/sign_in_with_mastodon" />
-
-                <TextView
-                    android:text="@string/sign_in_with_mastodon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <ImageButton
-                    android:layout_marginTop="20dp"
-                    android:background="@android:color/transparent"
-                    android:id="@+id/pleroma"
-                    android:src="@drawable/pleroma"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/sign_in_with_pleroma" />
-
-                <TextView
-                    android:text="@string/sign_in_with_pleroma"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <ImageButton
-                    android:layout_marginTop="20dp"
-                    android:background="@android:color/transparent"
-                    android:id="@+id/pixelfed"
-                    android:src="@drawable/pixelfed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/sign_in_with_pixelfed" />
-
-                <TextView
-                    android:text="@string/sign_in_with_pixelfed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/signInContainer"
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/info"
-                    android:layout_marginTop="20dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <EditText
-                    android:layout_marginStart="-3dp"
-                    android:id="@+id/domain"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/url_hint"
-                    android:inputType="textUri"
-                    android:importantForAutofill="no" />
-
-                <CheckBox
-                    android:visibility="gone"
-                    android:id="@+id/setAsDefault"
-                    android:textSize="@dimen/inputText"
-                    android:textColor="@color/textColor"
-                    android:text="@string/set_as_default"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <Button
-                    android:background="@color/buttonBackground"
-                    android:textColor="@color/colorPrimary"
-                    style="?android:attr/borderlessButtonStyle"
                     android:layout_marginTop="10dp"
-                    android:paddingStart="@dimen/box_padding"
-                    android:paddingEnd="@dimen/box_padding"
-                    android:id="@+id/signInButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/sign_in" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginTop="30dp"
-                android:id="@+id/selectContainer"
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <View
-                    android:layout_marginTop="@dimen/box_padding"
-                    android:layout_marginBottom="@dimen/box_padding"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/list_divider_height"
-                    android:background="@color/listDividerColor" />
-
-                <TextView
-                    android:paddingTop="@dimen/box_padding"
-                    android:text="@string/default_user_select"
+                    android:text="@string/select_account_type"
                     android:textSize="@dimen/big_text"
                     android:textColor="@color/textColor"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                <ImageButton
+                        android:id="@+id/indieweb"
+                        android:layout_width="match_parent"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/indieweb"
+                        android:layout_height="65dp"
+                        android:contentDescription="@string/sign_in_with_indieweb"/>
 
                 <TextView
-                    android:layout_marginTop="10dp"
-                    android:id="@+id/selectAccountButtonInfo"
-                    android:text="@string/select_account_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                        android:text="@string/sign_in_with_indieweb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"/>
+
+                <ImageButton
+                        android:layout_marginTop="10dp"
+                        android:background="@android:color/transparent"
+                        android:id="@+id/mastodon"
+                        android:src="@drawable/mastodon"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/sign_in_with_mastodon"/>
+
+                <TextView
+                        android:text="@string/sign_in_with_mastodon"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"/>
+
+                <ImageButton
+                        android:layout_marginTop="10dp"
+                        android:background="@android:color/transparent"
+                        android:id="@+id/pleroma"
+                        android:src="@drawable/pleroma"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/sign_in_with_pleroma"
+                        android:minWidth="48dp"/>
+
+                <TextView
+                        android:text="@string/sign_in_with_pleroma"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"/>
+
+                <ImageButton
+                        android:layout_marginTop="10dp"
+                        android:background="@android:color/transparent"
+                        android:id="@+id/pixelfed"
+                        android:src="@drawable/pixelfed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/sign_in_with_pixelfed"/>
+
+                <TextView
+                        android:text="@string/sign_in_with_pixelfed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/signInContainer"
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:id="@+id/info"
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <EditText
+                        android:layout_marginStart="-3dp"
+                        android:id="@+id/domain"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/url_hint"
+                        android:inputType="textUri"
+                        android:importantForAutofill="no"
+                        android:minHeight="48dp"/>
+
+                <CheckBox
+                        android:visibility="gone"
+                        android:id="@+id/setAsDefault"
+                        android:textSize="@dimen/inputText"
+                        android:textColor="@color/textColor"
+                        android:text="@string/set_as_default"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"/>
 
                 <Button
-                    android:background="@color/buttonBackground"
-                    android:textColor="@color/colorPrimary"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_marginTop="10dp"
-                    android:paddingStart="@dimen/box_padding"
-                    android:paddingEnd="@dimen/box_padding"
-                    android:id="@+id/selectAccountButton"
+                        android:background="@color/buttonBackground"
+                        android:textColor="@color/buttonText"
+                        android:layout_marginTop="10dp"
+                        android:paddingStart="@dimen/box_padding"
+                        android:paddingEnd="@dimen/box_padding"
+                        android:id="@+id/signInButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sign_in"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_marginTop="30dp"
+                    android:id="@+id/selectContainer"
+                    android:orientation="vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/select_account" />
+                    android:layout_height="wrap_content">
+
+                <View
+                        android:layout_marginTop="@dimen/box_padding"
+                        android:layout_marginBottom="@dimen/box_padding"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/list_divider_height"
+                        android:background="@color/listDividerColor"/>
+
+                <TextView
+                        android:paddingTop="@dimen/box_padding"
+                        android:text="@string/default_user_select"
+                        android:textSize="@dimen/big_text"
+                        android:textColor="@color/textColor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/selectAccountButtonInfo"
+                        android:text="@string/select_account_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <Button
+                        android:background="@color/buttonBackground"
+                        android:textColor="@color/buttonText"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_marginTop="10dp"
+                        android:paddingStart="@dimen/box_padding"
+                        android:paddingEnd="@dimen/box_padding"
+                        android:id="@+id/selectAccountButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/select_account"/>
 
             </LinearLayout>
 

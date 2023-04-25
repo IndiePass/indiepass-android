@@ -1,14 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "29.0.2"
+    compileSdk 33
     defaultConfig {
         applicationId "com.indieweb.indigenous"
-        minSdkVersion 19
-        targetSdkVersion 30
-        versionCode 66
-        versionName "0.66"
+        minSdk 22
+        targetSdk 33
+        versionCode 65
+        versionName "0.65"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -29,44 +28,52 @@ android {
             dimension "target"
         }
     }
+    namespace 'com.indieweb.indigenous'
 }
 
 ext.supportLibVersion = '27.1.1'
 
 dependencies {
+    constraints {
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
+            because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
+        }
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0") {
+            because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
+        }
+    }
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.recyclerview:recyclerview:1.3.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.browser:browser:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.preference:preference:1.1.0'
-    implementation 'com.android.volley:volley:1.1.0'
-    implementation 'org.jsoup:jsoup:1.10.3'
+    implementation 'androidx.browser:browser:1.5.0'
+    implementation 'androidx.preference:preference:1.2.0'
+    implementation 'com.android.volley:volley:1.2.1'
+    implementation 'org.jsoup:jsoup:1.15.3'
     // 1.1.0 triggers a bug in drawer group, let let's keep it at 1.0.0 for now
     implementation 'com.google.android.material:material:1.0.0'
-    implementation 'com.github.bumptech.glide:glide:4.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.annotation:annotation:1.6.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
-    implementation 'com.4ert:audioview:0.4.2'
+    implementation 'com.github.4eRTuk:audioview:master'
     implementation 'com.karumi:dexter:4.2.0'
-    implementation 'ja.burhanrashid52:photoeditor:1.0.0'
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
-    implementation 'io.ticofab.androidgpxparser:parser:1.6.0'
-    implementation 'joda-time:joda-time:2.9.4'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'com.github.ticofab:android-gpx-parser:2.3.1'
+//    implementation 'joda-time:joda-time:2.12.1'
 
     // Specific to Google Playstore
-    playstoreImplementation 'com.google.android.gms:play-services-location:17.0.0'
+    playstoreImplementation 'com.google.android.gms:play-services-location:21.0.1'
 
     // Tests
     testImplementation 'org.json:json:20200518'
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'androidx.test:core:1.2.0'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'androidx.test:core:1.5.0'
     testImplementation 'org.mockito:mockito-core:1.10.19'
-    androidTestImplementation 'androidx.annotation:annotation:1.1.0'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test:rules:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
+    androidTestImplementation 'androidx.annotation:annotation:1.6.0'
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+    androidTestImplementation 'androidx.test:rules:1.5.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.1'
 }

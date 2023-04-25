@@ -4,13 +4,11 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.view.View;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
-
+import androidx.appcompat.app.AppCompatActivity;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.util.Preferences;
 
@@ -44,14 +42,13 @@ public class TimelineVideoActivity extends AppCompatActivity {
                             startActivity(i);
                         }
                     });
-                }
-                else {
+                } else {
                     videoPlayer.setVideoPath(videoUrl);
                     videoPlayer.canPause();
                     mediaController = new MediaController(this);
                     mediaController.setAnchorView(videoPlayer);
                     videoPlayer.setMediaController(mediaController);
-                    videoPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener()  {
+                    videoPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                         @Override
                         public void onPrepared(MediaPlayer mp) {
                             mediaController.show();
@@ -61,12 +58,10 @@ public class TimelineVideoActivity extends AppCompatActivity {
                         }
                     });
                 }
-            }
-            else {
+            } else {
                 hideVideoPlayer(true);
             }
-        }
-        else {
+        } else {
             hideVideoPlayer(true);
         }
     }

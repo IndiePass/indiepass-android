@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
 
     <ImageView
-        android:background="@drawable/button_audio_idle"
-        android:contentDescription="@string/audio_item"
-        android:scaleType="centerInside"
-        android:id="@+id/audioIcon"
-        android:layout_width="50dp"
-        android:layout_height="50dp" />
+            android:background="@drawable/button_audio_idle"
+            android:contentDescription="@string/audio_item"
+            android:scaleType="centerInside"
+            android:id="@+id/audioIcon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
 
     <TextView
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
-        android:padding="10dp"
-        android:id="@+id/audioName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:padding="10dp"
+            android:id="@+id/audioName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
 </LinearLayout>

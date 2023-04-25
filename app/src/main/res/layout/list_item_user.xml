@@ -1,92 +1,92 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:id="@+id/user_list_row"
-    android:layout_height="wrap_content"
-    android:background="@color/listRowBackgroundColor"
-    android:padding="@dimen/list_item_padding">
+                android:layout_width="fill_parent"
+                android:id="@+id/user_list_row"
+                android:layout_height="wrap_content"
+                android:background="@color/listRowBackgroundColor"
+                android:padding="@dimen/list_item_padding">
 
     <TextView
-        android:id="@+id/user_list_current"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:textColor="@color/textColor"
-        android:layout_width="fill_parent" />
+            android:id="@+id/user_list_current"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/textColor"
+            android:layout_width="fill_parent"/>
 
     <TextView
-        android:layout_below="@+id/user_list_current"
-        android:id="@+id/user_list_type"
-        android:textColor="@color/textColor"
-        android:textSize="@dimen/big_list_title"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent" />
+            android:layout_below="@+id/user_list_current"
+            android:id="@+id/user_list_type"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/big_list_title"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"/>
 
     <TextView
-        android:layout_below="@+id/user_list_type"
-        android:id="@+id/user_list_url"
-        android:textColor="@color/textColor"
-        android:textSize="@dimen/big_list_title"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent" />
+            android:layout_below="@+id/user_list_type"
+            android:id="@+id/user_list_url"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/big_list_title"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"/>
 
     <ImageView
-        android:id="@+id/user_list_avatar"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:contentDescription="@string/author_photo"
-        android:src="@drawable/avatar"
-        android:layout_alignParentEnd="true" />
+            android:id="@+id/user_list_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/author_photo"
+            android:src="@drawable/avatar"
+            android:layout_alignParentEnd="true"/>
 
     <TextView
-        android:layout_below="@+id/user_list_url"
-        android:id="@+id/user_list_name"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:textColor="@color/textColor"
-        android:layout_width="fill_parent" />
+            android:layout_below="@+id/user_list_url"
+            android:id="@+id/user_list_name"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/textColor"
+            android:layout_width="fill_parent"/>
 
     <TextView
-        android:layout_below="@+id/user_list_name"
-        android:id="@+id/user_list_endpoints_title"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:text="@string/endpoints"
-        android:textStyle="bold"
-        android:textColor="@color/textColor"
-        android:layout_width="fill_parent" />
+            android:layout_below="@+id/user_list_name"
+            android:id="@+id/user_list_endpoints_title"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/endpoints"
+            android:textStyle="bold"
+            android:textColor="@color/textColor"
+            android:layout_width="fill_parent"/>
 
     <TextView
-        android:id="@+id/user_list_endpoints"
-        android:layout_below="@+id/user_list_endpoints_title"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/textColor"
-        android:layout_width="fill_parent" />
+            android:id="@+id/user_list_endpoints"
+            android:layout_below="@+id/user_list_endpoints_title"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/textColor"
+            android:layout_width="fill_parent"/>
 
     <Button
-        android:layout_below="@+id/user_list_endpoints"
-        android:background="@drawable/button_sync"
-        android:id="@+id/itemSync"
-        android:layout_width="@dimen/list_item_icon_size"
-        android:layout_height="@dimen/list_item_icon_size" />
+            android:layout_below="@+id/user_list_endpoints"
+            android:background="@drawable/button_sync"
+            android:id="@+id/itemSync"
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size"/>
 
     <Button
-        android:layout_below="@+id/user_list_endpoints"
-        android:background="@drawable/button_swap"
-        android:id="@+id/itemSwitch"
-        android:layout_width="@dimen/list_item_icon_size"
-        android:layout_height="@dimen/list_item_icon_size"
-        android:layout_toEndOf="@+id/itemSync"
-        android:layout_marginStart="@dimen/list_item_icon_margin_left" />
+            android:layout_below="@+id/user_list_endpoints"
+            android:background="@drawable/button_swap"
+            android:id="@+id/itemSwitch"
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size"
+            android:layout_toEndOf="@+id/itemSync"
+            android:layout_marginStart="@dimen/list_item_icon_margin_left"/>
 
     <Button
-        android:layout_below="@+id/user_list_endpoints"
-        android:background="@drawable/button_delete"
-        android:id="@+id/itemDelete"
-        android:layout_width="@dimen/list_item_icon_size"
-        android:layout_height="@dimen/list_item_icon_size"
-        android:layout_alignParentEnd="true" />
+            android:layout_below="@+id/user_list_endpoints"
+            android:background="@drawable/button_delete"
+            android:id="@+id/itemDelete"
+            android:layout_width="@dimen/list_item_icon_size"
+            android:layout_height="@dimen/list_item_icon_size"
+            android:layout_alignParentEnd="true"/>
 
 </RelativeLayout>

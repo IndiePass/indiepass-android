@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scroll"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.indieweb.indigenous.general.AboutFragment">
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.indieweb.indigenous.general.AboutFragment">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
         <TextView
-            android:padding="@dimen/box_padding"
-            android:id="@+id/about"
-            android:textSize="@dimen/info_text"
-            android:textColor="@color/textColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+                android:padding="@dimen/box_padding"
+                android:id="@+id/about"
+                android:textSize="@dimen/info_text"
+                android:textColor="@color/textColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
         <TextView
-            android:padding="@dimen/box_padding"
-            android:id="@+id/about_version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+                android:padding="@dimen/box_padding"
+                android:id="@+id/about_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
         <Button
-            android:text="@string/view_changelog"
-            android:background="@color/buttonBackground"
-            android:textColor="@color/colorPrimary"
-            android:id="@+id/about_changelog_button"
-            android:paddingStart="@dimen/box_padding"
-            android:paddingEnd="@dimen/box_padding"
-            android:layout_width="wrap_content"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/box_padding" />
+                android:text="@string/view_changelog"
+                android:background="@color/buttonBackground"
+                android:textColor="@color/buttonText"
+                android:id="@+id/about_changelog_button"
+                android:paddingStart="@dimen/box_padding"
+                android:paddingEnd="@dimen/box_padding"
+                android:layout_width="wrap_content"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/box_padding"/>
 
         <TextView
-            android:padding="@dimen/box_padding"
-            android:id="@+id/about_changelog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+                android:padding="@dimen/box_padding"
+                android:id="@+id/about_changelog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

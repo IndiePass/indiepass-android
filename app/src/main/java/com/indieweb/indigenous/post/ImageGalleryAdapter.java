@@ -3,28 +3,19 @@ package com.indieweb.indigenous.post;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.Uri;
+import android.view.*;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.ImageView;
-
 import com.bumptech.glide.Glide;
 import com.indieweb.indigenous.R;
-import com.indieweb.indigenous.photoeditor.EditImageActivity;
 
 import java.util.List;
-
-import static com.indieweb.indigenous.MainActivity.EDIT_IMAGE;
 
 public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapter.MyViewHolder> {
 
@@ -32,15 +23,6 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
     private final List<String> captions;
     private final Context context;
     private final boolean isMediaRequest;
-
-    static class MyViewHolder extends RecyclerView.ViewHolder {
-        final ImageView thumbnail;
-
-        MyViewHolder(View view) {
-            super(view);
-            thumbnail = view.findViewById(R.id.imagePreview);
-        }
-    }
 
     public ImageGalleryAdapter(Activity activity, List<Uri> image, List<String> captions, boolean isMediaRequest) {
         this.context = activity;
@@ -72,6 +54,15 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
         return image.size();
     }
 
+    static class MyViewHolder extends RecyclerView.ViewHolder {
+        final ImageView thumbnail;
+
+        MyViewHolder(View view) {
+            super(view);
+            thumbnail = view.findViewById(R.id.imagePreview);
+        }
+    }
+
     // Image click listener.
     class OnImageClickListener implements View.OnClickListener {
 
@@ -89,19 +80,12 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageGalleryAdapte
             Menu menu = popup.getMenu();
             if (isMediaRequest) {
                 popup.getMenuInflater().inflate(R.menu.image_list_item_media_menu, menu);
-            }
-            else {
+            } else {
                 popup.getMenuInflater().inflate(R.menu.image_list_item_menu, menu);
             }
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(final MenuItem item) {
                     switch (item.getItemId()) {
-                        case R.id.image_edit:
-                            Intent imageEdit = new Intent(context, EditImageActivity.class);
-                            imageEdit.putExtra("imageUri", image.get(position).toString());
-                            imageEdit.putExtra("imagePosition", position);
-                            ((Activity) context).startActivityForResult(imageEdit, EDIT_IMAGE);
-                            break;
                         case R.id.image_caption:
                             builder.setTitle(context.getString(R.string.set_caption));
                             View view = LayoutInflater.from(context).inflate(R.layout.dialog_single_input, null);

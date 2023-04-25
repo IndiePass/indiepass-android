@@ -2,7 +2,6 @@ package com.indieweb.indigenous.post;
 
 import android.content.Context;
 import android.widget.MultiAutoCompleteTextView;
-
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.User;
 
@@ -40,10 +39,12 @@ abstract public class PostBase implements Post {
     }
 
     @Override
-    public void prepareTagsAutocomplete(MultiAutoCompleteTextView tags) { }
+    public void prepareTagsAutocomplete(MultiAutoCompleteTextView tags) {
+    }
 
     @Override
-    public void prepareContactsAutocomplete(MultiAutoCompleteTextView body) { }
+    public void prepareContactsAutocomplete(MultiAutoCompleteTextView body) {
+    }
 
     @Override
     public boolean hideUrlField() {

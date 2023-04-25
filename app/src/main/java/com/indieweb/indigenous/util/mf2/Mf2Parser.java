@@ -1,6 +1,9 @@
 package com.indieweb.indigenous.util.mf2;
 
 import com.indieweb.indigenous.model.HCard;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -8,14 +11,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 /**
  * Parse a Microformats2 formatted HTML document.
- * @author kmahan
  *
+ * @author kmahan
  */
 public class Mf2Parser {
 
@@ -24,32 +23,32 @@ public class Mf2Parser {
     /**
      * Constructor
      */
-    public Mf2Parser() { }
+    public Mf2Parser() {
+    }
 
     private URI findBaseUri(Document doc, URI baseUri) {
         Element base = doc.getElementsByTag("base").first();
         if (base != null && base.hasAttr("href")) {
             baseUri = baseUri.resolve(base.attr("href"));
         }
-        // normalize URIs with missing path
+        // normalize URIs with a missing path
         String path = baseUri.getPath();
-        if (path == null || path.isEmpty())
-        {
-            try
-            {
+        if (path == null || path.isEmpty()) {
+            try {
                 baseUri = new URI(baseUri.getScheme(), baseUri.getAuthority(), "/", null, null);
+            } catch (URISyntaxException ignored) {
             }
-            catch (URISyntaxException ignored) {}
         }
         return baseUri;
     }
 
     /**
      * Parse an existing document for microformats2.
-     * @param doc the Jsoup document to parse
+     *
+     * @param doc     the Jsoup document to parse
      * @param baseUri the URI where the document exists, used for normalization
      * @return a well-defined JSON structure containing the parsed microformats2 data.
-     */    
+     */
     public ArrayList<HCard> parse(Document doc, URI baseUri) {
         baseUri = findBaseUri(doc, baseUri);
 
@@ -64,8 +63,7 @@ public class Mf2Parser {
         if (hasRootClass(elem)) {
             JsonDict itemDict = parseMicroformat(elem, baseUri);
             items.add(itemDict);
-        }
-        else {
+        } else {
             for (Element child : elem.children()) {
                 parseMicroformats(child, baseUri, items);
             }
@@ -91,8 +89,7 @@ public class Mf2Parser {
                 card.setName(names.get(0).toString());
             }
 
-        }
-        else {
+        } else {
             String impliedName = parseImpliedName(elem);
             if (impliedName != null) {
                 saveCard = true;
@@ -106,8 +103,7 @@ public class Mf2Parser {
                 saveCard = true;
                 card.setUrl(urls.get(0).toString());
             }
-        }
-        else {
+        } else {
             String impliedUrl = parseImpliedUrl(elem, baseUri);
             if (impliedUrl != null) {
                 saveCard = true;
@@ -121,8 +117,7 @@ public class Mf2Parser {
                 saveCard = true;
                 card.setAvatar(avatars.get(0).toString());
             }
-        }
-        else {
+        } else {
             String impliedPhoto = parseImpliedPhoto(elem, baseUri);
             if (impliedPhoto != null) {
                 saveCard = true;
@@ -146,7 +141,7 @@ public class Mf2Parser {
                 return names.get(0);
         }
         // else if it's an e-* property element, re-use its { } structure with existing value: inside.
-        // not-sure: implement this or find out if its handled by default case below
+        // not-sure: implement this or find out if it's handled by default case below
         // else if it's a u-* property element and the h-* child has a u-url, use the first such u-url
         if (className.startsWith("u-") && properties.containsKey("url")) {
             JsonList urls = (JsonList) properties.get("url");
@@ -173,8 +168,7 @@ public class Mf2Parser {
                 propName = className.substring(2);
                 value = parseTextProperty(elem);
                 isProperty = true;
-            }
-            else if (className.startsWith("u-")) {
+            } else if (className.startsWith("u-")) {
                 propName = className.substring(2);
                 value = parseUrlProperty(elem, baseUri);
                 isProperty = true;
@@ -308,7 +302,7 @@ public class Mf2Parser {
         //else if .h-x>area[href]:only-of-type:not[.h-*] then use that [href] for url
         for (String childTag : Arrays.asList("a", "area")) {
             Elements children = filterByTag(elem.children(), childTag);
-            if(children.size() == 1) {
+            if (children.size() == 1) {
                 Element child = children.first();
                 if (!hasRootClass(child) && child.hasAttr("href")) {
                     return child.attr("href");
@@ -360,8 +354,8 @@ public class Mf2Parser {
             }
         }
 
-        // else use the textContent of the .h-x for name
-        // drop leading & trailing white-space from name, including nbsp
+        // else use the textContent of the .h-x for name-drop
+        // leading & trailing white-space from name, including nbsp
         return elem.text().trim();
     }
 

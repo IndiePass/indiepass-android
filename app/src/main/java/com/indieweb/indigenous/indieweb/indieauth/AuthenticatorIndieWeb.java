@@ -5,7 +5,6 @@ import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import com.indieweb.indigenous.users.AuthActivity;
 import com.indieweb.indigenous.users.AuthenticatorBase;
 
@@ -22,7 +21,7 @@ public class AuthenticatorIndieWeb extends AuthenticatorBase {
     }
 
     @Override
-    public Bundle addAccount(AccountAuthenticatorResponse response, String accountType, String authTokenType, String[] requiredFeatures, Bundle options)  {
+    public Bundle addAccount(AccountAuthenticatorResponse response, String accountType, String authTokenType, String[] requiredFeatures, Bundle options) {
         final Intent intent = new Intent(context, AuthActivity.class);
         intent.putExtra("com.indieweb.indigenous.AccountType", accountType);
         intent.putExtra(INDIEWEB_TOKEN_TYPE, authTokenType);

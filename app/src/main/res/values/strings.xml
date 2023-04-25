@@ -55,9 +55,9 @@
     <string name="select_account">Select account</string>
     <string name="set_as_default">Set as default after authentication</string>
     <string name="select_account_info">In rare cases, the default account might not have been set or the current has connection problems. Click on the \"Select account\" button to set a default account.</string>
-    <string name="url_hint">http://example.com</string>
+    <string name="url_hint">https://example.com</string>
     <string name="url_or_text_hint">URL or title</string>
-    <string name="url_repository_hint">http://example.com/repository</string>
+    <string name="url_repository_hint">https://example.com/repository</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_in_with_indieweb">IndieWeb</string>
     <string name="sign_in_with_pixelfed">Pixelfed</string>
@@ -95,8 +95,7 @@
     <string name="account_switch">Set default account to %s ?</string>
     <string name="user_exception">We ran into an exception getting the accounts. Please manage the accounts from the device accounts section.</string>
     <string name="anonymous_settings">Anonymous settings</string>
-    <string name="anonymous_info">This is the anonymous account in Indigenous. You can change both the reader and post endpoint to a custom location, so you can test yourself and even save posts on your own server without needing an IndieAuth enabled website.\n\nThe token will be sent in the authentication header for both endpoints.</string>
-    <string name="anonymous_info">This is the anonymous account in Indigenous. You can change both the reader and post endpoint to a custom location, so you can test yourself and even save posts on your own server without needing an IndieAuth enabled website.\n\nThe token will be sent in the authentication header for both endpoints.</string>
+    <string name="anonymous_info">This is the anonymous account in IndiePass. You can change both the reader and post endpoint to a custom location so, you can test yourself and even save posts on your own server without needing an IndieAuth enabled website.\n\nThe token will be sent in the authentication header for both endpoints.</string>
     <string name="anonymous_info_snack">You are using the anonymous account. Create an account via "Accounts" or the "User" icon at the top.</string>
     <string name="anonymous_reader_endpoint">Reader endpoint</string>
     <string name="anonymous_post_endpoint">Post endpoint</string>
@@ -118,8 +117,7 @@
     <string name="channel_pleroma">Pleroma</string>
 
     <!-- About -->
-    <string name="about_info"><![CDATA[Indigenous allows you to engage with the internet as you do on social media sites, and post on your website or a federated instance like Mastodon, Pleroma or Pixelfed. Use the built-in reader to read and respond to posts across the internet. Indigenous does not track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/marksuth/indigenous-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
-    <string name="about_info"><![CDATA[Indigenous allows you to engage with the internet as you do on social media sites, and post on your website or a federated instance like Mastodon, Pleroma or Pixelfed. Use the built-in reader to read and respond to posts across the internet. Indigenous does not track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/marksuth/indigenous-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
+    <string name="about_info"><![CDATA[IndiePass allows you to engage with the internet as you do on social media sites, and post on your website or a federated instance like Mastodon, Pleroma or Pixelfed. Use the built-in reader to read and respond to posts across the internet. IndiePass does not track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/marksuth/indigenous-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
     <string name="view_changelog">View changelog</string>
 
     <!-- Drafts -->
@@ -309,7 +307,6 @@
     <string name="post_list_parse_error">Error: %s</string>
     <string name="url_update_info_label">Url to update:</string>
     <string name="update_info">Elements left empty will not be sent to the server</string>
-    <string name="update_info">Elements left empty will not be sent to the server</string>
     <string name="channel_list_parse_error">Error: %s</string>
     <string name="bitmap_error">Error generating bitmap from image</string>
     <string name="media_network_fail">Uploading media failed. Status code: %d; message: %s</string>
@@ -328,7 +325,7 @@
     <string name="total_distance">Total distance</string>
     <string name="account_post_as">Posting as %s</string>
 
-    <!-- Photo-editor -->
+    <!-- Photo editor -->
     <string name="editor">Editor</string>
     <string name="saving">Saving…</string>
     <string name="save_success">Image saved successfully</string>
@@ -377,12 +374,12 @@
     <string name="source_found">Data fetched from server</string>
 
     <!-- Night mode -->
-    <string name="night_mode_title">Enable night theme</string>
-    <string name="night_mode_summary">If your device supports Night mode, this theme will be automatically used when enabling dark mode globally. But this toggle allows you to use the night theme as well. The app will restart when you enable or disable this feature.</string>
+    <string name="night_mode_title">Enable dark mode</string>
+    <string name="night_mode_summary">If your device supports dark mode, this theme will be automatically used when enabling dark mode globally. But this toggle allows you to use the dark theme as well. The app will restart when you enable or disable this feature.</string>
 
     <!-- Preferences: share -->
     <string name="pref_category_sharing_title">Share</string>
-    <string name="pref_category_sharing_summary">You can share text, URL\'s and images from other applications to Indigenous. You can also expose several post types (like, bookmark ..) as share intents directly.</string>
+    <string name="pref_category_sharing_summary">You can share text, URL\'s and images from other applications to IndiePass. You can also expose several post types (like, bookmark ..) as share intents directly.</string>
     <string name="pref_share_like_enabled">Enable like in share intents</string>
     <string name="pref_share_repost_enabled">Enable repost in share intents</string>
     <string name="pref_share_bookmark_enabled">Enable bookmark in share intents</string>
@@ -392,7 +389,7 @@
     <string name="pref_summary_expose_reply">Expose reply in share intents. This will not immediately post to your post endpoint as you still need to add a message.</string>
     <string name="pref_share_reply_enabled">Enable reply sharing</string>
     <string name="pref_share_upload_enabled">Enable upload sharing</string>
-    <string name="pref_summary_expose_upload">Expose upload in share intents. This will not immediately post to your media endpoint,, so you can verify. Only available for IndieWeb accounts.</string>
+    <string name="pref_summary_expose_upload">Expose upload in share intents. This will not immediately post to your media endpoint, so you can verify. Only available for IndieWeb accounts.</string>
     <string name="pref_share_feed_enabled">Enable feed sharing</string>
     <string name="pref_summary_expose_feed">Expose feed in share intents. This allows you to insert a URL directly to add a feed to a channel. Only available for IndieWeb accounts.</string>
 
@@ -520,6 +517,8 @@
     <string name="location_no_results">No location name or venues found</string>
     <string name="places_found">Places found, the location name input will show suggestions when you type</string>
     <string name="read_new">new</string>
+    <string name="write">Write</string>
+    <string name="add_account">add account</string>
 
     <string-array name="mark_read_array">
         <item>Channel per page</item>

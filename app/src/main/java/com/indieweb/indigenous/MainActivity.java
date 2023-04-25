@@ -4,56 +4,39 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import com.google.android.material.navigation.NavigationView;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.indieweb.indigenous.contacts.ContactFragment;
 import com.indieweb.indigenous.db.DatabaseHelper;
+import com.indieweb.indigenous.draft.DraftFragment;
 import com.indieweb.indigenous.general.AboutFragment;
 import com.indieweb.indigenous.general.SettingsFragment;
+import com.indieweb.indigenous.indieweb.micropub.source.PostListFragment;
+import com.indieweb.indigenous.model.User;
+import com.indieweb.indigenous.post.*;
+import com.indieweb.indigenous.reader.ChannelFragment;
+import com.indieweb.indigenous.users.Accounts;
 import com.indieweb.indigenous.users.AnonymousFragment;
 import com.indieweb.indigenous.users.UsersFragment;
-import com.indieweb.indigenous.contacts.ContactFragment;
-import com.indieweb.indigenous.draft.DraftFragment;
-import com.indieweb.indigenous.post.ArticleActivity;
-import com.indieweb.indigenous.post.BookmarkActivity;
-import com.indieweb.indigenous.post.CheckinActivity;
-import com.indieweb.indigenous.post.EventActivity;
-import com.indieweb.indigenous.post.GeocacheActivity;
-import com.indieweb.indigenous.post.IssueActivity;
-import com.indieweb.indigenous.post.LikeActivity;
-import com.indieweb.indigenous.post.NoteActivity;
-import com.indieweb.indigenous.post.ReadActivity;
-import com.indieweb.indigenous.post.ReplyActivity;
-import com.indieweb.indigenous.post.RepostActivity;
-import com.indieweb.indigenous.post.RsvpActivity;
-import com.indieweb.indigenous.post.TripActivity;
-import com.indieweb.indigenous.post.UploadActivity;
-import com.indieweb.indigenous.post.VenueActivity;
-import com.indieweb.indigenous.indieweb.micropub.source.PostListFragment;
-import com.indieweb.indigenous.reader.ChannelFragment;
-import com.indieweb.indigenous.model.User;
-import com.indieweb.indigenous.users.Accounts;
 import com.indieweb.indigenous.util.Preferences;
 import com.indieweb.indigenous.util.Utility;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,6 +46,11 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DraftFragment.OnDraftChangedListener, SettingsFragment.onPreferenceChangeListener {
 
+    public static final int CREATE_DRAFT = 1001;
+    public static final int POST_DRAFT = 1002;
+    public static final int RESULT_DRAFT_SAVED = 1005;
+    public static final int UPDATE_POST = 1006;
+    public static final int EDIT_IMAGE = 1007;
     User user;
     Menu drawerMenu;
     DrawerLayout drawer;
@@ -71,11 +59,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     int accountCount;
     Fragment loadedFragment;
     private General general;
-    public static final int CREATE_DRAFT = 1001;
-    public static final int POST_DRAFT = 1002;
-    public static final int RESULT_DRAFT_SAVED = 1005;
-    public static final int UPDATE_POST = 1006;
-    public static final int EDIT_IMAGE = 1007;
 
     @Override
     public void onAttachFragment(@NonNull Fragment fragment) {
@@ -118,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
-     * Set first navigation view.
+     * Set the first navigation view.
      */
     private void setFirstItemNavigationView() {
         navigationView.setCheckedItem(R.id.nav_reader);
@@ -160,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     public void onClick(View v) {
                         final List<String> accounts = new ArrayList<>();
                         final List<User> users = new Accounts(MainActivity.this).getAllUsers();
-                        for (User user: users) {
+                        for (User user : users) {
                             accounts.add(user.getDisplayName());
                         }
                         final CharSequence[] accountItems = accounts.toArray(new CharSequence[0]);
@@ -208,8 +191,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             closeDrawer(false);
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
     }
@@ -254,8 +236,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 close = true;
                 if (user.isAuthenticated()) {
                     fragment = new UsersFragment();
-                }
-                else {
+                } else {
                     fragment = new AnonymousFragment();
                 }
                 break;
@@ -362,10 +343,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * Start a fragment.
      *
-     * @param fragment
-     *   Start a fragment.
-     * @param trackFragment
-     *   Whether to store the fragment
+     * @param fragment      Start a fragment.
+     * @param trackFragment Whether to store the fragment
      */
     public void startFragment(Fragment fragment, boolean trackFragment, boolean refresh) {
 
@@ -376,8 +355,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         if (refresh) {
             ft.detach(fragment).attach(fragment).commit();
-        }
-        else {
+        } else {
             ft.replace(R.id.content_frame, fragment);
             ft.commit();
         }
@@ -388,8 +366,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     public void reloadFragment() {
         if (loadedFragment instanceof ChannelFragment
-            || loadedFragment instanceof PostListFragment
-            || loadedFragment instanceof ContactFragment
+                || loadedFragment instanceof PostListFragment
+                || loadedFragment instanceof ContactFragment
         ) {
             startFragment(loadedFragment, false, true);
             closeDrawer(true);
@@ -399,8 +377,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * Click on a menu item.
      *
-     * @param id
-     *   The menu item to click on.
+     * @param id The menu item to click on.
      */
     public void clickOnMenuItem(int id) {
         drawerMenu.performIdentifierAction(id, 0);
@@ -409,8 +386,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * Open the navigation drawer.
      *
-     * @param id
-     *   The menu item id to perform an action on.
+     * @param id The menu item id to perform an action on.
      */
     public void openDrawer(int id) {
         if (drawer != null) {
@@ -449,8 +425,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (draftItem != null) {
                 draftItem.setTitle(getString(R.string.drafts) + " (" + draftCount + ")");
             }
-        }
-        else if (callbackOrPost) {
+        } else if (callbackOrPost) {
             MenuItem draftItem = drawerMenu.findItem(R.id.nav_drafts);
             draftItem.setTitle(getString(R.string.drafts));
         }
@@ -459,8 +434,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * Toggle the visibility of the drawer menu groups.
      *
-     * @param mainGroupVisibility
-     *  Whether the main group is visible or not.
+     * @param mainGroupVisibility Whether the main group is visible or not.
      */
     public void toggleGroupItems(boolean mainGroupVisibility) {
         drawerMenu.setGroupVisible(R.id.navMainGroup, mainGroupVisibility);
@@ -508,8 +482,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * Sets the visibility of a menu item.
      *
-     * @param id
-     *   The menu item id
+     * @param id The menu item id
      */
     public void setMenuItemVisibility(int id, boolean visibility) {
         MenuItem target = drawerMenu.findItem(id);
@@ -538,8 +511,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     postTypeList.add(type);
                 }
 
+            } catch (JSONException ignored) {
             }
-            catch (JSONException ignored) { }
         }
 
         if (postTypeList.size() == 0) {
@@ -616,8 +589,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * Set account info
      *
-     * @param user
-     *   The user
+     * @param user The user
      */
     public void setAccountInfo(User user) {
         TextView authorUrl = headerView.findViewById(R.id.navAuthorUrl);
@@ -632,8 +604,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 authorName.setVisibility(View.VISIBLE);
                 authorName.setText(user.getName());
             }
-        }
-        else {
+        } else {
             if (authorName != null) {
                 authorName.setVisibility(View.GONE);
             }
@@ -647,10 +618,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .apply(RequestOptions.circleCropTransform())
                         .into(authorAvatar);
             }
-        }
-        else {
+        } else {
             if (authorAvatar != null) {
-                authorAvatar.setImageDrawable(getResources().getDrawable(R.drawable.avatar));
+                // Set author avatar to default drawable.
+                authorAvatar.setImageResource(R.drawable.avatar);
+
             }
         }
     }

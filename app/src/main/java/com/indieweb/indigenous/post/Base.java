@@ -8,10 +8,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -20,25 +16,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.MultiAutoCompleteTextView;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.Switch;
-import android.widget.TextView;
-
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import android.widget.*;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
@@ -49,12 +32,7 @@ import com.indieweb.indigenous.db.DatabaseHelper;
 import com.indieweb.indigenous.model.Place;
 import com.indieweb.indigenous.model.Syndication;
 import com.indieweb.indigenous.model.User;
-import com.indieweb.indigenous.util.NetworkResponseRequest;
-import com.indieweb.indigenous.util.Preferences;
-import com.indieweb.indigenous.util.Utility;
-import com.indieweb.indigenous.util.VolleyRequestListener;
-import com.indieweb.indigenous.util.VolleyMultipartRequest;
-
+import com.indieweb.indigenous.util.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,15 +41,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
 import static com.indieweb.indigenous.MainActivity.EDIT_IMAGE;
 import static java.lang.Integer.parseInt;
@@ -79,41 +49,39 @@ import static java.lang.Integer.parseInt;
 @SuppressLint("Registered")
 abstract public class Base extends AppCompatActivity implements SendPostInterface, TextWatcher, VolleyRequestListener {
 
-    public Post post;
-    public boolean isTesting = false;
-    boolean hasChanges = false;
-    public MultiAutoCompleteTextView body;
-    public EditText title;
-    public EditText spoiler;
-    public Switch saveAsDraft;
-    public DatabaseHelper db;
-    public User user;
-    public MultiAutoCompleteTextView tags;
+    public static final String EMPTY_CAPTION = "_EMPTY_";
     public final List<Uri> image = new ArrayList<>();
     public final List<Uri> video = new ArrayList<>();
     public final List<Uri> audio = new ArrayList<>();
-    public int mediaCount = 0;
-    public int mediaUploadedCount = 0;
     public final Map<Uri, String> mediaUrls = new HashMap<>();
-    public boolean uploadMediaDone = false;
-    public boolean uploadMediaError = false;
     public final List<String> caption = new ArrayList<>();
-    public static final String EMPTY_CAPTION = "_EMPTY_";
-    public boolean preparedDraft = false;
     public final List<Syndication> syndicationTargets = new ArrayList<>();
-    private MenuItem sendItem;
-    public LinearLayout mediaPreviewGallery;
-    public Switch postStatus;
+    public final Map<String, String> bodyParams = new LinkedHashMap<>();
+    public final List<Place> placeItems = new ArrayList<>();
     private final int PICK_IMAGE_REQUEST = 1;
     private final int PICK_VIDEO_REQUEST = 2;
     private final int PICK_AUDIO_REQUEST = 3;
-    private VolleyRequestListener volleyRequestListener;
-
+    public Post post;
+    public boolean isTesting = false;
+    public MultiAutoCompleteTextView body;
+    public EditText title;
+    public EditText spoiler;
+    public SwitchCompat saveAsDraft;
+    public DatabaseHelper db;
+    public User user;
+    public MultiAutoCompleteTextView tags;
+    public int mediaCount = 0;
+    public int mediaUploadedCount = 0;
+    public boolean uploadMediaDone = false;
+    public boolean uploadMediaError = false;
+    public boolean preparedDraft = false;
+    public LinearLayout mediaPreviewGallery;
+    public SwitchCompat postStatus;
     public EditText url;
     public Spinner rsvp;
     public Spinner read;
     public Spinner visibility;
-    public Switch sensitivity;
+    public SwitchCompat sensitivity;
     public TextView publishDate;
     public String urlPostKey;
     public String autoSubmit = "";
@@ -125,20 +93,16 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public boolean canAddMedia = false;
     public boolean canAddLocation = false;
     public boolean addCounter = false;
-    public final Map<String, String> bodyParams = new LinkedHashMap<>();
     public RelativeLayout layout;
-
     public Integer draftId;
     public String fileUrl;
     public TextView mediaUrl;
     public boolean isMediaRequest = false;
     public boolean isCheckin = false;
-
     public LinearLayout locationWrapper;
     public Spinner locationVisibility;
     public AutoCompleteTextView locationName;
     public EditText locationUrl;
-    public final List<Place> placeItems = new ArrayList<>();
     public TextView locationCoordinates;
     public String coordinates;
     public Button locationQuery;
@@ -148,6 +112,9 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     public Location mCurrentLocation;
     public LinearLayout accountPostWrapper;
     public TextView accountPost;
+    boolean hasChanges = false;
+    private MenuItem sendItem;
+    private VolleyRequestListener volleyRequestListener;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -232,8 +199,8 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                     image.set(index, uri);
                     try {
                         getContentResolver().takePersistableUriPermission(uri, takeFlags);
+                    } catch (Exception ignored) {
                     }
-                    catch (Exception ignored) {}
 
                     if (isMediaRequest) {
                         hideMediaPreview(false, true, true);
@@ -268,8 +235,8 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                     for (int i = 0; i < count; i++) {
                         try {
                             getContentResolver().takePersistableUriPermission(data.getClipData().getItemAt(i).getUri(), takeFlags);
+                        } catch (Exception ignored) {
                         }
-                        catch (Exception ignored) {}
 
                         if (requestCode == PICK_IMAGE_REQUEST) {
                             image.add(data.getClipData().getItemAt(i).getUri());
@@ -285,8 +252,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                         }
                     }
                 }
-            }
-            else if (data.getData() != null) {
+            } else if (data.getData() != null) {
 
                 if (requestCode == PICK_IMAGE_REQUEST) {
                     image.add(data.getData());
@@ -305,10 +271,10 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                     setChanges(true);
                     try {
                         getContentResolver().takePersistableUriPermission(data.getData(), takeFlags);
+                    } catch (Exception ignored) {
                     }
-                    catch (Exception ignored) {}
+                } catch (Exception ignored) {
                 }
-                catch (Exception ignored) {}
 
             }
 
@@ -335,22 +301,20 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     /**
      * Confirm closing post form.
      *
-     * @param topBack
-     *   Whether the top back was used or not.
+     * @param topBack Whether the top back was used or not.
      */
     public void confirmClose(final boolean topBack) {
         if (hasChanges) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.confirm_close);
-            builder.setPositiveButton(getApplicationContext().getString(R.string.discard),new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog,int id) {
+            builder.setPositiveButton(getApplicationContext().getString(R.string.discard), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
                     setChanges(false);
 
                     // Top back button.
                     if (topBack) {
                         finish();
-                    }
-                    else {
+                    } else {
                         onBackPressed();
                     }
                 }
@@ -362,14 +326,12 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 }
             });
             builder.show();
-        }
-        else {
+        } else {
 
             // Top back button.
             if (topBack) {
                 finish();
-            }
-            else {
+            } else {
                 super.onBackPressed();
             }
         }
@@ -412,12 +374,9 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     /**
      * Hide other preview elements.
      *
-     * @param hideImage
-     *   Whether to hide image or not.
-     * @param hideVideo
-     *   Whether to hide video or not.
-     * @param hideAudio
-     *   Whether to hide audio or not.
+     * @param hideImage Whether to hide image or not.
+     * @param hideVideo Whether to hide video or not.
+     * @param hideAudio Whether to hide audio or not.
      */
     public void hideMediaPreview(boolean hideImage, boolean hideVideo, boolean hideAudio) {
         if (hideImage) {
@@ -461,17 +420,16 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                     bitmap.compress(Bitmap.CompressFormat.JPEG, ImageQuality, byteArrayOutputStream);
                     break;
             }
-        }
-        else {
+        } else {
             ContentResolver cR = this.getContentResolver();
             try {
                 InputStream is = cR.openInputStream(uri);
                 final byte[] b = new byte[8192];
-                for (int r; (r = is.read(b)) != -1;) {
+                for (int r; (r = is.read(b)) != -1; ) {
                     byteArrayOutputStream.write(b, 0, r);
                 }
+            } catch (Exception ignored) {
             }
-            catch (Exception ignored) { }
         }
 
         return byteArrayOutputStream.toByteArray();
@@ -514,10 +472,10 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         if (tags != null) {
             List<String> tagsList = new ArrayList<>(Arrays.asList(tags.getText().toString().split(",")));
             int i = 0;
-            for (String tag: tagsList) {
+            for (String tag : tagsList) {
                 tag = tag.trim();
                 if (tag.length() > 0) {
-                    bodyParams.put("category_multiple_["+ i +"]", tag);
+                    bodyParams.put("category_multiple_[" + i + "]", tag);
                     i++;
                 }
             }
@@ -526,8 +484,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         // Publish date.
         if (publishDate != null && !TextUtils.isEmpty(publishDate.getText())) {
             bodyParams.put(post.getPostParamName(Post.POST_PARAM_PUBLISHED), publishDate.getText().toString());
-        }
-        else if (post.supportsPostParam("published")) {
+        } else if (post.supportsPostParam("published")) {
             Date date = Calendar.getInstance().getTime();
             @SuppressLint("SimpleDateFormat")
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:00Z");
@@ -570,7 +527,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         // Image alt.
         if (caption.size() > 0) {
             int ia = 0;
-            for (String s: caption) {
+            for (String s : caption) {
                 String caption = "";
                 if (s.length() > 0) {
                     caption = s;
@@ -608,19 +565,19 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         // Media urls.
         if (post.useMediaEndpoint() && uploadMediaDone && mediaUrls.size() > 0) {
             int mi = 0;
-            for (Uri u: image) {
+            for (Uri u : image) {
                 bodyParams.put(post.getPostParamName(Post.POST_PARAM_PHOTO) + "_multiple_[" + mi + "]", mediaUrls.get(u));
                 mi++;
             }
 
             int mv = 0;
-            for (Uri u: video) {
+            for (Uri u : video) {
                 bodyParams.put(post.getPostParamName(Post.POST_PARAM_VIDEO) + "_multiple_[" + mv + "]", mediaUrls.get(u));
                 mv++;
             }
 
             int ma = 0;
-            for (Uri u: audio) {
+            for (Uri u : audio) {
                 bodyParams.put("audio_multiple_[" + ma + "]", mediaUrls.get(u));
                 ma++;
             }
@@ -639,8 +596,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         String accessToken;
         if (user.isAuthenticated()) {
             accessToken = user.getAccessToken();
-        }
-        else {
+        } else {
             accessToken = Preferences.getPreference(getApplicationContext(), "anonymous_micropub_token", "IndigenousAnonymous");
         }
 
@@ -654,7 +610,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
     /**
      * Send post.
-     *
+     * <p>
      * This is used for all posts and the single media endpoint activity. In case the media endpoint
      * must be used for attached media on a post, sendMediaPost() will be called as well to first
      * upload all media before coming back to this one.
@@ -666,18 +622,17 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
             Snackbar snackbar = Snackbar.make(layout, getString(R.string.no_connection), Snackbar.LENGTH_LONG);
 
             if (saveAsDraft != null) {
-                 snackbar.setAction(getString(R.string.save_as_draft), new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            saveAsDraft.setChecked(true);
-                            try {
-                                findViewById(R.id.send).callOnClick();
-                            }
-                            catch (Exception ignored) {
-                                Snackbar.make(layout, getString(R.string.draft_checked), Snackbar.LENGTH_SHORT).show();
+                snackbar.setAction(getString(R.string.save_as_draft), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                saveAsDraft.setChecked(true);
+                                try {
+                                    findViewById(R.id.send).callOnClick();
+                                } catch (Exception ignored) {
+                                    Snackbar.make(layout, getString(R.string.draft_checked), Snackbar.LENGTH_SHORT).show();
+                                }
                             }
                         }
-                    }
                 );
             }
 
@@ -688,11 +643,11 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         if (user.isAnonymous() && post.canNotPostAnonymous()) {
             final Snackbar snackbar = Snackbar.make(layout, post.anonymousPostMessage(), Snackbar.LENGTH_INDEFINITE);
             snackbar.setAction(getString(R.string.close), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        snackbar.dismiss();
+                        @Override
+                        public void onClick(View v) {
+                            snackbar.dismiss();
+                        }
                     }
-                }
             );
             snackbar.show();
             return;
@@ -712,8 +667,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
         if (isMediaRequest || (!post.useMediaEndpoint() && (image.size() > 0 || video.size() > 0 || audio.size() > 0))) {
             sendMultiPartRequest(endpoint);
-        }
-        else {
+        } else {
             sendUrlEncodedRequest(endpoint);
         }
     }
@@ -721,8 +675,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     /**
      * Handle the post response.
      *
-     * @param response
-     *   The response
+     * @param response The response
      */
     public void handlePostResponse(NetworkResponse response) {
         if (finishActivity) {
@@ -747,8 +700,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                 mediaUrl.setText(fileUrl);
                 mediaUrl.setVisibility(View.VISIBLE);
                 Utility.copyToClipboard(fileUrl, getString(R.string.clipboard_media_url), getApplicationContext());
-            }
-            else {
+            } else {
                 Snackbar.make(layout, getString(R.string.no_media_url_found), Snackbar.LENGTH_SHORT).show();
             }
 
@@ -759,8 +711,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     /**
      * Handle the post error response.
      *
-     * @param error
-     *   The response error.
+     * @param error The response error.
      */
     public void handlePostError(VolleyError error) {
         hideProgressBar();
@@ -779,8 +730,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     /**
      * Send URL encoded request.
      *
-     * @param endpoint
-     *   The endpoint to send the request to.
+     * @param endpoint The endpoint to send the request to.
      */
     public void sendUrlEncodedRequest(String endpoint) {
         NetworkResponseRequest request = new NetworkResponseRequest(Request.Method.POST, endpoint,
@@ -796,8 +746,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                         handlePostError(error);
                     }
                 }
-        )
-        {
+        ) {
             @Override
             protected Map<String, String> getParams() {
                 setBodyParams();
@@ -819,8 +768,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     /**
      * Sends a multi-part request.
      *
-     * @param endpoint
-     *   The endpoint to send the request to.
+     * @param endpoint The endpoint to send the request to.
      */
     public void sendMultiPartRequest(String endpoint) {
 
@@ -837,8 +785,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                         handlePostError(error);
                     }
                 }
-        )
-        {
+        ) {
             @Override
             protected Map<String, String> getParams() {
                 setBodyParams();
@@ -881,8 +828,8 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                                         .apply(new RequestOptions().override(ImageSize, ImageSize))
                                         .submit()
                                         .get();
+                            } catch (Exception ignored) {
                             }
-                            catch (Exception ignored) {}
 
                             if (bitmap == null) {
                                 continue;
@@ -897,8 +844,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                             if (mime.equals("image/png")) {
                                 extension = "png";
                             }
-                        }
-                        else {
+                        } else {
                             // Set to png. This is likely a picture coming from the photo editor.
                             extension = "png";
                             mime = "image/png";
@@ -1010,16 +956,11 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     /**
      * Send media request.
      *
-     * @param u
-     *   The media uri
-     * @param description
-     *   The description
-     * @param endpoint
-     *   The media endpoint
-     * @param image
-     *   Whether this is an image or not
-     * @param video
-     *   Whether this is a video or not
+     * @param u           The media uri
+     * @param description The description
+     * @param endpoint    The media endpoint
+     * @param image       Whether this is an image or not
+     * @param video       Whether this is a video or not
      */
     public void sendMediaRequest(final Uri u, final String description, String endpoint, final boolean image, final boolean video) {
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
@@ -1036,14 +977,12 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                                 mediaUrl.setVisibility(View.VISIBLE);
                                 Utility.copyToClipboard(fileUrl, getString(R.string.clipboard_media_url), getApplicationContext());
                                 hideProgressBar();
-                            }
-                            else {
+                            } else {
                                 mediaUrls.put(u, fileUrl);
                                 mediaUploadedCount++;
                                 volleyRequestListener.OnSuccessRequest(null);
                             }
-                        }
-                        else {
+                        } else {
                             uploadMediaError = true;
                             volleyRequestListener.OnFailureRequest(null);
                             Snackbar.make(layout, getString(R.string.no_media_url_found), Snackbar.LENGTH_SHORT).show();
@@ -1058,8 +997,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                         volleyRequestListener.OnFailureRequest(error);
                     }
                 }
-        )
-        {
+        ) {
             @Override
             protected Map<String, String> getParams() {
 
@@ -1114,8 +1052,8 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                                     .apply(new RequestOptions().override(ImageSize, ImageSize))
                                     .submit()
                                     .get();
+                        } catch (Exception ignored) {
                         }
-                        catch (Exception ignored) {}
 
                         if (bitmap == null) {
                             uploadMediaError = true;
@@ -1131,8 +1069,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                         if (mime.equals("image/png")) {
                             extension = "png";
                         }
-                    }
-                    else {
+                    } else {
                         // Set to png. This is likely a picture coming from the photo editor.
                         extension = "png";
                         mime = "image/png";
@@ -1140,8 +1077,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
 
                     // Put image in body. Send along whether to scale or not.
                     params.put("file", new DataPart(imagename + "." + extension, getFileData(bitmap, scale, u, mime), mime));
-                }
-                else {
+                } else {
                     long filename = System.currentTimeMillis();
 
                     String mime = "video/mp4";
@@ -1165,8 +1101,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     /**
      * Set listener.
      *
-     * @param volleyRequestListener
-     *   The volley request listener.
+     * @param volleyRequestListener The volley request listener.
      */
     public void VolleyRequestListener(VolleyRequestListener volleyRequestListener) {
         this.volleyRequestListener = volleyRequestListener;
@@ -1195,11 +1130,11 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         String message = Utility.parseNetworkError(error, getApplicationContext(), R.string.media_network_fail, R.string.media_fail);
         final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
         snack.setAction(getString(R.string.close), new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    snack.dismiss();
+                    @Override
+                    public void onClick(View v) {
+                        snack.dismiss();
+                    }
                 }
-            }
         );
         snack.show();
     }
@@ -1207,22 +1142,19 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     /**
      * Sets the incoming text as URL and puts focus on either title, or body field.
      *
-     * @param incomingUrl
-     *   The incoming URL.
+     * @param incomingUrl The incoming URL.
      */
     public void setUrlAndFocusOnMessage(String incomingUrl) {
         if (isCheckin) {
             locationUrl.setText(incomingUrl);
-        }
-        else {
+        } else {
             if (url != null) {
                 url.setText(incomingUrl);
             }
 
             if (title != null) {
                 title.requestFocus();
-            }
-            else if (body != null) {
+            } else if (body != null) {
                 body.requestFocus();
             }
         }
@@ -1264,30 +1196,23 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
     /**
      * Set changes property
      *
-     * @param changes
-     *   Whether hasChanges is true or false.
+     * @param changes Whether hasChanges is true or false.
      */
     public void setChanges(boolean changes) {
         hasChanges = changes;
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    }
 
     @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) { }
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+    }
 
     @Override
     public void afterTextChanged(Editable s) {
         setChanges(true);
-    }
-
-    // Publish date onclick listener.
-    public class publishDateOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            Utility.showDateTimePickerDialog(Base.this, publishDate);
-        }
     }
 
     /**
@@ -1324,6 +1249,14 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         }
     }
 
+    // Publish date onclick listener.
+    public class publishDateOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Utility.showDateTimePickerDialog(Base.this, publishDate);
+        }
+    }
+
     // Location query listener.
     public class OnLocationLabelQueryListener implements View.OnClickListener {
 
@@ -1334,16 +1267,14 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
             String MicropubEndpoint = user.getMicropubEndpoint();
             if (MicropubEndpoint.contains("?")) {
                 MicropubEndpoint += "&q=geo";
-            }
-            else {
+            } else {
                 MicropubEndpoint += "?q=geo";
             }
 
             if (mCurrentLocation != null) {
                 MicropubEndpoint += "&lat=" + mCurrentLocation.getLatitude() + "&lon=" + mCurrentLocation.getLongitude();
-            }
-            else if (latitude != null && longitude != null) {
-                MicropubEndpoint += "&lat=" + latitude.toString() + "&lon=" + longitude.toString();
+            } else if (latitude != null && longitude != null) {
+                MicropubEndpoint += "&lat=" + latitude + "&lon=" + longitude;
             }
 
             Snackbar.make(layout, getString(R.string.location_get), Snackbar.LENGTH_SHORT).show();
@@ -1400,8 +1331,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                                         }
                                     }
                                 }
-                            }
-                            catch (JSONException e) {
+                            } catch (JSONException e) {
                                 Snackbar.make(layout, getString(R.string.location_error) + e.getMessage(), Snackbar.LENGTH_SHORT).show();
                             }
 
@@ -1420,8 +1350,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                                     }
 
                                     locationName.setThreshold(1);
-                                    @SuppressWarnings("rawtypes")
-                                    final ArrayAdapter placesAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.popup_item, placeItems);
+                                    @SuppressWarnings("rawtypes") final ArrayAdapter placesAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.popup_item, placeItems);
                                     locationName.setAdapter(placesAdapter);
                                     locationName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                         @Override
@@ -1443,8 +1372,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                                             return false;
                                         }
                                     });
-                                }
-                                else {
+                                } else {
                                     locationName.setText(label);
                                     if (url.length() > 0) {
                                         locationUrl.setText(url);
@@ -1456,14 +1384,12 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                                     int selection = 0;
                                     if (visibility.equals("private")) {
                                         selection = 1;
-                                    }
-                                    else if (visibility.equals("protected")) {
+                                    } else if (visibility.equals("protected")) {
                                         selection = 2;
                                     }
                                     locationVisibility.setSelection(selection);
                                 }
-                            }
-                            else {
+                            } else {
                                 Snackbar.make(layout, getString(R.string.location_no_results), Snackbar.LENGTH_SHORT).show();
                             }
 
@@ -1471,10 +1397,10 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
                     },
                     new Response.ErrorListener() {
                         @Override
-                        public void onErrorResponse(VolleyError error) {}
+                        public void onErrorResponse(VolleyError error) {
+                        }
                     }
-            )
-            {
+            ) {
                 @Override
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();

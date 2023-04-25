@@ -1,51 +1,51 @@
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:id="@+id/feed_row"
-    android:layout_height="wrap_content"
-    android:background="@color/listRowBackgroundColor"
-    android:orientation="vertical">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:id="@+id/feed_row"
+        android:layout_height="wrap_content"
+        android:background="@color/listRowBackgroundColor"
+        android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1.0"
-        android:orientation="horizontal">
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1.0"
+            android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/url"
-            android:textColor="@color/textColor"
-            android:padding="@dimen/list_item_padding"
-            android:textSize="@dimen/list_item_text_size"
-            android:layout_weight="0.95"
-            android:layout_height="wrap_content"
-            android:layout_width="0dp" />
+                android:id="@+id/url"
+                android:textColor="@color/textColor"
+                android:padding="@dimen/list_item_padding"
+                android:textSize="@dimen/list_item_text_size"
+                android:layout_weight="0.95"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"/>
 
         <Button
-            android:textColor="@color/colorPrimary"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@color/listRowBackgroundColor"
-            android:id="@+id/subscribe"
-            android:text="@string/subscribe"
-            android:padding="@dimen/list_item_padding"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+                android:textColor="@color/colorPrimary"
+                style="?android:attr/borderlessButtonStyle"
+                android:background="@color/listRowBackgroundColor"
+                android:id="@+id/subscribe"
+                android:text="@string/subscribe"
+                android:padding="@dimen/list_item_padding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
         <Button
-            android:textColor="@color/colorPrimary"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@color/listRowBackgroundColor"
-            android:id="@+id/preview"
-            android:text="@string/preview"
-            android:padding="@dimen/list_item_padding"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+                android:textColor="@color/colorPrimary"
+                style="?android:attr/borderlessButtonStyle"
+                android:background="@color/listRowBackgroundColor"
+                android:id="@+id/preview"
+                android:text="@string/preview"
+                android:padding="@dimen/list_item_padding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/list_divider_height"
-        android:background="@color/listDividerColor" />
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/list_divider_height"
+            android:background="@color/listDividerColor"/>
 
 </LinearLayout>

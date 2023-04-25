@@ -3,7 +3,6 @@ package com.indieweb.indigenous.pixelfed;
 import android.accounts.AccountManager;
 import android.content.Context;
 import android.widget.RelativeLayout;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -12,7 +11,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.users.AuthBase;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,8 +46,7 @@ public class PixelfedAuth extends AuthBase {
                             if (Response.has("display_name")) {
                                 foundInfo = true;
                                 authorName = Response.getString("display_name");
-                            }
-                            else if (Response.has("username")) {
+                            } else if (Response.has("username")) {
                                 foundInfo = true;
                                 authorName = Response.getString("username");
                             }
@@ -57,8 +54,8 @@ public class PixelfedAuth extends AuthBase {
                                 foundInfo = true;
                                 authorAvatar = Response.getString("avatar");
                             }
+                        } catch (JSONException ignored) {
                         }
-                        catch (JSONException ignored) { }
 
                         if (foundInfo) {
                             AccountManager am = AccountManager.get(getContext());
@@ -76,10 +73,10 @@ public class PixelfedAuth extends AuthBase {
                 },
                 new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) { }
+                    public void onErrorResponse(VolleyError error) {
+                    }
                 }
-        )
-        {
+        ) {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();

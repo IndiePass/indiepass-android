@@ -2,9 +2,8 @@ package com.indieweb.indigenous.indieweb.microsub;
 
 import android.content.Context;
 import android.content.Intent;
-
 import com.android.volley.Request;
-import com.indieweb.indigenous.Indigenous;
+import com.indieweb.indigenous.IndiePass;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.Contact;
@@ -17,14 +16,13 @@ import com.indieweb.indigenous.post.RepostActivity;
 import com.indieweb.indigenous.reader.Reader;
 import com.indieweb.indigenous.reader.ReaderBase;
 import com.indieweb.indigenous.util.Preferences;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.safety.Whitelist;
+import org.jsoup.safety.Safelist;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
@@ -32,8 +30,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.indieweb.indigenous.util.Utility.getSingleJsonValueFromArrayOrString;
 import static com.indieweb.indigenous.util.Utility.checkReference;
+import static com.indieweb.indigenous.util.Utility.getSingleJsonValueFromArrayOrString;
 
 public class IndieWebReader extends ReaderBase {
 
@@ -79,8 +77,7 @@ public class IndieWebReader extends ReaderBase {
         String endpoint = this.getUser().getMicrosubEndpoint();
         if (endpoint.contains("?")) {
             endpoint += "&action=channels";
-        }
-        else {
+        } else {
             endpoint += "?action=channels";
         }
 
@@ -175,7 +172,7 @@ public class IndieWebReader extends ReaderBase {
                         Sources.add(channelSource);
                     }
 
-                    // Set number of unread sources and add to collection.
+                    // Set the number of unread sources and add to a collection.
                     for (Channel s : Sources) {
                         s.setUnreadSources(unreadSources);
                         Channels.add(s);
@@ -191,10 +188,10 @@ public class IndieWebReader extends ReaderBase {
                     channel.setUnread(totalUnread);
                     Channels.add(0, channel);
                 }
+            } catch (Exception ignored) {
             }
-            catch (Exception ignored) {}
+        } catch (JSONException ignored) {
         }
-        catch (JSONException ignored) { }
 
         return Channels;
     }
@@ -276,12 +273,10 @@ public class IndieWebReader extends ReaderBase {
                 try {
                     if (microsubResponse.getJSONObject("paging").has("after")) {
                         olderItems[0] = microsubResponse.getJSONObject("paging").getString("after");
-                    }
-                    else {
+                    } else {
                         olderItems[0] = "";
                     }
-                }
-                catch (JSONException ignored) {
+                } catch (JSONException ignored) {
                     olderItems[0] = "";
                 }
             }
@@ -313,13 +308,15 @@ public class IndieWebReader extends ReaderBase {
                 // It's possible that _id is empty. Don't let readers choke on it.
                 try {
                     item.setId(object.getString("_id"));
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
 
                 // Source id is experimental.
                 if (object.has("_source")) {
                     try {
                         item.setSourceId(object.getString("_source"));
-                    } catch (Exception ignored) {}
+                    } catch (Exception ignored) {
+                    }
                 }
 
                 // Is read.
@@ -337,10 +334,9 @@ public class IndieWebReader extends ReaderBase {
                     try {
                         String itemChannelName = object.getJSONObject("_channel").getString("name");
                         item.setChannelName(itemChannelName);
+                    } catch (Exception ignored) {
                     }
-                    catch (Exception ignored) {}
-                }
-                else if (channelName != null && channelName.length() > 0) {
+                } else if (channelName != null && channelName.length() > 0) {
                     item.setChannelName(channelName);
                 }
 
@@ -435,15 +431,15 @@ public class IndieWebReader extends ReaderBase {
                     String checkinUrl = "";
                     try {
                         checkinUrl = object.getJSONObject("checkin").getString("url");
+                    } catch (Exception ignored) {
                     }
-                    catch (Exception ignored) {}
                     item.addToResponseType("checkin-url", checkinUrl);
 
                     try {
                         item.setLatitude(object.getJSONObject("checkin").getString("latitude"));
                         item.setLongitude(object.getJSONObject("checkin").getString("longitude"));
+                    } catch (Exception ignored) {
                     }
-                    catch (Exception ignored) {}
 
                 }
 
@@ -496,23 +492,22 @@ public class IndieWebReader extends ReaderBase {
                         addContent = false;
                         htmlContent = content.getString("html");
 
-                        // Clean html, remove images and put them in photo.
+                        // Clean html, remove images and put them in a photo.
                         try {
                             Document doc = Jsoup.parse(htmlContent);
-                            Elements imgs = doc.select("img");
-                            for (Element img : imgs) {
+                            Elements images = doc.select("img");
+                            for (Element img : images) {
                                 String photoUrl = img.absUrl("src");
                                 if (!photoUrl.contains("spacer.gif") && !photoUrl.contains("spacer.png")) {
                                     item.addPhoto(photoUrl);
                                 }
                             }
-                            htmlContent = Jsoup.clean(htmlContent, Whitelist.basic());
+                            htmlContent = Jsoup.clean(htmlContent, Safelist.basic());
+                        } catch (Exception ignored) {
                         }
-                        catch (Exception ignored) {}
                     }
 
-                }
-                else if (object.has("summary") && addContent) {
+                } else if (object.has("summary") && addContent) {
                     addContent = false;
                     textContent = object.getString("summary");
                 }
@@ -521,8 +516,8 @@ public class IndieWebReader extends ReaderBase {
                 if (object.has("rsvp") && addContent) {
                     try {
                         textContent = "RSVP: " + object.getString("rsvp");
+                    } catch (JSONException ignored) {
                     }
-                    catch (JSONException ignored) {}
                 }
 
                 // Name.
@@ -531,8 +526,7 @@ public class IndieWebReader extends ReaderBase {
                     if (name.equals(textContent)) {
                         name = "";
                     }
-                }
-                else if (object.has("summary") && addContent) {
+                } else if (object.has("summary") && addContent) {
                     name = object.getString("summary").replace("\n", "").replace("\r", "");
                 }
 
@@ -545,12 +539,11 @@ public class IndieWebReader extends ReaderBase {
                             for (int p = 0; p < photos.length(); p++) {
                                 item.addPhoto(photos.getString(p));
                             }
-                        }
-                        else {
+                        } else {
                             item.addPhoto(object.getString("photo"));
                         }
+                    } catch (JSONException ignored) {
                     }
-                    catch (JSONException ignored) {}
                 }
 
                 // Audio.
@@ -594,8 +587,8 @@ public class IndieWebReader extends ReaderBase {
 
                 TimelineItems.add(item);
             }
+        } catch (JSONException ignored) {
         }
-        catch (JSONException ignored) { }
 
         return TimelineItems;
     }
@@ -612,13 +605,13 @@ public class IndieWebReader extends ReaderBase {
             case RESPONSE_LIKE:
                 i = new Intent(getContext(), LikeActivity.class);
                 i.putExtra("incomingText", item.getUrl());
-            break;
+                break;
             case RESPONSE_BOOKMARK:
                 i = new Intent(getContext(), BookmarkActivity.class);
                 i.putExtra("incomingText", item.getUrl());
                 break;
             case RESPONSE_CONTACT:
-                Indigenous app2 = Indigenous.getInstance();
+                IndiePass app2 = IndiePass.getInstance();
                 Contact contact = new Contact();
                 contact.setName(item.getAuthorName());
                 if (item.getAuthorPhoto().length() > 0) {
@@ -629,7 +622,7 @@ public class IndieWebReader extends ReaderBase {
                 }
 
                 app2.setContact(contact);
-                i =  new Intent(getContext(), ContactActivity.class);
+                i = new Intent(getContext(), ContactActivity.class);
                 i.putExtra("addContact", true);
                 break;
             case RESPONSE_REPOST:

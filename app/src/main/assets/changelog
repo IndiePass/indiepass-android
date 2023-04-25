@@ -1,8 +1,3 @@
-<h4>23/04/2023 0.66</h4>
-<ul>
-    <li>Tagged release for f-droid</li>
-    <li>Spelling and grammar check</li>
-</ul>
 <h4>20/11/2021 0.65</h4>
 <ul>
     <li>Set a default account when deleting the current</li>
@@ -42,7 +37,7 @@
     <li>Fix crash in compact mode</li>
     <li>Fix uploading to media endpoint in Upload screen</li>
     <li>Only swap author and name for repost and quotation</li>
-    <li>Detect YouTube url's when following a YouTube channel</li>
+    <li>Detect YouTube urls when following a YouTube channel</li>
     <li>Better contrast for all action buttons in dark mode</li>
     <li>Do not cache the timeline when viewing only unread items</li>
     <li>Posts overview (?q=source) now better handles content property</li>
@@ -86,7 +81,7 @@
 <ul>
     <li>Allow to attach video or audio to posts. This updates the drafts database, so you will lose any existing drafts.</li>
     <li>Allow to use the media endpoint for media attached to posts. It's a setting you must toggle in the settings screen in the "Media" section.</li>
-    <li>Simple GPS tracker to track your itineraries. (Playstore version only at the moment, F-Droid coming later)</li>
+    <li>Simple GPS tracker to track your itineraries. (Play Store version only at the moment, F-Droid coming later)</li>
     <li>Fix crash with drafts in case the captions were empty and then trying to save the draft again</li>
 </ul>
 <h4>25/12/2019 - 0.53</h4>

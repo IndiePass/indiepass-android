@@ -4,11 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,7 +14,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -33,7 +32,6 @@ import com.indieweb.indigenous.model.Channel;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.users.Accounts;
 import com.indieweb.indigenous.util.Utility;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,14 +44,14 @@ import java.util.Map;
 public class ManageChannelActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, StartDragListener {
 
     RecyclerView listChannel;
-    private ManageChannelListAdapter adapter;
-    private List<Channel> Channels = new ArrayList<>();
     SwipeRefreshLayout refreshLayout;
     ItemTouchHelper touchHelper;
     User user;
     String incomingText = "";
     boolean isShare = false;
     boolean showRefreshMessage;
+    private ManageChannelListAdapter adapter;
+    private List<Channel> Channels = new ArrayList<>();
     private RelativeLayout layout;
     private LinearLayout noConnection;
 
@@ -82,8 +80,8 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
                             isShare = true;
                         }
                     }
+                } catch (NullPointerException ignored) {
                 }
-                catch (NullPointerException ignored) {}
             }
         }
 
@@ -173,17 +171,16 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
 
                             adapter.notifyDataSetChanged();
                             checkRefreshingStatus();
-                        }
-                        catch (JSONException e) {
+                        } catch (JSONException e) {
                             showRefreshMessage = false;
                             String message = String.format(getString(R.string.channel_list_parse_error), e.getMessage());
                             final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
                             snack.setAction(getString(R.string.close), new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        snack.dismiss();
+                                        @Override
+                                        public void onClick(View v) {
+                                            snack.dismiss();
+                                        }
                                     }
-                                }
                             );
                             snack.show();
                             checkRefreshingStatus();
@@ -199,17 +196,16 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
                         String message = Utility.parseNetworkError(error, getApplicationContext(), R.string.request_failed, R.string.request_failed_unknown);
                         final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
                         snack.setAction(getString(R.string.close), new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    snack.dismiss();
+                                    @Override
+                                    public void onClick(View v) {
+                                        snack.dismiss();
+                                    }
                                 }
-                            }
                         );
                         snack.show();
                     }
                 }
-        )
-        {
+        ) {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
@@ -255,8 +251,6 @@ public class ManageChannelActivity extends AppCompatActivity implements SwipeRef
     /**
      * Create channel dialog.
      *
-     * @todo reload the fragment when the channel is created
-     *       do the same when subscribing to a feed.
      */
     public void createChannel() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ManageChannelActivity.this);

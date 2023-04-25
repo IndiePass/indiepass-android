@@ -10,13 +10,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.util.Utility;
-
+import io.ticofab.androidgpxparser.parser.GPXParser;
+import io.ticofab.androidgpxparser.parser.domain.Gpx;
+import io.ticofab.androidgpxparser.parser.domain.Track;
+import io.ticofab.androidgpxparser.parser.domain.TrackPoint;
+import io.ticofab.androidgpxparser.parser.domain.TrackSegment;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -25,17 +27,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import io.ticofab.androidgpxparser.parser.GPXParser;
-import io.ticofab.androidgpxparser.parser.domain.Gpx;
-import io.ticofab.androidgpxparser.parser.domain.Track;
-import io.ticofab.androidgpxparser.parser.domain.TrackPoint;
-import io.ticofab.androidgpxparser.parser.domain.TrackSegment;
-
 public class TripActivity extends BaseCreate {
 
-    private TextView pointsInfo;
     private final List<String> points = new ArrayList<>();
     private final int PICK_GPX_REQUEST = 30;
+    private TextView pointsInfo;
     private EditText cost;
     private EditText distance;
     private EditText duration;
@@ -76,8 +72,8 @@ public class TripActivity extends BaseCreate {
                             parseGPXfile(Uri.parse(gpxFile), intent, false);
                         }
                     }
+                } catch (Exception ignored) {
                 }
-                catch (Exception ignored) { }
             }
         }
     }
@@ -124,10 +120,8 @@ public class TripActivity extends BaseCreate {
     /**
      * Parse a GPX file.
      *
-     * @param uri
-     *   The file uri.
-     * @param data
-     *   The intent data.
+     * @param uri  The file uri.
+     * @param data The intent data.
      */
     private void parseGPXfile(Uri uri, Intent data, boolean takePermission) {
 
@@ -146,8 +140,7 @@ public class TripActivity extends BaseCreate {
             try {
                 InputStream in = getContentResolver().openInputStream(uri);
                 parsedGpx = mParser.parse(in);
-            }
-            catch (IOException | XmlPullParserException e) {
+            } catch (IOException | XmlPullParserException e) {
                 Snackbar.make(layout, String.format(getString(R.string.trip_reading_error), e.getMessage()), Snackbar.LENGTH_LONG).show();
             }
 
@@ -173,22 +166,20 @@ public class TripActivity extends BaseCreate {
                     pointsInfo.setText(message);
                     Snackbar.make(layout, message, Snackbar.LENGTH_LONG).show();
                     setChanges(true);
-                }
-                else {
+                } else {
                     Snackbar.make(layout, getString(R.string.trip_no_points_found), Snackbar.LENGTH_LONG).show();
                 }
             }
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             String message = String.format(getString(R.string.trip_reading_error), e.getMessage());
             final Snackbar snack = Snackbar.make(layout, message, Snackbar.LENGTH_INDEFINITE);
             snack.setAction(getString(R.string.close), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        snack.dismiss();
+                        @Override
+                        public void onClick(View v) {
+                            snack.dismiss();
+                        }
                     }
-                }
             );
             snack.show();
         }
@@ -233,7 +224,7 @@ public class TripActivity extends BaseCreate {
 
             int i = 0;
             for (String p : points) {
-                bodyParams.put("route_multiple_["+ i +"]", p);
+                bodyParams.put("route_multiple_[" + i + "]", p);
                 i++;
             }
 

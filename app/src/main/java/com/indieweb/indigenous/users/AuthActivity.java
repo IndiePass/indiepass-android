@@ -10,19 +10,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.core.content.ContextCompat;
-
 import android.view.View;
 import android.webkit.URLUtil;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
+import android.widget.*;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.core.content.ContextCompat;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -45,7 +37,6 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -56,11 +47,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class AuthActivity extends AccountAuthenticatorActivity implements VolleyRequestListener {
 
@@ -72,7 +59,9 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     public final static String MASTODON_TOKEN_TYPE = "Mastodon";
     public final static String PLEROMA_ACCOUNT_TYPE = "Pleroma";
     public final static String PLEROMA_TOKEN_TYPE = "Pleroma";
-
+    final String ClientId = "https://indiepass.marksuth.dev/";
+    final String RedirectUri = "https://indiepass.marksuth.dev/android-callback";
+    protected VolleyRequestListener volleyRequestListener;
     String accountType = "indieweb";
     String requestType = "";
     String state;
@@ -96,22 +85,60 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     String authorName;
     String codeVerifier = "";
     RelativeLayout layout;
+    /**
+     * OnClickListener for the 'Set account' button.
+     */
+    public final View.OnClickListener selectAccountListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            new Accounts(AuthActivity.this).selectAccount(AuthActivity.this, layout);
+        }
+    };
+    /**
+     * OnClickListener for the 'Sign in' button.
+     */
+    private final View.OnClickListener doSignIn = new View.OnClickListener() {
+        public void onClick(View v) {
+
+            if (!Utility.hasConnection(getApplicationContext())) {
+                Snackbar.make(layout, getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
+                return;
+            }
+
+            domainInput = domain.getText().toString();
+
+            // Check if there's no protocol, prefix it with https:// if necessary.
+            if (!domainInput.contains("http://") && !domainInput.contains("https://")) {
+                domainInput = "https://" + domainInput;
+            }
+
+            if (accountType.equals("indieweb")) {
+                registerWithIndieWeb();
+            }
+
+            if (accountType.equals("pixelfed")) {
+                registerWithPixelfed();
+            }
+
+            if (accountType.equals("mastodon")) {
+                registerWithMastodon();
+            }
+
+            if (accountType.equals("pleroma")) {
+                registerWithPleroma();
+            }
+        }
+    };
     String pixelfedClientId;
     String pixelfedClientSecret;
     String mastodonClientId;
     String mastodonClientSecret;
     String pleromaClientId;
     String pleromaClientSecret;
-    protected VolleyRequestListener volleyRequestListener;
-
-    final String ClientId = "https://indigenous.marksuth.dev/";
-    final String RedirectUri = "https://indigenous.marksuth.dev/android-callback";
 
     /**
      * Set request listener.
      *
-     * @param volleyRequestListener
-     *   The volley request listener.
+     * @param volleyRequestListener The volley request listener.
      */
     private void VolleyRequestListener(VolleyRequestListener volleyRequestListener) {
         this.volleyRequestListener = volleyRequestListener;
@@ -134,7 +161,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
 
-                        // Generate state, use uuid and take first 10 chars.
+                        // Generate state, use uuid and take the first 10 chars.
                         state = UUID.randomUUID().toString().substring(0, 10);
 
                         // Generate a code verifier. concatenate 2 uuids.
@@ -229,24 +256,20 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
             String returnedState = intent.getData().getQueryParameter("state");
             if (accountType.equals("indieweb") && code != null && code.length() > 0 && returnedState != null && returnedState.length() > 0) {
                 validateIndieWebCode(code, returnedState);
-            }
-            else if (accountType.equals("pixelfed") && code != null && code.length() > 0) {
+            } else if (accountType.equals("pixelfed") && code != null && code.length() > 0) {
                 validatePixelfedCode(code);
-            }
-            else if (accountType.equals("mastodon") && code != null && code.length() > 0) {
+            } else if (accountType.equals("mastodon") && code != null && code.length() > 0) {
                 validateMastodonCode(code);
-            }
-            else if (accountType.equals("pleroma") && code != null && code.length() > 0) {
+            } else if (accountType.equals("pleroma") && code != null && code.length() > 0) {
                 validatePleromaCode(code);
-            }
-            else {
+            } else {
                 final Snackbar snack = Snackbar.make(layout, getString(R.string.no_code_found), Snackbar.LENGTH_INDEFINITE);
                 snack.setAction(getString(R.string.close), new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            snack.dismiss();
+                            @Override
+                            public void onClick(View v) {
+                                snack.dismiss();
+                            }
                         }
-                    }
                 );
                 snack.show();
             }
@@ -254,55 +277,9 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     }
 
     /**
-     * OnClickListener for the 'Set account' button.
-     */
-    public final View.OnClickListener selectAccountListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            new Accounts(AuthActivity.this).selectAccount(AuthActivity.this, layout);
-        }
-    };
-
-    /**
-     * OnClickListener for the 'Sign in' button.
-     */
-    private final View.OnClickListener doSignIn = new View.OnClickListener() {
-        public void onClick(View v) {
-
-            if (!Utility.hasConnection(getApplicationContext())) {
-                Snackbar.make(layout, getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show();
-                return;
-            }
-
-            domainInput = domain.getText().toString();
-
-            // Check if there's no protocol, prefix it with https:// if necessary.
-            if (!domainInput.contains("http://") && !domainInput.contains("https://")) {
-                domainInput = "https://" + domainInput;
-            }
-
-            if (accountType.equals("indieweb")) {
-                registerWithIndieWeb();
-            }
-
-            if (accountType.equals("pixelfed")) {
-                registerWithPixelfed();
-            }
-
-            if (accountType.equals("mastodon")) {
-                registerWithMastodon();
-            }
-
-            if (accountType.equals("pleroma")) {
-                registerWithPleroma();
-            }
-        }
-    };
-
-    /**
-     * Change the sign in button.
+     * Change the sign-in button.
      *
-     * @param text
-     *   The text to change the sign in button to.
+     * @param text The text to change the sign-in button to.
      */
     public void changeSignInButton(int text) {
         signIn.setText(text);
@@ -353,16 +330,15 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
         String message = getString(R.string.request_failed_unknown);
         try {
             message = Utility.parseNetworkError(error, getApplicationContext(), R.string.request_failed, R.string.request_failed_unknown);
+        } catch (Exception ignored) {
         }
-        catch (Exception ignored) {}
         Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show();
     }
 
     /**
      * Start the authorization.
      *
-     * @param uri
-     *   The URI to open.
+     * @param uri The URI to open.
      */
     public void startAuthorization(Uri uri) {
         CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
@@ -388,7 +364,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
 
     /**
      * Creates a unique account name based on domain input.
-     *
+     * <p>
      * Use this function when creating a new account.
      *
      * @return String
@@ -421,8 +397,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
             String url = authorizationEndpoint + "?code_challenge_method=S256&code_challenge=" + codeChallenge + "&response_type=code&redirect_uri=" + RedirectUri + "&client_id=" + ClientId + "&me=" + domainInput + "&scope=create+update+delete+media+read+follow+channels+mute+block&state=" + state;
             Uri uri = Uri.parse(url);
             startAuthorization(uri);
-        }
-        else {
+        } else {
             changeSignInButton(R.string.sign_in);
             final Snackbar snack = Snackbar.make(layout, getString(R.string.missing_rel_links), Snackbar.LENGTH_INDEFINITE);
             snack.setAction(getString(R.string.close), new View.OnClickListener() {
@@ -438,17 +413,15 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
 
     /**
      * Validates the domain for IndieWeb.
+     * <p>
+     * Checks the response of the URL or parse HTML to discover the following rel links:
+     * - authorization_endpoint
+     * - token_endpoint
+     * - micropub
+     * - microsub
+     * - micropub_media
      *
-     * Checks the response of the URL or parse HTML to discover following rel links:
-     *  - authorization_endpoint
-     *  - token_endpoint
-     *  - micropub
-     *  - microsub
-     *  - micropub_media
-     *
-     * @param $domain
-     *   The domain to validate.
-     *
+     * @param $domain The domain to validate.
      * @return boolean
      */
     private boolean validIndieWebDomain(String $domain) {
@@ -469,36 +442,33 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
 
             if (response.hasHeader("Link")) {
                 String[] headers = response.header("Link").split(",");
-                if (headers.length > 0) {
+                for (String link : headers) {
+                    String[] split = link.split(";");
+                    String endpoint = split[0].replace("<", "").replace(">", "").trim();
+                    String rel = split[1].trim().replace("rel=", "").replace("\"", "");
 
-                    for (String link: headers) {
-                        String[] split = link.split(";");
-                        String endpoint = split[0].replace("<", "").replace(">", "").trim();
-                        String rel = split[1].trim().replace("rel=", "").replace("\"", "");
+                    endpoint = Utility.checkAbsoluteUrl(endpoint, $domain);
 
-                        endpoint = Utility.checkAbsoluteUrl(endpoint, $domain);
-
-                        switch (rel) {
-                            case "authorization_endpoint":
-                                authorizationEndpoint = endpoint;
-                                numberOfAuthEndpoints++;
-                                break;
-                            case "token_endpoint":
-                                tokenEndpoint = endpoint;
-                                numberOfAuthEndpoints++;
-                                break;
-                            case "micropub":
-                                micropubEndpoint = endpoint;
-                                hasMicropubOrMicrosub = true;
-                                break;
-                            case "microsub":
-                                microsubEndpoint = endpoint;
-                                hasMicropubOrMicrosub = true;
-                                break;
-                            case "micropub_media":
-                                micropubMediaEndpoint = endpoint;
-                                break;
-                        }
+                    switch (rel) {
+                        case "authorization_endpoint":
+                            authorizationEndpoint = endpoint;
+                            numberOfAuthEndpoints++;
+                            break;
+                        case "token_endpoint":
+                            tokenEndpoint = endpoint;
+                            numberOfAuthEndpoints++;
+                            break;
+                        case "micropub":
+                            micropubEndpoint = endpoint;
+                            hasMicropubOrMicrosub = true;
+                            break;
+                        case "microsub":
+                            microsubEndpoint = endpoint;
+                            hasMicropubOrMicrosub = true;
+                            break;
+                        case "micropub_media":
+                            micropubMediaEndpoint = endpoint;
+                            break;
                     }
                 }
             }
@@ -532,8 +502,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                 }
             }
 
-        }
-        catch (IllegalArgumentException | IOException e) {
+        } catch (IllegalArgumentException | IOException e) {
             final Snackbar snack = Snackbar.make(layout, String.format(getString(R.string.domain_connect_error), e.getMessage()), Snackbar.LENGTH_INDEFINITE);
             snack.setAction(getString(R.string.close), new View.OnClickListener() {
                         @Override
@@ -543,8 +512,8 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                     }
             );
             snack.show();
+        } catch (Exception ignored) {
         }
-        catch (Exception ignored) { }
 
         // Return true when we have the auth and token endpoint and micropub or microsub.
         return numberOfAuthEndpoints == 2 && hasMicropubOrMicrosub;
@@ -553,10 +522,8 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     /**
      * Validates the code.
      *
-     * @param code
-     *   The code we got back after the oauth dance with the authorization endpoint.
-     * @param returnedState
-     *   The returned state.
+     * @param code          The code we got back after the oauth dance with the authorization endpoint.
+     * @param returnedState The returned state.
      */
     private void validateIndieWebCode(final String code, final String returnedState) {
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
@@ -575,7 +542,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                             accessToken = indieAuthResponse.getString("access_token");
                             accessTokenFound = true;
 
-                            // Check profile key.
+                            // Check the profile key.
                             if (indieAuthResponse.has("profile")) {
                                 JSONObject profile = indieAuthResponse.getJSONObject("profile");
                                 if (profile.has("name")) {
@@ -585,14 +552,13 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                                     authorAvatar = profile.getString("photo");
                                 }
                             }
-                        }
-                        catch (JSONException e) {
+                        } catch (JSONException e) {
 
                             // Catch the json exception. However, we're not done yet.
                             errorMessage = e.getMessage();
 
                             // Known, and maybe other projects, do not return a json response (yet),
-                            // so the access token might be in the body as an URL-encoded query
+                            // so the access token might be in the body as a URL-encoded query
                             // string.
                             // @see https://github.com/idno/Known/issues/1986
                             try {
@@ -607,17 +573,16 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                                     accessTokenFound = true;
                                 }
 
-                            }
-                            catch (Exception e1) {
+                            } catch (Exception e1) {
                                 errorMessage += " - " + e1.getMessage();
                             }
                         }
 
                         if (accessTokenFound && returnedState.equals(state)) {
 
-                            // If author name or avatar are still empty, try parsing the HTML.
+                            // If author name or avatar is still empty, try parsing the HTML.
                             if (authorName.length() == 0 || authorAvatar.length() == 0) {
-                                String noProtocolUrl = domainInput.replace("https://","").replace("http://", "");
+                                String noProtocolUrl = domainInput.replace("https://", "").replace("http://", "");
                                 try {
 
                                     Mf2Parser parser = new Mf2Parser();
@@ -625,7 +590,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
 
                                     for (HCard c : cards) {
                                         if (c.getUrl() != null && c.getName() != null) {
-                                            String HCardURL = c.getUrl().replace("https://","").replace("http://", "");
+                                            String HCardURL = c.getUrl().replace("https://", "").replace("http://", "");
                                             if (HCardURL.equals(noProtocolUrl) || HCardURL.equals(noProtocolUrl + "/")) {
                                                 if (authorName.length() == 0) {
                                                     authorName = c.getName();
@@ -637,13 +602,13 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                                             }
                                         }
                                     }
+                                } catch (Exception ignored) {
                                 }
-                                catch (Exception ignored) { }
                             }
 
                             AccountManager am = AccountManager.get(getApplicationContext());
 
-                            // Create new account.
+                            // Create a new account.
                             Account account = new Account(getAccountName(), INDIEWEB_ACCOUNT_TYPE);
                             am.addAccountExplicitly(account, null, null);
                             am.setAuthToken(account, INDIEWEB_TOKEN_TYPE, accessToken);
@@ -676,8 +641,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                                     finish();
                                 }
                             }, 700);
-                        }
-                        else {
+                        } else {
                             final Snackbar snack = Snackbar.make(layout, String.format(getString(R.string.authentication_fail_token), errorMessage), Snackbar.LENGTH_INDEFINITE);
                             snack.setAction(getString(R.string.close), new View.OnClickListener() {
                                         @Override
@@ -707,8 +671,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                         showForm();
                     }
                 }
-        )
-        {
+        ) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
@@ -740,11 +703,10 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     private void registerWithPixelfed() {
         domainInput = Utility.stripEndingSlash(domainInput);
 
-        if (URLUtil.isValidUrl( domainInput)) {
+        if (URLUtil.isValidUrl(domainInput)) {
             changeSignInButton(R.string.connecting);
             registerPixelfedApp();
-        }
-        else {
+        } else {
             changeSignInButton(R.string.sign_in);
             final Snackbar snack = Snackbar.make(layout, getString(R.string.invalid_url), Snackbar.LENGTH_INDEFINITE);
             snack.setAction(getString(R.string.close), new View.OnClickListener() {
@@ -764,7 +726,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     private void registerPixelfedApp() {
         requestType = "pixelfedAppRegister";
         Map<String, String> params = new HashMap<>();
-        params.put("client_name", "Indigenous");
+        params.put("client_name", "IndiePass");
         params.put("website", ClientId);
         params.put("redirect_uris", RedirectUri);
         params.put("scopes", "read write follow push");
@@ -777,8 +739,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     /**
      * Handle the register response.
      *
-     * @param response
-     *   The current response.
+     * @param response The current response.
      */
     private void handlePixelfedAppRegister(String response) {
         try {
@@ -786,8 +747,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
             pixelfedClientId = object.getString("client_id");
             pixelfedClientSecret = object.getString("client_secret");
             authorizePixelfed();
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             Snackbar.make(layout, getString(R.string.error_parsing_app_registration_response), Snackbar.LENGTH_LONG).show();
         }
     }
@@ -804,8 +764,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     /**
      * Validate pixelfed code and get access token.
      *
-     * @param code
-     *   The code from the authorize call.
+     * @param code The code from the authorize call.
      */
     private void validatePixelfedCode(String code) {
         requestType = "pixelfedAccessToken";
@@ -825,8 +784,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     /**
      * Handle the access token response.
      *
-     * @param response
-     *   The current response
+     * @param response The current response
      */
     private void handlePixelfedAccessToken(String response) {
         String error = getString(R.string.request_failed_unknown);
@@ -834,8 +792,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
         try {
             JSONObject object = new JSONObject(response);
             accessToken = object.getString("access_token");
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             error = e.getMessage();
         }
 
@@ -843,7 +800,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
 
             AccountManager am = AccountManager.get(getApplicationContext());
 
-            // Create new account.
+            // Create a new account.
             Account account = new Account(getAccountName(), PIXELFED_ACCOUNT_TYPE);
             am.addAccountExplicitly(account, null, null);
             am.setAuthToken(account, PIXELFED_TOKEN_TYPE, accessToken);
@@ -857,8 +814,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
 
             requestType = "pixelfedInitialSync";
             syncPixelfed(new Accounts(AuthActivity.this).getUser(getAccountName(), true, false));
-        }
-        else {
+        } else {
             final Snackbar snack = Snackbar.make(layout, String.format(getString(R.string.authentication_fail_token), error), Snackbar.LENGTH_INDEFINITE);
             snack.setAction(getString(R.string.close), new View.OnClickListener() {
                         @Override
@@ -875,8 +831,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     /**
      * Sync pixelfed
      *
-     * @param user
-     *   The current user
+     * @param user The current user
      */
     private void syncPixelfed(User user) {
         Auth auth = AuthFactory.getAuth(user, AuthActivity.this);
@@ -899,11 +854,10 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     private void registerWithMastodon() {
         domainInput = Utility.stripEndingSlash(domainInput);
 
-        if (URLUtil.isValidUrl( domainInput)) {
+        if (URLUtil.isValidUrl(domainInput)) {
             changeSignInButton(R.string.connecting);
             registerMastodonApp();
-        }
-        else {
+        } else {
             changeSignInButton(R.string.sign_in);
             final Snackbar snack = Snackbar.make(layout, getString(R.string.invalid_url), Snackbar.LENGTH_INDEFINITE);
             snack.setAction(getString(R.string.close), new View.OnClickListener() {
@@ -924,7 +878,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     private void registerMastodonApp() {
         requestType = "mastodonAppRegister";
         Map<String, String> params = new HashMap<>();
-        params.put("client_name", "Indigenous");
+        params.put("client_name", "IndiePass");
         params.put("website", ClientId);
         params.put("redirect_uris", RedirectUri);
         params.put("scopes", "read write follow push");
@@ -937,8 +891,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     /**
      * Handle the register response
      *
-     * @param response
-     *   The current response.
+     * @param response The current response.
      */
     private void handleMastodonAppRegister(String response) {
         try {
@@ -946,8 +899,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
             mastodonClientId = object.getString("client_id");
             mastodonClientSecret = object.getString("client_secret");
             authorizeMastodon();
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             Snackbar.make(layout, getString(R.string.error_parsing_app_registration_response), Snackbar.LENGTH_LONG).show();
         }
     }
@@ -964,8 +916,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     /**
      * Validate mastodon code and get access token.
      *
-     * @param code
-     *   The code from the authorize call.
+     * @param code The code from the authorize call.
      */
     private void validateMastodonCode(String code) {
         requestType = "mastodonAccessToken";
@@ -985,8 +936,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     /**
      * Handle the access token response.
      *
-     * @param response
-     *   The current response
+     * @param response The current response
      */
     private void handleMastodonAccessToken(String response) {
         String error = getString(R.string.request_failed_unknown);
@@ -994,8 +944,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
         try {
             JSONObject object = new JSONObject(response);
             accessToken = object.getString("access_token");
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             error = e.getMessage();
         }
 
@@ -1003,7 +952,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
 
             AccountManager am = AccountManager.get(getApplicationContext());
 
-            // Create new account.
+            // Create a new account.
             Account account = new Account(getAccountName(), MASTODON_ACCOUNT_TYPE);
             am.addAccountExplicitly(account, null, null);
             am.setAuthToken(account, MASTODON_TOKEN_TYPE, accessToken);
@@ -1017,8 +966,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
 
             requestType = "mastodonInitialSync";
             syncMastodon(new Accounts(AuthActivity.this).getUser(getAccountName(), true, false));
-        }
-        else {
+        } else {
             final Snackbar snack = Snackbar.make(layout, String.format(getString(R.string.authentication_fail_token), error), Snackbar.LENGTH_INDEFINITE);
             snack.setAction(getString(R.string.close), new View.OnClickListener() {
                         @Override
@@ -1035,8 +983,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     /**
      * Sync mastodon
      *
-     * @param user
-     *   The current user
+     * @param user The current user
      */
     private void syncMastodon(User user) {
         Auth auth = AuthFactory.getAuth(user, AuthActivity.this);
@@ -1059,11 +1006,10 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     private void registerWithPleroma() {
         domainInput = Utility.stripEndingSlash(domainInput);
 
-        if (URLUtil.isValidUrl( domainInput)) {
+        if (URLUtil.isValidUrl(domainInput)) {
             changeSignInButton(R.string.connecting);
             registerPleromaApp();
-        }
-        else {
+        } else {
             changeSignInButton(R.string.sign_in);
             final Snackbar snack = Snackbar.make(layout, getString(R.string.invalid_url), Snackbar.LENGTH_INDEFINITE);
             snack.setAction(getString(R.string.close), new View.OnClickListener() {
@@ -1083,7 +1029,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     private void registerPleromaApp() {
         requestType = "pleromaAppRegister";
         Map<String, String> params = new HashMap<>();
-        params.put("client_name", "Indigenous");
+        params.put("client_name", "IndiePass");
         params.put("website", ClientId);
         params.put("redirect_uris", RedirectUri);
         params.put("scopes", "read write follow push");
@@ -1096,8 +1042,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     /**
      * Handle the register response
      *
-     * @param response
-     *   The current response.
+     * @param response The current response.
      */
     private void handlePleromaAppRegister(String response) {
         try {
@@ -1105,8 +1050,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
             pleromaClientId = object.getString("client_id");
             pleromaClientSecret = object.getString("client_secret");
             authorizePleroma();
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             Snackbar.make(layout, getString(R.string.error_parsing_app_registration_response), Snackbar.LENGTH_LONG).show();
         }
     }
@@ -1123,8 +1067,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     /**
      * Validate pleroma code and get access token.
      *
-     * @param code
-     *   The code from the authorize call.
+     * @param code The code from the authorize call.
      */
     private void validatePleromaCode(String code) {
         requestType = "pleromaAccessToken";
@@ -1144,8 +1087,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     /**
      * Handle the access token response.
      *
-     * @param response
-     *   The current response
+     * @param response The current response
      */
     private void handlePleromaAccessToken(String response) {
         String error = getString(R.string.request_failed_unknown);
@@ -1153,8 +1095,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
         try {
             JSONObject object = new JSONObject(response);
             accessToken = object.getString("access_token");
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             error = e.getMessage();
         }
 
@@ -1162,7 +1103,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
 
             AccountManager am = AccountManager.get(getApplicationContext());
 
-            // Create new account.
+            // Create a new account.
             Account account = new Account(getAccountName(), PLEROMA_ACCOUNT_TYPE);
             am.addAccountExplicitly(account, null, null);
             am.setAuthToken(account, PLEROMA_TOKEN_TYPE, accessToken);
@@ -1176,8 +1117,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
 
             requestType = "pleromaInitialSync";
             syncPleroma(new Accounts(AuthActivity.this).getUser(getAccountName(), true, false));
-        }
-        else {
+        } else {
             final Snackbar snack = Snackbar.make(layout, String.format(getString(R.string.authentication_fail_token), error), Snackbar.LENGTH_INDEFINITE);
             snack.setAction(getString(R.string.close), new View.OnClickListener() {
                         @Override
@@ -1194,8 +1134,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     /**
      * Sync pleroma
      *
-     * @param user
-     *   The current user
+     * @param user The current user
      */
     private void syncPleroma(User user) {
         Auth auth = AuthFactory.getAuth(user, AuthActivity.this);

@@ -4,23 +4,16 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-
 import com.indieweb.indigenous.R;
 
-@SuppressWarnings("ConstantConditions")
 public class SettingsFragment extends PreferenceFragmentCompat {
 
     private SettingsFragment.onPreferenceChangeListener callback;
 
     public void OnPreferenceChangeListener(SettingsFragment.onPreferenceChangeListener callback) {
         this.callback = callback;
-    }
-
-    public interface onPreferenceChangeListener {
-        void onPreferenceChanged(int id, boolean visible);
     }
 
     @Override
@@ -132,10 +125,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     /**
      * Toggle the state of an alias.
      *
-     * @param alias
-     *   The alias name
-     * @param state
-     *   The state of the alias. 1 = enabled, 2 = disabled.
+     * @param alias The alias name
+     * @param state The state of the alias. 1 = enabled, 2 = disabled.
      */
     private void toggleAliasSetting(String alias, Integer state) {
         PackageManager pm = requireContext().getPackageManager();
@@ -151,6 +142,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         getActivity().finish();
         startActivity(intent);
+    }
+
+    public interface onPreferenceChangeListener {
+        void onPreferenceChanged(int id, boolean visible);
     }
 
 }

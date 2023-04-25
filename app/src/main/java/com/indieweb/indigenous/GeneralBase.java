@@ -1,7 +1,6 @@
 package com.indieweb.indigenous;
 
 import android.content.Context;
-
 import com.indieweb.indigenous.model.User;
 
 abstract public class GeneralBase implements General {

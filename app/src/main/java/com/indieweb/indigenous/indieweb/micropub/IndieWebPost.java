@@ -2,7 +2,6 @@ package com.indieweb.indigenous.indieweb.micropub;
 
 import android.content.Context;
 import android.widget.MultiAutoCompleteTextView;
-
 import com.android.volley.NetworkResponse;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.indieweb.microsub.MicrosubAction;

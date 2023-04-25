@@ -1,7 +1,6 @@
 package com.indieweb.indigenous.indieweb.indieauth;
 
 import android.content.Context;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -32,14 +31,15 @@ public class IndieAuthAction {
         StringRequest getRequest = new StringRequest(Request.Method.POST, TokenEndpoint,
                 new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response) { }
+                    public void onResponse(String response) {
+                    }
                 },
                 new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) { }
+                    public void onErrorResponse(VolleyError error) {
+                    }
                 }
-        )
-        {
+        ) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();

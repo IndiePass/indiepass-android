@@ -10,10 +10,10 @@ public class TimelineStyle {
     public static final String COLUMN_CHANNEL_ID = "channel";
 
     public static final String CREATE_TABLE =
-        "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "("
-                + COLUMN_TYPE + " INTEGER,"
-                + COLUMN_CHANNEL_ID + " TEXT"
-                + ")";
+            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "("
+                    + COLUMN_TYPE + " INTEGER,"
+                    + COLUMN_CHANNEL_ID + " TEXT"
+                    + ")";
 
     private Integer type;
     private String channel_id = "";

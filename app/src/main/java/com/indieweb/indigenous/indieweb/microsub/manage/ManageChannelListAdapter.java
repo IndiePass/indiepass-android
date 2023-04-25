@@ -4,9 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,7 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.RecyclerView;
 import com.indieweb.indigenous.R;
 import com.indieweb.indigenous.indieweb.microsub.MicrosubAction;
 import com.indieweb.indigenous.model.Channel;
@@ -31,7 +30,6 @@ import java.util.List;
  */
 public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannelListAdapter.ViewHolder> implements ItemMoveCallback.ItemTouchHelperContract {
 
-    private boolean moved = false;
     private final boolean isShare;
     private final String url;
     private final Context context;
@@ -39,6 +37,17 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
     private final User user;
     private final RelativeLayout layout;
     private final StartDragListener mStartDragListener;
+    private boolean moved = false;
+
+    ManageChannelListAdapter(Context context, List<Channel> channels, User user, StartDragListener startDragListener, boolean isShare, String url, RelativeLayout layout) {
+        this.context = context;
+        this.channels = channels;
+        this.user = user;
+        this.isShare = isShare;
+        this.url = url;
+        this.layout = layout;
+        this.mStartDragListener = startDragListener;
+    }
 
     @Override
     public void onRowMoved(int fromPosition, int toPosition) {
@@ -48,8 +57,7 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
             for (int i = fromPosition; i < toPosition; i++) {
                 Collections.swap(channels, i, i + 1);
             }
-        }
-        else {
+        } else {
             for (int i = fromPosition; i > toPosition; i--) {
                 Collections.swap(channels, i, i - 1);
             }
@@ -78,16 +86,6 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
 
     }
 
-    ManageChannelListAdapter(Context context, List<Channel> channels, User user, StartDragListener startDragListener, boolean isShare, String url, RelativeLayout layout) {
-        this.context = context;
-        this.channels = channels;
-        this.user = user;
-        this.isShare = isShare;
-        this.url = url;
-        this.layout = layout;
-        this.mStartDragListener = startDragListener;
-    }
-
     private Channel getItem(int position) {
         return channels.get(position);
     }
@@ -113,8 +111,7 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
             holder.drag.setVisibility(View.GONE);
             holder.update.setVisibility(View.GONE);
             holder.delete.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             holder.update.setOnClickListener(new ManageChannelListAdapter.OnUpdateClickListener(position));
             holder.delete.setOnClickListener(new ManageChannelListAdapter.OnDeleteClickListener(position));
         }
@@ -122,7 +119,7 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
         holder.rowView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch(event.getAction()) {
+                switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         int downColor = context.getResources().getColor(R.color.listRowBackgroundColorTouched);
                         holder.rowView.setBackgroundColor(downColor);
@@ -141,8 +138,7 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
                             intent.putExtra("channelName", channel.getName());
                             intent.putExtra("url", url);
                             context.startActivity(intent);
-                        }
-                        else {
+                        } else {
                             Intent intent = new Intent(context, ManageFeedsActivity.class);
                             intent.putExtra("channelId", channel.getUid());
                             intent.putExtra("channelName", channel.getName());
@@ -172,11 +168,11 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        final View rowView;
         public final TextView name;
         public final Button update;
         public final Button delete;
         public final Button drag;
+        final View rowView;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -260,8 +256,8 @@ public class ManageChannelListAdapter extends RecyclerView.Adapter<ManageChannel
 
             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(String.format(context.getString(R.string.channel_delete_confirm), channel.getName()));
-            builder.setPositiveButton(context.getString(R.string.delete_post),new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog,int id) {
+            builder.setPositiveButton(context.getString(R.string.delete_post), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
                     new MicrosubAction(context, user, layout).deleteChannel(channel.getUid());
                     channels.remove(position);
                     notifyDataSetChanged();

@@ -2,7 +2,6 @@ package com.indieweb.indigenous.indieweb.indieauth;
 
 import android.content.Context;
 import android.widget.RelativeLayout;
-
 import com.indieweb.indigenous.indieweb.micropub.Endpoints;
 import com.indieweb.indigenous.indieweb.micropub.MicropubAction;
 import com.indieweb.indigenous.model.User;

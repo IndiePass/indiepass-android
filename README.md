@@ -1,10 +1,10 @@
-# Indigenous for Android
+# IndiePass for Android
 
 An open social app with support for IndieWeb, Mastodon, Pleroma and Pixelfed.
 
 <a href='https://play.google.com/store/apps/details?id=com.indieweb.indigenous'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="100"/></a> <a href="https://f-droid.org/app/com.indieweb.indigenous"><img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="100"></a>
 
-More information at https://indieweb.org/Indigenous and
+More information at https://indieweb.org/IndiePass and
 https://indigenous.marksuth.dev
 
 iOS: https://github.com/marksuth/indigenous-ios  
@@ -89,16 +89,16 @@ See https://github.com/marksuth/indigenous-android/issues/152
 
 #### Authenticating
 
-- Some browsers (e.g. the default browser on LineageOS), will not allow
-  Indigenous to listen to the callback to verify the authorization code.
-  Install a browser like Firefox (any flavor) so you can log in.
+- Some browsers (e.g. the default browser on LineageOS), won't allow
+  IndiePass to listen to the callback to verify the authorization code.
+  Install a browser like Firefox (any flavor) so you can sign in.
 - When your account requires 2FA, put the apps in split screen mode, see
 https://github.com/marksuth/indigenous-android/issues/210
 
 #### Notifications do not arrive after the app is closed
 
 This is due to new default settings in the latest Android versions. Try
-turning of battery optimization for the Indigenous app and it should
+turning of battery optimization for the IndiePass app and it should
 work fine.
 
 ## Translations

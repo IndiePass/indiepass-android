@@ -1,18 +1,14 @@
 package com.indieweb.indigenous.users;
 
 import android.content.Context;
-
 import androidx.annotation.NonNull;
-
 import com.indieweb.indigenous.indieweb.indieauth.IndiewebAuth;
 import com.indieweb.indigenous.mastodon.MastodonAuth;
 import com.indieweb.indigenous.model.User;
 import com.indieweb.indigenous.pixelfed.PixelfedAuth;
 import com.indieweb.indigenous.pleroma.PleromaAuth;
 
-import static com.indieweb.indigenous.users.AuthActivity.MASTODON_ACCOUNT_TYPE;
-import static com.indieweb.indigenous.users.AuthActivity.PIXELFED_ACCOUNT_TYPE;
-import static com.indieweb.indigenous.users.AuthActivity.PLEROMA_ACCOUNT_TYPE;
+import static com.indieweb.indigenous.users.AuthActivity.*;
 
 public class AuthFactory {
 

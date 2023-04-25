@@ -9,15 +9,10 @@ public class Preferences {
     /**
      * Get a string preference.
      *
-     * @param context
-     *   The current context
-     * @param pref
-     *   The preference key
-     * @param DefaultValue
-     *   The default value
-     *
-     * @return
-     *   The preference
+     * @param context      The current context
+     * @param pref         The preference key
+     * @param DefaultValue The default value
+     * @return The preference
      */
     public static String getPreference(Context context, String pref, String DefaultValue) {
         SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
@@ -25,17 +20,12 @@ public class Preferences {
     }
 
     /**
-     * Get a string preference, casted to an integer.
+     * Get a string preference, cast to an integer.
      *
-     * @param context
-     *   The current context
-     * @param pref
-     *   The preference key
-     * @param DefaultValue
-     *   The default value
-     *
-     * @return
-     *   The preference
+     * @param context      The current context
+     * @param pref         The preference key
+     * @param DefaultValue The default value
+     * @return The preference
      */
     public static int getPreference(Context context, String pref, int DefaultValue) {
         SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
@@ -45,15 +35,10 @@ public class Preferences {
     /**
      * Get a boolean preference.
      *
-     * @param context
-     *   The current context
-     * @param pref
-     *   The preference key
-     * @param DefaultValue
-     *   The default value
-     *
-     * @return
-     *   The preference
+     * @param context      The current context
+     * @param pref         The preference key
+     * @param DefaultValue The default value
+     * @return The preference
      */
     public static boolean getPreference(Context context, String pref, boolean DefaultValue) {
         SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
@@ -63,12 +48,9 @@ public class Preferences {
     /**
      * Set a boolean preference.
      *
-     * @param context
-     *   The current context
-     * @param pref
-     *   The preference key
-     * @param value
-     *   The value
+     * @param context The current context
+     * @param pref    The preference key
+     * @param value   The value
      */
     public static void setPreference(Context context, String pref, boolean value) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
@@ -78,12 +60,9 @@ public class Preferences {
     /**
      * Set a string preference.
      *
-     * @param context
-     *   The current context
-     * @param pref
-     *   The preference key
-     * @param value
-     *   The value
+     * @param context The current context
+     * @param pref    The preference key
+     * @param value   The value
      */
     public static void setPreference(Context context, String pref, String value) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();

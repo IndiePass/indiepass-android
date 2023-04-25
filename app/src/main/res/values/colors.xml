@@ -1,49 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#D54049</color>
+    <color name="colorPrimary">#C62828</color>
     <color name="colorPrimaryDark">#bd3e38</color>
-    <color name="colorAccent">#D54049</color>
+    <color name="colorAccent">#C62828</color>
     <color name="iconTint">#666666</color>
-    <color name="menuTextcolor">#666666</color>
-    <color name="drawerTintcolor">#eeeeee</color>
+    <color name="menuTextColor">#666666</color>
+    <color name="drawerTintColor">#eeeeee</color>
     <color name="shareMenuColor">#666666</color>
     <color name="textColor">#666666</color>
     <color name="borderColor">#eeeeee</color>
-    <color name="borderStartcolor">#ffffff</color>
-    <color name="borderEndcolor">#ffffff</color>
+    <color name="borderStartColor">@android:color/white</color>
+    <color name="borderEndColor">@android:color/white</color>
     <color name="paneColor">#eeeeee</color>
     <color name="paneColorDivider">#e2e6e9</color>
     <color name="listBackgroundColor">#f5f5f5</color>
     <color name="listDividerColor">#e2e6e9</color>
-    <color name="buttonBackground">#ebf2f7</color>
-    <color name="listRowBackgroundColor">#ffffff</color>
+    <color name="buttonBackground">@color/colorAccent</color>
+    <color name="buttonText">@android:color/white</color>
+    <color name="listRowBackgroundColor">@android:color/white</color>
     <color name="listRowBackgroundColorTouched">#e2e6e9</color>
     <color name="loadMoreButtonBackgroundColor">#f5f5f5</color>
     <color name="loadMoreButtonBackgroundColorTouched">#e2e6e9</color>
     <color name="micropubActionTouched">#e2e6e9</color>
-    <color name="transparentProgress">#80000000</color>
-    <color name="progressWidget">#ffffff</color>
+    <color name="transparentProgress">#80141414</color>
+    <color name="progressWidget">@android:color/white</color>
     <color name="categoryTitle">@color/colorPrimary</color>
-
-    <!-- image buttons -->
+    <color name="inverseColor">#141414</color>
     <color name="idleColor">#666666</color>
-    <color name="pressedColor">#D54049</color>
-
-    <!-- photo editor -->
-    <color name="black">#000000</color>
-    <color name="white">#FFFFFF</color>
-    <color name="blue_color_picker">#0066FF</color>
-    <color name="brown_color_picker">#AF593E</color>
-    <color name="green_color_picker">#01A368</color>
-    <color name="orange_color_picker">#FF861F</color>
-    <color name="red_color_picker">#ED0A3F</color>
-    <color name="red_orange_color_picker">#FF3F34</color>
-    <color name="sky_blue_color_picker">#76D7EA</color>
-    <color name="violet_color_picker">#8359A3</color>
-    <color name="yellow_color_picker">#FBE870</color>
-    <color name="yellow_green_color_picker">#C5E17A</color>
-    <color name="tool_bg">#151414</color>
-    <color name="semi_black_transparent">#99000000</color>
-
-
+    <color name="pressedColor">#C62828</color>
 </resources>
