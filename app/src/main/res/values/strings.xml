@@ -40,7 +40,6 @@
     <string name="request_failed">Request failed. Status code: %d; message: %s</string>
     <string name="request_failed_unknown">Request failed, unknown error</string>
     <string name="maps_info">Install a map application to view this location</string>
-    <string name="maps_info">Install a map application to view this location</string>
 
     <!-- Authentication and accounts -->
     <string name="account_type_indieweb">IndieAuth</string>
