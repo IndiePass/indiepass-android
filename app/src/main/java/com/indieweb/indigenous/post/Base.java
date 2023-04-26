@@ -597,7 +597,7 @@ abstract public class Base extends AppCompatActivity implements SendPostInterfac
         if (user.isAuthenticated()) {
             accessToken = user.getAccessToken();
         } else {
-            accessToken = Preferences.getPreference(getApplicationContext(), "anonymous_micropub_token", "IndigenousAnonymous");
+            accessToken = Preferences.getPreference(getApplicationContext(), "anonymous_micropub_token", "IndiePassAnonymous");
         }
 
         // Send access token in header by default.
