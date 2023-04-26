@@ -1,3 +1,7 @@
+<h4>XX/05/23 0.83</h4>
+<ul>
+    <li>TBD</li>
+</ul>
 <h4>25/04/23 0.82</h4>
 <ul>
     <li>Resolve duplicate string issue</li>
@@ -40,7 +44,7 @@
     <li>Fix preview of a feed</li>
     <li>Add Pixelfed, Pleroma and Mastodon Account types</li>
     <li>Get more data from server for updating posts</li>
-    <li>Pull in more data when sharing to Indigenous</li>
+    <li>Pull in more data when sharing to IndiePass</li>
     <li>Fix move post presenting the full channel list</li>
     <li>Trip post can receive a GPX file from a share intent</li>
     <li>Do not auto hide error messages, they must be closed instead</li>
@@ -122,7 +126,7 @@
     <li>Fix setting latitude and longitude in drafts</li>
     <li>Use profile info from token request if available</li>
     <li>Code cleanup and better protection against crashes in rare cases</li>
-    <li>Manage contacts. The permission for contacts is not for this part, but for a fix to get Indigenous accounts in the app.</li>
+    <li>Manage contacts. The permission for contacts is not for this part, but for a fix to get IndiePass accounts in the app.</li>
 </ul>
 <h4>04/12/2019 - 0.50</h4>
 <ul>
