@@ -89,7 +89,7 @@
     <string name="account_sync">Syncing %s</string>
     <string name="account_removed">Account %s removed</string>
     <string name="account_select">Select account</string>
-    <string name="account_select_to_post">Select an an account to post</string>
+    <string name="account_select_to_post">Select an account to post</string>
     <string name="account_selected">Default account set to %s</string>
     <string name="account_switch">Set default account to %s ?</string>
     <string name="user_exception">We ran into an exception getting the accounts. Please manage the accounts from the device accounts section.</string>
@@ -144,8 +144,8 @@
     <string name="add_feed">Add feed</string>
     <string name="no_feeds_found">No feeds found</string>
     <string name="search_feed">Search feeds</string>
-    <string name="select_channel">Select a a channel to add the feed to</string>
-    <string name="select_channel_move">Select a a channel to move the item to</string>
+    <string name="select_channel">Select a channel to add the feed to</string>
+    <string name="select_channel_move">Select a channel to move the item to</string>
     <string name="subscribe">Subscribe</string>
     <string name="preview">Preview</string>
     <string name="results">Results</string>
