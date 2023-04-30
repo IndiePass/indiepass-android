@@ -14,7 +14,7 @@
     <color name="categoryTitle">@color/colorAccent</color>
     <color name="menuTextColor">#e3e2e2</color>
     <color name="drawerTintColor">#141414</color>
-    <color name="shareMenuColor">#141414</color>
+    <color name="shareMenuColor">#e3e2e2</color>
     <color name="paneColor">#141414</color>
     <color name="paneColorDivider">#141414</color>
     <color name="listDividerColor">#141414</color>
