@@ -59,8 +59,8 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     public final static String MASTODON_TOKEN_TYPE = "Mastodon";
     public final static String PLEROMA_ACCOUNT_TYPE = "Pleroma";
     public final static String PLEROMA_TOKEN_TYPE = "Pleroma";
-    final String ClientId = "https://indiepass.marksuth.dev/";
-    final String RedirectUri = "https://indiepass.marksuth.dev/android-callback";
+    final String ClientId = "https://indiepass.app/";
+    final String RedirectUri = "https://indiepass.app/android-callback";
     protected VolleyRequestListener volleyRequestListener;
     String accountType = "indieweb";
     String requestType = "";
