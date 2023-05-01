@@ -87,11 +87,6 @@ public class PixelfedReader extends ReaderBase {
             c.setUnread(0);
             Channels.add(c);
             // Disabled until https://github.com/pixelfed/pixelfed/issues/2317 is fixed
-            /*c = new Channel();
-            c.setName(getContext().getString(R.string.channel_bookmarks));
-            c.setUid(CHANNEL_NAME_BOOKMARKS);
-            c.setUnread(0);
-            Channels.add(c);*/
         }
         return Channels;
     }

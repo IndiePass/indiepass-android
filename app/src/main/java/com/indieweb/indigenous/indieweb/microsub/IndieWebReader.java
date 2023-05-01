@@ -581,10 +581,6 @@ public class IndieWebReader extends ReaderBase {
                 }
                 item.setHtmlContent(htmlContent);
 
-                //Log.d("indigenous_debug", "text after: " + item.getTextContent());
-                //Log.d("indigenous_debug", "html after: " + item.getHtmlContent());
-                //Log.d("indigenous_debug", "reference after: " + item.getReference());
-
                 TimelineItems.add(item);
             }
         } catch (JSONException ignored) {

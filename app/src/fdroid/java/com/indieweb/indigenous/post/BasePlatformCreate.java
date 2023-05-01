@@ -118,7 +118,6 @@ abstract public class BasePlatformCreate extends Base {
 
     /**
      * Update the UI displaying the location data.
-     *
      * We have the same function in the Play Store implementation. So don't forget to update in
      * case something changes here.
      */

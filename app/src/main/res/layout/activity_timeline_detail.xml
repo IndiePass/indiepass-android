@@ -184,7 +184,8 @@
                         android:textColorHint="@android:color/transparent"
                         android:id="@+id/itemReply"
                         android:layout_width="@dimen/list_item_icon_size"
-                        android:layout_height="@dimen/list_item_icon_size"/>
+                        android:layout_height="@dimen/list_item_icon_size"
+                        style="?android:attr/buttonBarButtonStyle"/>
 
                 <Button
                         android:layout_marginStart="@dimen/list_item_icon_margin_left"
@@ -193,7 +194,8 @@
                         android:textColorHint="@android:color/transparent"
                         android:id="@+id/itemLike"
                         android:layout_width="@dimen/list_item_icon_size"
-                        android:layout_height="@dimen/list_item_icon_size"/>
+                        android:layout_height="@dimen/list_item_icon_size"
+                        style="?android:attr/buttonBarButtonStyle"/>
 
                 <Button
                         android:layout_marginStart="@dimen/list_item_icon_margin_left"
@@ -202,7 +204,8 @@
                         android:hint="@string/add_repost"
                         android:textColorHint="@android:color/transparent"
                         android:layout_width="@dimen/list_item_icon_size"
-                        android:layout_height="@dimen/list_item_icon_size"/>
+                        android:layout_height="@dimen/list_item_icon_size"
+                        style="?android:attr/buttonBarButtonStyle"/>
 
                 <Button
                         android:layout_marginStart="@dimen/list_item_icon_margin_left"
@@ -211,7 +214,8 @@
                         android:hint="@string/add_bookmark"
                         android:textColorHint="@android:color/transparent"
                         android:layout_width="@dimen/list_item_icon_size"
-                        android:layout_height="@dimen/list_item_icon_size"/>
+                        android:layout_height="@dimen/list_item_icon_size"
+                        style="?android:attr/buttonBarButtonStyle"/>
 
                 <Button
                         android:layout_marginStart="@dimen/list_item_icon_margin_left"
@@ -220,7 +224,8 @@
                         android:hint="@string/add_read"
                         android:textColorHint="@android:color/transparent"
                         android:layout_width="@dimen/list_item_icon_size"
-                        android:layout_height="@dimen/list_item_icon_size"/>
+                        android:layout_height="@dimen/list_item_icon_size"
+                        style="?android:attr/buttonBarButtonStyle"/>
 
                 <Button
                         android:layout_marginStart="@dimen/list_item_icon_margin_left"
@@ -229,7 +234,8 @@
                         android:hint="@string/add_rsvp"
                         android:textColorHint="@android:color/transparent"
                         android:layout_width="@dimen/list_item_icon_size"
-                        android:layout_height="@dimen/list_item_icon_size"/>
+                        android:layout_height="@dimen/list_item_icon_size"
+                        style="?android:attr/buttonBarButtonStyle"/>
 
                 <Button
                         android:layout_marginStart="@dimen/list_item_icon_margin_left"
@@ -238,7 +244,8 @@
                         android:hint="@string/external_link"
                         android:textColorHint="@android:color/transparent"
                         android:layout_width="@dimen/list_item_icon_size"
-                        android:layout_height="@dimen/list_item_icon_size"/>
+                        android:layout_height="@dimen/list_item_icon_size"
+                        style="?android:attr/buttonBarButtonStyle"/>
 
                 <Button
                         android:layout_marginStart="@dimen/list_item_icon_margin_left"
@@ -247,7 +254,8 @@
                         android:textColorHint="@android:color/transparent"
                         android:id="@+id/itemAudio"
                         android:layout_width="@dimen/list_item_icon_size"
-                        android:layout_height="@dimen/list_item_icon_size"/>
+                        android:layout_height="@dimen/list_item_icon_size"
+                        style="?android:attr/buttonBarButtonStyle"/>
 
                 <Button
                         android:layout_marginStart="@dimen/list_item_icon_margin_left"
@@ -256,7 +264,8 @@
                         android:hint="@string/video"
                         android:textColorHint="@android:color/transparent"
                         android:layout_width="@dimen/list_item_icon_size"
-                        android:layout_height="@dimen/list_item_icon_size"/>
+                        android:layout_height="@dimen/list_item_icon_size"
+                        style="?android:attr/buttonBarButtonStyle"/>
 
                 <Button
                         android:layout_marginStart="@dimen/list_item_icon_margin_left"
@@ -265,7 +274,8 @@
                         android:hint="@string/map"
                         android:textColorHint="@android:color/transparent"
                         android:layout_width="@dimen/list_item_icon_size"
-                        android:layout_height="@dimen/list_item_icon_size"/>
+                        android:layout_height="@dimen/list_item_icon_size"
+                        style="?android:attr/buttonBarButtonStyle"/>
 
                 <Button
                         android:layout_marginStart="@dimen/list_item_icon_margin_left"
@@ -274,7 +284,8 @@
                         android:hint="@string/item_menu"
                         android:textColorHint="@android:color/transparent"
                         android:layout_width="@dimen/list_item_icon_size"
-                        android:layout_height="@dimen/list_item_icon_size"/>
+                        android:layout_height="@dimen/list_item_icon_size"
+                        style="?android:attr/buttonBarButtonStyle"/>
 
             </LinearLayout>
 
