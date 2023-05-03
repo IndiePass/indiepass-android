@@ -2,10 +2,14 @@
 
 An open social app with support for IndieWeb, Mastodon, Pleroma and Pixelfed.
 
-<a href='https://play.google.com/store/apps/details?id=com.indieweb.indigenous'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="100"/></a> <a href="https://f-droid.org/app/com.indieweb.indigenous"><img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="100"></a>
+<a href='https://play.google.com/store/apps/details?id=com.indieweb.indigenous'><img alt='Get it on Google Play' src='https://indiepass.app/images/google-play-badge.svg' height="50"></a>
+<a href="https://www.amazon.com/gp/product/B0C3KWR6V6"><img src="https://indiepass.app/images/amazon-appstore-badge.svg" alt="Available at Amazon appstore" height="50"></a>
+<a href="https://f-droid.org/app/com.indieweb.indigenous"><img src="https://indiepass.app/images/fdroid-badge.svg" alt="Get it on F-Droid" height="50"></a>
 
 More information at https://indieweb.org/IndiePass and
 https://indiepass.app
+
+Desktop: https://github.com/indiepass/indigenous-desktop
 
 ## Features
 
@@ -66,7 +70,7 @@ Pleroma: not found yet (info welcome!)
 
 ## Screenshot
 
-<img src="https://realize.be/sites/default/files/2019-02/1550590120900.jpg" width="400" />
+<img src="https://indiepass.app/images/android-screenshot.png" alt="Screenshot of app">
 
 ## Known issues
 
@@ -128,7 +132,7 @@ This app uses the following external libraries:
 ## Issues
 
 If you find a bug, open a request.
-Pull requests are welcome though!
+Pull requests are also welcome!
 
 Things I'd love to explore one day:
 
