@@ -9,8 +9,6 @@ An open social app with support for IndieWeb, Mastodon, Pleroma and Pixelfed.
 More information at https://indieweb.org/IndiePass and
 https://indiepass.app
 
-Desktop: https://github.com/indiepass/indigenous-desktop
-
 ## Features
 
 - Login with multiple domains and account types:
@@ -81,12 +79,12 @@ When authenticating for the first time, you might see a message
 While the account has been created, the default was not set. In this
 case, the sign in screen will allow you to select the account.
 
-See https://github.com/marksuth/indigenous-android/issues/84 
+See https://github.com/indiepass/indiepass-android/issues/84 
 This happens sometimes, but not always.
 
 #### Known syndication targets are not parsed
 
-See https://github.com/marksuth/indigenous-android/issues/152
+See https://github.com/indiepass/indiepass-android/issues/152
 
 #### Authenticating
 
@@ -94,7 +92,7 @@ See https://github.com/marksuth/indigenous-android/issues/152
   IndiePass to listen to the callback to verify the authorization code.
   Install a browser like Firefox (any flavor) so you can sign in.
 - When your account requires 2FA, put the apps in split screen mode, see
-https://github.com/marksuth/indigenous-android/issues/210
+https://github.com/indiepass/indiepass-android/issues/210
 
 #### Notifications do not arrive after the app is closed
 

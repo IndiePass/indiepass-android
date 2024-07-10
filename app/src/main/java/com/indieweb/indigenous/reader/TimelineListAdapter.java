@@ -682,11 +682,7 @@ public class TimelineListAdapter extends BaseAdapter implements OnClickListener 
                 if (item.getNumberOfComments() > 0) {
                     holder.commentCount.setVisibility(View.VISIBLE);
                     String comment_text;
-                    if (item.getNumberOfComments() == 1) {
-                        comment_text = context.getString(R.string.comments_one);
-                    } else {
-                        comment_text = context.getString(R.string.comments_multiple);
-                    }
+                    comment_text = context.getResources().getQuantityString(R.plurals.number_of_comments, item.getNumberOfComments());
                     holder.commentCount.setText(String.format(comment_text, item.getNumberOfComments()));
                 } else {
                     holder.commentCount.setVisibility(View.GONE);
