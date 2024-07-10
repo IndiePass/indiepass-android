@@ -34,7 +34,7 @@ public class WritePostTest extends ActivityTestRule<LaunchActivity> {
 
         onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.createArticle));
         onView(withId(R.id.body)).perform(replaceText("Hello!"));
-        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
+        onView(withContentDescription(androidx.appcompat.R.string.abc_action_bar_up_description)).perform(click());
         onView(withText(R.string.confirm_close)).inRoot(isDialog()).check(matches(isDisplayed()));
         onView(withId(android.R.id.button1)).perform((click()));
     }

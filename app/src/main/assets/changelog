@@ -1,3 +1,10 @@
+<h4>10/07/24 0.85</h4>
+<ul>
+    <li>Updated target SDK to 34</li>
+    <li>Updated dependencies</li>
+    <li>Updated GitHub URL</li>
+    <li>Fixed some typos</li>
+</ul>
 <h4>01/05/23 0.84</h4>
 <ul>
     <li>Fixed dark mode text visibility issue</li>

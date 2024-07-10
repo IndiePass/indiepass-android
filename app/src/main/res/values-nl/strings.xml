@@ -112,7 +112,7 @@
     <string name="channel_mastodon">Mastodon</string>
     <string name="channel_pleroma">Pleroma</string>
     <!-- About -->
-    <string name="about_info"><![CDATA[IndiePass allows you to engage with the internet as you do on social media sites, but posts it all on your website or a federated instance like Mastodon, Pleroma or Pixelfed. Use the built-in reader to read and respond to posts across the internet. IndiePass does not track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/marksuth/indigenous-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
+    <string name="about_info"><![CDATA[IndiePass allows you to engage with the internet as you do on social media sites, but posts it all on your website or a federated instance like Mastodon, Pleroma or Pixelfed. Use the built-in reader to read and respond to posts across the internet. IndiePass does not track or store any of your information. You choose a service you trust or host it yourself.<br /><br />Development happens on <a href="https://github.com/indiepass/indiepass-android">GitHub</a><br />Icons from <a href="https://material.io/tools/icons/">Material Design</a> and <a href="https://www.geocaching.com">Geocaching.com</a>]]></string>
     <string name="view_changelog">View changelog</string>
     <!-- Drafts -->
     <string name="drafts">Drafts</string>
@@ -190,8 +190,10 @@
     <string name="start_date_event">Start: %s</string>
     <string name="end_date_event">End: %s</string>
     <string name="number_of_images">%d images</string>
-    <string name="comments_multiple">%d comments</string>
-    <string name="comments_one">%d comment</string>
+    <plurals name="number_of_comments">
+        <item quantity="one">%d comment</item>
+        <item quantity="other">%d comments</item>
+    </plurals>
     <string name="delete_post_confirm">Are you sure you want to delete this post ?</string>
     <string name="item_marked_unread">Item marked unread</string>
     <string name="item_marked_read">Item marked read</string>
