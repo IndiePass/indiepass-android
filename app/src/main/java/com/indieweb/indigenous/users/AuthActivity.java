@@ -59,7 +59,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
     public final static String MASTODON_TOKEN_TYPE = "Mastodon";
     public final static String PLEROMA_ACCOUNT_TYPE = "Pleroma";
     public final static String PLEROMA_TOKEN_TYPE = "Pleroma";
-    final String ClientId = "https://indiepass.app/";
+    public final static String ClientId = "https://indiepass.app/";
     final String RedirectUri = "https://indiepass.app/android-callback";
     protected VolleyRequestListener volleyRequestListener;
     String accountType = "indieweb";
@@ -534,6 +534,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                     public void onResponse(String response) {
 
                         String accessToken = "";
+                        String refreshToken = "";
                         String errorMessage = "";
                         boolean accessTokenFound = false;
 
@@ -541,6 +542,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                             JSONObject indieAuthResponse = new JSONObject(response);
                             accessToken = indieAuthResponse.getString("access_token");
                             accessTokenFound = true;
+                            refreshToken = indieAuthResponse.optString("refresh_token");
 
                             // Check the profile key.
                             if (indieAuthResponse.has("profile")) {
@@ -619,6 +621,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                             am.setUserData(account, "micropub_media_endpoint", micropubMediaEndpoint);
                             am.setUserData(account, "author_name", authorName);
                             am.setUserData(account, "author_avatar", authorAvatar);
+                            am.setUserData(account, "refresh_token", refreshToken);
 
                             // Set default account.
                             setDefaultAccount();
@@ -627,6 +630,7 @@ public class AuthActivity extends AccountAuthenticatorActivity implements Volley
                             User user = new User();
                             user.setMicropubEndpoint(micropubEndpoint);
                             user.setAccessToken(accessToken);
+                            user.setRefreshToken(refreshToken);
                             user.setAccount(account);
                             new MicropubAction(getApplicationContext(), user, layout).refreshConfig();
 

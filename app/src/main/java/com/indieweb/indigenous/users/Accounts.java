@@ -185,6 +185,7 @@ public class Accounts {
             }
 
             user.setAccessToken(token);
+            user.setRefreshToken(accountManager.getUserData(a, "refresh_token"));
             user.setAccountType(INDIEWEB_ACCOUNT_TYPE);
             user.setExternalId(accountManager.getUserData(a, "external_id"));
             user.setAvatar(accountManager.getUserData(a, "author_avatar"));
