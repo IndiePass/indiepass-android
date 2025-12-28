@@ -318,6 +318,7 @@
     <string name="trip_load_gpx">Load GPX file</string>
     <string name="trip_reading_error">Error reading GPX file: %s</string>
     <string name="trip_no_points_found">No points found in GPX file.</string>
+    <string name="trip_invalid_file_type">Please select a GPX file (.gpx)</string>
     <string name="location_start">Start location</string>
     <string name="location_end">End location</string>
     <string name="transport">Transport</string>

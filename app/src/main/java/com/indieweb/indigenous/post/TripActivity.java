@@ -1,7 +1,9 @@
 package com.indieweb.indigenous.post;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.OpenableColumns;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -92,13 +94,23 @@ public class TripActivity extends BaseCreate {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         if (item.getItemId() == R.id.loadGpx) {
-            Intent ii = new Intent();
-            ii.setType("application/gpx+xml");
-            ii.setAction(Intent.ACTION_OPEN_DOCUMENT);
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+            // Allow all file types - GPX files may have various MIME types
+            // (application/gpx+xml, application/octet-stream, text/xml, etc.)
+            // The app will validate the file content when parsing
+            intent.setType("*/*");
+
+            // Grant read permission
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+
             if (!isMediaRequest) {
-                ii.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
             }
-            startActivityForResult(Intent.createChooser(ii, getString(R.string.trip_load_gpx)), PICK_GPX_REQUEST);
+
+            startActivityForResult(intent, PICK_GPX_REQUEST);
             return true;
         }
 
@@ -110,11 +122,36 @@ public class TripActivity extends BaseCreate {
 
         if (requestCode == PICK_GPX_REQUEST && resultCode == RESULT_OK) {
             if (data.getData() != null) {
-                parseGPXfile(data.getData(), data, true);
+                Uri uri = data.getData();
+                if (isGpxFile(uri)) {
+                    parseGPXfile(uri, data, true);
+                } else {
+                    Snackbar.make(layout, getString(R.string.trip_invalid_file_type), Snackbar.LENGTH_LONG).show();
+                }
             }
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * Check if the selected file is a GPX file by extension.
+     *
+     * @param uri The file uri.
+     * @return true if the file has a .gpx extension.
+     */
+    private boolean isGpxFile(Uri uri) {
+        String fileName = null;
+        try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                if (nameIndex >= 0) {
+                    fileName = cursor.getString(nameIndex);
+                }
+            }
+        } catch (Exception ignored) {
+        }
+        return fileName != null && fileName.toLowerCase().endsWith(".gpx");
     }
 
     /**
@@ -218,7 +255,7 @@ public class TripActivity extends BaseCreate {
             }
 
             if (transport.getSelectedItemPosition() != 0) {
-                String t = getResources().getStringArray(R.array.transport_array_values)[read.getSelectedItemPosition()];
+                String t = getResources().getStringArray(R.array.transport_array_values)[transport.getSelectedItemPosition()];
                 bodyParams.put("transport", t);
             }
 
