@@ -7,6 +7,7 @@ public class User {
     private String accountName;
     private String externalId;
     private String accessToken;
+    private String refreshToken;
     private String microsubEndpoint;
     private String micropubEndpoint;
     private String micropubMediaEndpoint;
@@ -55,6 +56,14 @@ public class User {
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 
     public String getExternalId() {
