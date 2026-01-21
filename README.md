@@ -1,10 +1,14 @@
 # IndiePass for Android
 
-An open social app with support for IndieWeb, Mastodon, Pleroma and Pixelfed.
+## IndiePass is looking for a new maintainer
 
-<a href='https://play.google.com/store/apps/details?id=com.indieweb.indigenous'><img alt='Get it on Google Play' src='https://indiepass.app/images/google-play-badge.svg' height="50"></a>
-<a href="https://www.amazon.com/gp/product/B0C3KWR6V6"><img src="https://indiepass.app/images/amazon-appstore-badge.svg" alt="Available at Amazon appstore" height="50"></a>
-<a href="https://f-droid.org/app/com.indieweb.indigenous"><img src="https://indiepass.app/images/fdroid-badge.svg" alt="Get it on F-Droid" height="50"></a>
+As of January 2026, IndiePass is looking for a new maintainer, and is not currently available on Google Play or the Amazon Appstore. For more details, please see https://indiepass.app.
+
+In the meantime, this repository will be archived to prevent unanswered Issues etc. being submitted.
+
+---
+
+An open social app with support for IndieWeb, Mastodon, Pleroma and Pixelfed.
 
 More information at https://indieweb.org/IndiePass and
 https://indiepass.app
